@@ -87,6 +87,7 @@ Beispiel
 |*Jürgen Anke*|Betreuer, Ansprechpartner|bei Fragen zum Projektmanagement, Projektablauf, etc.|gering|sehr gering|positiv, Hilfestellung
 |*Christoph Zirkelbach*|Betreuer, Ansprechpartner|bei Fragen zum Programmierteil|gering|sehr gering|positiv, Hilfestellung
 |*Mitarbeiter von ZEISS*|Veröffentlichende, Management, sonstige MA|bestimmen indirekt die Anfoderungen an das Projekt|mittel (Anforderungen entspringen dem unerfüllten Bedarf an ein funktionierendes Verwaltungssystem, sind aber fix)|gering, höchstens in der Implementierung|positiv
+|Gesetzgeber|x|prüft Einhaltung des Rechtes|gering|gering-mittel|neutral
 |===
 
 
