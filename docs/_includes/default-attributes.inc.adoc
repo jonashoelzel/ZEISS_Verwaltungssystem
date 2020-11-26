@@ -1,5 +1,5 @@
 // Meta
-:project-name: <Projektname (T00)>
+:project-name: ZEISS Verwaltungssystem (E1)
 // Settings:
 :toc:
 :toc-title: Inhaltsverzeichnis
