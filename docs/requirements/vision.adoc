@@ -81,13 +81,15 @@ Beispiel
 |===
 |Name|Beschreibung|Verantwortlichkeiten|Einfluss|Konfliktpotenzial|Einstellung
 
-|*ZEISS*|Gesellschaft als Auftraggeber|interessiert an einem funktionierenden Verwaltungssystem für deren Veröffentlichungen|hoch|gering - mittel (bei Unstimmigkeiten zwischen Planung/Vorstellung und Ausführung)  |positiv, ebenfalls an einem erfolgreichen Ausgang interessiert
+|*ZEISS* |Gesellschaft als Auftraggeber|interessiert an einem funktionierenden Verwaltungssystem für deren Veröffentlichungen|hoch|gering - mittel (bei Unstimmigkeiten zwischen Planung/Vorstellung und Ausführung)  |positiv, ebenfalls an einem erfolgreichen Ausgang interessiert
 |*Herr Lösch*|Betreuer, Interessensvertreter für ZEISS|"überwacht"/kontrolliert in regelmäßigen Abständen Projektfortschritt und sorgt dafür, dass Anforderungen von ZEISS erfüllt werden|sehr hoch|_siehe ZEISS_|_siehe ZEISS_
 |[.small]#*Paul, Vanessa, Stephan, Peter, Jean-Pierre, Jonas, Oliver, Nina*#|Projektmitglieder|aktives und eigenständiges Umsetzen der Anfoderungen von ZEISS|extrem hoch|sehr gering, lediglich Unstimmigkeiten zwischen Projektmitgliedern möglich → durch klare Aufgabenverteilung minimiert|positiv
 |*Jürgen Anke*|Betreuer, Ansprechpartner|bei Fragen zum Projektmanagement, Projektablauf, etc.|gering|sehr gering|positiv, Hilfestellung
 |*Christoph Zirkelbach*|Betreuer, Ansprechpartner|bei Fragen zum Programmierteil|gering|sehr gering|positiv, Hilfestellung
 |*Mitarbeiter von ZEISS*|Veröffentlichende, Management, sonstige MA|bestimmen indirekt die Anfoderungen an das Projekt|mittel (Anforderungen entspringen dem unerfüllten Bedarf an ein funktionierendes Verwaltungssystem, sind aber fix)|gering, höchstens in der Implementierung|positiv
-|Gesetzgeber|x|prüft Einhaltung des Rechtes|gering|gering-mittel|neutral
+|*Gesetzgeber, Datenschutz* |x|prüft Einhaltung des Rechtes & Datenschutzes|gering, wenn von Anfang an ein sensibler Umgag mit DAten gewährleistet ist|gering-mittel|neutral
+|*Hacker* |mögliche Bedrohung für unser System|unrechtmäßige Entwendung von Daten, Veränderung des Systems|schwierig zu definieren; kann gering-hoch sein, je nachdem, welche Anforderungen datenschutztechnisch an die Anwendung gestellt werden|kann extrem hoch werden, bis zum Verlust von sensiblen Daten|negativ
+|*Sponsoren* |Kunde möchte mit dem Programm Sponsoren werben |definieren Kernfunktionalitäten, interessiert an guter Benutzbarkeit und Wartbarkeit, um sich einen Überblick verschaffen zu können|mittel-hoch|mittel, wenn Kernanforderungen unvollständig erfüllt sind|neutral
 |===
 
 
