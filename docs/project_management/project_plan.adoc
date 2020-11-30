@@ -44,8 +44,13 @@ In diesem Projektplan wir das Vorgehen zur Erstellung eines Verwaltungssystems f
 
 | I1
 |
-* Mitigate Risk1
-* Develop Use Case 3, Scenario 2
+* Einrichtung der verwendeten Werkzeuge
+* Vision
+* Standard-Usecase
+* Initiale Rsik analyse
+* Initiale Grenzen Analyse
+* Stakeholder Analyse
+* Prototypen scope
 | Date from/Date to
 | 15
 
