@@ -12,8 +12,11 @@ In diesem Dokument werden die wesentlichen Begriffe aus dem Anwendungsgebiet (Fa
 [%header]
 |===
 |Begriff|Definition und Erläuterung|	Synonyme
-|Kommissionierung|Bereitstellung von Waren aus einem Lager entsprechend eines Kundenauftrags|(keine)|
-|xx|xx|xx|
+
+|Autor|Kann Beiträge veröffentlichen, diese einsehen und bearbeiten|x
+|Reporter|Kann Reports erstellen, Statistiken einsehen (Top Autoren, Veröffentlichungen je Bereich, ...), Beiträge einsehen und verändern.|x
+
+
 |===
 
 

@@ -1,27 +1,31 @@
-//Nutzen Sie dieses Template als Grundlage für die Spezifikation *einzelner* Use-Cases. Diese lassen sich dann per Include in das Use-Case Model Dokument einbinden (siehe Beispiel dort).
-== Use-Case: <use-case name>
-===	Kurzbeschreibung
-//<Kurze Beschreibung des Use Case>
+== Use-Case: Reports erstellen
+===	Reporter möchte Reports erstellen oder Statistiken einsehen
 
 ===	Kurzbeschreibung der Akteure
-==== <Akteur 1 Name>
-
+==== Reporter
+Ein Reporter kann Reports erstellen, Statistiken einsehen (Top Autoren, Veröffentlichungen je Bereich, ...), alle Beiträge im System einsehen und bearbeiten.
 === Vorbedingungen
 //Vorbedingungen müssen erfüllt, damit der Use Case beginnen kann, z.B. Benutzer ist angemeldet, Warenkorb ist nicht leer...
-<Vorbedingung 1>
+* Reporter muss als solcher angemeldet sein
+* Es muss mindestens ein Beitrag im System existieren
 
 === Standardablauf (Basic Flow)
 //Der Standardablauf definiert die Schritte für den Erfolgsfall ("Happy Path")
 
-. Der Use Case beginnt, wenn <akteur> <macht>…
-. <Standardablauf Schritt 1>
-. 	…
-. <Standardablauf Schritt n>
+. Reporter kann sich Statistiken zu folgenden Kategorien ausgeben lassen:
+* Top Autoren
+* Veröffentlichungen je Bereich (als Säulen- oder Kreisdiagramm)
+* Summe der Veröffentlichungen je Typ innerhalb eines Zeitbereichs
+* Veröffentlichungen je nach Tag (als Liste oder Summe über einen Zeitbereich)
+* Summe aller Veröffentlichungen innerhalb eines Zeitbereichs (Monat, Quartal, Jahr)
+. Wählt gewünschte Statistik(e)n aus
+. Kann sich eine oder mehrere ausgewählte Statistik(en) nun übersichtlich darstellen lassen
+. Kann diese als Dokument (z.B. als pdf) exportieren
 . Der Use Case ist abgeschlossen.
 
-=== Alternative Abläufe
+//=== Alternative Abläufe
 //Nutzen Sie alternative Abläufe für Fehlerfälle, Ausnahmen und Erweiterungen zum Standardablauf
-==== <Alternativer Ablauf 1>
+//==== <Alternativer Ablauf 1>
 Wenn <Akteur> im Schritt <x> des Standardablauf <etwas macht>, dann
 . <Ablauf beschreiben>
 . Der Use Case wird im Schritt <y> fortgesetzt.
@@ -29,18 +33,48 @@ Wenn <Akteur> im Schritt <x> des Standardablauf <etwas macht>, dann
 === Unterabläufe (subflows)
 //Nutzen Sie Unterabläufe, um wiederkehrende Schritte auszulagern
 
-==== <Unterablauf 1>
-. <Unterablauf 1, Schritt 1>
-. …
-. <Unterablauf 1, Schritt n>
+==== Art der Statistik auswählen
+. Am Anfang erfolgt stets die Abfrage, zu welcher Rubrik eine Statistik ausgegeben werden soll:
+* Top Autoren
+* Veröffentlichungen je Bereich (als Säulen- oder Kreisdiagramm)
+* Summe der Veröffentlichungen je Typ innerhalb eines Zeitbereichs
+* Veröffentlichungen je nach Tag (als Liste oder Summe über einen Zeitbereich)
+* Summe aller Veröffentlichungen innerhalb eines Zeitbereichs (Monat, Quartal, Jahr)
+. Reporter wählt gewünschte Rubrik durch z.B. eine Tick Box neben allen Möglichkeiten aus
+
+==== Statistiken anzeigen lassen
+. Nachdem Reporter alle gewünschten Statistiken ausgewählt hat, kann er sich diese nun über "Statistik anzeigen lassen" einsehen
+. Alle ausgewählten Statistiken werden nun übersichtlich untereinander in der obigen Reihenfolge aufgeführt
+
+==== Statistiken exportieren
+. Nach dem Anzeigen der Statistiken kann diese nun exportiert werden
+. Wählen von "Statistik exportieren" -> es öffnet sich eine Zeile, in welcher über ein Dropdown-Menü das gewünschte Format ausgewählt werden kann
+* .pdf
+* .csv
+* .jpg
+* . svg
+* ...
+. Reporter wählt gewünschtes Format durch anklicken und wählt dann "Jetzt Statistik exportieren"
+. Es startet ein automatischer Download, die Datei landet immer im festgelegten Download-Ordner _(optional kann man auch erst einen Pfad auswählen, wenn "Speichern unter" erfragt wird)_
 
 === Wesentliche Szenarios
-//Szenarios sind konkrete Instanzen eines Use Case, d.h. mit einem konkreten Akteur und einem konkreten Durchlauf der o.g. Flows. Szenarios können als Vorstufe für die Entwicklung von Flows und/oder zu deren Validierung verwendet werden.
-==== <Szenario 1>
-. <Szenario 1, Schritt 1>
-. 	…
-. <Szenario 1, Schritt n>
+==== Top Autoren anzeigen lassen
 
+. Reporter wählt Statistik zu "Top Autoren" aus
+. Reporter kann weitere Statistik hinzufügen
+
+==== Veröffentlichunge je Bereich
+
+. Reporter wählt Statistik zu "Veröffentlichungen je Bereich"
+. Es öffnet sich zwei weitere Zeilen:
+* ⧠ Säulendiagramm
+* ⧠ Kreisdiagramm
+. Reporter wählt gewünschte Form des Diagramms aus
+. Reporter kann weitere Statistik hinzufügen
+
+==== Summe der Veröffentlichungen je Typ innerhalb eines Zeitbereichs
+. Reporter wählt die Statistik zu Veröffentlichung nach Typ
+. Es öffnet sich ein Kalender
 ===	Nachbedingungen
 //Nachbedingungen beschreiben das Ergebnis des Use Case, z.B. einen bestimmten Systemzustand.
 ==== <Nachbedingung 1>

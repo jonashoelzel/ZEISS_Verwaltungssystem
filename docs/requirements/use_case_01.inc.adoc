@@ -1,5 +1,5 @@
 == Use-Case: Fachbeitrag veröffentlichen
-===	In diesem Anwendungsfall möchte ein Autor einen neuen und noch nicht vorhandenen Fachbeitrag veröffentlichen.
+===	Autor erstellt einen neuen Fachbeitrag
 
 
 ===	Kurzbeschreibung der Akteure
