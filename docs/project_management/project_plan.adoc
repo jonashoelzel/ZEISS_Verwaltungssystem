@@ -21,7 +21,7 @@ In diesem Projektplan wir das Vorgehen zur Erstellung eines Verwaltungssystems f
 | Jonas Hölzel | Logic | Architect/Developer |
 | Jean-Pierre  Kaiser | Logic | Tester |
 | Oliver Wünsche | UI | Developer | "C, Java, R, HTML, CSS, (Python)" 
-| Peter Holland-Moritz | UI | Tester |
+| Peter Holland-Moritz | UI | Tester |"C,C++,Java,Bash,(Html,C#,CSS)"
 |===
 
 === Beziehungen Der Themen
