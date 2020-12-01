@@ -1,4 +1,4 @@
-== Use-Case: Fachbeitrag veröffentlichen
+== Fachbeitrag veröffentlichen
 ===	Autor erstellt einen neuen Fachbeitrag
 
 

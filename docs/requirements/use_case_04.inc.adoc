@@ -1,10 +1,9 @@
-//Nutzen Sie dieses Template als Grundlage für die Spezifikation *einzelner* Use-Cases. Diese lassen sich dann per Include in das Use-Case Model Dokument einbinden (siehe Beispiel dort).
-== Use-Case: <use-case name>
-===	Kurzbeschreibung
-//<Kurze Beschreibung des Use Case>
+== Daten zu einer Veröffentlichung als CSV
+===	Reporter möchte Daten zu einer Veröffentlichung als CSV exportieren
 
 ===	Kurzbeschreibung der Akteure
-==== <Akteur 1 Name>
+==== Reporter
+Ein Reporter kann Reports erstellen, Statistiken einsehen (Top Autoren, Veröffentlichungen je Bereich, ...), alle Beiträge im System einsehen und bearbeiten.
 
 === Vorbedingungen
 //Vorbedingungen müssen erfüllt, damit der Use Case beginnen kann, z.B. Benutzer ist angemeldet, Warenkorb ist nicht leer...

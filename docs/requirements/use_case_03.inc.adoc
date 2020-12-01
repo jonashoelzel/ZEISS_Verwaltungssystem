@@ -1,4 +1,4 @@
-== Use-Case: Reports erstellen
+== Reports erstellen
 ===	Reporter möchte Reports erstellen oder Statistiken einsehen
 
 ===	Kurzbeschreibung der Akteure
