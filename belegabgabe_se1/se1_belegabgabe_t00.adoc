@@ -5,7 +5,8 @@ Paul Stefan Joksch <s79396@htw-dresden.de>; Vorname Nachname <s00000@htw-dresden
 // --- 3. Abgabedatum --------------------------
 01. Januar 2020
 // ---------------------------------------------
-:include::../docs/_includes/default-attributes.inc.adoc[]
+
+include::../docs/_includes/default-attributes.inc.adoc[]
 :doctype: book
 :toc:
 :toclevels: 2
