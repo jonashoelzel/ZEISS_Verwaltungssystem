@@ -1,6 +1,6 @@
-== Use-Case: <use-case name>
-===	Autor möchte einen Fachbetrag veröffentlichen
-In diesem Anwendungsfall möchte ein Autor einen neuen und noch nicht vorhandenen Fachbeitrag veröffentlichen
+== Use-Case: Fachbeitrag veröffentlichen
+===	In diesem Anwendungsfall möchte ein Autor einen neuen und noch nicht vorhandenen Fachbeitrag veröffentlichen.
+
 
 ===	Kurzbeschreibung der Akteure
 ==== Autor
@@ -10,11 +10,36 @@ Der Autor ist für das Erstellen von Fachbeiträgen zuständig, welche dann mith
 * Autor hat ein Konto 
 * Autor ist angemeldet
 * Autor hat die Berechtigung, Dokumente zu veröffentlichen 
-* Autor hat eine Datei (im PDF-Format) in einem Verzeichnis, auf das er Zugriff hat 
+* Autor hat eine Datei in einem zugelassenen Format in einem Verzeichnis, auf das er Zugriff hat 
 
 === Standardablauf (Basic Flow)
-//Der Standardablauf definiert die Schritte für den Erfolgsfall ("Happy Path")
 
+Ablauf beginnt, wenn "neuen Beitrag hinzufügen" gewählt wird
+
+. Autor kann beliebige Anzahl (Aber max. <Anzahl>) Dateien auswählen, die er veröffentlichen will
+. Diese kann er mit Beschreibungen versehen, Tags hinzufügen, die Art der Veröffentlichung auswählen etc.
+. Wenn mit der Beschreibung zufrieden, kann die Veröffentlichung des Beitrags bestätigt werden
+. Nach nochmaliger Kontrolle und Bestätigung des Veröffentlichenden wird der Fachbeitrag hinzugefügt
+
+=== Alternative Abläufe
+//Nutzen Sie alternative Abläufe für Fehlerfälle, Ausnahmen und Erweiterungen zum Standardablauf
+==== Vorzeitige Beendung der Veröffentlichung
+Wenn Autor während des Veröffentlichungsprozesses auf Abbrechen klickt/Fenster schließt,
+
+* fragen, ob er den Fortschritt speichern möchte
+* fragen, ob er die aktuelle Veröffentlichung wirklich beenden möchte
+** wenn nein, dann Rückkehr zur aktuellen Veröffentlichung
+
+//=== Unterabläufe (subflows)
+//Nutzen Sie Unterabläufe, um wiederkehrende Schritte auszulagern
+
+//==== <Unterablauf 1>
+//. <Unterablauf 1, Schritt 1>
+
+
+=== Wesentliche Szenarios
+//Szenarios sind konkrete Instanzen eines Use Case, d.h. mit einem konkreten Akteur und einem konkreten Durchlauf der o.g. Flows. Szenarios können als Vorstufe für die Entwicklung von Flows und/oder zu deren Validierung verwendet werden.
+==== Fachbeitrag veröffentlichen
 . Der Use Case beginnt, wenn der Autor eine Datei hochladen will.
 . Autor klickt auf "Veröffentlichung hinzufügen"
 . Autor wählt Datei(en) aus eigenem Verzeichnis aus, es ist eine maximale Anzahl von <Anzahl> Dateien möglich, auch nur die Formate <Formate>
@@ -41,32 +66,19 @@ Der Autor ist für das Erstellen von Fachbeiträgen zuständig, welche dann mith
 . Es erscheinen die Möglichkeiten, weitere Dateien zu veröffentlichen oder die letzte Veröffentlichung einzusehen 
 . Der Use Case ist abgeschlossen.
 
-=== Alternative Abläufe
-//Nutzen Sie alternative Abläufe für Fehlerfälle, Ausnahmen und Erweiterungen zum Standardablauf
-==== <Alternativer Ablauf 1>
-Wenn Autor während des Veröffentlichungsprozesses auf Abbrechen klickt/Fenster schließt,
-. fragen, ob er den Fortschritt speichern möchte
-. fragen, ob er die aktuelle Veröffentlichung wirklich beenden möchte
-
-=== Unterabläufe (subflows)
-//Nutzen Sie Unterabläufe, um wiederkehrende Schritte auszulagern
-
-==== <Unterablauf 1>
-. <Unterablauf 1, Schritt 1>
-. …
-. <Unterablauf 1, Schritt n>
-
-=== Wesentliche Szenarios
-//Szenarios sind konkrete Instanzen eines Use Case, d.h. mit einem konkreten Akteur und einem konkreten Durchlauf der o.g. Flows. Szenarios können als Vorstufe für die Entwicklung von Flows und/oder zu deren Validierung verwendet werden.
-==== <Szenario 1>
-. <Szenario 1, Schritt 1>
-. 	…
-. <Szenario 1, Schritt n>
-
 ===	Nachbedingungen
 //Nachbedingungen beschreiben das Ergebnis des Use Case, z.B. einen bestimmten Systemzustand.
-==== <Nachbedingung 1>
+==== Neuer Beitrag vorhanden
+Mit der Bestätigung zur Veröffentlichung durch den Autor wird der Beitrag dem System hinzugefügt.
+
+==== Eigenschaften filtern
+Artikel wird den jeweils ausgewählten Eigenschaften aus den Drop-Down-Menüs hinzugefügt und ist bei einem Filtern nach angegebenen Eigenschaften dann unter diesen sichtbar. 
+
+==== Neue Tags hinzugefügt
+Beim Hinzufügen neuer Tags durch den Autor werden diese zum System hinzugefügt und der Beitrag unter diesen auffindbar (bei Suche).
+
 
 === Besondere Anforderungen
 //Besondere Anforderungen können sich auf nicht-funktionale Anforderungen wie z.B. einzuhaltende Standards, Qualitätsanforderungen oder Anforderungen an die Benutzeroberfläche beziehen.
-==== <Besondere Anforderung 1>
+==== Rechtliche Anforderung
+Der hinzugefügte (oder bearbeitete) Beitrag muss vom Autor selbst verfasst und erstellt sein, Zitate oder Quellen müssen deutlich gekennzeichnet sein. Dies bestätigt der Autor mit der Veröffentlichung im System.

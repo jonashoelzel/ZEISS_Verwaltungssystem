@@ -1,5 +1,5 @@
-= Use-Case Model: {project-name}
-Nina Püschmann <email@domain.org>; Vorname2 Nachname2 <email2@domain.org>; Vorname3 Nachname3 <email3@domain.org>
+= Use-Case Model: Veröffentlichungen im ZEISS System
+Nina Püschmann s79289@htw-dresden.de
 {localdatetime}
 include::../_includes/default-attributes.inc.adoc[]
 // Platzhalter für weitere Dokumenten-Attribute
@@ -13,9 +13,9 @@ include::../_includes/default-attributes.inc.adoc[]
 <<<
 include::use_case_01.inc.adoc[]
 //<<<
-//include::use_case_02.inc.adoc[]
+include::use_case_02.inc.adoc[]
 //<<<
-//include::use_case_03.inc.adoc[]
+include::use_case_03.inc.adoc[]
 //<<<
 //include::use_case_04.inc.adoc[]
 //<<<

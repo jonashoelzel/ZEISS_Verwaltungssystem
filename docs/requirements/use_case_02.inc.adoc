@@ -1,38 +1,42 @@
 //Nutzen Sie dieses Template als Grundlage für die Spezifikation *einzelner* Use-Cases. Diese lassen sich dann per Include in das Use-Case Model Dokument einbinden (siehe Beispiel dort).
-== Use-Case: <use-case name>
+== Use-Case: Beitrag bearbeiten
 ===	Kurzbeschreibung
-//<Kurze Beschreibung des Use Case>
+Ein Autor, der zuvor einen Beitrag veröffentlicht hat, möchte diesen nun bearbeiten.
 
 ===	Kurzbeschreibung der Akteure
-==== <Akteur 1 Name>
+==== Autor
+Es handelt sich um den Autor, der im Use-Case 1 einen Fachbeitrag veröffentlicht hat.
 
 === Vorbedingungen
-//Vorbedingungen müssen erfüllt, damit der Use Case beginnen kann, z.B. Benutzer ist angemeldet, Warenkorb ist nicht leer...
-<Vorbedingung 1>
+* Autor hat ein Konto
+* Autor ist angelmeldet
+* Autor hat zuvor einen Beitrag veröffentlicht
 
 === Standardablauf (Basic Flow)
 //Der Standardablauf definiert die Schritte für den Erfolgsfall ("Happy Path")
 
-. Der Use Case beginnt, wenn <akteur> <macht>…
-. <Standardablauf Schritt 1>
-. 	…
-. <Standardablauf Schritt n>
-. Der Use Case ist abgeschlossen.
+. Autor kann unter "eigene Beiträge" (oder "Beitrag suchen?") eigenen Beitrag finden
+. Autor wählt eigenen Beitrag aus, wählt "Bearbeiten"
+. Gelangt auf Auswahlmenü, welches im Use Case 1 beschrieben ist
+. Kann jegliche Eigenschaften des Beitrages verändern
+. Wenn der Autor mit seiner Eingabe zufrieden ist und die Änderungen vollzogen sind, kann er diese mit "Änderungen bestätigen" bestätigen
+. Es erfolgt ein Überschreiben der vorherigen Veröffenlichung (auch bei geändertem Namen) mit allen neuen Attributen
 
 === Alternative Abläufe
 //Nutzen Sie alternative Abläufe für Fehlerfälle, Ausnahmen und Erweiterungen zum Standardablauf
-==== <Alternativer Ablauf 1>
-Wenn <Akteur> im Schritt <x> des Standardablauf <etwas macht>, dann
-. <Ablauf beschreiben>
-. Der Use Case wird im Schritt <y> fortgesetzt.
+==== Abbrechen der Bearbeitung
+Wenn der Autor während der Bearbeitung das Fenster schließt, es zum Abbruch des Programms kommt oder "Bearbeitung abbrechen" ausgewählt wird
+. wird er Bearbeitungsversuch abgebrochen
+. Alle Änderungen, die nicht gespeichert wurden, werden zurückgesetzt
+. Beim erneuten Aufrufen 
 
 === Unterabläufe (subflows)
 //Nutzen Sie Unterabläufe, um wiederkehrende Schritte auszulagern
 
-==== <Unterablauf 1>
-. <Unterablauf 1, Schritt 1>
-. …
-. <Unterablauf 1, Schritt n>
+==== Ablauf ab Bearbeitung ausgewählt
+. hier kann derselbe Ablauf greifen, der auch bei der Veröffentlichung im Use Case 1 ausgeführt wird. 
+. ab der Auswahl des Autors von "Bearbeiten" erscheint dieselbe Oberfläche wie beim Use Case 1 "Veröffentlichung hinzufügen"
+
 
 === Wesentliche Szenarios
 //Szenarios sind konkrete Instanzen eines Use Case, d.h. mit einem konkreten Akteur und einem konkreten Durchlauf der o.g. Flows. Szenarios können als Vorstufe für die Entwicklung von Flows und/oder zu deren Validierung verwendet werden.
