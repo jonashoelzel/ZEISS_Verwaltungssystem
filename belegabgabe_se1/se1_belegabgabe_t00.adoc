@@ -1,7 +1,7 @@
 // --- 1. Projektthema -------------------------
 = SE I - Belegabgabe: ZEISS-Verwaltungssystem für Veröffentlichungen
 // --- 2. Teammitglieder -----------------------
-Paul Stefan Joksch <s79396@htw-dresden.de>; Stephan Joneleit <s80463@htw-dresden.de>; Oliver Wünsche <s78991@htw-dresden.de>; Vorname Nachname <s00000@htw-dresden.de>; Peter Holland-Moritz <s80479@htw-dresden.de>; Vorname Nachname <s00000@htw-dresden.de>
+Paul Stefan Joksch <s79396@htw-dresden.de>; Stephan Joneleit <s80463@htw-dresden.de>; Oliver Wünsche <s78991@htw-dresden.de>; Jean-Pierre Kaiser <s80430@htw-dresden.de>; Peter Holland-Moritz <s80479@htw-dresden.de>; Vorname Nachname <s00000@htw-dresden.de>
 // --- 3. Abgabedatum --------------------------
 01. Januar 2020
 // ---------------------------------------------
