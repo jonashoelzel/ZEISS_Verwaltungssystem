@@ -6,7 +6,7 @@
 
 ===	Kurzbeschreibung der Akteure
 ==== Autor
-Es handelt sich um den Autor, der im Use-Case 1 einen Fachbeitrag veröffentlicht hat. Dieser kann seinen Beitrag einsehen und bearbeiten.
+Es handelt sich um den Autor, der im Use Case 1 einen Fachbeitrag veröffentlicht hat. Dieser kann seinen Beitrag einsehen und bearbeiten.
 
 ==== Reporter
 Ein Reporter kann Reports erstellen, Statistiken einsehen (Top Autoren, Veröffentlichungen je Bereich, ...), alle Beiträge im System einsehen und bearbeiten.

@@ -1,35 +1,31 @@
-== Beiträge filtern, durchsuchen
-===	Reporter möchte Beiträge filtern, durchsuchen und exportieren
-//<Kurze Beschreibung des Use Case>
+== Beiträge verwalten
+===	Beiträge filtern, durchsuchen und exportieren
 
 ===	Kurzbeschreibung der Akteure
 ==== Reporter
 Ein Reporter kann Reports erstellen, Statistiken einsehen (Top Autoren, Veröffentlichungen je Bereich, ...), alle Beiträge im System einsehen und bearbeiten.
 
+==== Gruppenleiter
+Ein Gruppenleiter kann aus Informationszwecken die Veröffentlichungen seiner unterstellten Mitarbeiter filtern, durchsuchen und einsehen.
+
 === Vorbedingungen
-* Reporter muss als solcher angemeldet sein
+* Reporter/Gruppenleiter muss als solcher angemeldet sein
+** Reporter kann *alle Beiträge* verwalten und bearbeiten
+** Gruppenleiter erhält Suchergebnisse nur zu den Beiträgen, welche von Autoren stammen, *die ihm unterstehen*
 * Es muss mindestens ein Beitrag im System existieren
+
 
 === Standardablauf (Basic Flow)
 
-. Reporter möchte Beiträge filtern
+. Akteur möchte Beiträge filtern
 . Kann unter "Beiträge suchen" in Suchleiste jegliche Informationen zu Attributen, Eigenschaften von Beiträgen etc. suchen
 . Bekommt Ergebnis von der Suchmaschine
 
-=== Alternative Abläufe
-
-==== <Alternativer Ablauf 1>
-Wenn <Akteur> im Schritt <x> des Standardablauf <etwas macht>, dann
-. <Ablauf beschreiben>
-. Der Use Case wird im Schritt <y> fortgesetzt.
 
 === Unterabläufe (subflows)
-//Nutzen Sie Unterabläufe, um wiederkehrende Schritte auszulagern
 
-==== <Unterablauf 1>
-. <Unterablauf 1, Schritt 1>
-. …
-. <Unterablauf 1, Schritt n>
+==== Zeitraum der Veröffentlichung
+. Zeitraum in einen sich öffnendem Kalender eingeben
 
 === Wesentliche Szenarios
 
@@ -44,15 +40,30 @@ Wenn <Akteur> im Schritt <x> des Standardablauf <etwas macht>, dann
 . Nach jeder Filterauswahl erscheint das neue Suchergebnis
 
 ==== Als CSV exportieren
-. Bei jedem Suchvorgang gibt es einen Button 
+* Bei gesamten Suchvorgang gibt es zu jeder Suchanfrage einen Button "Als CSV exportieren"
+* Hier kann *immer* als CSV exportiert werden
+* Es werden dann alle Elemente, die im Suchvorgang unter den gewählten Filtern gefunden wurden mit ihren gesamten Eigenschaften in einer Liste exportiert:
+
+[%header]
+|===
+|Beitrag|Autor|Geschäftsbereich|Datum|Art|Medium|Aktueller Status|Tags
+|===
 
 ==== Informationen zu einzelnen Beiträgen
-. Der Reporter kann jeden Beitrag, den er findet, auswählen und sich damit zu diesem alle vorhandenen Informationen anzeigen lassens 
+* Der Akteur kann jeden Beitrag, den er findet, auswählen und sich damit zu diesem alle vorhandenen Informationen anzeigen lassen
+* Auch hier gibt es die Möglichkeit, als CSV zu exportieren
 
 ===	Nachbedingungen
-//Nachbedingungen beschreiben das Ergebnis des Use Case, z.B. einen bestimmten Systemzustand.
-==== <Nachbedingung 1>
+
+==== Suchergebnis
+* Akteur erhält gewünschtes Suchergebnis
+** z.B. Gruppenleiter kann sich über neue Beiträge seiner Mitarbeiter informieren
+** Reporter kann z.B. korrekte Veröffentlichungstypen, Beschriftung, etc. kontrollieren und so das System pflegen
 
 === Besondere Anforderungen
-//Besondere Anforderungen können sich auf nicht-funktionale Anforderungen wie z.B. einzuhaltende Standards, Qualitätsanforderungen oder Anforderungen an die Benutzeroberfläche beziehen.
-==== <Besondere Anforderung 1>
+
+==== Rechte des Reporters
+Der Reporter kann im System alle Beiträge einsehen, bearbeiten, exportieren und verwalten. Das System zeigt ihm alle Beiträge an. Mit der Autorisierung erhält er alle Rechte.
+
+==== Rechte des Gruppenleiters
+Der Gruppenleiter kann lediglich die Beiträge der ihm Unterstehenden Mitarbeiter einsehen und exportieren, jedoch nicht bearbeiten. Das System zeigt daher auch nur die darauf zutreffenden Beiträge an. Mit der Autorisierung erhält er genannte Rechte. 

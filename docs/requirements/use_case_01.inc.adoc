@@ -45,31 +45,38 @@ Wenn Autor während des Veröffentlichungsprozesses auf Abbrechen klickt/Fenster
 
 ==== Fachbeitrag veröffentlichen
 . Der Use Case beginnt, wenn der Autor eine Datei hochladen will.
-. Autor klickt auf "Veröffentlichung hinzufügen"
-. Autor wählt Datei(en) aus eigenem Verzeichnis aus, es ist eine maximale Anzahl von <Anzahl> Dateien möglich, auch nur die Formate <Formate>
-. Autor fügt eigenen Namen, seinen Geschäftsbereich und das Datum der Veröffentlichung ein (muss automatisch geprüft werden, ob es sich um ein korrektes Datum handelt)
-. Autor wählt über Dropdown-Menü Art der Veröffentlichung aus
+. Autor klickt auf "*Veröffentlichung hinzufügen"*
+. Autor *wählt Datei(en)* aus eigenem Verzeichnis aus, es ist eine maximale Anzahl von <Anzahl> Dateien möglich, auch nur die Formate <Formate>
+. Autor fügt *eigenen Namen, seinen Geschäftsbereich und das Datum der Veröffentlichung* hinzu (muss automatisch geprüft werden, ob es sich um ein korrektes Datum handelt)
+. Autor wählt über Dropdown-Menü *Art der Veröffentlichung* aus
 * Artikel
 * Blogbeitrag
 * Workshop
 * Vortrag
 * Videotraining
 * Buch
-. Autor gibt Informationen zum Medium in Textfelder ein
+. Autor gibt Informationen zum *Medium* in Textfelder ein
 * Name des Mediums
 * Verlag
-. Autor kann über ein Dropdown-Menü den Status seiner Veröffentlichung angeben
+. Autor kann über ein Dropdown-Menü den *Status* seiner Veröffentlichung angeben
 * Vorgeschlagen
 * In Bearbeitung
 * Eingereicht
 * Abgelehnt
 * Veröffentlicht
-. Autor kann zusätzliche Tags hinzufügen
-. Autor klickt auf "Vorschau der Veröffentlichung ansehen" und bekommt (bevor er veröffentlichen kann) eine Vorschau angezeigt, in der alle eingegebenen Daten angezeigt werden 
-. Autor prüft eingegebenen Daten und kann über einen Button direkt wieder zur Bearbeitung springen
-. Wenn die finale Bearbeitung abgeschlossen ist, kann der Autor auf "Beitrag veröffentlichen" klicken und der Beitrag wird veröffentlich
+. Autor kann zusätzliche *Tags* hinzufügen
+. Autor kann zusätzliche Informationen zum Beitrag in eine *Infobox* hineinschreiben
+. Autor kann *Datenänderungen* durch den Reporter im Vorhinein widersprechen oder angeben, dass er immer gefragt werden muss, damit die datenänderung vollzogen werden kann; könnten in etwa so aussehen:
+* ⧠ Datenänderungen zur Systematisierung widersprechen
+* ⧠ Bei Datenänderungen immer gefragt werden
+
+. Autor klickt auf *"Vorschau der Veröffentlichung ansehen"* und bekommt (bevor er veröffentlichen kann) eine Vorschau angezeigt, in der alle eingegebenen Daten angezeigt werden 
+. Autor *prüft* eingegebenen Daten und kann über einen Button direkt wieder zur Bearbeitung springen
+. Wenn die finale Bearbeitung abgeschlossen ist, kann der Autor auf *"Beitrag veröffentlichen"* klicken und der Beitrag wird veröffentlich
 . Es erscheinen die Möglichkeiten, weitere Dateien zu veröffentlichen oder die letzte Veröffentlichung einzusehen 
 . Der Use Case ist abgeschlossen.
+
+==== Datenänderungen widersprechen
 
 ===	Nachbedingungen
 
