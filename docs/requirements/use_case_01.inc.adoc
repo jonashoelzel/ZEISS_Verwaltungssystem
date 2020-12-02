@@ -22,7 +22,7 @@ Ablauf beginnt, wenn "neuen Beitrag hinzufügen" gewählt wird
 . Nach nochmaliger Kontrolle und Bestätigung des Veröffentlichenden wird der Fachbeitrag hinzugefügt
 
 === Alternative Abläufe
-//Nutzen Sie alternative Abläufe für Fehlerfälle, Ausnahmen und Erweiterungen zum Standardablauf
+
 ==== Vorzeitige Beendung der Veröffentlichung
 Wenn Autor während des Veröffentlichungsprozesses auf Abbrechen klickt/Fenster schließt,
 
@@ -30,35 +30,40 @@ Wenn Autor während des Veröffentlichungsprozesses auf Abbrechen klickt/Fenster
 * fragen, ob er die aktuelle Veröffentlichung wirklich beenden möchte
 ** wenn nein, dann Rückkehr zur aktuellen Veröffentlichung
 
-//=== Unterabläufe (subflows)
-//Nutzen Sie Unterabläufe, um wiederkehrende Schritte auszulagern
-
-//==== <Unterablauf 1>
-//. <Unterablauf 1, Schritt 1>
+==== Verpflichtende Angaben zum Beitrag 
+* Folgende Angaben zum Beitrag sind obligatorisch:
+** Name des Autors
+** Geschäftsbereich des Autors
+** Datum der Veröffentlichung
+** Art der Veröffentlichung
+** Aktueller Status
+* Wenn diese nicht vollständig angegeben, wird der Autor darauf hingewiesen
+* Erst bei Vollständigkeit ist eine Veröffentlichung möglich
 
 
 === Wesentliche Szenarios
-//Szenarios sind konkrete Instanzen eines Use Case, d.h. mit einem konkreten Akteur und einem konkreten Durchlauf der o.g. Flows. Szenarios können als Vorstufe für die Entwicklung von Flows und/oder zu deren Validierung verwendet werden.
+
 ==== Fachbeitrag veröffentlichen
 . Der Use Case beginnt, wenn der Autor eine Datei hochladen will.
 . Autor klickt auf "Veröffentlichung hinzufügen"
 . Autor wählt Datei(en) aus eigenem Verzeichnis aus, es ist eine maximale Anzahl von <Anzahl> Dateien möglich, auch nur die Formate <Formate>
+. Autor fügt eigenen Namen, seinen Geschäftsbereich und das Datum der Veröffentlichung ein (muss automatisch geprüft werden, ob es sich um ein korrektes Datum handelt)
 . Autor wählt über Dropdown-Menü Art der Veröffentlichung aus
-** Artikel
-** Blogbeitrag
-** Workshop
-** Vortrag
-** Videotraining
-** Buch
+* Artikel
+* Blogbeitrag
+* Workshop
+* Vortrag
+* Videotraining
+* Buch
 . Autor gibt Informationen zum Medium in Textfelder ein
-** Name des Mediums
-** Verlag
+* Name des Mediums
+* Verlag
 . Autor kann über ein Dropdown-Menü den Status seiner Veröffentlichung angeben
-** Vorgeschlagen
-** In Bearbeitung
-** Eingereicht
-** Abgelehnt
-** Veröffentlicht
+* Vorgeschlagen
+* In Bearbeitung
+* Eingereicht
+* Abgelehnt
+* Veröffentlicht
 . Autor kann zusätzliche Tags hinzufügen
 . Autor klickt auf "Vorschau der Veröffentlichung ansehen" und bekommt (bevor er veröffentlichen kann) eine Vorschau angezeigt, in der alle eingegebenen Daten angezeigt werden 
 . Autor prüft eingegebenen Daten und kann über einen Button direkt wieder zur Bearbeitung springen
@@ -67,7 +72,7 @@ Wenn Autor während des Veröffentlichungsprozesses auf Abbrechen klickt/Fenster
 . Der Use Case ist abgeschlossen.
 
 ===	Nachbedingungen
-//Nachbedingungen beschreiben das Ergebnis des Use Case, z.B. einen bestimmten Systemzustand.
+
 ==== Neuer Beitrag vorhanden
 Mit der Bestätigung zur Veröffentlichung durch den Autor wird der Beitrag dem System hinzugefügt.
 
@@ -75,10 +80,10 @@ Mit der Bestätigung zur Veröffentlichung durch den Autor wird der Beitrag dem 
 Artikel wird den jeweils ausgewählten Eigenschaften aus den Drop-Down-Menüs hinzugefügt und ist bei einem Filtern nach angegebenen Eigenschaften dann unter diesen sichtbar. 
 
 ==== Neue Tags hinzugefügt
-Beim Hinzufügen neuer Tags durch den Autor werden diese zum System hinzugefügt und der Beitrag unter diesen auffindbar (bei Suche).
+Beim Hinzufügen noch nicht vorhandener Tags durch den Autor werden diese zum System hinzugefügt und der Beitrag unter diesen auffindbar (bei Suche).
 
 
 === Besondere Anforderungen
-//Besondere Anforderungen können sich auf nicht-funktionale Anforderungen wie z.B. einzuhaltende Standards, Qualitätsanforderungen oder Anforderungen an die Benutzeroberfläche beziehen.
+
 ==== Rechtliche Anforderung
 Der hinzugefügte (oder bearbeitete) Beitrag muss vom Autor selbst verfasst und erstellt sein, Zitate oder Quellen müssen deutlich gekennzeichnet sein. Dies bestätigt der Autor mit der Veröffentlichung im System.

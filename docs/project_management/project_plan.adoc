@@ -15,7 +15,7 @@ In diesem Projektplan wir das Vorgehen zur Erstellung eines Verwaltungssystems f
 |===
 | Mitarbeiter | department | Role | Programmiersprachen
 | Paul Stefan Joksch | Administration | Projekt Manager | -
-| Nina Püschmann | Administration | Analyst |
+| Nina Püschmann | Administration | Analyst | - (Python)
 | Stephan Joneleit | Implementation | Developer | "C#/.NET"
 | Vanessa Bayer | Implementation | Tester |
 | Jonas Hölzel | Logic | Architect/Developer |

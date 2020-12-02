@@ -5,7 +5,6 @@
 ==== Reporter
 Ein Reporter kann Reports erstellen, Statistiken einsehen (Top Autoren, Veröffentlichungen je Bereich, ...), alle Beiträge im System einsehen und bearbeiten.
 === Vorbedingungen
-//Vorbedingungen müssen erfüllt, damit der Use Case beginnen kann, z.B. Benutzer ist angemeldet, Warenkorb ist nicht leer...
 * Reporter muss als solcher angemeldet sein
 * Es muss mindestens ein Beitrag im System existieren
 
@@ -26,12 +25,9 @@ Ein Reporter kann Reports erstellen, Statistiken einsehen (Top Autoren, Veröffe
 //=== Alternative Abläufe
 //Nutzen Sie alternative Abläufe für Fehlerfälle, Ausnahmen und Erweiterungen zum Standardablauf
 //==== <Alternativer Ablauf 1>
-Wenn <Akteur> im Schritt <x> des Standardablauf <etwas macht>, dann
-. <Ablauf beschreiben>
-. Der Use Case wird im Schritt <y> fortgesetzt.
+
 
 === Unterabläufe (subflows)
-//Nutzen Sie Unterabläufe, um wiederkehrende Schritte auszulagern
 
 ==== Art der Statistik auswählen
 . Am Anfang erfolgt stets die Abfrage, zu welcher Rubrik eine Statistik ausgegeben werden soll:
@@ -57,10 +53,21 @@ Wenn <Akteur> im Schritt <x> des Standardablauf <etwas macht>, dann
 . Reporter wählt gewünschtes Format durch anklicken und wählt dann "Jetzt Statistik exportieren"
 . Es startet ein automatischer Download, die Datei landet immer im festgelegten Download-Ordner _(optional kann man auch erst einen Pfad auswählen, wenn "Speichern unter" erfragt wird)_
 
+==== Zeitraum auswählen
+* sowohl bei "Summe der Veröffentlichungen je Typ", "SUmme aller Veröffentlichungen nach Zeitraum" als auch bei "Veröffentlichungen je nach Tag" muss sich Kalender öffnen, in dem der Reporter einen Zeitraum auswählen kann
+
+
 === Wesentliche Szenarios
-==== Top Autoren anzeigen lassen
+==== Top Autoren
 
 . Reporter wählt Statistik zu "Top Autoren" aus
+. Es erscheint ein Drop-Down-Menü mit der Beschreibung:
+"Top Autoren anzeigen:"
+* Top 3
+* Top 5 
+* von bis
+** beim Anklicken öffnen sich kleine Zeilen, in die der Nutzer ganze Zahlen angeben muss, daneben ist vermerkt, wieviele Autoren maximal im System erfasst sind
+* alle Autoren listen
 . Reporter kann weitere Statistik hinzufügen
 
 ==== Veröffentlichunge je Bereich
@@ -74,11 +81,67 @@ Wenn <Akteur> im Schritt <x> des Standardablauf <etwas macht>, dann
 
 ==== Summe der Veröffentlichungen je Typ innerhalb eines Zeitbereichs
 . Reporter wählt die Statistik zu Veröffentlichung nach Typ
-. Es öffnet sich ein Kalender
-===	Nachbedingungen
-//Nachbedingungen beschreiben das Ergebnis des Use Case, z.B. einen bestimmten Systemzustand.
-==== <Nachbedingung 1>
+. Es öffnet sich ein Kalender (jeweils für Beginn und Ende der Periode), in welchem der Reporter den Zeitraum eingrenzen kann, in dem er suchen möchte
+. Reporter wählt Zeitraum aus
+. Reporter kann weitere Statistik hinzufügen
 
-=== Besondere Anforderungen
+==== Veröffentlichungen je nach Tag (als Liste oder Summe über einen Zeitbereich)
+. Reporter wählt Statistik zu Veröffentlichung je nach Tag
+. Es öffnet sich ein Kalender (jeweils für Beginn und Ende der Periode), in welchem der Reporter den Zeitraum eingrenzen kann, in dem er suchen möchte
+. Reporter wählt Zeitraum aus
+. Reporter kann weitere Statistik hinzufügen
+
+==== Summe aller Veröffentlichungen innerhalb eines Zeitbereiches (Monat, Quartal, Jahr, Zeitraum)
+. Reporter wählt Statistik zu Summe aller Veröffentlichungen
+. Es folgt eine Zeile:
+* "Summe der Veröffentlichungen anzeigen für", dann ein Drop-Down Menü:
+** Monat mit Drop-Down Menü (Sortierung: zuletzt)
+** Quartal mit Drop-Down Menü (Sortierung: zuletzt)
+** Jahr mit Drop-Down Menü (Sortierung: zuletzt)
+** Zeitraum
+*** hier öffnet sich wieder der Kalender, in dem der Reporter einen beliebigen Zeitraum auswählen kann
+. Reporter wählt beliebigen Zeitraum aus und bestätigt mit "Bestätigen"
+. Es öffnet sich zwei Buttons, einer für "Weitere Statistik" und "Keine weitere Statistik"
+. Reporter kann sich nun auch weitere Zeiträume zu den Summen anzeigen lassen
+
+===	Nachbedingungen
+Alle ausgewählten Statistiken werden nun angezeigt.
+
+==== Top Autoren
+* Es erscheinen die ausgewählten Autoren, sortiert von meist veröffentlicht zu wenigst veröffentlicht als Ranking
+
+==== Veröffentlichungen je Bereich
+* Es erscheint gewähltes Diagramm (Säule oder Kreis)
+
+==== Summe der Veröffentlichungen je Typ
+* Es erscheinen alle Typen und deren Anzahl der Veröffentlichungen:
+
+[%header]
+|===
+|Typ|Anzahl
+|Artikel|10
+|Blogbeitrag| 6
+| Workshop| 7
+|Vortrag|x
+|Videotraining|x
+|Buch|x
+|===
+
+==== Veröffentlichungen je nach Tag (als Liste über einen Zeitbereich)
+* Im gewählten Zeitbereich wird jeder Tag, an dem ein Beitrag veröffentlicht wurde als Liste dargestellt, darunter befinden sich jeweils die Veröffentlichungen mit dessen Eigenschaften:
+** *17. Oktober 2019:*
+|===
+|_"Agile Projektmanagementstrukturen"_|Video|Veröffentlicht
+|_"Einführung in KANBAN"_|Vortrag|In Bearbeitung
+|===
+
+==== Summe aller Veröffentlichungen innerhalb eines Zeitbereiches (Monat, Quartal, Jahr, Zeitraum)
+
+
+==== Exportieren
+* Exportierte Datei befindet sich im Downloads-Ordner (oder im gewünschten Pfad)
+
+
+//=== Besondere Anforderungen
 //Besondere Anforderungen können sich auf nicht-funktionale Anforderungen wie z.B. einzuhaltende Standards, Qualitätsanforderungen oder Anforderungen an die Benutzeroberfläche beziehen.
-==== <Besondere Anforderung 1>
+//==== <Besondere Anforderung 1>
