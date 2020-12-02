@@ -10,8 +10,6 @@ Ein Reporter kann Reports erstellen, Statistiken einsehen (Top Autoren, Veröffe
 <Vorbedingung 1>
 
 === Standardablauf (Basic Flow)
-//Der Standardablauf definiert die Schritte für den Erfolgsfall ("Happy Path")
-
 . Der Use Case beginnt, wenn <akteur> <macht>…
 . <Standardablauf Schritt 1>
 . 	…
