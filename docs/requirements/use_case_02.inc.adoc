@@ -3,6 +3,7 @@
 * Ein Autor, der zuvor einen Beitrag veröffentlicht hat, möchte diesen nun bearbeiten/einsehen.
 * Ein Reporter möchte einen Beitrag verändern/einsehen
 * Ein Gruppenleiter möchte Beiträge ansehen
+* Ein Nutzer möchte einen anderen über Statusänderungen informieren
 
 ===	Kurzbeschreibung der Akteure
 ==== Autor
@@ -21,7 +22,7 @@ Ein Gruppenleiter kann aus Informationszwecken die Veröffentlichungen seiner un
 * es wurde zuvor ein Beitrag veröffentlicht, der nun bearbeitet/eingesehen werden soll
 
 === Standardablauf (Basic Flow)
-//Der Standardablauf definiert die Schritte für den Erfolgsfall ("Happy Path")
+
 ==== zum Bearbeiten (Reporter, Autor)
 . Beitrag suchen (über Name, Tags, Art der Veröffentlichung, etc.)
 . Gewünschte Felder bearbeiten
@@ -36,7 +37,7 @@ Ein Gruppenleiter kann aus Informationszwecken die Veröffentlichungen seiner un
 . Beitrag anklicken -> kann eingesehen werden
 
 === Alternative Abläufe
-//Nutzen Sie alternative Abläufe für Fehlerfälle, Ausnahmen und Erweiterungen zum Standardablauf
+
 ==== Abbrechen der Bearbeitung
 Wenn der Autor während der Bearbeitung das Fenster schließt, es zum Abbruch des Programms kommt oder "Bearbeitung abbrechen" ausgewählt wird
 . wird der Bearbeitungsversuch abgebrochen
@@ -52,7 +53,6 @@ Beim Hinzufügen oder Löschen von Tags werden diese dem Beitrag hinzugefügt od
 
 
 === Wesentliche Szenarios
-//Szenarios sind konkrete Instanzen eines Use Case, d.h. mit einem konkreten Akteur und einem konkreten Durchlauf der o.g. Flows. Szenarios können als Vorstufe für die Entwicklung von Flows und/oder zu deren Validierung verwendet werden.
 
 ==== Beitrag bearbeiten
 . Beitrag finden 
@@ -70,8 +70,12 @@ Beim Hinzufügen oder Löschen von Tags werden diese dem Beitrag hinzugefügt od
 .. Filter nach allen Drop-Down-Menüs
 . Akteur kann, wenn die Rechte vorhanden sind, den Beitrag und die zusätzlichen Infos (Art des Mediums,...) nun einsehen
 
+==== Anderen Nutzer über Veränderung informieren
+
+Autoren oder Reporter können andere Nutzer über eine Statusänderung informieren.
+
 ===	Nachbedingungen
-//Nachbedingungen beschreiben das Ergebnis des Use Case, z.B. einen bestimmten Systemzustand.
+
 ==== Beitrag bearbeitet
 * Änderungen, die der Autor oder Reporter vollzogen hat, werden übernommen.
 

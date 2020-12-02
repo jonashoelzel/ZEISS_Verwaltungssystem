@@ -9,7 +9,6 @@ Ein Reporter kann Reports erstellen, Statistiken einsehen (Top Autoren, Veröffe
 * Es muss mindestens ein Beitrag im System existieren
 
 === Standardablauf (Basic Flow)
-//Der Standardablauf definiert die Schritte für den Erfolgsfall ("Happy Path")
 
 . Reporter kann sich Statistiken zu folgenden Kategorien ausgeben lassen:
 * Top Autoren
@@ -21,10 +20,6 @@ Ein Reporter kann Reports erstellen, Statistiken einsehen (Top Autoren, Veröffe
 . Kann sich eine oder mehrere ausgewählte Statistik(en) nun übersichtlich darstellen lassen
 . Kann diese als Dokument (z.B. als pdf) exportieren
 . Der Use Case ist abgeschlossen.
-
-//=== Alternative Abläufe
-//Nutzen Sie alternative Abläufe für Fehlerfälle, Ausnahmen und Erweiterungen zum Standardablauf
-//==== <Alternativer Ablauf 1>
 
 
 === Unterabläufe (subflows)
@@ -142,6 +137,3 @@ Alle ausgewählten Statistiken werden nun angezeigt.
 * Exportierte Datei befindet sich im Downloads-Ordner (oder im gewünschten Pfad)
 
 
-//=== Besondere Anforderungen
-//Besondere Anforderungen können sich auf nicht-funktionale Anforderungen wie z.B. einzuhaltende Standards, Qualitätsanforderungen oder Anforderungen an die Benutzeroberfläche beziehen.
-//==== <Besondere Anforderung 1>
