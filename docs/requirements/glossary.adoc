@@ -1,5 +1,5 @@
-= Glossar: {project-name}
-Vorname Nachname <email@domain.org>; Vorname2 Nachname2 <email2@domain.org>; Vorname3 Nachname3 <email3@domain.org>
+= Glossar: ZEISS-Verwaltungssystem
+Nina Püschmann s79289@htw-dresden.de
 {localdatetime}
 include::../_includes/default-attributes.inc.adoc[]
 // Platzhalter für weitere Dokumenten-Attribute
@@ -25,7 +25,7 @@ In diesem Dokument werden die wesentlichen Begriffe aus dem Anwendungsgebiet (Fa
 |===
 |Abkürzung|	Bedeutung|	Erläuterung
 |UP|Unified Process|Vorgehensmodell für die Softwareentwicklung|
-|xx|xx|xx|
+|UI|User Interface|Benutzeroberflächen oder Benutzerschnittstellen, der die Art und Weise beschreibt, mit der ein Anwender mit dem Programm in Kontakt tritt|
 |===
 
 == Verzeichnis der Datenstrukturen
