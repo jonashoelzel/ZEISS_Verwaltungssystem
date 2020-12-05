@@ -16,9 +16,9 @@ In diesem Projektplan wir das Vorgehen zur Erstellung eines Verwaltungssystems f
 | Mitarbeiter | department | Role | Programmiersprachen
 | Paul Stefan Joksch | Administration | Projekt Manager | -
 | Nina Püschmann | Administration | Analyst | - (Python)
-| Stephan Joneleit | Implementation | "Environment/Developer" | "C#/.NET"
-| Vanessa Bayer | Implementation | Tester |
-| Jonas Hölzel | Logic | Architect/Developer |
+| Stephan Joneleit | Implementation | Environment | "C#/.NET"
+| Vanessa Bayer | Implementation | Architecture |
+| Jonas Hölzel | Logic | Deployment |
 | Jean-Pierre  Kaiser | Logic | Tester | "C, (grundlagen Java, Python), Visual Basic, Pascal"
 | Oliver Wünsche | UI | Developer | "C, Java, R, HTML, CSS, (Python)" 
 | Peter Holland-Moritz | UI | Tester |"C,C++,Java,Bash,(Html,C#,CSS)"
@@ -52,15 +52,30 @@ Wie vorgeschrieben wird in iterativen abläufen gearbeitet werden. Grundlage daf
 * Initiale Grenzen Analyse
 * Stakeholder Analyse
 * Prototypen scope
-| Date from/Date to
+| Date from 23.11.2020 +
+Date to 06.12.2020
 | 15
 
 | I2
 |
-* Mitigate Risk 2
-* Develop Use Case 1, Scenario 2
-| Date from/Date to
+* Lösungsstrategie
+* Wireframes
+* development Protoyp
+* Überarbeitung Usecases
+* Mögliche Features werden Aufgelistet 
+* Risikominimierungs-Strategien umsetzen
+| Date from 07.12.2020 + 
+Date to 20.12.2020
 | 16
+| I3 
+| 
+* testing und implementing von Prototyp
+* Architekturplan
+* Priorisierung möglicher Features
+| Date from 04.01.2021 +
+Date to 17.01.2021
+| 20
+| 
 |===
 
 == Deployment
