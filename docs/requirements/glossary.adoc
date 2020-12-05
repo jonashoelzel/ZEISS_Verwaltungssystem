@@ -14,6 +14,7 @@ In diesem Dokument werden die wesentlichen Begriffe aus dem Anwendungsgebiet (Fa
 |Begriff|Definition und Erläuterung|	Synonyme
 
 |Autor|Kann Beiträge veröffentlichen, diese einsehen und bearbeiten|x
+|Bereichsleiter | kann Veröffentlichung unterstellter Autoren sehen | x
 |Reporter|Kann Reports erstellen, Statistiken einsehen (Top Autoren, Veröffentlichungen je Bereich, ...), Beiträge einsehen und verändern.|x
 
 
