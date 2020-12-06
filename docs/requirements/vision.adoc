@@ -1,21 +1,22 @@
 = Vision: ZEISS-Verwaltungssytsem für Veröffentlichungen
-Vorname Nachname <email@domain.org>; Vorname2 Nachname2 <email2@domain.org>; Vorname3 Nachname3 <email3@domain.org>
+Nina Püschmann s79289@htw-dresden.de
 {localdatetime}
 include::../_includes/default-attributes.inc.adoc[]
 // Platzhalter für weitere Dokumenten-Attribute
 
 
 == Einführung
-Der Zweck dieses Dokuments ist es, die wesentlichen Bedarfe und Funktionalitäten des <Projektname-Systems> zu sammeln, zu analysieren und zu definieren. Der Fokus liegt auf den Fähigkeiten, die von Stakeholdern und adressierten Nutzern benötigt werden, und der Begründung dieser Bedarfe. Die  Details, wie das ZEISS-Verwaltungssystem diese Bedarfe erfüllt, werden in der Use-Case und Supplementary Specification beschrieben.
+Der Zweck dieses Dokuments ist es, die wesentlichen Bedarfe und Funktionalitäten des ZEISS-Verwaltungssystems zu sammeln, zu analysieren und zu definieren. Der Fokus liegt auf den Fähigkeiten, die von Stakeholdern und adressierten Nutzern benötigt werden, und der Begründung dieser Bedarfe. Die  Details, wie das ZEISS-Verwaltungssystem diese Bedarfe erfüllt, werden in der Use-Case und Supplementary Specification beschrieben.
 
 === Zweck
 Der Zweck dieses Dokuments ist es, die wesentlichen Anforderungen an das System aus Sicht und mit den Begriffen der künftigen Anwender zu beschreiben.
 
 === Gültigkeitsbereich (Scope)
-Dieses Visions-Dokument bezieht sich auf das ZEISS-Verwaltungssystem, das von <Team> entwickelt wird. Das System wird es ZEISS erlauben, <Hauptfunktionen> zu nutzen, um damit <Vorteile> zu erreichen / <Aufgabe> zu erleichtern / <Problem> zu lösen.
+Dieses Visions-Dokument bezieht sich auf das ZEISS-Verwaltungssystem, das von Team E1 entwickelt wird. Das System wird es ZEISS erlauben, Fachbeiträge einfacher zu systematisieren, zu warten und zu verwalten, als es bisher mit der Excel-Liste war.
 
 === Definitionen, Akronyme und Abkürzungen
-siehe Glossar (Verweis hier einfügen).
+
+//include::glossary.adoc[]
 
 === Referenzen
 (hier externe Verweise zu anderen Dokumenten, Quellen, Standards etc. einfügen, sofern notwendig)
@@ -24,16 +25,17 @@ siehe Glossar (Verweis hier einfügen).
 === Fachliche Motivation
 //Erläutern Sie kurz den Hintergrund, in dem das Projekt angesiedelt ist. Welches Problem soll gelöst werden, wie ist es entstanden? Welche Verbesserung wird angestrebt. Achten Sie darauf, eine fachliche (organisatorische, betriebswirtschaftliche) Perspektive einzunehmen.
 
+
 === Problem Statement
 //Stellen Sie zusammenfassend das Problem dar, das mit diesem Projekt gelöst werden soll. Das folgende Format kann dazu verwendet werden:
 
 
 [cols="1,3"]
 |===
-|Das Problem |	[beschreiben Sie das Problem]
-|betrifft |	[die Stakeholder, die vom Problem betroffen sind]
-|die Auswirkung davon ist |	[welche Auswirkungen hat das Problem?]
-|eine erfolgreiche Lösung wäre |	[Führen Sie einige wesentliche Vorteile einer erfolgreichen Lösung auf]
+|Das Problem |ist, dass Veröffentlichungen der Mitarbeiter von ZEISS nicht systematisiert dargestellt werden und in einer filterbaren Liste widergegeben werden können (da keine einheitlichen Eingaben).
+|Es betrifft |	Mitarbeiter von ZEISS, die Fachbeiträge veröffentlichen; Gruppenleiter; das Sales Department, welches die Liste der Veröffentlichungen verwaltet.
+|Die Auswirkung davon ist,|	 dass Fachbeiträge nicht systematisiert und nach Filtern sortiert werden können; Fachbeiträge von Mitarbeitern können schwer gefunden werden (von z.B: Gruppenleitern oder verwaltenden Personen); Wartung erweist sich als extrem kompliziert.
+|Eine erfolgreiche Lösung wäre |	das automatische Systematisieren über bestimmte Eingabefelder, welche ein späteres Filtern nach bestimmten Attributen möglich macht.
 |===
 
 ////
@@ -55,24 +57,24 @@ Beispiel
 
 [cols="1,3"]
 |===
-|Für|	[Zielkunde / Nutzer]
-|der / die|	[Angabe des Bedarfs oder Chance]
-|Das Produkt / die Lösung ist ein | [Produktkategorie]
-|Die / Das	|[Aussage zum Hauptvorteil / Alleinstellungsmerkmal]
-|Im Gegensatz zu	|[wesentliche Lösungsalternative]
-|Unser Produkt|	[Aussage zum Hauptunterschied]
+|Für|	Mitarbeiter von ZEISS (Nutzer, Autoren, Reporter, Gruppenleiter) 
+|der|Bedarf eines Tools, welches Beiträge zuverlässig verwalten lässt. 
+|Die Lösung ist ein | Verwaltungstool für Veröffentlichungen,
+|das|extrem wartungsarm und einfach zu bedienen ist und  entstandene Fachbeiträge filterbar und verwaltbar macht.
+|Im Gegensatz zu|der bisherigen Excel-Liste
+|ist unser Produkt|	extrem wartungseinfach, leicht zu verwalten und vorteilhaft beim Filtern von Veröffentlichungen.
 |===
 
 
-//Beispiel Produkt:
-//|===
-//|Für|	Studierende der HTW
-//|die|	die ihren Studienalltag effizienter organisieren möchten
-//|Das Produkt ist eine | mobile App für Smartphones
-//|Die 	| für den Nutzer Informationen zum Stundenplan und Noten darstellt
-//|Im Gegensatz zu	| Stundenplänen der Website und HIS-Noteneinsicht
-//|Unser Produkt| zeigt nur die für den Nutzer relevanten Informationen komfortabel auf dem Smartphone an.
-//|===
+Beispiel Produkt:
+|===
+|Für|	Gruppenleiter von ZEISS
+|die|	sich über neue Veröffentlichungen ihrer Mitarbeiter erkundigen möchten.
+|Das Produkt ist eine | Desktop-App
+|Die 	| für den Nutzer eine Systematisierung der Daten vornimmt, um Veröffentlichungen filtern zu können.
+|Im Gegensatz zu	| einer unübersichtlichen Excel-Liste (wie sie aktuell noch existiert)
+|Können mit unserem Produkt| einfach Fachbeiträge hinzugefügt, gefiltert, eingesehen und gewartet werden.
+|===
 
 ==	Stakeholder Beschreibungen
 ===	Zusammenfassung der Stakeholder
@@ -97,13 +99,14 @@ Beispiel
 Beschreiben Sie die Arbeitsumgebung des Nutzers. Hier sind einige Anregungen:
 
 //Zutreffendes angeben, nicht zutreffendes streichen oder auskommentieren
-. Anzahl der Personen, die an der Erfüllung der Aufgabe beteiligt sind. Ändert sich das?
-. Wie lange dauert die Bearbeitung der Aufgabe? Wie viel Zeit wird für jeden Arbeitsschritt benötigt? Ändert sich das?
-. Gibt es besondere Umgebungsbedingungen, z.B. mobil, offline, Außeneinsatz, Touchbedienung, Nutzung durch seh- oder hörbeeinträchtigte Personen?
-. Welche Systemplattformen werden heute eingesetzt? Welche sind es ggf. zukünftig?
-. Welche anderen Anwendungen sind im Einsatz? Muss ihre Anwendung mit diesen integriert werden?
+. Die Anzahl der Gesamtnutzer (hier: Autoren) steigt an, da laut Herr Lösch immer mehr Kollegen selbst veröffentlichen. Die Verwaltung bleibt in der Hand von den 3 Mitarbeiterinnen des Sales Departments, jedoch können Befugte (wie z.B. Gruppenleiter oder Reporter) auch Veränderungen vornehmen. 
 
-Hier können zudem bei Bedarf Teile des Unternehmensmodells (Prozesse, Organigramme, IT-Landschaft, ...) eingefügt werden, um die beteiligten Aufgaben und Rollen zu skizzieren.
+. Die Zeit für eine Veröffentlichung bleibt immer gleich, da dieselben Schritte unternommen werden müssen. Jeder Schritt (Bereich, Name etc eingeben) umfasst dabei nur wenige Sekunden.
+
+. Aktuell erfolgt die Verwaltung über eine unübersichtliche Liste in MS Excel. Zukünftig soll diese durch z.B. eine Desktop-Anwendung ersetzt werden, welche auf Windows läuft.
+
+
+//Hier können zudem bei Bedarf Teile des Unternehmensmodells (Prozesse, Organigramme, IT-Landschaft, ...) eingefügt werden, um die beteiligten Aufgaben und Rollen zu skizzieren.
 
 == Produkt-/Lösungsüberblick
 === Bedarfe und Hauptfunktionen
@@ -113,22 +116,34 @@ Hier können zudem bei Bedarf Teile des Unternehmensmodells (Prozesse, Organigra
 [%header, cols="4,1,4,1"]
 |===
 |Bedarf|	Priorität|	Features|	Geplantes Release
-|xx|xx|xx|xx
+|*Wartbarkeit*|sehr hoch|Einträge sollen aus Gründen der Systematisierung über eine filterbare Liste verändert und angepasst werden können|x
+|*Benutzerfreundlichkeit*|sehr hoch|Facheiträge können extrem schnell durchsucht, systematisiert und verändert werden|x
+|*Effizienz*|hoch|mit wenigen Schritten kann jedes Zeil erreicht werden (Attribute verändern, Beitrag hinzufügen)|x
+|*Funktionalität*|mittel| systematisierbare Liste|x
+|*Zuverlässigkeit*|mittel|Ausfälle/Störungen können durch extrem einfche Wartbarkeit schnell behoben werden|x
+|*Sicherheit*|niedrig|Bereits veröffentlichte Fachbeiträge sind öffentlich zugänglich; *ABER* Status soll nicht von allen Nutzern einsehbar sein|x
+|*Kompatibilität*|niedrig|x|x
+|*Portabilität*|sehr niedrig|x|x
 |===
 
+image::spidernet.jpg[]
 
 == Zusätzliche Produktanforderungen
 //Zutreffendes angeben, nicht zutreffendes streichen oder auskommentieren
 Hinweise:
 
-. Führen Sie die wesentlichen anzuwendenden Standards, Hardware oder andere Plattformanforderungen, Leistungsanforderungen und Umgebungsanforderungen auf
-. Definieren Sie grob die Qualitätsanforderungen für Leistung, Robustheit, Ausfalltoleranz, Benutzbarkeit und ähnliche Merkmale, die nicht von den genannten Features erfasst werden.
-. Notieren Sie alle Entwurfseinschränkungen, externe Einschränkungen, Annahmen oder andere Abhängigkeiten, die wenn Sie geändert werden, das Visions-Dokument beeinflussen. Ein Beispiel wäre die Annahme, dass ein bestimmtes Betriebssystem für die vom System erforderliche Hardware verfügbar ist. Ist das Betriebssystem nicht verfügbar, muss das Visions-Dokument angepasst werden.
-. Definieren Sie alle Dokumentationsanforderugen, inkl. Benutzerhandbücher, Onlinehilfe, Installations-, Kennzeichnungs- und Auslieferungsanforderungen-
-. Definieren Sie die Priorität für diese zusätzlichen Produktanforderungen. Ergänzen Sie, falls sinnvoll, Angaben zu Stabilität, Nutzen, Aufwand und Risiko für diese Anforderungen.
+. Das Programm/die *Desktop-App* muss nur auf *Windows* laufen, die entsprechenden PCs mit dem Betriebssystem befinden sich im Unternehmen. Die Desktop-App soll auf allen Rechnern der MA laufen und alle sollen die darin enthaltenen Daten sehen können, die für sie freigegeben sind.
+. Das Programm soll lediglich die Namen der Beiträge systematisieren, die *Leistungsanforderung hält sich in Grenzen*, da kaum Daten (Beiträge) gespeichert werden müssen. Dadurch, dass die Anwendung zu größten Teilen vom Sales Department (3 Mitarbeiterinnen) gepflegt und aktualisiert wird, ist eine *hohe Robustheit nicht notwendig*. Die *Ausfallltoleranz wird recht groß gehalten*, da das System eine einfache Wartbarkeit vorsieht. Mögliche Bugs können schnell behoben werden. Große Server sind nicht vonnöten, da die Beiträge nicht in der Anwendung gespeichert sind, sondern lediglich ein Verzeichnis listen.  
+. Auf die Listen soll auch im *Offline-Modus* zugegriffen werden können. Änderungen werden dann synchronisiert, wenn eine Intranet/Internet(?)-Verbindung vorliegt.
 
-[%header, cols="4,1,1"]
-|===
-|Anforderung|	Priorität|	Geplantes Release
-|xx|xx|xx|
-|===
+. Die Anforderung an die Anwendung ist, ein komplett *eigenständiges System* darzustellen, was in keinster Weise die firmeninterne IT beeinflusst.
+
+//. Notieren Sie alle Entwurfseinschränkungen, externe Einschränkungen, Annahmen oder andere Abhängigkeiten, die wenn Sie geändert werden, das Visions-Dokument beeinflussen. Ein Beispiel wäre die Annahme, dass ein bestimmtes Betriebssystem für die vom System erforderliche Hardware verfügbar ist. Ist das Betriebssystem nicht verfügbar, muss das Visions-Dokument angepasst werden.
+//. _Definieren Sie alle Dokumentationsanforderugen, inkl. Benutzerhandbücher, Onlinehilfe, Installations-, Kennzeichnungs- und Auslieferungsanforderungen-_
+//. _Definieren Sie die Priorität für diese zusätzlichen Produktanforderungen. Ergänzen Sie, falls sinnvoll, Angaben zu Stabilität, Nutzen, Aufwand und Risiko für diese Anforderungen._
+
+//[%header, cols="4,1,1"]
+//|===
+//|Anforderung|	Priorität|	Geplantes Release
+//|xx|xx|xx|
+//|===
