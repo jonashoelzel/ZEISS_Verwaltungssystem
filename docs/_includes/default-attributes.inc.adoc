@@ -1,6 +1,5 @@
 // Meta
 :project-name: <Projektname (T00)>
-// Settings:
 :toc:
 :toc-title: Inhaltsverzeichnis
 :toclevels: 2
