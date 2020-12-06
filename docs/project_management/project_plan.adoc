@@ -66,7 +66,7 @@ Date to 06.12.2020
 * Risikominimierungs-Strategien umsetzen
 | Date from 07.12.2020 + 
 Date to 20.12.2020
-| 16
+| 13
 | I3 
 | 
 * testing und implementing von Prototyp
@@ -83,3 +83,4 @@ Date to 17.01.2021
 
 == Erkenntnisse (Lessons learned)
 //List lessons learned from the retrospective, with special emphasis on actions to be taken to improve, for example: the development environment, the process, or team collaboration.
+* Anforderungen von Tasks besser herausfinden
