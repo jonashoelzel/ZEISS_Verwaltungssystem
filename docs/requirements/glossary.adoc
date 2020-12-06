@@ -1,7 +1,9 @@
 = Glossar: ZEISS-Verwaltungssystem
 Nina Püschmann s79289@htw-dresden.de
 {localdatetime}
+
 include::../_includes/default-attributes.inc.adoc[]
+
 // Platzhalter für weitere Dokumenten-Attribute
 
 
