@@ -21,11 +21,12 @@ include::../_includes/default-attributes.inc.adoc[]
 
 == Wesentliche Ziele
 //Nennen Sie 1-5 wesentliche Ziele für die Iteration 01
-
+* Überarbeitung Usecases 
+* Risikominimierungs-Strategien umsetzen
 * Lösungsstrategie
 * Wireframes
 * Priorisierung Features
-* Prototyp Development
+* Prototyp Architektur
 
 
 

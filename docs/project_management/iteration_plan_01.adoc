@@ -28,8 +28,12 @@ include::../_includes/default-attributes.inc.adoc[]
 
 == Wesentliche Ziele
 //Nennen Sie 1-5 wesentliche Ziele für die Iteration 01
-* Einrichtung aller Werkzeuge
-* Erstellung eines Projektplans
+* Einrichtung der verwendeten Werkzeuge
+* Vision
+* Standard-Usecase
+* Initiale Rsik analyse
+* Stakeholder Analyse
+* Prototypen scope
 * Anforderungsanalyse
 * Rollenaufteilung
 * Erreichung LCO Meilenstein

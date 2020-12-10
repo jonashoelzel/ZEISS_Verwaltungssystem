@@ -35,46 +35,29 @@ Wie vorgeschrieben wird in iterativen abläufen gearbeitet werden. Grundlage daf
 //Define and describe the high-level objectives for the iterations and define milestones. For example, use the following table to lay out the schedule. If needed you may group the iterations into phases and use a separate table for each phase
 
 
-[%header, cols="1,3a,2,1"]
+[%header, cols="1,3a,2"]
 |===
 | Iteration
 | Primary objectives +
 (risks and use case scenarios)
 | Scheduled start or milestone
-| Target velocity
 
 | I1
 |
-* Einrichtung der verwendeten Werkzeuge
-* Vision
-* Standard-Usecase
-* Initiale Rsik analyse
-* Initiale Grenzen Analyse
-* Stakeholder Analyse
-* Prototypen scope
-| Date from 23.11.2020 +
-Date to 06.12.2020
-| 15
-
-| I2
-|
-* Lösungsstrategie
-* Wireframes
-* development Protoyp
-* Überarbeitung Usecases
-* Mögliche Features werden Aufgelistet 
-* Risikominimierungs-Strategien umsetzen
-| Date from 07.12.2020 + 
-Date to 20.12.2020
-| 13
-| I3 
+LCO Meilenstein
 | 
-* testing und implementing von Prototyp
-* Architekturplan
-* Priorisierung möglicher Features
+Date to 06.12.2020
+| I4
+|
+* LCA Meilenstein
+* Release Prototyp
+|  
+Date to 30.01.2021
+
+| I 
+| 
 | Date from 04.01.2021 +
 Date to 17.01.2021
-| 20
 | 
 |===
 
