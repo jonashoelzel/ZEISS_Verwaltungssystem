@@ -1,0 +1,139 @@
+== Reports erstellen
+===	Reports oder Statistiken erstellen
+
+===	Kurzbeschreibung der Akteure
+==== Reporter
+Ein Reporter kann Reports erstellen, Statistiken einsehen (Top Autoren, Veröffentlichungen je Bereich, ...), alle Beiträge im System einsehen und bearbeiten.
+=== Vorbedingungen
+* Reporter muss als solcher angemeldet sein
+* Es muss mindestens ein Beitrag im System existieren
+
+=== Standardablauf (Basic Flow)
+
+. Reporter kann sich Statistiken zu folgenden Kategorien ausgeben lassen:
+* Top Autoren
+* Veröffentlichungen je Bereich (als Säulen- oder Kreisdiagramm)
+* Summe der Veröffentlichungen je Typ innerhalb eines Zeitbereichs
+* Veröffentlichungen je nach Tag (als Liste oder Summe über einen Zeitbereich)
+* Summe aller Veröffentlichungen innerhalb eines Zeitbereichs (Monat, Quartal, Jahr)
+. Wählt gewünschte Statistik(e)n aus
+. Kann sich eine oder mehrere ausgewählte Statistik(en) nun übersichtlich darstellen lassen
+. Kann diese als Dokument (z.B. als pdf) exportieren
+. Der Use Case ist abgeschlossen.
+
+
+=== Unterabläufe (subflows)
+
+==== Art der Statistik auswählen
+. Am Anfang erfolgt stets die Abfrage, zu welcher Rubrik eine Statistik ausgegeben werden soll:
+* Top Autoren
+* Veröffentlichungen je Bereich (als Säulen- oder Kreisdiagramm)
+* Summe der Veröffentlichungen je Typ innerhalb eines Zeitbereichs
+* Veröffentlichungen je nach Tag (als Liste oder Summe über einen Zeitbereich)
+* Summe aller Veröffentlichungen innerhalb eines Zeitbereichs (Monat, Quartal, Jahr)
+. Reporter wählt gewünschte Rubrik durch z.B. eine Tick Box neben allen Möglichkeiten aus
+
+==== Statistiken anzeigen lassen
+. Nachdem Reporter alle gewünschten Statistiken ausgewählt hat, kann er sich diese nun über "Statistik anzeigen lassen" einsehen
+. Alle ausgewählten Statistiken werden nun übersichtlich untereinander in der obigen Reihenfolge aufgeführt
+
+==== Statistiken exportieren
+. Nach dem Anzeigen der Statistiken kann diese nun exportiert werden
+. Wählen von "Statistik exportieren" -> es öffnet sich eine Zeile, in welcher über ein Dropdown-Menü das gewünschte Format ausgewählt werden kann
+* .pdf
+* .csv
+* .jpg
+* . svg
+* ...
+. Reporter wählt gewünschtes Format durch anklicken und wählt dann "Jetzt Statistik exportieren"
+. Es startet ein automatischer Download, die Datei landet immer im festgelegten Download-Ordner _(optional kann man auch erst einen Pfad auswählen, wenn "Speichern unter" erfragt wird)_
+
+==== Zeitraum auswählen
+* sowohl bei "Summe der Veröffentlichungen je Typ", "SUmme aller Veröffentlichungen nach Zeitraum" als auch bei "Veröffentlichungen je nach Tag" muss sich Kalender öffnen, in dem der Reporter einen Zeitraum auswählen kann
+
+
+=== Wesentliche Szenarios
+==== Top Autoren
+
+. Reporter wählt Statistik zu "Top Autoren" aus
+. Es erscheint ein Drop-Down-Menü mit der Beschreibung:
+"Top Autoren anzeigen:"
+* Top 3
+* Top 5 
+* von bis
+** beim Anklicken öffnen sich kleine Zeilen, in die der Nutzer ganze Zahlen angeben muss, daneben ist vermerkt, wieviele Autoren maximal im System erfasst sind
+* alle Autoren listen
+. Reporter kann weitere Statistik hinzufügen
+
+==== Veröffentlichunge je Bereich
+
+. Reporter wählt Statistik zu "Veröffentlichungen je Bereich"
+. Es öffnet sich zwei weitere Zeilen:
+* ⧠ Säulendiagramm
+* ⧠ Kreisdiagramm
+. Reporter wählt gewünschte Form des Diagramms aus
+. Reporter kann weitere Statistik hinzufügen
+
+==== Summe der Veröffentlichungen je Typ innerhalb eines Zeitbereichs
+. Reporter wählt die Statistik zu Veröffentlichung nach Typ
+. Es öffnet sich ein Kalender (jeweils für Beginn und Ende der Periode), in welchem der Reporter den Zeitraum eingrenzen kann, in dem er suchen möchte
+. Reporter wählt Zeitraum aus
+. Reporter kann weitere Statistik hinzufügen
+
+==== Veröffentlichungen je nach Tag (als Liste oder Summe über einen Zeitbereich)
+. Reporter wählt Statistik zu Veröffentlichung je nach Tag
+. Es öffnet sich ein Kalender (jeweils für Beginn und Ende der Periode), in welchem der Reporter den Zeitraum eingrenzen kann, in dem er suchen möchte
+. Reporter wählt Zeitraum aus
+. Reporter kann weitere Statistik hinzufügen
+
+==== Summe aller Veröffentlichungen innerhalb eines Zeitbereiches (Monat, Quartal, Jahr, Zeitraum)
+. Reporter wählt Statistik zu Summe aller Veröffentlichungen
+. Es folgt eine Zeile:
+* "Summe der Veröffentlichungen anzeigen für", dann ein Drop-Down Menü:
+** Monat mit Drop-Down Menü (Sortierung: zuletzt)
+** Quartal mit Drop-Down Menü (Sortierung: zuletzt)
+** Jahr mit Drop-Down Menü (Sortierung: zuletzt)
+** Zeitraum
+*** hier öffnet sich wieder der Kalender, in dem der Reporter einen beliebigen Zeitraum auswählen kann
+. Reporter wählt beliebigen Zeitraum aus und bestätigt mit "Bestätigen"
+. Es öffnet sich zwei Buttons, einer für "Weitere Statistik" und "Keine weitere Statistik"
+. Reporter kann sich nun auch weitere Zeiträume zu den Summen anzeigen lassen
+
+===	Nachbedingungen
+Alle ausgewählten Statistiken werden nun angezeigt.
+
+==== Top Autoren
+* Es erscheinen die ausgewählten Autoren, sortiert von meist veröffentlicht zu wenigst veröffentlicht als Ranking
+
+==== Veröffentlichungen je Bereich
+* Es erscheint gewähltes Diagramm (Säule oder Kreis)
+
+==== Summe der Veröffentlichungen je Typ
+* Es erscheinen alle Typen und deren Anzahl der Veröffentlichungen:
+
+[%header]
+|===
+|Typ|Anzahl
+|Artikel|10
+|Blogbeitrag| 6
+| Workshop| 7
+|Vortrag|x
+|Videotraining|x
+|Buch|x
+|===
+
+==== Veröffentlichungen je nach Tag (als Liste über einen Zeitbereich)
+* Im gewählten Zeitbereich wird jeder Tag, an dem ein Beitrag veröffentlicht wurde als Liste dargestellt, darunter befinden sich jeweils die Veröffentlichungen mit dessen Eigenschaften:
+** *17. Oktober 2019:*
+|===
+|_"Agile Projektmanagementstrukturen"_|Video|Veröffentlicht
+|_"Einführung in KANBAN"_|Vortrag|In Bearbeitung
+|===
+
+==== Summe aller Veröffentlichungen innerhalb eines Zeitbereiches (Monat, Quartal, Jahr, Zeitraum)
+
+
+==== Exportieren
+* Exportierte Datei befindet sich im Downloads-Ordner (oder im gewünschten Pfad)
+
+

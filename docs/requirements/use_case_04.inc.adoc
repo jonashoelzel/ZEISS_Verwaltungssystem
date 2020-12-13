@@ -1,69 +1,50 @@
-== Beiträge verwalten
-===	Beiträge filtern, durchsuchen und exportieren
+//Nutzen Sie dieses Template als Grundlage für die Spezifikation *einzelner* Use-Cases. Diese lassen sich dann per Include in das Use-Case Model Dokument einbinden (siehe Beispiel dort).
+== Use-Case: <use-case name>
+===	Kurzbeschreibung
+//<Kurze Beschreibung des Use Case>
 
 ===	Kurzbeschreibung der Akteure
-==== Reporter
-Ein Reporter kann Reports erstellen, Statistiken einsehen (Top Autoren, Veröffentlichungen je Bereich, ...), alle Beiträge im System einsehen und bearbeiten.
-
-==== Gruppenleiter
-Ein Gruppenleiter kann aus Informationszwecken die Veröffentlichungen seiner unterstellten Mitarbeiter filtern, durchsuchen und einsehen.
+==== <Akteur 1 Name>
 
 === Vorbedingungen
-* Reporter/Gruppenleiter muss als solcher angemeldet sein
-** Reporter kann *alle Beiträge* verwalten und bearbeiten
-** Gruppenleiter erhält Suchergebnisse nur zu den Beiträgen, welche von Autoren stammen, *die ihm unterstehen*
-* Es muss mindestens ein Beitrag im System existieren
-
+//Vorbedingungen müssen erfüllt, damit der Use Case beginnen kann, z.B. Benutzer ist angemeldet, Warenkorb ist nicht leer...
+<Vorbedingung 1>
 
 === Standardablauf (Basic Flow)
+//Der Standardablauf definiert die Schritte für den Erfolgsfall ("Happy Path")
 
-. Akteur möchte Beiträge filtern
-. Kann unter "Beiträge suchen" in Suchleiste jegliche Informationen zu Attributen, Eigenschaften von Beiträgen etc. suchen
-. Bekommt Ergebnis von der Suchmaschine
+. Der Use Case beginnt, wenn <akteur> <macht>…
+. <Standardablauf Schritt 1>
+. 	…
+. <Standardablauf Schritt n>
+. Der Use Case ist abgeschlossen.
 
+=== Alternative Abläufe
+//Nutzen Sie alternative Abläufe für Fehlerfälle, Ausnahmen und Erweiterungen zum Standardablauf
+==== <Alternativer Ablauf 1>
+Wenn <Akteur> im Schritt <x> des Standardablauf <etwas macht>, dann
+. <Ablauf beschreiben>
+. Der Use Case wird im Schritt <y> fortgesetzt.
 
 === Unterabläufe (subflows)
+//Nutzen Sie Unterabläufe, um wiederkehrende Schritte auszulagern
 
-==== Zeitraum der Veröffentlichung
-. Zeitraum in einen sich öffnendem Kalender eingeben
+==== <Unterablauf 1>
+. <Unterablauf 1, Schritt 1>
+. …
+. <Unterablauf 1, Schritt n>
 
 === Wesentliche Szenarios
-
-==== Beiträge durchsuchen/filtern
-
-. Es existiert eine Suchleiste, in welcher nach Namen (des Beitrags, des Autors), Art des Mediums Attributen, Geschäftsbereich des Autors, Datum der Veröffentlichung und Tags gesucht werden kann
-. Zusätzlich dazu gibt es unter "Weitere Filter" die Möglichkeit, die folgenden Eigenschaften durchsuchen zu können:
-* Art der Veröffentlichung (Drop-Down-Menü)
-* Aktueller Status (Drop-Down-Menü)
-* Zeitraum der Veröffentlichung
-** es öffnet sich Kalender, wo "von ... bis" eingegeben werden kann
-. Nach jeder Filterauswahl erscheint das neue Suchergebnis
-
-==== Als CSV exportieren
-* Bei gesamten Suchvorgang gibt es zu jeder Suchanfrage einen Button "Als CSV exportieren"
-* Hier kann *immer* als CSV exportiert werden
-* Es werden dann alle Elemente, die im Suchvorgang unter den gewählten Filtern gefunden wurden mit ihren gesamten Eigenschaften in einer Liste exportiert:
-
-[%header]
-|===
-|Beitrag|Autor|Geschäftsbereich|Datum|Art|Medium|Aktueller Status|Tags
-|===
-
-==== Informationen zu einzelnen Beiträgen
-* Der Akteur kann jeden Beitrag, den er findet, auswählen und sich damit zu diesem alle vorhandenen Informationen anzeigen lassen
-* Auch hier gibt es die Möglichkeit, als CSV zu exportieren
+//Szenarios sind konkrete Instanzen eines Use Case, d.h. mit einem konkreten Akteur und einem konkreten Durchlauf der o.g. Flows. Szenarios können als Vorstufe für die Entwicklung von Flows und/oder zu deren Validierung verwendet werden.
+==== <Szenario 1>
+. <Szenario 1, Schritt 1>
+. 	…
+. <Szenario 1, Schritt n>
 
 ===	Nachbedingungen
-
-==== Suchergebnis
-* Akteur erhält gewünschtes Suchergebnis
-** z.B. Gruppenleiter kann sich über neue Beiträge seiner Mitarbeiter informieren
-** Reporter kann z.B. korrekte Veröffentlichungstypen, Beschriftung, etc. kontrollieren und so das System pflegen
+//Nachbedingungen beschreiben das Ergebnis des Use Case, z.B. einen bestimmten Systemzustand.
+==== <Nachbedingung 1>
 
 === Besondere Anforderungen
-
-==== Rechte des Reporters
-Der Reporter kann im System alle Beiträge einsehen, bearbeiten, exportieren und verwalten. Das System zeigt ihm alle Beiträge an. Mit der Autorisierung erhält er alle Rechte.
-
-==== Rechte des Gruppenleiters
-Der Gruppenleiter kann lediglich die Beiträge der ihm Unterstehenden Mitarbeiter einsehen und exportieren, jedoch nicht bearbeiten. Das System zeigt daher auch nur die darauf zutreffenden Beiträge an. Mit der Autorisierung erhält er genannte Rechte. 
+//Besondere Anforderungen können sich auf nicht-funktionale Anforderungen wie z.B. einzuhaltende Standards, Qualitätsanforderungen oder Anforderungen an die Benutzeroberfläche beziehen.
+==== <Besondere Anforderung 1>

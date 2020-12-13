@@ -1,0 +1,74 @@
+== Use-Case: Veröffentlichung hinzufügen
+===	Neue Veröffentlichung zur Liste hinzufügen
+
+===	Kurzbeschreibung der Akteure
+==== Mitarbeiter Sales Department
+Nur die (3) Verantwortlichen im Sales Department haben die Rechte, Veröffentlichungen in die Liste aufzunehmen, zu bearbeiten und neue Bereiche hinzuzufügen.
+
+==== Autor
+Der Autor der Veröffentlichung hat bereits der Veröffentlichung im veröffentlichenden Medium zugestimmt (vor allem Fachzeitschriften) und wird nun in der internen Liste mit gelistet. Jeder Autor ist gleichzeitig auch ein Mitarbeiter von ZEISS.
+
+==== Veröffentlichendes Medium
+Veröffentlicht in Zeitschrift, auf Plattform oder Blog einen Fachbeitrag des Autors.
+
+=== Vorbedingungen
+* Anwendung ist geöffnet
+* Sales Department ist als solches authorisiert, um weitere Veröffentlichungen hinzufügen zu können
+* Es fand eine Veröffentlichung eines Mitarbeiters statt, welche noch nicht im System gelistet ist
+* Zur neuen Veröffentlichung liegen dem Sales Department alle Informationen vor, die mit eingegeben werden sollen
+** *mindestens Vorname, Nachname des Autors, dessen Geschäftsbereich, Datum und Art der Veröffentlichung*
+
+=== Standardablauf (Basic Flow)
+
+. Der Use Case beginnt, wenn eine berechtigte Person eine Veröffentlichung hinzufügen möchte
+. Es öffnet sich eine Ansicht, in der alle oben genannten Eintragungen gemacht werden müssen
+* *SPÄTER:* zusätzlich können noch weitere Angaben gemacht werden (Tags, zusätzliche Informationen)
+. Nutzer wählt "Veröffentlichung hinzufügen"
+. Die Veröffentlichung wird der Liste zugefügt
+. Der Use Case ist abgeschlossen.
+
+=== Alternative Abläufe
+==== Nicht alle notwendigen Felder ausgefüllt
+Wenn nicht alle notwendigen Angaben zu einer neuen Veröffentlichung durch das Sales Department gemacht werden
+. erfolgt eine Fehlermeldung, dass obligatorische Angaben fehlen 
+. Nutzer wird zur Bearbeitung weitergeleitet und kann fehlende Angaben hinzufügen und bestehende verändern
+. Wird dann weitergeleitet zu "Veröffentlichung hinzufügen"
+
+==== Nutzer möchte zusätzliche Angaben zum Fachbeitrag machen
+Wenn die obligatorischen Felder für eine Beschreibung des Fachbeitrages unzureichend sind
+. kann das Sales Department unter "Weitere Angaben" verschiedene Informationen hinzufügen
+* Tags
+* Beschreibungen (Infobox)
+* Verlag des Mediums
+. Use Case wird bei "Veröffentlichung hinzufügen" fortgesetzt
+
+==== Bereich hinzufügen
+Wenn ein Autor aus einem Geschäftsbereich veröffentlicht, welcher noch nicht hinzugefügt ist
+. Neben dem Drop-Down gibt es die Möglichkeit, weitere Bereiche hinzuzufügen
+. Bereich wird dann ins System aufgenommen
+. Aktueller Beitrag kann dem neu hinzugefügten Bereich zugeordnet werden
+. Use Case wird bei "Veröffentlichung hinzufügen" fortgesetzt
+
+=== Wesentliche Szenarios
+==== Veröffentlichung hinzufügen
+. Sales Department Mitarbeiter wählt "Veröffentlichung hinzufügen"
+. Es öffnet sich eine Ansicht, in der alle oben genannten Eintragungen gemacht werden *müssen*
+* *SPÄTER:* zusätzlich können noch weitere Angaben gemacht werden (Tags, zusätzliche Informationen)
+. Sales Department Mitarbeiter wählt "Veröffentlichung hinzufügen"
+. Die Veröffentlichung wird der Liste zugefügt
+. Der Use Case ist abgeschlossen.
+
+===	Nachbedingungen
+
+==== Beitrag in Liste aufgenommen
+Der Fachbeitrag ist nun gelistet.
+
+==== Tags/zusätzliche Information hinuzgefügt
+Die Beschreibung des Fachbeitrages wurde verändert.
+
+==== Bereich hinzugefügt
+Ein neuer Bereich wurde hinzugefügt und kann nun standardmäßig bei Bearbeitung/Neuhinzufügung als Bereich ausgewählt werden.
+
+=== Besondere Anforderungen
+
+==== <Besondere Anforderung 1>

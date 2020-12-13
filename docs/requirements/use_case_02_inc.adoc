@@ -1,0 +1,48 @@
+== Use-Case: Beitrag suchen
+===	Fachbeitrag wird gesucht
+
+===	Kurzbeschreibung der Akteure
+==== Mitarbeiter
+Jeder Mitarbeiter kann sich im System über Veröffentlichungen informieren.
+
+==== Sales Department
+Aus Gründen der Information oder zur Bearbeitung will das Sales Department einen Beitrag finden. Nur die (3) Verantwortlichen im Sales Department haben die Rechte, Veröffentlichungen in die Liste aufzunehmen, zu bearbeiten und neue Bereiche hinzuzufügen.
+
+=== Vorbedingungen
+* Liste ist nicht leer
+* Nutzer ist angemeldet
+* Anwendung ist geöffnet
+
+=== Standardablauf (Basic Flow)
+
+. Der Use Case beginnt, wenn der Nutzer die Anwendung öffnet und "Fachbeitrag suchen" wählt
+. Kann dort nach Titel, Autor, Tags, etc. suchen, weitere Filter (z.B. nach Bereich) sind unter Dropdown-Menüs zu finden
+. Wählt gewollte Filter aus und kann sich dann die Liste dazu anzeigen lassen (nach gewünschter Sortierung: z.B. "zuletzt" oder "Alphabetisch")
+. Der Use Case endet
+
+=== Alternative Abläufe
+==== Bearbeiten von Einträgen
+Wenn der Nutzer nach dem Filtern einen Eintrag bearbeiten will
+. _siehe Use Case 3_
+. Der Use Case endet
+
+==== Liste als CSV exportieren
+Wenn der Nutzer seine Filterergebnisse als CSV exportieren will
+. nach der Filterung gibt es die Möglichkeit, die angezeigte Liste mit ihren Informationen als CSV zu exportieren
+. Kann einen Pfad zum Speichern auswählen, automatisch wird immer der Downloads-Ordner angesteuert
+. Mit "Liste exportieren" wird diese als CSV gespeichert
+
+=== Wesentliche Szenarios
+
+==== Fachbeitrag nach Bereich filtern 
+. Mitarbeiter möchte sich über die Veröffentlichungen seiner Bereiches informieren
+. Wählt "Beitrag suchen" und "weitere Filter"
+. Dort kann er seinen Bereich über ein Drop-Down Menü auswählen
+. Kann sich dann die Liste der Beiträge aus dem Bereich ansehen
+
+===	Nachbedingungen
+==== User hat Beitrag gefunden
+
+=== Besondere Anforderungen
+
+==== <Besondere Anforderung 1>

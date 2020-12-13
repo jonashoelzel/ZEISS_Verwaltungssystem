@@ -1,50 +1,90 @@
-//Nutzen Sie dieses Template als Grundlage für die Spezifikation *einzelner* Use-Cases. Diese lassen sich dann per Include in das Use-Case Model Dokument einbinden (siehe Beispiel dort).
-== Use-Case: <use-case name>
-===	Kurzbeschreibung
-//<Kurze Beschreibung des Use Case>
+== Beiträge verwalten
+===	Beiträge einsehen, bearbeiten oder verwalten
+* Ein Autor, der zuvor einen Beitrag veröffentlicht hat, möchte diesen nun bearbeiten/einsehen.
+* Ein Reporter möchte einen Beitrag verändern/einsehen
+* Ein Gruppenleiter möchte Beiträge ansehen
+* Ein Nutzer möchte einen anderen über Statusänderungen informieren
 
 ===	Kurzbeschreibung der Akteure
-==== <Akteur 1 Name>
+==== Autor
+Es handelt sich um den Autor, der im Use Case 1 einen Fachbeitrag veröffentlicht hat. Dieser kann seinen Beitrag einsehen und bearbeiten.
+
+==== Reporter
+Ein Reporter kann Reports erstellen, Statistiken einsehen (Top Autoren, Veröffentlichungen je Bereich, ...), alle Beiträge im System einsehen und bearbeiten.
+
+==== Gruppenleiter
+Ein Gruppenleiter kann aus Informationszwecken die Veröffentlichungen seiner unterstellten Mitarbeiter einsehen.
 
 === Vorbedingungen
-//Vorbedingungen müssen erfüllt, damit der Use Case beginnen kann, z.B. Benutzer ist angemeldet, Warenkorb ist nicht leer...
-<Vorbedingung 1>
+* Akteur hat ein Konto
+* Akteur ist angemeldet (autorisiert)
+* Autor hat den Beitrag selbst geschrieben und möchte diesen nun bearbeiten *ODER* Reporter hat Verwaltungsrechte für einen Beitrag einen anderen Autors *ODER* Gruppenleiter möchte Beitrag eines ihm unterstellten Mitarbeiters einsehen
+* es wurde zuvor ein Beitrag veröffentlicht, der nun bearbeitet/eingesehen werden soll
 
 === Standardablauf (Basic Flow)
-//Der Standardablauf definiert die Schritte für den Erfolgsfall ("Happy Path")
 
-. Der Use Case beginnt, wenn <akteur> <macht>…
-. <Standardablauf Schritt 1>
-. 	…
-. <Standardablauf Schritt n>
-. Der Use Case ist abgeschlossen.
+==== zum Bearbeiten (Reporter, Autor)
+. Beitrag suchen (über Name, Tags, Art der Veröffentlichung, etc.)
+. Gewünschte Felder bearbeiten
+. Man gelangt auf Auswahlmenü, welches im Use Case 1 beschrieben ist
+. Jegliche Eigenschaften des Beitrages sind hier veränderbar
+. Bestätigung der Änderungen notwendig
+. Alter Beitrag wird vollständig überschrieben
+
+==== zum Einsehen (Gruppenleiter, Reporter, Autor)
+. Beitrag suchen (über Name, Tags, Art der Veröffentlichung, etc.)
+. Beitrag erscheint, wenn Rechte dafür vorhanden
+. Beitrag anklicken -> kann eingesehen werden
 
 === Alternative Abläufe
-//Nutzen Sie alternative Abläufe für Fehlerfälle, Ausnahmen und Erweiterungen zum Standardablauf
-==== <Alternativer Ablauf 1>
-Wenn <Akteur> im Schritt <x> des Standardablauf <etwas macht>, dann
-. <Ablauf beschreiben>
-. Der Use Case wird im Schritt <y> fortgesetzt.
 
-=== Unterabläufe (subflows)
-//Nutzen Sie Unterabläufe, um wiederkehrende Schritte auszulagern
+==== Abbrechen der Bearbeitung
+Wenn der Autor während der Bearbeitung das Fenster schließt, es zum Abbruch des Programms kommt oder "Bearbeitung abbrechen" ausgewählt wird
+. wird der Bearbeitungsversuch abgebrochen
+. Alle Änderungen, die nicht gespeichert wurden, werden zurückgesetzt
+. Beim erneuten Aufrufen ist nur alte (gespeicherte) Version verfügbar
 
-==== <Unterablauf 1>
-. <Unterablauf 1, Schritt 1>
-. …
-. <Unterablauf 1, Schritt n>
+==== Hinzufügen/Löschen von Tags
+Beim Hinzufügen oder Löschen von Tags werden diese dem Beitrag hinzugefügt oder entzogen. Beim Filtern kann der Beitrag dann untewr den neuen Tags gefunden werden
+
+==== Ablauf ab der Bearbeitung
+* hier kann derselbe Ablauf greifen, der auch bei der Veröffentlichung im Use Case 1 ausgeführt wird. 
+* ab der Auswahl des Autors von "Bearbeiten" erscheint dieselbe Oberfläche wie beim Use Case 1 "Veröffentlichung hinzufügen", lediglich die bereits vorhandenen Informationen müssen eingetragen sein
+
 
 === Wesentliche Szenarios
-//Szenarios sind konkrete Instanzen eines Use Case, d.h. mit einem konkreten Akteur und einem konkreten Durchlauf der o.g. Flows. Szenarios können als Vorstufe für die Entwicklung von Flows und/oder zu deren Validierung verwendet werden.
-==== <Szenario 1>
-. <Szenario 1, Schritt 1>
-. 	…
-. <Szenario 1, Schritt n>
+
+==== Beitrag bearbeiten
+. Beitrag finden 
+.. Autor kann unter "eigene Beiträge" (oder "Beitrag suchen") eigenen Beitrag finden
+.. Reporter kann durch Filtern ("Beitrag suchen") gewünschten Beitrag finden
+. Autor/Reporter wählt Beitrag aus, wählt danach "Bearbeiten"
+. Gelangt auf Auswahlmenü, welches im Use Case 1 beschrieben ist
+. Kann jegliche Eigenschaften des Beitrages verändern
+. Wenn der Akteur mit seiner Eingabe zufrieden ist und die Änderungen vollzogen sind, kann er diese mit "Änderungen bestätigen" bestätigen
+. Es erfolgt ein Überschreiben der vorherigen Veröffenlichung (auch bei geändertem Namen) mit allen neuen Attributen
+
+==== Beitrag suchen/einsehen
+. Beitrag finden
+.. Name des Beitrags oder Verfassers
+.. Filter nach allen Drop-Down-Menüs
+. Akteur kann, wenn die Rechte vorhanden sind, den Beitrag und die zusätzlichen Infos (Art des Mediums,...) nun einsehen
+
+==== Anderen Nutzer über Veränderung informieren
+
+Autoren oder Reporter können andere Nutzer über eine Statusänderung informieren.
 
 ===	Nachbedingungen
-//Nachbedingungen beschreiben das Ergebnis des Use Case, z.B. einen bestimmten Systemzustand.
-==== <Nachbedingung 1>
+
+==== Beitrag bearbeitet
+* Änderungen, die der Autor oder Reporter vollzogen hat, werden übernommen.
+
+==== Beitrag eingesehen
+* Bei lediglichem Einsehen der Beiträge durch den Reporter oder Gruppenleiter gibt es keine Veränderung am Artikel.
 
 === Besondere Anforderungen
-//Besondere Anforderungen können sich auf nicht-funktionale Anforderungen wie z.B. einzuhaltende Standards, Qualitätsanforderungen oder Anforderungen an die Benutzeroberfläche beziehen.
-==== <Besondere Anforderung 1>
+
+==== Rechtliche Anforderung
+* Reporter muss alle Rechte zum Bearbeiten und Einsehen haben, um Beiträge zu verändern 
+* Gruppenleiter kann nur Beiträge von ihm unterstellten MA einsehen
+* Autor hat alle Rechte für die Bearbeitung seines eigenen Beitrags
