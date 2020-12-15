@@ -26,16 +26,16 @@ In diesem Dokument werden die wesentlichen Begriffe aus dem Anwendungsgebiet (Fa
 == Abkürzungen und Akronyme
 [%header]
 |===
-|Abkürzung|	Bedeutung|	Erläuterung
-|UP|Unified Process|Vorgehensmodell für die Softwareentwicklung|
-|UI|User Interface|Benutzeroberflächen oder Benutzerschnittstellen, der die Art und Weise beschreibt, mit der ein Anwender mit dem Programm in Kontakt tritt|
-|PL|Presentation Layer/Logic|Layer für UI-Code/Logik (Validierung von Benutzereingaben und anzeigen von bestimmten Ergebnissen)|
+|Abkürzung|Bedeutung|Erläuterung
+|UP|Unified Process|Vorgehensmodell für die Softwareentwicklung
+|UI|User Interface|Benutzeroberflächen oder Benutzerschnittstellen, der die Art und Weise beschreibt, mit der ein Anwender mit dem Programm in Kontakt tritt
+|PL|Presentation Layer/Logic|Layer für UI-Code/Logik (Validierung von Benutzereingaben und anzeigen von bestimmten Ergebnissen)
 |BL|Business Layer/Logic|Layer für Business-Code/Logik (Datenvalidierung und -Konvertierung, sowie Code der Softwarefunktionalitäten)|
-|IL|Implementation Layer/Logic|Layer für Datenverarbeitung und externe Komponenten (Alternativer Begriff: Business Layer) (Lesen/Schreiben von Daten und Verwaltung externer Komponenten)|
-|DL|Data Layer/Logic|Layer für Datenverarbeitung und externe Komponenten (Lesen/Schreiben von Daten und Verwaltung externer Komponenten)|
-|--|Layer|Sammlung von zusammengehörigen Komponenten, die eine Unabhängigkeit bestimmter Funktionalitäten gewährleistet. Ein Layer trennt verschiedene Logiken|
-|--|Logic|Sammlung zusammengehöriger Komponten, die eine bestimmte Aufgaben wie UI, Datenverwaltung, [...] erledigen. Die Logic wird in verschiedene Layer eingeteilt|
-|CSV|Comma Seperated Values|(Text-)Datei in der Einträge durch Kommas und New-lines getrennt werden|
+|IL|Implementation Layer/Logic|Layer für Datenverarbeitung und externe Komponenten (Alternativer Begriff: Business Layer) (Lesen/Schreiben von Daten und Verwaltung externer Komponenten)
+|DL|Data Layer/Logic|Layer für Datenverarbeitung und externe Komponenten (Lesen/Schreiben von Daten und Verwaltung externer Komponenten)
+|--|Layer|Sammlung von zusammengehörigen Komponenten, die eine Unabhängigkeit bestimmter Funktionalitäten gewährleistet. Ein Layer trennt verschiedene Logiken
+|--|Logic|Sammlung zusammengehöriger Komponten, die eine bestimmte Aufgaben wie UI, Datenverwaltung, [...] erledigen. Die Logic wird in verschiedene Layer eingeteilt
+|CSV|Comma Seperated Values|(Text-)Datei in der Einträge durch Kommas und New-lines getrennt werden
 |--|Active Directory|Windows Dateimanagementsystem zum Verwalten von Zugriffsrechten|
 |===
 
