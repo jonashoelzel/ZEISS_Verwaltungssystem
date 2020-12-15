@@ -30,7 +30,7 @@ In diesem Dokument werden die wesentlichen Begriffe aus dem Anwendungsgebiet (Fa
 |UP|Unified Process|Vorgehensmodell für die Softwareentwicklung
 |UI|User Interface|Benutzeroberflächen oder Benutzerschnittstellen, der die Art und Weise beschreibt, mit der ein Anwender mit dem Programm in Kontakt tritt
 |PL|Presentation Layer/Logic|Layer für UI-Code/Logik (Validierung von Benutzereingaben und anzeigen von bestimmten Ergebnissen)
-|BL|Business Layer/Logic|Layer für Business-Code/Logik (Datenvalidierung und -Konvertierung, sowie Code der Softwarefunktionalitäten)|
+|BL|Business Layer/Logic|Layer für Business-Code/Logik (Datenvalidierung und -Konvertierung, sowie Code der Softwarefunktionalitäten)
 |IL|Implementation Layer/Logic|Layer für Datenverarbeitung und externe Komponenten (Alternativer Begriff: Business Layer) (Lesen/Schreiben von Daten und Verwaltung externer Komponenten)
 |DL|Data Layer/Logic|Layer für Datenverarbeitung und externe Komponenten (Lesen/Schreiben von Daten und Verwaltung externer Komponenten)
 |--|Layer|Sammlung von zusammengehörigen Komponenten, die eine Unabhängigkeit bestimmter Funktionalitäten gewährleistet. Ein Layer trennt verschiedene Logiken
