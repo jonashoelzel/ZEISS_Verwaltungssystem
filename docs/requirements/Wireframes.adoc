@@ -1,0 +1,90 @@
+include::../_includes/default-attributes.inc.adoc[]
+
+
+= Wireframes
+
+== Veröffentlichung Hinzufügen
+
+:imagesdir: images/wireframe_use_case_01
+
+=== Landing Page
+
+image::Sales Department Veröffentlichung hinzufügen - 1.0 Standard Sicht.jpg[]
+
+=== Eingabefelder neue Veröffentlichung
+
+image::Sales Department Veröffentlichung hinzufügen - 2.0  Eigenschaften.jpg[]
+
+==== Neuer Geschäftsbereich Hinzufügen
+
+image::Sales Department Veröffentlichung hinzufügen - 3.5 Neuer Geschäftsbereich.jpg[]
+
+=== Eintragen der Tags
+
+image::Sales Department Veröffentlichung hinzufügen - 3.2 Sicht Tags.jpg[]
+
+=== Beschreibung Hinzufügen
+
+image::Sales Department Veröffentlichung hinzufügen - 3.3 Sicht Beschreibungen.jpg[]
+
+=== Verlag Hinzufügen
+
+image::Sales Department Veröffentlichung hinzufügen - 3.4 Sicht Verlag.jpg[]
+
+=== Veröffentlichungen Abschließen
+
+image::Sales Department Veröffentlichung hinzufügen - 4.0 Veröffentlichung abgeschlossen.jpg[]
+
+=== Nicht Vollständige Veröffentlichung Fehlermeldung
+
+image::Sales Department Veröffentlichung hinzufügen - 3.1Fehlermeldung notwendige Felder.jpg[]
+
+== Veröffentlichung Suchen & Filtern
+
+:imagesdir: images/wireframe_use_case_02
+
+=== Landing Page
+
+image::Beitrag suchen - 1.0 Standard Sicht.jpg[]
+
+=== Suchekriterien
+
+image::Beitrag suchen - 2.0 Suchkriterien.jpg[]
+
+=== Liste Sortieren
+
+image::Beitrag suchen - 3.0 Sortierung.jpg[]
+
+=== Gefilterte und Sortierte Liste
+
+image::Beitrag suchen - 4.0 Gefilterte Ergebnisse.jpg[]
+
+=== Exportieren als CSV
+
+image::Beitrag suchen - 5.0 CSV Exportierung.jpg[]
+
+== Einträge Bearbeiten
+
+:imagesdir: images/wireframe_use_case_03
+
+=== Aus Gefilterter und Sortierter Liste Beitrag auswählen
+
+image::Eintrag bearbeiten - 1.0 Auswahl Beitrag bearbeiten.jpg[]
+
+=== Eigenschaften Bearbeiten
+
+image::Eintrag bearbeiten - 2.0 Standard Sicht Eigenschaften.jpg[]
+
+=== Tags Bearbeiten
+
+image::Eintrag bearbeiten - 3.1Sicht Tags.jpg[]
+
+=== Beschreibung Bearbeiten
+
+image::Eintrag bearbeiten - 3.2 Sicht Beschreibungen.jpg[]
+
+=== Verlag Bearbeiten
+
+image::Eintrag bearbeiten - 3.3 Sicht Verlag.jpg[]
+
+
