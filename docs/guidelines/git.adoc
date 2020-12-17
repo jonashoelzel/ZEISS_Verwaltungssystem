@@ -1,0 +1,44 @@
+= Guidelines for using git
+
+== Recommended Software:
+https://www.gitkraken.com/[GitKraken]
+
+
+== Branches:
+
+* Always create a *new branch* for every *new feature and bug*.
+* Always *create a pull request for merging* changes from one branch to another.
+* Always create *one pull request* addressing *one issue*.
+* Always *review* your code once *by yourself* before creating a pull request.
+* *Delete branches* if a feature or bug fix is merged to its intended branches and the branch is no longer required.
+* *Address GitHub issue in branch name*. If you have added GitHub issues to GitKraken you can richt-klick an issue and create a branch for this issue. Keep branche names short! For example the branch name for issue 8 would look like this: `_8-wireframes_`.
+* *Regularly commit* and *push* changes to GitHub to avoid loss of work.
+
+
+
+== Commits:
+
+* Specify the type of commit:
+** *fix:* A bug fix
+** *style:* Feature and updates related to styling
+** *refactor:* Refactoring a specific section of the codebase
+** *docs:* Everything related to documentation
+** *add:* Adding new files
+
+* Use the *imperative* mood! "Fix bug" and not "Fixed bug".
+* Make small, logically *self-contained commits*.
+* Use hyphens (`_-_`) for *bullet points*.
+* *Express yourself clearly.* Others can't read your thoughts.
+
+== Don'ts
+
+* Don’t create one pull request addressing multiple issues.
+* Don’t work on multiple issues in the same branch. If a feature is dropped, it will be difficult to revert changes.
+* Don’t do a force push until you’re extremely comfortable performing this action.
+* Don’t modify or delete remote history.
+
+== Sources and further readings
+
+https://blog.axosoft.com/git-dos-donts/ +
+https://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html +
+https://www.freecodecamp.org/news/writing-good-commit-messages-a-practical-guide/ +
