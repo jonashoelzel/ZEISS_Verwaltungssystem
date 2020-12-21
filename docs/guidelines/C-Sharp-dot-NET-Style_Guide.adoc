@@ -1,0 +1,102 @@
+= C#/.NET Style Guide
+
+
+== Layout Conventions
+
+Good layout uses formatting to emphasize the structure of your code and to make the code easier to read.
+
+
+* Write only one statement per line.
+
+* Write only one declaration per line.
+
+* Add at least one blank line between method definitions and property definitions.
+
+* Use parentheses to make clauses in an expression apparent, as shown in the following code.
+
+* Do not write lines longer than 100 characters.
+
+Does:
+....
+if ((val1 > val2) && (val1 > val3))
+{
+    //Take appropriate action.
+}
+....
+
+Don'ts
+....
+if((val1 > val2)&&(val1 > val3)){
+    //Take appropriate action.
+}
+....
+
+
+== Language Guidelines
+
+The following sections describe practices that the C# team follows to prepare code examples and samples.
+
+* If you append/concat multiple strings together, use a 'StringBuilder' to improve performance.
+
+* Do NOT use the keyword 'var' to create an implicit typed variable if you use a common type.
+
+* Prefer a 'for' loop instead a 'foreach' loop to improve performance.
+
+* Only catch exceptions if you can handle them or if you need to close connections and streams
+** Do not use empty 'catch' blocks or 'catch (System.Exception) to catch all 
+exceptions.
+
+* Prefer english language for code and comments.
+
+* Prefer Properties instead of functions to get/set a variable.
+
+
+
+----
+----
+
+* Use meaningful method/function and variable names.
+** Examples:
+*** maxConcurrentConnection instead of maxConn
+*** unbalancedAccountList instead of accountingList
+*** documentToBeDeleted instead of document
+*** remindersOfStep2 instead of Rmd2
+** Include verbs into the names
+** Use prefixes such as Get[...], Set[...].
+** Start local variables with camelCase (starting with lowercase and the first letter of each word (except for the first one is uppercase)).
+*** Examples:
+**** Do: deleteAdressFromChache 
+**** Do NOT: delete_adress_from_chache or delete-adress-from-chache
+** Start namespaces, classes and methods/functions with PascalCase (the letter of each word starts uppercase).
+*** Examples:
+**** Do: ZeissManagementSystem, ExcelHandler, ReadExcel, WriteExcel 
+**** Do NOT: Zeiss_Management-System, excelHandler, read_excel, write-excel
+
+----
+----
+
+* Use 'I' (uppercase of 'i') in front of interfaces to mark them as interface.
+** Interfaces use PascalCase.
+*** Examples:
+**** IComparer, IComperable, IEnumerable
+
+----
+----
+
+When to use PascalCase and camelCase?:
+
+|=======
+|Identifier |Convention |Example
+|Namespace |PascalCase |System.Workflow.ComponentModel
+|Type | PascalCase |public sealed class DataContractSerializer
+|Property |PascalCase |public string ProcessID {get; set;}
+|Method/Function |PascalCase |public void Dispose()
+|Field |PascalCase |private static Padding FormPadding
+|Field |PascalCase |private string UserWindowText
+|Delegate/Event |PascalCase |public delegate void PropertyChangedEventHandler
+|Enum(eration) |PascalCase |Internal enum Severity
+|Interface |I+PascalCase |public interface ICompareable
+|Parameter |camelCase |public bool Contains(T value)
+|Local Variable |camelCase |int counter
+|=======
+
