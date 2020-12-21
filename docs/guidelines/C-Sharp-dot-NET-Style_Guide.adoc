@@ -16,7 +16,7 @@ Good layout uses formatting to emphasize the structure of your code and to make 
 
 * Do not write lines longer than 100 characters.
 
-Does:
+Do's:
 ....
 if ((val1 > val2) && (val1 > val3))
 {
@@ -51,9 +51,9 @@ exceptions.
 * Prefer Properties instead of functions to get/set a variable.
 
 
+== Naming Conventions
 
-----
-----
+=== PascalCase and camelCase
 
 * Use meaningful method/function and variable names.
 ** Examples:
@@ -72,16 +72,14 @@ exceptions.
 **** Do: ZeissManagementSystem, ExcelHandler, ReadExcel, WriteExcel 
 **** Do NOT: Zeiss_Management-System, excelHandler, read_excel, write-excel
 
-----
-----
+=== Interfaces
 
 * Use 'I' (uppercase of 'i') in front of interfaces to mark them as interface.
 ** Interfaces use PascalCase.
 *** Examples:
 **** IComparer, IComperable, IEnumerable
 
-----
-----
+=== Case Convention Table
 
 When to use PascalCase and camelCase?:
 
