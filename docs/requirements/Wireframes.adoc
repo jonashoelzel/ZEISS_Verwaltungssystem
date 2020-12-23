@@ -9,82 +9,103 @@ include::../_includes/default-attributes.inc.adoc[]
 
 === Landing Page
 
-image::Sales Department Veröffentlichung hinzufügen - 1.0 Standard Sicht.jpg[]
+image::Veröffentlichung hinzufügen - Wireframe - Landing Page.jpg[]
 
-=== Eingabefelder neue Veröffentlichung
+=== Workflow wichtige Angaben
 
-image::Sales Department Veröffentlichung hinzufügen - 2.0  Eigenschaften.jpg[]
+.Titelname
+image::Veröffentlichung hinzufügen - Wireframe - Titelname.jpg[]
 
-==== Neuer Geschäftsbereich Hinzufügen
+.Autor
+image::Veröffentlichung hinzufügen - Wireframe - Autor.jpg[]
 
-image::Sales Department Veröffentlichung hinzufügen - 3.5 Neuer Geschäftsbereich.jpg[]
+.Geschäftsbereich
+image::Veröffentlichung hinzufügen - Wireframe - Geschäftsbereich.jpg[]
 
-=== Eintragen der Tags
+==== Neuen Geschäftsbereich Hinzufügen
 
-image::Sales Department Veröffentlichung hinzufügen - 3.2 Sicht Tags.jpg[]
+image::Veröffentlichung hinzufügen - Wireframe - neuer Geschäftsbereich.jpg[]
 
-=== Beschreibung Hinzufügen
+.Datum der Veröffentlichung
+image::Veröffentlichung hinzufügen - Wireframe - Datum der Veröffentlichung.jpg[]
 
-image::Sales Department Veröffentlichung hinzufügen - 3.3 Sicht Beschreibungen.jpg[]
+.Art der Veröffentlichung
+image::Veröffentlichung hinzufügen - Wireframe - Art der Veröffentlichung.jpg[]
 
-=== Verlag Hinzufügen
+=== Workflow optionale Angaben
 
-image::Sales Department Veröffentlichung hinzufügen - 3.4 Sicht Verlag.jpg[]
+.Tags
+image::Veröffentlichung hinzufügen - Wireframe - Tags.jpg[]
 
-=== Veröffentlichungen Abschließen
+.Beschreibung
+image::Veröffentlichung hinzufügen - Wireframe - Beschreibung.jpg[]
 
-image::Sales Department Veröffentlichung hinzufügen - 4.0 Veröffentlichung abgeschlossen.jpg[]
+.Verlag des Mediums
+image::Veröffentlichung hinzufügen - Wireframe - Verlag des Mediums.jpg[]
+
+
+=== Vorschau Veröffentlichung
+
+image::Veröffentlichung hinzufügen - Wireframe - Vorschau hinzufügen.jpg[]
+
+=== Veröffentlichung abschließen
+
+image::Veröffentlichung hinzufügen - Wireframe - Veröffentlichung hinzugefügt.jpg[]
 
 === Nicht Vollständige Veröffentlichung Fehlermeldung
 
-image::Sales Department Veröffentlichung hinzufügen - 3.1Fehlermeldung notwendige Felder.jpg[]
+image::Veröffentlichung hinzufügen - Wireframe - Fehlermeldung fehlende Angaben.jpg[]
 
-== Veröffentlichung Suchen & Filtern
+== Beitrag Suchen & Filtern
 
 :imagesdir: images/wireframe_use_case_02
 
 === Landing Page
 
-image::Beitrag suchen - 1.0 Standard Sicht.jpg[]
+image::Beitrag suchen - Wireframe - Landing Page.jpg[]
 
-=== Suchekriterien
+=== Beiträge Übersicht
 
-image::Beitrag suchen - 2.0 Suchkriterien.jpg[]
+image::Beitrag suchen - Wireframe - Anzeigeübersicht Beiträge.jpg[]
 
-=== Liste Sortieren
+=== Informationen zu einem Beitrag anzeigen
 
-image::Beitrag suchen - 3.0 Sortierung.jpg[]
+image::Beitrag suchen - Wireframe - Alle Informationen eines Beitrages.jpg[]
 
-=== Gefilterte und Sortierte Liste
+=== Filtern und Sortieren
 
-image::Beitrag suchen - 4.0 Gefilterte Ergebnisse.jpg[]
-
-=== Exportieren als CSV
-
-image::Beitrag suchen - 5.0 CSV Exportierung.jpg[]
+image::Beitrag suchen - Wireframe - Beiträge filtern.jpg[]
 
 == Einträge Bearbeiten
 
 :imagesdir: images/wireframe_use_case_03
 
-=== Aus Gefilterter und Sortierter Liste Beitrag auswählen
+=== Beitrag aus Übersicht zur Bearbeitung auswählen
 
-image::Eintrag bearbeiten - 1.0 Auswahl Beitrag bearbeiten.jpg[]
+image::Eintrag bearbeiten - Wireframe - Auswahl Beitrag bearbeiten.jpg[]
 
-=== Eigenschaften Bearbeiten
+=== Workflow Eigenschaften Bearbeiten
 
-image::Eintrag bearbeiten - 2.0 Standard Sicht Eigenschaften.jpg[]
+image::Eintrag bearbeiten - Wireframe - Titelname.jpg[]
 
-=== Tags Bearbeiten
+image::Eintrag bearbeiten - Wireframe - Autor.jpg[]
 
-image::Eintrag bearbeiten - 3.1Sicht Tags.jpg[]
+image::Eintrag bearbeiten - Wireframe - Geschäftsbereich.jpg[]
 
-=== Beschreibung Bearbeiten
+image::Eintrag bearbeiten - Wireframe - Datum der Veröffentlichung.jpg[]
 
-image::Eintrag bearbeiten - 3.2 Sicht Beschreibungen.jpg[]
+image::Eintrag bearbeiten - Wireframe - Art der Veröffentlichung.jpg[]
 
-=== Verlag Bearbeiten
+image::Eintrag bearbeiten - Wireframe - Tags.jpg[]
 
-image::Eintrag bearbeiten - 3.3 Sicht Verlag.jpg[]
+image::Eintrag bearbeiten - Wireframe - Beschreibung.jpg[]
 
+image::Eintrag bearbeiten - Wireframe - Verlag des Mediums.jpg[]
 
+=== Vorschau Bearbeitung
+
+image::Eintrag bearbeiten - Wireframe - Vorschau Bearbeitung.jpg[]
+
+=== Bearbeitung gespeichert
+
+image::Eintrag bearbeiten - Wireframe - Erfolgreiche Bearbeitung.jpg[]
