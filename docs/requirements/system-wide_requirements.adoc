@@ -1,18 +1,18 @@
-= System-Wide Requirements: {project-name}
-Vorname Nachname <email@domain.org>; Vorname2 Nachname2 <email2@domain.org>; Vorname3 Nachname3 <email3@domain.org>
+= System-Wide Requirements: ZEISS Verwaltungssystem
+Nina Püschmann s79289@htw-dresden.de; Vorname2 Nachname2 <email2@domain.org>; Vorname3 Nachname3 <email3@domain.org>
 {localdatetime}
 include::../_includes/default-attributes.inc.adoc[]
 // Platzhalter für weitere Dokumenten-Attribute
 
 
 == Einführung
-In diesem Dokument werden die systemweiten Anforderungen für das Projekt <Thema> spezifiziert. Die Gliederung erfolgt nach der FURPS+ Anforderungsklassifikation:
+In diesem Dokument werden die systemweiten Anforderungen für das Projekt "ZEISS-Verwaltungssystem für Veröffentlichungen" spezifiziert. Die Gliederung erfolgt nach der FURPS+ Anforderungsklassifikation:
 
 * Systemweite funktionale Anforderungen (F),
 * Qualitätsanforderungen für Benutzbarkeit, Zuverlässigkeit, Effizienz und Wartbarkeit (URPS) sowie
 * zusätzliche Anforderungen (+) für technische, rechtliche, organisatorische Randbedingungen
 
-NOTE: Die funktionalen Anforderungen, die sich aus der Interaktion von Nutzern mit dem System ergeben, sind als Use Cases in einem separaten Dokument festgehalten. [hier ggf. Verweis einfügen]
+NOTE: Die funktionalen Anforderungen, die sich aus der Interaktion von Nutzern mit dem System ergeben, sind als Use Cases in einem separaten Dokument festgehalten.
 
 == Systemweite funktionale Anforderungen
 //Angabe von system-weiten funktionalen Anforderungen, die nicht als Use Cases ausgedrückt werden können. Beispiele sind Drucken, Berichte, Authentifizierung, Änderungsverfolgung (Auditing), zeitgesteuerte Aktivitäten (Scheduling), Sicherheit / Maßnahmen zum Datenschutz
@@ -21,32 +21,55 @@ NOTE: Die funktionalen Anforderungen, die sich aus der Interaktion von Nutzern m
 //Qualitätsanforderungen repräsentieren das "URPS" im FURPS+ zu Klassifikation von Anforderungen
 
 === Benutzbarkeit (Usability)
+* Anwendung muss extrem einfach zu bedienen sein
+** Regelmäßige Nutzer müssen das gesamte Spektrum der Funktionalitäten nutzen und die Benutzung muss schnell zur Routine werden
+** Jeder neue Nutzer muss auf einen Blick alle Funktionen erkennen und bedienen können
+* Sprache: Deutsch
+* Datumsformat: europäisch
+* keine länderspezifische Anpassung, Anwendung wird lediglich bei ZEISS im deutschsprachigen Raum eingesetzt
+
 //Beschreiben Sie Anforderungen für Eigenschaften wie einfache Bedienung, einfaches Erlernen, Standards für die Benutzerfreundlichkeit, Lokalisierung (landesspezifische Anpassungen von Sprache, Datumsformaten, Währungen usw.)
 
 === Zuverlässigkeit (Reliability)
+* System soll extrem zuverlässig sein, kaum abstürzen/versagen
+* Auch bei Ausfall der Internetverbindung oder kurzzeitigen anderen Störungen sollte das System nicht beeinträchtigt werden, es läuft wie gewohnt weiter
+** Bei Speichern einer neuen Eingabe wird diese lokal auf dem PC des Users gespeichert und dann später hochgeladen
+* Bei Stromausfall werden alle noch nicht gespeicherten Änderungen verworfen
 // Zuverlässigkeit beinhaltet die Fähigkeit des Produkts und/oder des Systems unter Stress und ungünstigen Bedingungen am laufen zu bleiben. Spezifizieren Sie Anforderungen für zuverlässige Akzeptanzstufen, und wie diese gemessen und evaluiert werden. Vorgeschlagene Themen sind Verfügbarkeit, Häufigkeit und Schwere von Fehlern und Wiederherstellbarkeit.
 
 === Effizienz (Performance)
+* System soll sehr effizient sein
+** Zeit zum starten und beenden extrem niedrig
+** Schnelle Eingaben und Suchen möglich
+** Direkte Antwort des Systems, kaum Verarbeitungszeit
 // Die Performanz Charakteristiken des Systems sollten in diesem Bereich ausgeführt werden. Beispiele sind Antwortzeit, Durchsatz, Kapazität und Zeiten zum Starten oder Beenden.
 
 === Wartbarkeit (Supportability)
+
+* Code soll einfach verständlich und überall mit Notizen versehen sein, damit das Programm von Externen einfach zu warten ist
+* Programm ist Windows-Kompatibel, so wie vom Kunden gefordert
+* Veränderungen, Verbesserungen und Erweiterungen sind einfach möglich, da wir abgesehen von .NET nur mit OpenSource-Programmen arbeiten
+* Programm läuft absolut unabhhängig von der firmeninternen IT und ohne Server-Auslastung und kann somit jederzeit verändert werden
+* Programm kann auf jedem firmeninternen Rechner installiert werden
+* Support kommt nach Beendigung des Projektes von den Mitarbeitern, welche dann für das Programm verantwortlich sind
 // Dieser Bereich beschreibt sämtliche Anforderungen welche die Supportfähigkeit oder Wartbarkeit des zu entwickelnden Systems verbessern, einschließlich Anpassungsfähigkeit und Erweiterbarkeit, Kompatibilität, Skalierbarkeit und Anforderungen bezüglich der System Installation sowie Maß an Support und Wartbarkeit.
 
 == Zusätzliche Anforderungen
 === Einschränkungen
-//Angaben ergänzen, nicht relevante Unterpunkte streichen oder auskommentieren
-* Ressourcenbegrenzungen
+* Programm sollte kaum Wartungsarbeit erforderlich machen, Grundfunktionen sollen funktionieren
+* zuverlässige Internetverbindung sollte bereitgestellt werden
 * zu nutzende Komponenten / Bibliotheken / Frameworks
-* Vorgaben für die Programmiersprache
-* zu unterstützende Plattformen / Betriebssysteme
-* Physische Begrenzungen für Hardware, auf der das System betrieben werden soll
+* HTML/CSS und C# 
+* Programm soll nur auf Windows laufen und mit .NET programmiert werden
+* Als Web-Framework wird die Open-Source-Variante "Blazor" verwendet, welche in unserem Rating die beste Bewertung erhielt
+//* Physische Begrenzungen für Hardware, auf der das System betrieben werden soll
 
 === Organisatorische Randbedingungen
 //Angaben ergänzen, nicht relevante Unterpunkte streichen oder auskommentieren
-* Anforderungen an Betrieb, Management und Wartung der Anwendung
-* zu beachtende Standards, Normen und Regeln
+* Betrieb/Management muss Verantwortlichen ernennen, welcher dann für die Wartung und Instandhaltung verantwortlich ist
+
 
 === Rechtliche Anforderungen
 //Angaben ergänzen, nicht relevante Unterpunkte streichen oder auskommentieren
 * Lizensierung der Anwendung
-* Datenschutz
+* Datenschutz einhalten, lediglich veröffentlichte Beiträge hinzufügen, sodass Datenschutz nicht verletzt wird

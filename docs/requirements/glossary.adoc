@@ -14,11 +14,10 @@ In diesem Dokument werden die wesentlichen Begriffe aus dem Anwendungsgebiet (Fa
 [%header]
 |===
 |Begriff|Definition und Erläuterung|	Synonyme
-
-|Autor|Kann Beiträge veröffentlichen, diese einsehen und bearbeiten|x
-|Bereichsleiter | kann Veröffentlichung unterstellter Autoren sehen | x
-|Reporter|Kann Reports erstellen, Statistiken einsehen (Top Autoren, Veröffentlichungen je Bereich, ...), Beiträge einsehen und verändern.|x
-
+|BLAZOR|Open-Source-Webframework, welches für dieses Programm genutzt wird|x
+|.NET|Framework von Windows, welches für dieses Programm genutzt wird|x
+|KANBAN|Methode der Softwareentwicklung, bei der der aktuelle Stand in verschiedenen Spalten (open, doing und done) übersichtlich erkennbar ist|Agiles PM
+|x|x|x
 
 |===
 
@@ -36,7 +35,9 @@ In diesem Dokument werden die wesentlichen Begriffe aus dem Anwendungsgebiet (Fa
 |--|Layer|Sammlung von zusammengehörigen Komponenten, die eine Unabhängigkeit bestimmter Funktionalitäten gewährleistet. Ein Layer trennt verschiedene Logiken
 |--|Logic|Sammlung zusammengehöriger Komponten, die eine bestimmte Aufgaben wie UI, Datenverwaltung, [...] erledigen. Die Logic wird in verschiedene Layer eingeteilt
 |CSV|Comma Seperated Values|(Text-)Datei in der Einträge durch Kommas und New-lines getrennt werden
-|--|Active Directory|Windows Dateimanagementsystem zum Verwalten von Zugriffsrechten|
+|--|Active Directory|Windows Dateimanagementsystem zum Verwalten von Zugriffsrechten
+|FURPS+|Systemweite funktionale Anforderungen *(F)*, Qualitätsanforderungen für Benutzbarkeit, Zuverlässigkeit, Effizienz und Wartbarkeit *(URPS)* sowie zusätzliche Anforderungen *(+)* für technische, rechtliche, organisatorische Randbedingungen |System wide requirements
+|x|x|x
 |===
 
 == Verzeichnis der Datenstrukturen
