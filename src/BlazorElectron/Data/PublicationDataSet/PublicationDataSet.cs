@@ -15,10 +15,10 @@ namespace BlazorElectron.Data.PublicationDataSet
 
 
         // Additional Information
-        public string CurrentState { get; set; }
+        public State CurrentState = new State();
         public DateTime DateOfStartWorking { get; set; }
         public DateTime DateOfRelease { get; set; }
-        public List<string> Tags { get; set; }
+        public List<Tag> Tags { get; set; }
         public string Description { get; set; }
         public string AdditionalInformation { get; set; }
 
@@ -33,6 +33,16 @@ namespace BlazorElectron.Data.PublicationDataSet
     }
 
     public class PublicationType : DataObject
+    {
+        public string Name { get; set; }
+    }
+
+    public class State : DataObject
+    {
+        public string Name { get; set; }
+    }
+
+    public class Tag : DataObject
     {
         public string Name { get; set; }
     }
