@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,10 +18,10 @@ namespace BlazorElectron.Data.PublicationDataSet
                     _PublicationID = PublicationID;
             }
         }
-        public string WorkingTitle { get; set; }
+        public string WorkingTitle { get; set; } // What is the difference between working and publication title ?
         public string PublicationTitle { get; set; }
         //Type of medium the medium will be published (newspaper, magazin, book, blog, [...])
-        public string PublicationType { get; set; }
+        public PublicationType TypeOfPublication = new PublicationType();
 
 
         // Additional Information
@@ -42,6 +42,21 @@ namespace BlazorElectron.Data.PublicationDataSet
         public Publisher PublishedBy = new Publisher();
     }
 
+    public class PublicationType
+    {
+        public int? _ID;
+        public int? ID
+        {
+            get { return _ID; }
+            set
+            {
+                if (_ID is null)
+                    _ID = ID;
+            }
+        }
+
+        public string Name { get; set; }
+    }
 
     public class Author
     {
@@ -57,6 +72,7 @@ namespace BlazorElectron.Data.PublicationDataSet
         }
         public string Name { get; set; }
         public string Surname { get; set; }
+
         //What division is exatctly meant?!
         public string Division { get; set; }
     }
