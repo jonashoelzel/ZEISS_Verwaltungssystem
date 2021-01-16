@@ -5,19 +5,9 @@ using System.Threading.Tasks;
 
 namespace BlazorElectron.Data.PublicationDataSet
 {
-    public class PublicationDataSet
+    public class PublicationDataSet : DataObject
     {
         // Publication Information
-        private int? _PublicationID;
-        public int? PublicationID
-        {
-            get { return _PublicationID; }
-            set
-            {
-                if (_PublicationID is null)
-                    _PublicationID = PublicationID;
-            }
-        }
         public string WorkingTitle { get; set; } // What is the difference between working and publication title ?
         public string PublicationTitle { get; set; }
         //Type of medium the medium will be published (newspaper, magazin, book, blog, [...])
@@ -42,34 +32,13 @@ namespace BlazorElectron.Data.PublicationDataSet
         public Publisher PublishedBy = new Publisher();
     }
 
-    public class PublicationType
+    public class PublicationType : DataObject
     {
-        public int? _ID;
-        public int? ID
-        {
-            get { return _ID; }
-            set
-            {
-                if (_ID is null)
-                    _ID = ID;
-            }
-        }
-
         public string Name { get; set; }
     }
 
-    public class Author
+    public class Author : DataObject
     {
-        public int? _ID;
-        public int? ID
-        {
-            get { return _ID; }
-            set
-            {
-                if (_ID is null)
-                    _ID = ID;
-            }
-        }
         public string Name { get; set; }
         public string Surname { get; set; }
 
@@ -78,7 +47,12 @@ namespace BlazorElectron.Data.PublicationDataSet
     }
 
 
-    public class Publisher
+    public class Publisher : DataObject
+    {
+        public string Name { get; set; }
+    }
+
+    public class DataObject
     {
         private int? _ID;
         public int? ID
@@ -90,6 +64,5 @@ namespace BlazorElectron.Data.PublicationDataSet
                     _ID = ID;
             }
         }
-        public string Name { get; set; }
     }
 }
