@@ -22,6 +22,7 @@ namespace BlazorElectron.Data.PublicationDataSet
         public string Description { get; set; }
         public string AdditionalInformation { get; set; }
 
+        public string Division { get; set; }
 
         // Author Information
         public Author MainAuthor = new Author();
@@ -51,9 +52,6 @@ namespace BlazorElectron.Data.PublicationDataSet
     {
         public string Name { get; set; }
         public string Surname { get; set; }
-
-        //What division is exatctly meant?!
-        public string Division { get; set; }
     }
 
 
