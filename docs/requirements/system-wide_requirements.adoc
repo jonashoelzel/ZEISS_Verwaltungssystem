@@ -15,6 +15,8 @@ In diesem Dokument werden die systemweiten Anforderungen für das Projekt "ZEISS
 NOTE: Die funktionalen Anforderungen, die sich aus der Interaktion von Nutzern mit dem System ergeben, sind als Use Cases in einem separaten Dokument festgehalten.
 
 == Systemweite funktionale Anforderungen
+* Export der Daten in eine Excel-Datei (ist durch die Verwendung von Excel als Daten Bank gegeben)
+
 //Angabe von system-weiten funktionalen Anforderungen, die nicht als Use Cases ausgedrückt werden können. Beispiele sind Drucken, Berichte, Authentifizierung, Änderungsverfolgung (Auditing), zeitgesteuerte Aktivitäten (Scheduling), Sicherheit / Maßnahmen zum Datenschutz
 
 == Qualitätsanforderungen für das Gesamtsystem
