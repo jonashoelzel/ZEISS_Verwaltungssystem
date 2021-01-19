@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorElectron", "BlazorElectron.csproj", "{E5F3DF8C-5F40-4F85-8BE3-8E4A053B62C4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorElectron", "BlazorElectron.csproj", "{E5F3DF8C-5F40-4F85-8BE3-8E4A053B62C4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PublicationDataSet", "..\PublicationDataSet\PublicationDataSet.csproj", "{D6432E65-677F-4DF4-9BDF-AA153AD3AE82}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{E5F3DF8C-5F40-4F85-8BE3-8E4A053B62C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E5F3DF8C-5F40-4F85-8BE3-8E4A053B62C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E5F3DF8C-5F40-4F85-8BE3-8E4A053B62C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6432E65-677F-4DF4-9BDF-AA153AD3AE82}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6432E65-677F-4DF4-9BDF-AA153AD3AE82}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6432E65-677F-4DF4-9BDF-AA153AD3AE82}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6432E65-677F-4DF4-9BDF-AA153AD3AE82}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
