@@ -1,0 +1,49 @@
+﻿@page "/addAuthor"
+@inject NavigationManager NavigationManager
+
+<img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg"
+     class="logo" />
+
+<section class="author panel-default">
+    <header class="panel-heading">
+        <h4 class="panel-title">Autor</h4>
+    </header>
+    <div class="panel-body">
+        <form>
+            <div class="author-default">
+                <label for="authorname">Vorname</label>
+                <input type="text" id="authorname" name="authorname" @bind="@AuthorName" /><br />
+            </div>
+            <div class="author-default">
+                <label for="surname">Nachname</label>
+                <input type="text" id="surname" name="surname" @bind="@AuthorSurname"/><br />
+            </div>
+        </form>
+    </div>
+</section>
+
+
+<button class="back" type="button" @onclick="NavigateToAddTitleComp">
+    Zurück
+</button>
+
+<button class="continue" type="button" @onclick="NavigateToAddDivisionComp">
+    Weiter
+</button>
+
+@code 
+{
+    private async void NavigateToAddTitleComp()
+    {
+        NavigationManager.NavigateTo("AddTitle");
+    }
+
+    private async void NavigateToAddDivisionComp()
+    {
+        NavigationManager.NavigateTo("addDivision");
+    }
+
+    public string AuthorName { get; set; }
+
+    public string AuthorSurname { get; set; }
+}

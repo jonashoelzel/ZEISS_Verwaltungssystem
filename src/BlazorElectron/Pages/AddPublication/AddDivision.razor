@@ -1,0 +1,29 @@
+﻿@page "/addDivision"
+@inject NavigationManager NavigationManager
+
+<img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg"
+     class="logo" />
+
+<h3>AddDivision</h3>
+<p>Hier wird der Bereich hinzugefügt.</p>
+
+<button class="back" type="button" @onclick="NavigateToAddAuthorComp">
+    Zurück
+</button>
+
+<button class="continue" type="button" @onclick="NavigateToAddDateOfReleaseComp">
+    Weiter
+</button>
+
+@code
+{
+    private async void NavigateToAddAuthorComp()
+    {
+        NavigationManager.NavigateTo("AddAuthor");
+    }
+
+    private async void NavigateToAddDateOfReleaseComp()
+    {
+        NavigationManager.NavigateTo("addDateOfRelease");
+    }
+}

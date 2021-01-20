@@ -1,0 +1,20 @@
+﻿@page "/addPublicationType"
+@inject NavigationManager NavigationManager
+
+<img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg"
+     class="logo" />
+
+<h3>AddPublicationType</h3>
+<p>Hier wird die Art der Veröffentlichung hinzugefügt.</p>
+
+<button class="back" type="button" @onclick="NavigateToAddDateOfRelease">
+    Zurück
+</button>
+
+@code 
+{
+    private async void NavigateToAddDateOfRelease()
+    {
+        NavigationManager.NavigateTo("addDateOfRelease");
+    }
+}

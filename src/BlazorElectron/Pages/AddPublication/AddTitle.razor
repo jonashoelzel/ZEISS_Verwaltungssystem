@@ -1,0 +1,72 @@
+﻿@page "/addTitle"
+@inject NavigationManager NavigationManager
+
+<img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg"
+     class="logo" />
+
+<!--
+    <div class="mandatory-types">
+        <input type="radio" name="mandatory-types" values="title"
+               id="title" />
+        <label for="title">
+            Titelname
+        </label>
+
+        <input type="radio" name="mandatory-types" values="author"
+               id="auhtor" />
+        <label for="author">
+            Autor
+        </label>
+
+        <input type="radio" name="mandatory-types" values="division"
+               id="division" />
+        <label for="division">
+            Geschäftsbereich
+        </label>
+
+        <input type="radio" name="mandatory-types" values="dateofrelease"
+               id="dateofrelease" />
+        <label for="dateofrelease">
+            Datum der Veröffentlichung
+        </label>
+
+        <input type="radio" name="mandatory-types" values="publicationtype"
+               id="publicationtype" />
+        <label for="publicationtype">
+            Art der Veröffentlichung
+        </label>
+    </div>
+-->
+    <section class="panel panel-default">
+        <header class="panel-heading">
+            <h4 class="panel-title">Dokument</h4>
+        </header>
+        <div class="panel-body">
+            <form>
+                <label for="title">Titelname</label>
+                <input type="text" id="title" name="title" @bind="@Title" /><br />
+            </form>
+        </div>
+    </section>
+
+    <button class="back" type="button" @onclick="NavigateToLandingPage">
+        Startseite
+    </button>
+    <button class="continue" type="button" @onclick="NavigateToAddAuthorComp">
+        Weiter
+    </button>
+
+@code
+{
+    private async void NavigateToLandingPage()
+    {
+        NavigationManager.NavigateTo("/");
+    }
+
+    private async void NavigateToAddAuthorComp()
+    {
+        NavigationManager.NavigateTo("addAuthor");
+    }
+
+    public string Title { get; set; }
+}

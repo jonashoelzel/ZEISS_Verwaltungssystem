@@ -1,0 +1,25 @@
+﻿@page "/"
+@inject NavigationManager NavigationManager
+
+<img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg" class="logo" />
+
+<button class="add_publication" type="button" @onclick="NavigateToAddTitleComp"> 
+    Veröffentlichung hinzufügen
+</button>
+
+<button class="search_publication" type="button" @onclick="NavigateToSearchPublicationComp">
+    Fachbeitrag suchen
+</button>
+
+@code
+{
+    private async void NavigateToAddTitleComp()
+    {
+        NavigationManager.NavigateTo("addTitle");
+    }
+
+    private async void NavigateToSearchPublicationComp()
+    {
+        NavigationManager.NavigateTo("searchPub");
+    }
+}
