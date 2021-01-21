@@ -1,4 +1,5 @@
 using BlazorElectron.Data;
+using BlazorElectron.Data.PublicationDataSet;
 using ElectronNET.API;
 using ElectronNET.API.Entities;
 using Microsoft.AspNetCore.Builder;
@@ -43,7 +44,7 @@ namespace BlazorElectron
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddSingleton<WeatherForecastService>();
+            services.AddSingleton<PublicationDataSetModel>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
