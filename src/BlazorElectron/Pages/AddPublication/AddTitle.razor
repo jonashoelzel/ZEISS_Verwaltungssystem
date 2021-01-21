@@ -1,9 +1,9 @@
-@page "/addTitle"
+﻿@page "/addTitle"
 @using BlazorElectron.Data.PublicationDataSet
 
 @inject NavigationManager NavigationManager
 @inject PublicationDataSetModel Publication
-@inject NavigationManager NavigationManager
+
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg"
      class="logo" />
@@ -48,7 +48,7 @@
         <div class="panel-body">
             <form>
                 <label for="title">Titelname</label>
-                <input type="text" id="title" name="title" @bind="@Title" /><br />
+                <input type="text" id="title" name="title" @bind="@Publication.WorkingTitle" /><br />
             </form>
         </div>
     </section>
@@ -62,15 +62,13 @@
 
 @code
 {
-    private async void NavigateToLandingPage()
+    private void NavigateToLandingPage()
     {
         NavigationManager.NavigateTo("/");
     }
 
-    private async void NavigateToAddAuthorComp()
+    private void NavigateToAddAuthorComp()
     {
         NavigationManager.NavigateTo("addAuthor");
     }
-
-    public string Title { get; set; }
 }

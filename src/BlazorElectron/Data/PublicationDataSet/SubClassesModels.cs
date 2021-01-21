@@ -13,7 +13,7 @@ namespace BlazorElectron.Data.PublicationDataSet
 
     public class StateModel : DataObject, IState
     {
-        [Required]
+        [Required(ErrorMessage = "Name ist ein Pflichtfeld")]
         [MaxLength(100, ErrorMessage = "Name ist zu lang")]
         [MinLength(1, ErrorMessage = "Bitte Name eingeben")]
         public string Name { get; set; }
@@ -21,7 +21,7 @@ namespace BlazorElectron.Data.PublicationDataSet
 
     public class TagModel : DataObject, ITag
     {
-        [Required]
+        [Required(ErrorMessage = "Name ist ein Pflichtfeld")]
         [MaxLength(100, ErrorMessage = "Name ist zu lang")]
         [MinLength(1, ErrorMessage = "Bitte Name eingeben")]
         public string Name { get; set; }
@@ -29,11 +29,12 @@ namespace BlazorElectron.Data.PublicationDataSet
 
     public class AuthorModel : DataObject, IAuthor
     {
-        [Required]
+        [Required(ErrorMessage = "Vorname ist ein Pflichtfeld")]
         [MaxLength(100, ErrorMessage = "Name ist zu lang")]
         [MinLength(1, ErrorMessage = "Bitte Name eingeben")]
         public string Name { get; set; }
-        [Required]
+
+        [Required(ErrorMessage = "Namchname ist ein Pflichtfeld")]
         [MaxLength(100, ErrorMessage = "Name ist zu lang")]
         [MinLength(1, ErrorMessage = "Bitte Name eingeben")]
         public string Surname { get; set; }
@@ -41,7 +42,7 @@ namespace BlazorElectron.Data.PublicationDataSet
 
     public class PublisherModel : DataObject, IPublisher
     {
-        [Required]
+        [Required(ErrorMessage = "Name ist ein Pflichtfeld")]
         [MaxLength(100, ErrorMessage = "Name ist zu lang")]
         [MinLength(1, ErrorMessage = "Bitte Name eingeben")]
         public string Name { get; set; }

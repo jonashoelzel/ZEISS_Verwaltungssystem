@@ -1,9 +1,9 @@
-@page "/addAuthor"
+﻿@page "/addAuthor"
 @using BlazorElectron.Data.PublicationDataSet
 
 @inject NavigationManager NavigationManager
 @inject PublicationDataSetModel Publication
-@inject NavigationManager NavigationManager
+
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg"
      class="logo" />
@@ -12,42 +12,46 @@
     <header class="panel-heading">
         <h4 class="panel-title">Autor</h4>
     </header>
-    <div class="panel-body">
-        <form>
+
+    <EditForm Model="@Publication.MainAuthor" OnValidSubmit="NavigateToNextScreen">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <div class="panel-body">
             <div class="author-default">
-                <label for="authorname">Vorname</label>
-                <input type="text" id="authorname" name="authorname" @bind="@AuthorName" /><br />
+                <label for="firstname">Vorname</label>
+                <InputText id="name" DisplayName="firstname" @bind-Value="Publication.MainAuthor.Name" /><br />
             </div>
             <div class="author-default">
                 <label for="surname">Nachname</label>
-                <input type="text" id="surname" name="surname" @bind="@AuthorSurname"/><br />
+                <InputText id="name" DisplayName="Surname" @bind-Value="Publication.MainAuthor.Surname" /><br />
             </div>
-        </form>
-    </div>
+        </div>
+        <div>
+            <button class="back" type="button" @onclick="NavigateToPreviousScreen">
+                Zurück
+            </button>
+            <button class="continue" type="submit">
+                Weiter
+            </button>
+        </div>
+    </EditForm>
 </section>
 
 
-<button class="back" type="button" @onclick="NavigateToAddTitleComp">
-    Zurück
-</button>
-
-<button class="continue" type="button" @onclick="NavigateToAddDivisionComp">
-    Weiter
-</button>
-
-@code 
+@code
 {
-    private async void NavigateToAddTitleComp()
+    private void NavigateToPreviousScreen()
     {
         NavigationManager.NavigateTo("AddTitle");
     }
 
-    private async void NavigateToAddDivisionComp()
+    private void NavigateToNextScreen()
     {
         NavigationManager.NavigateTo("addDivision");
     }
 
-    public string AuthorName { get; set; }
+    private void HandleInvalidSubmit()
+    {
 
-    public string AuthorSurname { get; set; }
+    }
 }
