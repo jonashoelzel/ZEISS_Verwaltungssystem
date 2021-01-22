@@ -4,26 +4,52 @@
 <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg"
      class="logo" />
 
-<h3>AddDivision</h3>
-<p>Hier wird der Bereich hinzugefügt.</p>
+<section class="division panel-default">
+    <header class="panel-heading">
+        <h4 class="panel-title">Geschäftsbereich</h4>
+    </header>
+    <div class="panel-body">
+        <select name="division" class="division-select">
+            <option>DAC</option>
+            <option>DQA</option>
+            <option>DQA I</option>
+            <option>DQA II</option>
+            <option>DQA, TAD III</option>
+            <option>MSD</option>
+            <option>QA</option>
+            <option>SAP</option>
+            <option>SBD</option>
+            <option>SEV</option>
+            <option>TAD</option>
+            <option>TAD I</option>
+            <option>TAD II</option>
+            <option>TAD III</option>
+            <option>Vorstand</option>
+            <option>Vorstand, TAD I</option>
+        </select>
+        <button type="button" class="addDivision">
+            Neuer Geschäftsbereich
+        </button>
+    </div>
+</section>
 
-<button class="back" type="button" @onclick="NavigateToAddAuthorComp">
-    Zurück
-</button>
+    <button class="back" type="button" @onclick="NavigateToAddAuthorComp">
+        Zurück
+    </button>
 
-<button class="continue" type="button" @onclick="NavigateToAddDateOfReleaseComp">
-    Weiter
-</button>
+    <button class="continue" type="button" @onclick="NavigateToAddDateOfReleaseComp">
+        Weiter
+    </button>
 
-@code
+    @code
 {
-    private async void NavigateToAddAuthorComp()
-    {
-        NavigationManager.NavigateTo("AddAuthor");
-    }
+        private async void NavigateToAddAuthorComp()
+        {
+            NavigationManager.NavigateTo("AddAuthor");
+        }
 
-    private async void NavigateToAddDateOfReleaseComp()
-    {
-        NavigationManager.NavigateTo("addDateOfRelease");
+        private async void NavigateToAddDateOfReleaseComp()
+        {
+            NavigationManager.NavigateTo("addDateOfRelease");
+        }
     }
-}

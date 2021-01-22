@@ -79,7 +79,23 @@ body {
     width: 20%;
     height: 10%;
 }
-
+/*Veröffentlichung hinzufügen-Button*/
+.addPub {
+    border: 3px groove rgba(28,110,164,0.55);
+    border-radius: 15px;
+    background-color: #007dc1;
+    color: #ffffff;
+    font-family: Arial;
+    font-size: 150%;
+    font-weight: bold;
+    text-align: center;
+    line-height: 20px;
+    position: absolute;
+    top: 26%;
+    right: 3%;
+    width: 30%;
+    height: 8%;
+}
 /*
 .mandatory-types {
     display: inline-flex;
@@ -177,7 +193,7 @@ body {
  .panel-body {
     border: 3px groove rgba(28,110,164,0.55);
     border-radius: 15px;
-    padding: 20px;
+    padding: 10%;
  }
 
 input[type=text] {
@@ -186,7 +202,53 @@ input[type=text] {
 }
 /*Autor Panel*/
 .author-default {
-    margin: 10%;
+    margin: 3%;
+}
+/*Geschäftsbereich Panel*/
+.division-select {
+    width: 50%;
+    position: absolute;
+    left: 25%;
+    top: 80%;
+}
+/*Neuer Geschäftsbereich Button*/
+.addDivision {
+    position: relative;
+    top: 80%;
+    left: 25%;
+    margin-top: 10%;
+    padding: 8px;
+}
+/*Box Datum auswählen*/
+#releaseDate {
+    position: absolute;
+    left: 30%;
+    top: 80%;
+}
+/*Beschreibung panel*/
+.description-default {
+    padding: 4%;
+}
+/*Beschreibung panel body*/
+.description-panel-body {
+    border: 3px groove rgba(28,110,164,0.55);
+    border-radius: 15px;
+    padding: 10%;
+    width: 110%;
+    height: 350%;
+}
+/*Textbox Beschreibung-Titel*/
+#titleDescr {
+    position: absolute;
+    left: 35%;
+    width: 40%;
+}
+/*Textbox Beschreibung-Beschreibung*/
+#description {
+    position: absolute;
+    left: 40%;
+    width: 60%;
+    height: 150%;
 }
 /*drin lassen*/
 #blazor-error-ui {

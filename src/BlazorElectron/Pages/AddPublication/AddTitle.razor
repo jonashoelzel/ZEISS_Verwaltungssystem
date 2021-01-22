@@ -37,7 +37,7 @@
         </label>
     </div>
 -->
-    <section class="panel panel-default">
+    <section class="title panel-default">
         <header class="panel-heading">
             <h4 class="panel-title">Dokument</h4>
         </header>
@@ -49,7 +49,7 @@
         </div>
     </section>
 
-    <button class="back" type="button" @onclick="NavigateToLandingPage">
+    <button class="back" type="button" @onclick="NavigateToLandingPageComp">
         Startseite
     </button>
     <button class="continue" type="button" @onclick="NavigateToAddAuthorComp">
@@ -58,7 +58,7 @@
 
 @code
 {
-    private async void NavigateToLandingPage()
+    private async void NavigateToLandingPageComp()
     {
         NavigationManager.NavigateTo("/");
     }

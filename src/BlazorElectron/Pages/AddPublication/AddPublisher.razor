@@ -1,0 +1,35 @@
+﻿@page "/addPublisher"
+@inject NavigationManager NavigationManager
+
+<img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg"
+     class="logo" />
+
+<section class="publisher panel-default">
+    <header class="panel-heading">
+        <h4 class="panel-title">Verlag des Mediums</h4>
+    </header>
+    <div class="panel-body">
+        <form>
+            <label for="publisher">Name Verlag</label>
+            <input type="text" id="publisher" name="publisher" @bind="@Publisher"/><br />
+        </form>
+    </div>
+</section>
+
+<button class="addPub" type="button">
+    Veröffentlichung hinzufügen
+</button>
+
+<button class="back" type="button" @onclick="NavigateToAddDescriptionComp">
+    Zurück
+</button>
+
+@code
+{
+    private async void NavigateToAddDescriptionComp()
+    {
+        NavigationManager.NavigateTo("addDescription");
+    }
+
+    public string Publisher { get; set; }
+}
