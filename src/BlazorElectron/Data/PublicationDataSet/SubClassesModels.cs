@@ -34,7 +34,7 @@ namespace BlazorElectron.Data.PublicationDataSet
         [MinLength(1, ErrorMessage = "Bitte Name eingeben")]
         public string Name { get; set; }
 
-        [Required(ErrorMessage = "Namchname ist ein Pflichtfeld")]
+        [Required(ErrorMessage = "Nachname ist ein Pflichtfeld")]
         [MaxLength(100, ErrorMessage = "Name ist zu lang")]
         [MinLength(1, ErrorMessage = "Bitte Name eingeben")]
         public string Surname { get; set; }
