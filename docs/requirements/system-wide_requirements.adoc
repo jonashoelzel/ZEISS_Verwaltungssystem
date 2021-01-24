@@ -43,17 +43,17 @@ NOTE: Die funktionalen Anforderungen, die sich aus der Interaktion von Nutzern m
 
 == Zusätzliche Anforderungen
 === Einschränkungen (Constraints)
-C1: Das System muss Windows-kompatibel sein.
-C2: Das System wird eine online-Datenbank nutzen.
-C3: Das Backend wird mit C# programmiert.
-C4: Das Frontend wird mit HTML/CSS programmiert.
-C5: Die Anwendung wird über das Webframework Blazor laufen.
+* C1: Das System muss Windows-kompatibel sein.
+* C2: Das System wird eine online-Datenbank nutzen.
+* C3: Das Backend wird mit C# programmiert.
+* C4: Das Frontend wird mit HTML/CSS programmiert.
+* C5: Die Anwendung wird über das Webframework Blazor laufen.
 
 === Organisatorische Randbedingungen (Interface Requirements)
-I1: Die Anwendung muss für verschiedene Bildschirmgrößen nutzbar sein.
-I2: Filter sollen über ein ausklappbares Akkordeon auswählbar sein.
-I3: Ein Workflow soll den Nutzer durch eine Hinzufügung navigieren.
+* I1: Die Anwendung muss für verschiedene Bildschirmgrößen nutzbar sein.
+* I2: Filter sollen über ein ausklappbares Akkordeon auswählbar sein.
+* I3: Ein Workflow soll den Nutzer durch eine Hinzufügung navigieren.
 
 === Rechtliche Anforderungen (Business Rules)
-B1: Bei gewünschter Hinzufügung muss das Sales Department kontaktiert werden, welches die Rechte für Hinzufügungen innehat.
-B2: Die Anwendung darf nur firmenintern genutzt werden und Daten dürfen nciht weitergegeben werden.
+* B1: Bei gewünschter Hinzufügung muss das Sales Department kontaktiert werden, welches die Rechte für Hinzufügungen innehat.
+* B2: Die Anwendung darf nur firmenintern genutzt werden und Daten dürfen nciht weitergegeben werden.
