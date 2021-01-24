@@ -16,6 +16,7 @@ NOTE: Die funktionalen Anforderungen, die sich aus der Interaktion von Nutzern m
 
 == Systemweite funktionale Anforderungen (F)
 * F1: Mit Ausnahme der Einsicht und Filterung nach bestimmten Einträgen muss das System eine Authorisierung fordern.
+* F2: Der Export der Daten erfolgt in eine Excel-Datei (ist durch die Verwendung von Excel als Daten Bank gegeben).
 
 == Qualitätsanforderungen für das Gesamtsystem
 
@@ -35,7 +36,7 @@ NOTE: Die funktionalen Anforderungen, die sich aus der Interaktion von Nutzern m
 * P3: Start- und Shutdownzeit darf nicht länger als 8 Sekunden dauern.
 
 === Unterstützbarkeit (Supportability)
-* S1: Das System soll einfach um eine Änderungsmitteilungen erweiterbar sein.
+* S1: Das System soll einfach um Änderungsmitteilungen erweiterbar sein.
 * S2: Das System soll einfach um eine Statistikerzeugung zu den Einträgen erweiterbar sein.
 * S3: Die Anwendung wird nicht mit firmeninterner IT korrelieren.
 * S4: Das System soll auf Windows 10 laufen.
