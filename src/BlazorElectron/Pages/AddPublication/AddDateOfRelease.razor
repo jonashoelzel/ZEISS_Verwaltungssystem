@@ -3,27 +3,32 @@
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg"
      class="logo" />
+<section class="DateOfRelease panel-default">
+    <header class="panel-heading">
+        <h4 class="panel-title">Datum der Veröffentlichung</h4>
+    </header>
+    <div class="panel-body">
+        <input type="date" id="releaseDate" name="releaseDate" value="">
+    </div>
+</section>
 
-<h3>AddDateOfRelease</h3>
-<p>Hier wird das Veröffentlichungsdatum hinzugefügt.</p>
+    <button class="back" type="button" @onclick="NavigateToAddDivisionComp">
+        Zurück
+    </button>
 
-<button class="back" type="button" @onclick="NavigateToAddDivisionComp">
-    Zurück
-</button>
+    <button class="continue" type="button" @onclick="NavigateToAddPublicationTypeComp">
+        Weiter
+    </button>
 
-<button class="continue" type="button" @onclick="NavigateToAddPublicationTypeComp">
-    Weiter
-</button>
-
-@code 
+    @code
 {
-    private async void NavigateToAddDivisionComp()
-    {
-        NavigationManager.NavigateTo("addDivision");
-    }
+        private async void NavigateToAddDivisionComp()
+        {
+            NavigationManager.NavigateTo("addDivision");
+        }
 
-    private async void NavigateToAddPublicationTypeComp()
-    {
-        NavigationManager.NavigateTo("addPublicationType");
+        private async void NavigateToAddPublicationTypeComp()
+        {
+            NavigationManager.NavigateTo("addPublicationType");
+        }
     }
-}
