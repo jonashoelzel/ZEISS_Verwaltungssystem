@@ -48,6 +48,11 @@ namespace DataSetIOComponentTest
             int range = (DateTime.Today.AddDays(Randomizer.Next(365)) - startDate).Days;
             return startDate.AddDays(Randomizer.Next(range));
         }
+        public static int GetRandomID()
+        {
+            Random Randomizer = new Random();
+            return Randomizer.Next(10000);
+        }
 
         private string[] CurrentStates = new string[] { "Started", "In Progress", "Paused", "Stopped", "Released", "Unknown", "Undefined", "In Check", "Editing", "None" };
 

@@ -9,4 +9,8 @@
     <PackageReference Include="ElectronNET.API" Version="9.31.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ExcelIOComponentTest\DataSetlIOComponentTest.csproj" />
+  </ItemGroup>
+
 </Project>
