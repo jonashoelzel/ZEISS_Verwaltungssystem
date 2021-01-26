@@ -1,5 +1,7 @@
 ﻿@page "/addDateOfRelease"
+@using BlazorElectron.Data.PublicationDataSet;
 @inject NavigationManager NavigationManager
+@inject PublicationDataSetModel Publication
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg"
      class="logo" />
@@ -8,27 +10,27 @@
         <h4 class="panel-title">Datum der Veröffentlichung</h4>
     </header>
     <div class="panel-body">
-        <input type="date" id="releaseDate" name="releaseDate" value="">
+        <input type="date" id="releaseDate" name="releaseDate" @bind="Publication.DateOfRelease">
     </div>
 </section>
 
-    <button class="back" type="button" @onclick="NavigateToAddDivisionComp">
-        Zurück
-    </button>
+<button class="back" type="button" @onclick="NavigateToAddDivisionComp">
+    Zurück
+</button>
 
-    <button class="continue" type="button" @onclick="NavigateToAddPublicationTypeComp">
-        Weiter
-    </button>
+<button class="continue" type="button" @onclick="NavigateToAddPublicationTypeComp">
+    Weiter
+</button>
 
-    @code
+@code
 {
-        private async void NavigateToAddDivisionComp()
-        {
-            NavigationManager.NavigateTo("addDivision");
-        }
-
-        private async void NavigateToAddPublicationTypeComp()
-        {
-            NavigationManager.NavigateTo("addPublicationType");
-        }
+    private async void NavigateToAddDivisionComp()
+    {
+        NavigationManager.NavigateTo("addDivision");
     }
+
+    private async void NavigateToAddPublicationTypeComp()
+    {
+        NavigationManager.NavigateTo("addPublicationType");
+    }
+}

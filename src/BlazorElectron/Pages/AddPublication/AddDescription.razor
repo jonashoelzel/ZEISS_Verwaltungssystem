@@ -1,5 +1,9 @@
 ﻿@page "/addDescription"
+@using BlazorElectron.Data.DataLogic;
+@using BlazorElectron.Data.PublicationDataSet;
+
 @inject NavigationManager NavigationManager
+@inject PublicationDataSetModel Publication
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg"
      class="logo" />
@@ -11,18 +15,18 @@
     <div class="description-panel-body">
         <form>
             <div class="description-default">
-                <label for="titleDescr">Titel</label>
-                <input type="text" id="titleDescr" name="titleDescr" /><br />
+                <label for="titleDescr">Veröffentlichungstitel</label>
+                <input type="text" id="titleDescr" name="titleDescr" @bind="Publication.PublicationTitle" /><br />
             </div>
             <div class="description-default">
                 <label for="description">Beschreibung</label>
-                <textarea id="description" name="description" /><br />
+                <textarea id="description" name="description" @bind="Publication.Description" /><br />
             </div>
         </form>
     </div>
 </section>
 
-<button class="addPub" type="button">
+<button class="addPub" type="button" @onclick="Save">
     Veröffentlichung hinzufügen
 </button>
 
@@ -44,5 +48,11 @@
     private async void NavigateToAddDateOfReleaseComp()
     {
         NavigationManager.NavigateTo("addPublisher");
+    }
+
+    private void Save()
+    {
+        Logic.Save(Publication);
+        NavigationManager.NavigateTo("/");
     }
 }

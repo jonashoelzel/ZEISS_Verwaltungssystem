@@ -1,5 +1,8 @@
 ﻿@page "/addDivision"
+@using BlazorElectron.Data.PublicationDataSet;
+
 @inject NavigationManager NavigationManager
+@inject PublicationDataSetModel Publication
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg"
      class="logo" />
@@ -9,7 +12,7 @@
         <h4 class="panel-title">Geschäftsbereich</h4>
     </header>
     <div class="panel-body">
-        <select name="division" class="division-select">
+        <select name="division" class="division-select" @bind="Publication.Division">
             <option>DAC</option>
             <option>DQA</option>
             <option>DQA I</option>
@@ -33,23 +36,23 @@
     </div>
 </section>
 
-    <button class="back" type="button" @onclick="NavigateToAddAuthorComp">
-        Zurück
-    </button>
+<button class="back" type="button" @onclick="NavigateToAddAuthorComp">
+    Zurück
+</button>
 
-    <button class="continue" type="button" @onclick="NavigateToAddDateOfReleaseComp">
-        Weiter
-    </button>
+<button class="continue" type="button" @onclick="NavigateToAddDateOfReleaseComp">
+    Weiter
+</button>
 
-    @code
+@code
 {
-        private async void NavigateToAddAuthorComp()
-        {
-            NavigationManager.NavigateTo("AddAuthor");
-        }
-
-        private async void NavigateToAddDateOfReleaseComp()
-        {
-            NavigationManager.NavigateTo("addDateOfRelease");
-        }
+    private async void NavigateToAddAuthorComp()
+    {
+        NavigationManager.NavigateTo("AddAuthor");
     }
+
+    private async void NavigateToAddDateOfReleaseComp()
+    {
+        NavigationManager.NavigateTo("addDateOfRelease");
+    }
+}

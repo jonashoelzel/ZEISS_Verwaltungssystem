@@ -1,5 +1,9 @@
 ﻿@page "/addPublicationType"
+@using BlazorElectron.Data.DataLogic;
+@using BlazorElectron.Data.PublicationDataSet;
+
 @inject NavigationManager NavigationManager
+@inject PublicationDataSetModel Publication
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg"
      class="logo" />
@@ -9,7 +13,7 @@
         <h4 class="panel-title">Art der Veröffentlichung</h4>
     </header>
     <div class="panel-body">
-        <select name="division" class="division-select">
+        <select name="publicationType" class="division-select" @bind="Publication.TypeOfPublication.Name">
             <option>App</option>
             <option>Artikel</option>
             <option>Beitrag in einem Buch</option>
@@ -40,7 +44,7 @@
     </div>
 </section>
 
-<button class="addPub" type="button">
+<button class="addPub" type="button" @onclick="Save">
     Veröffentlichung hinzufügen
 </button>
 
@@ -52,7 +56,7 @@
     Optionale Angaben
 </button>
 
-@code 
+@code
 {
     private async void NavigateToAddDateOfReleaseComp()
     {
@@ -62,5 +66,11 @@
     private async void NavigateToAddDescriptionComp()
     {
         NavigationManager.NavigateTo("addDescription");
+    }
+
+    private void Save()
+    {
+        Logic.Save(Publication);
+        NavigationManager.NavigateTo("/");
     }
 }
