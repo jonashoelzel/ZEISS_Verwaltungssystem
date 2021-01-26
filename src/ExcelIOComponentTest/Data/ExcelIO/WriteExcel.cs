@@ -43,7 +43,7 @@ namespace Data.ExcelIO
                 dataSet.Division,
 
                 dataSet.DateOfStartWorking.Year,
-                dataSet.CurrentState,
+                dataSet.CurrentState.Name,
                 dataSet.DateOfRelease,
 
                 dataSet.PublishedBy.ID,
