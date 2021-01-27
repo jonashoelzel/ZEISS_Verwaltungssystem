@@ -16,7 +16,7 @@ namespace BlazorElectron.Data.DataLogic
 
 
 
-            WriteDataSet.Insert("ExcelDataBase.xlsx", "Publication", dataSet);
+            WriteDataSet.Insert("PublicationManagement.xlsx", "Publication", dataSet);
         }
     }
 }
