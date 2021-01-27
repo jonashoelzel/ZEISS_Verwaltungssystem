@@ -10,12 +10,12 @@ namespace BlazorElectron.Data.PublicationDataSet
     public class PublicationDataSetModel : DataObject, IPublicationDataSet
     {
         // Publication Information
-        [Required]
+        [Required(ErrorMessage = "Titel ist ein Pflichtfeld")]
         [MaxLength(200, ErrorMessage = "Titel ist zu lang")]
         [MinLength(1, ErrorMessage = "Bitte Titel eingeben")]
         public string WorkingTitle { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Titel ist ein Pflichtfeld")]
         [MaxLength(200, ErrorMessage = "Titel ist zu lang")]
         [MinLength(1, ErrorMessage = "Bitte Titel eingeben")]
         public string PublicationTitle { get; set; }

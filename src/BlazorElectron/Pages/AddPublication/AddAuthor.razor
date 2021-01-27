@@ -1,49 +1,55 @@
 ﻿@page "/addAuthor"
+@using BlazorElectron.Data.PublicationDataSet
+
 @inject NavigationManager NavigationManager
+@inject PublicationDataSetModel Publication
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg"
      class="logo" />
 
-<section class="author panel-default">
-    <header class="panel-heading">
-        <h4 class="panel-title">Autor</h4>
-    </header>
-    <div class="panel-body">
-        <form>
+<EditForm Model="@Publication.MainAuthor" OnValidSubmit="@NavigateToNextScreen">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <section class="author panel-default">
+        <header class="panel-heading">
+            <h4 class="panel-title">Autor</h4>
+        </header>
+        <div class="author panel-body">
             <div class="author-default">
-                <label for="authorname">Vorname</label>
-                <input type="text" id="authorname" name="authorname" @bind="@AuthorName" /><br />
+                <label for="firstname">Vorname</label>
+                <InputText id="firstname" DisplayName="firstname" @bind-Value="Publication.MainAuthor.Name" /><br />
+                <ValidationMessage For="@(()=> Publication.MainAuthor.Name)" />
             </div>
             <div class="author-default">
                 <label for="surname">Nachname</label>
-                <input type="text" id="surname" name="surname" @bind="@AuthorSurname"/><br />
+                <InputText id="surname" DisplayName="surname" @bind-Value="Publication.MainAuthor.Surname" /><br />
+                <ValidationMessage For="@(()=> Publication.MainAuthor.Surname)" />
             </div>
-        </form>
-    </div>
-</section>
+        </div>
+    </section>
 
+    <button class="back" type="button" @onclick="NavigateToPreviousScreen">
+        Zurück
+    </button>
+    <button class="continue" type="submit" @onclick="NavigateToNextScreen">
+        Weiter
+    </button>
+</EditForm>
 
-<button class="back" type="button" @onclick="NavigateToAddTitleComp">
-    Zurück
-</button>
-
-<button class="continue" type="button" @onclick="NavigateToAddDivisionComp">
-    Weiter
-</button>
-
-@code 
+@code
 {
-    private async void NavigateToAddTitleComp()
+    private void NavigateToPreviousScreen()
     {
-        NavigationManager.NavigateTo("AddTitle");
+        NavigationManager.NavigateTo("addTitle");
     }
 
-    private async void NavigateToAddDivisionComp()
+    private void NavigateToNextScreen()
     {
         NavigationManager.NavigateTo("addDivision");
     }
 
-    public string AuthorName { get; set; }
+    private void HandleInvalidSubmit()
+    {
 
-    public string AuthorSurname { get; set; }
+    }
 }

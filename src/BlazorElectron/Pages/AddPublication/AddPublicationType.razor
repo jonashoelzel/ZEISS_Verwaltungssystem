@@ -1,20 +1,80 @@
 ﻿@page "/addPublicationType"
+@using BlazorElectron.Data.PublicationDataSet
+
 @inject NavigationManager NavigationManager
+@inject PublicationDataSetModel Publication
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg"
      class="logo" />
 
-<h3>AddPublicationType</h3>
-<p>Hier wird die Art der Veröffentlichung hinzugefügt.</p>
+<EditForm Model="Publication.TypeOfPublication" OnValidSubmit="NavigateToNextScreen">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <section class="publicationType panel-default">
+        <header class="panel-heading">
+            <h4 class="panel-title">Art der Veröffentlichung</h4>
+        </header>
+        <div class="panel-body">
+            <InputSelect DisplayName="division" class="division-select" @bind-Value="Publication.TypeOfPublication.Name">
+                <option>App</option>
+                <option>Artikel</option>
+                <option>Beitrag in einem Buch</option>
+                <option>Blogbeitrag</option>
+                <option>Buch</option>
+                <option>Deep Dive</option>
+                <option>Dev Session</option>
+                <option>Dojo</option>
+                <option>eBook</option>
+                <option>Excerpt</option>
+                <option>Fachposter</option>
+                <option>Gala</option>
+                <option>Hackathon</option>
+                <option>Interview</option>
+                <option>Kata</option>
+                <option>Networking Lounge</option>
+                <option>Pecha Kucha</option>
+                <option>Podcast</option>
+                <option>Podiumsdiskussion</option>
+                <option>Rede</option>
+                <option>Seminar</option>
+                <option>Videotraining</option>
+                <option>Vortrag</option>
+                <option>Webcast</option>
+                <option>Webinar</option>
+                <option>Workshop</option>
+            </InputSelect>
+        </div>
+    </section>
+    <button class="addPub" type="button" @onclick="Preview">
+        Veröffentlichung hinzufügen
+    </button>
+    <button class="back" type="button" @onclick="NavigateToPreviousScreen">
+        Zurück
+    </button>
+    <button class="continue" type="button" @onclick="NavigateToNextScreen">
+        Optionale Angaben
+    </button>
+</EditForm>
 
-<button class="back" type="button" @onclick="NavigateToAddDateOfRelease">
-    Zurück
-</button>
-
-@code 
+@code
 {
-    private async void NavigateToAddDateOfRelease()
+    private void NavigateToPreviousScreen()
     {
         NavigationManager.NavigateTo("addDateOfRelease");
+    }
+
+    private void NavigateToNextScreen()
+    {
+        NavigationManager.NavigateTo("addDescription");
+    }
+
+    private void Preview()
+    {
+        NavigationManager.NavigateTo("Preview");
+    }
+
+    private void HandleInvalidSubmit()
+    {
+
     }
 }

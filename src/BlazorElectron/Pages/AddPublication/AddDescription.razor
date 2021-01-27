@@ -1,0 +1,56 @@
+﻿@page "/addDescription"
+@using BlazorElectron.Data.PublicationDataSet
+
+@inject NavigationManager NavigationManager
+@inject PublicationDataSetModel Publication
+
+<img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg"
+     class="logo" />
+
+<section class="description panel-default">
+    <header class="panel-heading">
+        <h4 class="panel-title">Zusätzliche Information</h4>
+    </header>
+    <div class="description panel-body">
+        <form>
+            <div class="description-default">
+                <label for="titleDescr">Titel</label>
+                <input type="text" id="titleDescr" name="titleDescr" /><br />
+            </div>
+            <div class="description-default">
+                <label for="description">Beschreibung</label>
+                <textarea id="description" name="description" /><br />
+            </div>
+        </form>
+    </div>
+</section>
+
+<button class="addPub" type="button" @onclick="Preview">
+    Veröffentlichung hinzufügen
+</button>
+
+<button class="back" type="button" @onclick="NavigateToPreviousScreen">
+    Wichtige Angaben
+</button>
+
+<button class="continue" type="button" @onclick="NavigateToNextScreen">
+    Weiter
+</button>
+
+@code
+{
+    private void NavigateToPreviousScreen()
+    {
+        NavigationManager.NavigateTo("addPublicationType");
+    }
+
+    private void NavigateToNextScreen()
+    {
+        NavigationManager.NavigateTo("addPublisher");
+    }
+
+    private void Preview()
+    {
+        NavigationManager.NavigateTo("Preview");
+    }
+}
