@@ -1,55 +1,92 @@
 ﻿@page "/addDivision"
+@using BlazorElectron.Data.PublicationDataSet
+
 @inject NavigationManager NavigationManager
+@inject PublicationDataSetModel Publication
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg"
      class="logo" />
 
-<section class="division panel-default">
-    <header class="panel-heading">
-        <h4 class="panel-title">Geschäftsbereich</h4>
-    </header>
-    <div class="panel-body">
-        <select name="division" class="division-select">
-            <option>DAC</option>
-            <option>DQA</option>
-            <option>DQA I</option>
-            <option>DQA II</option>
-            <option>DQA, TAD III</option>
-            <option>MSD</option>
-            <option>QA</option>
-            <option>SAP</option>
-            <option>SBD</option>
-            <option>SEV</option>
-            <option>TAD</option>
-            <option>TAD I</option>
-            <option>TAD II</option>
-            <option>TAD III</option>
-            <option>Vorstand</option>
-            <option>Vorstand, TAD I</option>
-        </select>
-        <button type="button" class="addDivision">
-            Neuer Geschäftsbereich
-        </button>
+@if (ShowPopup)
+{
+<div class="modal" tabindex="1" style="display: block; top: 20%;" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content" >
+            <div class="modal-header">
+                <h3 class="modal-title">Geschäftsbereich hinzufügen</h3>
+            </div>
+            <div class="modal-body" >
+                <h5>Fügen Sie einen neuen Geschäftsbereich hinzu.</h5><br/>
+                <input class="form-control" type="text"/><br/>
+                <button type="submit" class="add"
+                        @onclick"SaveDivision">Hinzufügen
+                </button>
+            </div>
+        </div>
     </div>
-</section>
+</div>
+}
 
-    <button class="back" type="button" @onclick="NavigateToAddAuthorComp">
+<EditForm Model="Publication" OnValidSubmit="NavigateToNextScreen">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <section class="division panel-default">
+        <header class="panel-heading">
+            <h4 class="panel-title">Geschäftsbereich</h4>
+        </header>
+        <div class="panel-body">
+            <InputSelect DisplayName="division" class="division-select" @bind-Value="Publication.Division">
+                <option>DAC</option>
+                <option>DQA</option>
+                <option>DQA I</option>
+                <option>DQA II</option>
+                <option>DQA, TAD III</option>
+                <option>MSD</option>
+                <option>QA</option>
+                <option>SAP</option>
+                <option>SBD</option>
+                <option>SEV</option>
+                <option>TAD</option>
+                <option>TAD I</option>
+                <option>TAD II</option>
+                <option>TAD III</option>
+                <option>Vorstand</option>
+                <option>Vorstand, TAD I</option>
+            </InputSelect>
+            <button class="addDivision" @onclick="AddNewDivision">
+                Neuer Geschäftsbereich
+            </button>
+        </div>
+    </section>
+    <button class="back" type="button" @onclick="NavigateToPreviousScreen">
         Zurück
     </button>
-
-    <button class="continue" type="button" @onclick="NavigateToAddDateOfReleaseComp">
+    <button class="continue" type="submit" @onclick="NavigateToNextScreen">
         Weiter
     </button>
+</EditForm>
 
-    @code
+
+@code
 {
-        private async void NavigateToAddAuthorComp()
-        {
-            NavigationManager.NavigateTo("AddAuthor");
-        }
-
-        private async void NavigateToAddDateOfReleaseComp()
-        {
-            NavigationManager.NavigateTo("addDateOfRelease");
-        }
+    private void NavigateToPreviousScreen()
+    {
+        NavigationManager.NavigateTo("AddAuthor");
     }
+
+    private void NavigateToNextScreen()
+    {
+        NavigationManager.NavigateTo("addDateOfRelease");
+    }
+
+    private void HandleInvalidSubmit()
+    {
+
+    }
+
+    bool ShowPopup = false;
+    void AddNewDivision()
+    {
+        ShowPopup = true;
+    }
+}

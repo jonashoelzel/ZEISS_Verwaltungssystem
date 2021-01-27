@@ -4,7 +4,6 @@
 @inject NavigationManager NavigationManager
 @inject PublicationDataSetModel Publication
 
-
 <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg"
      class="logo" />
 
@@ -41,34 +40,42 @@
         </label>
     </div>
 -->
+
+<EditForm Model="@Publication" OnValidSubmit="NavigateToNextScreen">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
     <section class="title panel-default">
         <header class="panel-heading">
             <h4 class="panel-title">Dokument</h4>
         </header>
         <div class="panel-body">
-            <form>
-                <label for="title">Titelname</label>
-                <input type="text" id="title" name="title" @bind="@Publication.WorkingTitle" /><br />
-            </form>
+            <label for="workingtitle">Titelname</label>
+            <InputText id="workingtitle" DisplayName="workingtitle" @bind-Value="@Publication.WorkingTitle" /><br />
         </div>
     </section>
 
-    <button class="back" type="button" @onclick="NavigateToLandingPageComp">
+    <button class="back" type="button" @onclick="NavigateToPreviousScreen">
         Startseite
     </button>
-    <button class="continue" type="button" @onclick="NavigateToAddAuthorComp">
+    <button class="continue" type="submit" @onclick="NavigateToNextScreen">
         Weiter
     </button>
+</EditForm>
 
 @code
 {
-    private void NavigateToLandingPageComp()
+    private void NavigateToPreviousScreen()
     {
         NavigationManager.NavigateTo("/");
     }
 
-    private void NavigateToAddAuthorComp()
+    private void NavigateToNextScreen()
     {
         NavigationManager.NavigateTo("addAuthor");
+    }
+
+    private void HandleInvalidSubmit()
+    {
+
     }
 }

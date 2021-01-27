@@ -1,9 +1,12 @@
 ﻿@page "/"
+@using BlazorElectron.Data.PublicationDataSet
+
 @inject NavigationManager NavigationManager
+@inject PublicationDataSetModel Publication
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg" class="logo" />
 
-<button class="add_publication" type="button" @onclick="NavigateToAddTitleComp"> 
+<button class="add_publication" type="button" @onclick="NavigateToAddTitleComp">
     Veröffentlichung hinzufügen
 </button>
 
@@ -13,12 +16,13 @@
 
 @code
 {
-    private async void NavigateToAddTitleComp()
+    private void NavigateToAddTitleComp()
     {
+        Publication = new PublicationDataSetModel();
         NavigationManager.NavigateTo("addTitle");
     }
 
-    private async void NavigateToSearchPublicationComp()
+    private void NavigateToSearchPublicationComp()
     {
         NavigationManager.NavigateTo("searchPub");
     }

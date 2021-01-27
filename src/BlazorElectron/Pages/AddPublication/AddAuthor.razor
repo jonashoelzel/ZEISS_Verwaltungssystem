@@ -4,45 +4,43 @@
 @inject NavigationManager NavigationManager
 @inject PublicationDataSetModel Publication
 
-
 <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg"
      class="logo" />
 
-<section class="author panel-default">
-    <header class="panel-heading">
-        <h4 class="panel-title">Autor</h4>
-    </header>
-
-    <EditForm Model="@Publication.MainAuthor" OnValidSubmit="NavigateToNextScreen">
-        <DataAnnotationsValidator />
-        <ValidationSummary />
-        <div class="panel-body">
+<EditForm Model="@Publication.MainAuthor" OnValidSubmit="@NavigateToNextScreen">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <section class="author panel-default">
+        <header class="panel-heading">
+            <h4 class="panel-title">Autor</h4>
+        </header>
+        <div class="author panel-body">
             <div class="author-default">
                 <label for="firstname">Vorname</label>
-                <InputText id="name" DisplayName="firstname" @bind-Value="Publication.MainAuthor.Name" /><br />
+                <InputText id="firstname" DisplayName="firstname" @bind-Value="Publication.MainAuthor.Name" /><br />
+                <ValidationMessage For="@(()=> Publication.MainAuthor.Name)" />
             </div>
             <div class="author-default">
                 <label for="surname">Nachname</label>
-                <InputText id="name" DisplayName="Surname" @bind-Value="Publication.MainAuthor.Surname" /><br />
+                <InputText id="surname" DisplayName="surname" @bind-Value="Publication.MainAuthor.Surname" /><br />
+                <ValidationMessage For="@(()=> Publication.MainAuthor.Surname)" />
             </div>
         </div>
-        <div>
-            <button class="back" type="button" @onclick="NavigateToPreviousScreen">
-                Zurück
-            </button>
-            <button class="continue" type="submit">
-                Weiter
-            </button>
-        </div>
-    </EditForm>
-</section>
+    </section>
 
+    <button class="back" type="button" @onclick="NavigateToPreviousScreen">
+        Zurück
+    </button>
+    <button class="continue" type="submit" @onclick="NavigateToNextScreen">
+        Weiter
+    </button>
+</EditForm>
 
 @code
 {
     private void NavigateToPreviousScreen()
     {
-        NavigationManager.NavigateTo("AddTitle");
+        NavigationManager.NavigateTo("addTitle");
     }
 
     private void NavigateToNextScreen()

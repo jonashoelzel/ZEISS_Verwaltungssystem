@@ -1,34 +1,47 @@
 ﻿@page "/addDateOfRelease"
+@using BlazorElectron.Data.PublicationDataSet
+
 @inject NavigationManager NavigationManager
+@inject PublicationDataSetModel Publication
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg"
      class="logo" />
-<section class="DateOfRelease panel-default">
-    <header class="panel-heading">
-        <h4 class="panel-title">Datum der Veröffentlichung</h4>
-    </header>
-    <div class="panel-body">
-        <input type="date" id="releaseDate" name="releaseDate" value="">
-    </div>
-</section>
 
-    <button class="back" type="button" @onclick="NavigateToAddDivisionComp">
+<EditForm Model="Publication" OnValidSubmit="NavigateToNextScreen">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <section class="DateOfRelease panel-default">
+        <header class="panel-heading">
+            <h4 class="panel-title">Datum der Veröffentlichung</h4>
+        </header>
+        <div class="panel-body">
+            <InputDate id="releaseDate" DisplayName="releaseDate" @bind-Value="Publication.DateOfRelease"/>
+        </div>
+    </section>
+
+    <button class="back" type="button" @onclick="NavigateToPreviousScreen">
         Zurück
     </button>
 
-    <button class="continue" type="button" @onclick="NavigateToAddPublicationTypeComp">
+    <button class="continue" type="button" @onclick="NavigateToNextScreen">
         Weiter
     </button>
+</EditForm>
 
-    @code
+@code
 {
-        private async void NavigateToAddDivisionComp()
-        {
-            NavigationManager.NavigateTo("addDivision");
-        }
-
-        private async void NavigateToAddPublicationTypeComp()
-        {
-            NavigationManager.NavigateTo("addPublicationType");
-        }
+    private void NavigateToPreviousScreen()
+    {
+        NavigationManager.NavigateTo("addDivision");
     }
+
+    private void NavigateToNextScreen()
+    {
+        NavigationManager.NavigateTo("addPublicationType");
+    }
+
+    private void HandleInvalidSubmit()
+    {
+
+    }
+}
