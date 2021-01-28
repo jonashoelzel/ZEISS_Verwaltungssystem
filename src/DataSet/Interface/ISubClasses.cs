@@ -1,4 +1,4 @@
-﻿namespace Data.DataSet
+﻿namespace DataSet
 {
     public interface IPublicationType : IDataObject
     {
