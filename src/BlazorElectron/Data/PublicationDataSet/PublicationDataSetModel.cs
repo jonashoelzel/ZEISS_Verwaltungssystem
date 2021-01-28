@@ -1,14 +1,17 @@
-﻿using PublicationDataSet;
+﻿using DataSet;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace BlazorElectron.Data.PublicationDataSet
 {
     public class PublicationDataSetModel : DataObject, IPublicationDataSet
     {
+        public PublicationDataSetModel()
+        {
+            ID = Randomizer.GetRandomID();
+        }
+
         // Publication Information
         [Required(ErrorMessage = "Titel ist ein Pflichtfeld")]
         [MaxLength(200, ErrorMessage = "Titel ist zu lang")]
@@ -31,8 +34,8 @@ namespace BlazorElectron.Data.PublicationDataSet
 
         // Additional Information
         public IState CurrentState { get; set; } = new StateModel();
-        public DateTime DateOfStartWorking { get; set; }
-        public DateTime DateOfRelease { get; set; }
+        public DateTime DateOfStartWorking { get; set; } = DateTime.Now;
+        public DateTime DateOfRelease { get; set; } = DateTime.Now;
         public List<ITag> Tags { get; set; }
         public string Description { get; set; }
         public string AdditionalInformation { get; set; }

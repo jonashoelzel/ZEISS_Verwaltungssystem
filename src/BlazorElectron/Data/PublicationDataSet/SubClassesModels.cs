@@ -1,10 +1,14 @@
-﻿using PublicationDataSet;
+﻿using DataSet;
 using System.ComponentModel.DataAnnotations;
 
 namespace BlazorElectron.Data.PublicationDataSet
 {
     public class PublicationTypeModel : DataObject, IPublicationType
     {
+        public PublicationTypeModel()
+        {
+            ID = Randomizer.GetRandomID();
+        }
         [Required]
         [MaxLength(100, ErrorMessage = "Name ist zu lang")]
         [MinLength(1, ErrorMessage = "Bitte Name eingeben")]
@@ -13,6 +17,10 @@ namespace BlazorElectron.Data.PublicationDataSet
 
     public class StateModel : DataObject, IState
     {
+        public StateModel()
+        {
+            ID = Randomizer.GetRandomID();
+        }
         [Required(ErrorMessage = "Name ist ein Pflichtfeld")]
         [MaxLength(100, ErrorMessage = "Name ist zu lang")]
         [MinLength(1, ErrorMessage = "Bitte Name eingeben")]
@@ -21,6 +29,10 @@ namespace BlazorElectron.Data.PublicationDataSet
 
     public class TagModel : DataObject, ITag
     {
+        public TagModel()
+        {
+            ID = Randomizer.GetRandomID();
+        }
         [Required(ErrorMessage = "Name ist ein Pflichtfeld")]
         [MaxLength(100, ErrorMessage = "Name ist zu lang")]
         [MinLength(1, ErrorMessage = "Bitte Name eingeben")]
@@ -29,6 +41,11 @@ namespace BlazorElectron.Data.PublicationDataSet
 
     public class AuthorModel : DataObject, IAuthor
     {
+        public AuthorModel()
+        {
+            // ID = Logic.GetNewAuthorID();
+            ID = Randomizer.GetRandomID();
+        }
         [Required(ErrorMessage = "Vorname ist ein Pflichtfeld")]
         [MaxLength(100, ErrorMessage = "Name ist zu lang")]
         [MinLength(1, ErrorMessage = "Bitte Name eingeben")]
@@ -42,6 +59,10 @@ namespace BlazorElectron.Data.PublicationDataSet
 
     public class PublisherModel : DataObject, IPublisher
     {
+        public PublisherModel()
+        {
+            ID = Randomizer.GetRandomID();
+        }
         [Required(ErrorMessage = "Name ist ein Pflichtfeld")]
         [MaxLength(100, ErrorMessage = "Name ist zu lang")]
         [MinLength(1, ErrorMessage = "Bitte Name eingeben")]

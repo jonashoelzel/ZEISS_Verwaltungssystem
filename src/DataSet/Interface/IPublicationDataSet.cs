@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace PublicationDataSet
+namespace DataSet
 {
     public interface IPublicationDataSet : IDataObject
     {
