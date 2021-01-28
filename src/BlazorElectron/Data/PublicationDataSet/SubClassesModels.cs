@@ -1,7 +1,5 @@
-﻿using BlazorElectron.Data.DataLogic;
-using Data.DataSet;
+﻿using DataSet;
 using System.ComponentModel.DataAnnotations;
-using DataSetIOComponentTest;
 
 namespace BlazorElectron.Data.PublicationDataSet
 {
@@ -9,7 +7,7 @@ namespace BlazorElectron.Data.PublicationDataSet
     {
         public PublicationTypeModel()
         {
-            ID = TestDataSetIO.GetRandomID();
+            ID = Randomizer.GetRandomID();
         }
         [Required]
         [MaxLength(100, ErrorMessage = "Name ist zu lang")]
@@ -21,7 +19,7 @@ namespace BlazorElectron.Data.PublicationDataSet
     {
         public StateModel()
         {
-            ID = TestDataSetIO.GetRandomID();
+            ID = Randomizer.GetRandomID();
         }
         [Required(ErrorMessage = "Name ist ein Pflichtfeld")]
         [MaxLength(100, ErrorMessage = "Name ist zu lang")]
@@ -33,7 +31,7 @@ namespace BlazorElectron.Data.PublicationDataSet
     {
         public TagModel()
         {
-            ID = TestDataSetIO.GetRandomID();
+            ID = Randomizer.GetRandomID();
         }
         [Required(ErrorMessage = "Name ist ein Pflichtfeld")]
         [MaxLength(100, ErrorMessage = "Name ist zu lang")]
@@ -46,7 +44,7 @@ namespace BlazorElectron.Data.PublicationDataSet
         public AuthorModel()
         {
             // ID = Logic.GetNewAuthorID();
-            ID = TestDataSetIO.GetRandomID();
+            ID = Randomizer.GetRandomID();
         }
         [Required(ErrorMessage = "Vorname ist ein Pflichtfeld")]
         [MaxLength(100, ErrorMessage = "Name ist zu lang")]
@@ -63,7 +61,7 @@ namespace BlazorElectron.Data.PublicationDataSet
     {
         public PublisherModel()
         {
-            ID = TestDataSetIO.GetRandomID();
+            ID = Randomizer.GetRandomID();
         }
         [Required(ErrorMessage = "Name ist ein Pflichtfeld")]
         [MaxLength(100, ErrorMessage = "Name ist zu lang")]

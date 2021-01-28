@@ -1,10 +1,7 @@
-﻿using Data.DataSet;
-using DataSetIOComponentTest;
+﻿using DataSet;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace BlazorElectron.Data.PublicationDataSet
 {
@@ -12,7 +9,7 @@ namespace BlazorElectron.Data.PublicationDataSet
     {
         public PublicationDataSetModel()
         {
-            ID = TestDataSetIO.GetRandomID();
+            ID = Randomizer.GetRandomID();
         }
 
         // Publication Information
