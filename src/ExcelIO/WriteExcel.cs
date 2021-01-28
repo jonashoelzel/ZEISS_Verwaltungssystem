@@ -1,18 +1,15 @@
-﻿using System;
+﻿using DataSet;
+using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Spreadsheet;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
 
-//Make sure the NuGet Package DocumentFormat.OpenXml is installed !!!
-using DocumentFormat.OpenXml;
-using DocumentFormat.OpenXml.Packaging;
-using DocumentFormat.OpenXml.Spreadsheet;
-
-using Data.DataSet;
-
-namespace Data.ExcelIO
+namespace ExcelIO
 {
     public class WriteDataSet
     {
@@ -65,7 +62,7 @@ namespace Data.ExcelIO
 
                 ConvertTagsToCSV(dataSet.Tags),
                 dataSet.Description,
-                dataSet.AdditionalInformation            
+                dataSet.AdditionalInformation
             };
 
             WriteExcel.Insert(filepath, worksheetName, entry);
@@ -400,7 +397,7 @@ namespace Data.ExcelIO
         {
             //Search for specific sheet
             sheetsIEnum = spreadsheetDocument?.WorkbookPart?.Workbook?.Descendants<Sheet>()?.Where(s => s.Name == worksheetName);
-            
+
             return sheetsIEnum.Any();
         }
 
@@ -439,7 +436,7 @@ namespace Data.ExcelIO
             return null;
         }
 
-        
+
         #region IO
         //Does check, if the filepath does exist
         public static bool CheckPathExist(ref string filepath)
@@ -469,7 +466,7 @@ namespace Data.ExcelIO
             }
         }
         #endregion
-        
+
         #endregion
 
 
