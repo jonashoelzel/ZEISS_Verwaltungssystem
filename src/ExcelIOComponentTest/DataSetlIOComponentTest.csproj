@@ -10,4 +10,9 @@
     <PackageReference Include="DocumentFormat.OpenXml" Version="2.12.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\DataSet\DataSet.csproj" />
+    <ProjectReference Include="..\ExcelIO\ExcelIO.csproj" />
+  </ItemGroup>
+
 </Project>
