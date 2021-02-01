@@ -10,6 +10,9 @@ include::../_includes/default-attributes.inc.adoc[]
 == Einführung
 In diesem Dokument werden die wesentlichen Begriffe aus dem Anwendungsgebiet (Fachdomäne) der <Projektthema-Systems> definiert. Zur besseren Übersichtlichkeit sind Begriffe, Abkürzungen und Datendefinitionen gesondert aufgeführt.
 
+Hinweis: 
+Zur Verkürzung und Vereinfachung der Schreibweise wurde (stets) die maskuline Form eines Wortes verwendet. Es werden aber stets beide Geschlechter gemeint. Sollte es deswegen Probleme geben bitten wir dies zu entschuldigen.
+
 == Begriffe
 [%header]
 |===
@@ -17,6 +20,8 @@ In diesem Dokument werden die wesentlichen Begriffe aus dem Anwendungsgebiet (Fa
 |BLAZOR|Open-Source-Webframework, welches für dieses Programm genutzt wird|x
 |.NET|(Open Source) Framework von Microsoft, welches für dieses Programm genutzt wird|x
 |KANBAN|Methode der Softwareentwicklung, bei der der aktuelle Stand in verschiedenen Spalten (open, doing und done) übersichtlich erkennbar ist|Agiles PM
+|Spreadsheet|Dokument, das aus einer Tabelle besteht|Worksheet/Excel-Tabelle
+|Workbook|Datei, die eine oder mehrere Dokumente zur Tabellenkalkulation enthält|Excel-Datei
 |x|x|x
 
 |===
@@ -45,6 +50,34 @@ In diesem Dokument werden die wesentlichen Begriffe aus dem Anwendungsgebiet (Fa
 |===
 |Bezeichnung|	Definition |	Format | Gültigkeitsregeln | Aliase
 |Anmeldedaten|Zusammensetzung von Benutzername und Passwort.|String|Emailadresse muss @-Zeichen und Punkt enthalten.|Login
+|xx|xx|xx|xx|xx|
+|===
+
+== Tabellen-Spoaltenbezeichnungen
+[%header]
+|===
+|Bezeichnung|	Definition |	Datentyp | Gültigkeitsregeln | Aliase
+|Publikations-ID|Identifikationsnummer einer Publikation|INTEGER|NOT NULL OR EMPTY, UNIQUE, AUTO-INCREMENT|Publication-ID
+|Arbeitstitel|Interner Titel einer Publikation, der während der Bearbeitung genutzt wird|STRING|NOT NULL OR EMPTY|Working-Title
+|Veröffentlichungstitel|Titel der Publikation in dem Veröffentlichungsmedium|STRING|NOT NULL|Publication-Title
+|Veröffentlichungsmedium|Medium in dem die Publikation veröffentlicht wird (z.B. Zeitung, Magazin, Buch, Blog,  [...])|STRING|NOT NULL|Type-of-Publication/Publication-Type
+
+|Autor-ID|Identifikationsnummer eines Autors|INTEGER|NOT NULL OR EMPTY, UNIQUE, AUTO-INCREMENT|Author-ID
+|Vorname|Vorname des Hauptautors|STRING|NOT NULL OR EMPTY|Author-Name
+|Nachname|Nachname des Hauptautors|STRING|NOT NULL OR EMPTY|Author-Surname
+|Co-Autoren|IDs, Vornamen und Nachnamen der Co-Autoren (gespeichert als CSV)|STRING|NOT NULL|Co-Authors
+|Division|Division des Hauptautors, der die Publikation bearbeitet|STRING|NOT NULL OR EMPTY|Author-Surname
+
+|Arbeitsbeginn (Startjahr)|Startjahr, an dem die arbeiten an der Publikation begonnen haben|DATE/INTEGER|CURRENT YEAR|Date-of-start-working
+|Derzeitiger Arbeitsstatus|Status der bearbeitung (z.B. Begonnen, Abgeschlossen, Korrekturlesung, [...]|STRING|NOT NULL OR EMPTY|Current-State
+|Veröffentlichungsdatum|Datum, an dem die Publikation von einem Publisher veröffentlicht wurde|DATE|VALID DATE|Date-of-release
+
+|Publisher-ID|Identifikationsnummer eines Publishers|INTEGER|NOT NULL, UNIQUE, AUTO-INCREMENT|Publisher-ID
+|Publisher|Name des Publishers|STRING|NOT NULL|Publisher-Name/Published-by
+
+|Tags|Tags der Publikation (gespeichert als CSV)|STRING|NOT NULL|Tags
+|Beschreibung (zusätzlich)|Zusätzliche Beschreibung zu einer Publikation (z.B. Kurzfassung)|STRING|NOT NULL|Description
+|Zusätzliche Informationen|Zusätzliche Informationen zu einer Publikation (z.B. Randbemerkungen)|STRING|NOT NULL|Additional-Information
 |xx|xx|xx|xx|xx|
 |===
 
