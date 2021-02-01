@@ -15,7 +15,7 @@ In diesem Dokument werden die wesentlichen Begriffe aus dem Anwendungsgebiet (Fa
 |===
 |Begriff|Definition und Erläuterung|	Synonyme
 |BLAZOR|Open-Source-Webframework, welches für dieses Programm genutzt wird|x
-|.NET|Framework von Windows, welches für dieses Programm genutzt wird|x
+|.NET|(Open Source) Framework von Microsoft, welches für dieses Programm genutzt wird|x
 |KANBAN|Methode der Softwareentwicklung, bei der der aktuelle Stand in verschiedenen Spalten (open, doing und done) übersichtlich erkennbar ist|Agiles PM
 |x|x|x
 
