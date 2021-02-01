@@ -70,7 +70,7 @@ Zur Verkürzung und Vereinfachung der Schreibweise wurde (stets) die maskuline F
 
 |Arbeitsbeginn (Startjahr)|Startjahr, an dem die arbeiten an der Publikation begonnen haben|DATE/INTEGER|CURRENT YEAR|Date-of-start-working
 |Derzeitiger Arbeitsstatus|Status der bearbeitung (z.B. Begonnen, Abgeschlossen, Korrekturlesung, [...]|STRING|NOT NULL OR EMPTY|Current-State
-|Veröffentlichungsdatum|Datum, an dem die Publikation von einem Publisher veröffentlicht wurde|DATE|VALID DATE|Date-of-release
+|Veröffentlichungsdatum|Datum, an dem die Publikation von einem Publisher veröffentlicht wurde|DATE|VALID DATE OR EMPTY|Date-of-release
 
 |Publisher-ID|Identifikationsnummer eines Publishers|INTEGER|NOT NULL, UNIQUE, AUTO-INCREMENT|Publisher-ID
 |Publisher|Name des Publishers|STRING|NOT NULL|Publisher-Name/Published-by
