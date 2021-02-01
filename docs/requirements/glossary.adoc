@@ -53,7 +53,7 @@ Zur Verkürzung und Vereinfachung der Schreibweise wurde (stets) die maskuline F
 |xx|xx|xx|xx|xx|
 |===
 
-== Tabellen-Spoaltenbezeichnungen
+== Tabellen-Spaltenbezeichnungen
 [%header]
 |===
 |Bezeichnung|	Definition |	Datentyp | Gültigkeitsregeln | Aliase
