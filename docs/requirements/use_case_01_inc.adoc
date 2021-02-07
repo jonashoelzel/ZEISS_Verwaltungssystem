@@ -30,12 +30,14 @@ Veröffentlicht in Zeitschrift, auf Plattform oder Blog einen Fachbeitrag des Au
 === Alternative Abläufe
 ==== Nicht alle notwendigen Felder ausgefüllt
 Wenn nicht alle notwendigen Angaben zu einer neuen Veröffentlichung durch das Sales Department gemacht werden
+
 . erfolgt eine Fehlermeldung, dass obligatorische Angaben fehlen 
 . Nutzer wird zur Bearbeitung weitergeleitet und kann fehlende Angaben hinzufügen und bestehende verändern
 . Wird dann weitergeleitet zu "Veröffentlichung hinzufügen"
 
 ==== Nutzer möchte zusätzliche Angaben zum Fachbeitrag machen
 Wenn die obligatorischen Felder für eine Beschreibung des Fachbeitrages unzureichend sind
+
 . kann das Sales Department unter "Weitere Angaben" verschiedene Informationen hinzufügen
 * Tags
 * Beschreibungen (Infobox)
@@ -44,6 +46,7 @@ Wenn die obligatorischen Felder für eine Beschreibung des Fachbeitrages unzurei
 
 ==== Bereich hinzufügen
 Wenn ein Autor aus einem Geschäftsbereich veröffentlicht, welcher noch nicht hinzugefügt ist
+
 . Neben dem Drop-Down gibt es die Möglichkeit, weitere Bereiche hinzuzufügen
 . Bereich wird dann ins System aufgenommen
 . Aktueller Beitrag kann dem neu hinzugefügten Bereich zugeordnet werden
@@ -51,6 +54,7 @@ Wenn ein Autor aus einem Geschäftsbereich veröffentlicht, welcher noch nicht h
 
 === Wesentliche Szenarios
 ==== Veröffentlichung hinzufügen
+
 . Sales Department Mitarbeiter wählt "Veröffentlichung hinzufügen"
 . Es öffnet sich eine Ansicht, in der alle oben genannten Eintragungen gemacht werden *müssen*
 * *SPÄTER:* zusätzlich können noch weitere Angaben gemacht werden (Tags, zusätzliche Informationen)
