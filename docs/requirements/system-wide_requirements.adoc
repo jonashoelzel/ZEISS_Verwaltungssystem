@@ -14,62 +14,48 @@ In diesem Dokument werden die systemweiten Anforderungen für das Projekt "ZEISS
 
 NOTE: Die funktionalen Anforderungen, die sich aus der Interaktion von Nutzern mit dem System ergeben, sind als Use Cases in einem separaten Dokument festgehalten.
 
-== Systemweite funktionale Anforderungen
-//Angabe von system-weiten funktionalen Anforderungen, die nicht als Use Cases ausgedrückt werden können. Beispiele sind Drucken, Berichte, Authentifizierung, Änderungsverfolgung (Auditing), zeitgesteuerte Aktivitäten (Scheduling), Sicherheit / Maßnahmen zum Datenschutz
+== Systemweite funktionale Anforderungen (F)
+* F1: Mit Ausnahme der Einsicht und Filterung nach bestimmten Einträgen muss das System eine Authorisierung fordern.
+* F2: Der Export der Daten erfolgt in eine Excel-Datei (ist durch die Verwendung von Excel als Daten Bank gegeben).
 
 == Qualitätsanforderungen für das Gesamtsystem
-//Qualitätsanforderungen repräsentieren das "URPS" im FURPS+ zu Klassifikation von Anforderungen
 
 === Benutzbarkeit (Usability)
-* Anwendung muss extrem einfach zu bedienen sein
-** Regelmäßige Nutzer müssen das gesamte Spektrum der Funktionalitäten nutzen und die Benutzung muss schnell zur Routine werden
-** Jeder neue Nutzer muss auf einen Blick alle Funktionen erkennen und bedienen können
-* Sprache: Deutsch
-* Datumsformat: europäisch
-* keine länderspezifische Anpassung, Anwendung wird lediglich bei ZEISS im deutschsprachigen Raum eingesetzt
-
-//Beschreiben Sie Anforderungen für Eigenschaften wie einfache Bedienung, einfaches Erlernen, Standards für die Benutzerfreundlichkeit, Lokalisierung (landesspezifische Anpassungen von Sprache, Datumsformaten, Währungen usw.)
+* U1: Ein durchschnittlicher Internetnutzer muss ohne Anleitung in der Lage sein, alle Funktionen des Systems zu bedienen.
+* U2: Keine Aktion wird mehr als 5 Mausklicks erforderlich machen.
+* U3: Mehr als 80% der User sollen zufrieden mit der Anwendung sein.
+* U4: Jede Fehlermeldung muss den User direkt zum Fehlerursprung dirigieren.
+* U5: Eine Systemmeldung gibt dem User direktes Feedback zu gemachten Einträgen.
 
 === Zuverlässigkeit (Reliability)
-* System soll extrem zuverlässig sein, kaum abstürzen/versagen
-* Auch bei Ausfall der Internetverbindung oder kurzzeitigen anderen Störungen sollte das System nicht beeinträchtigt werden, es läuft wie gewohnt weiter
-** Bei Speichern einer neuen Eingabe wird diese lokal auf dem PC des Users gespeichert und dann später hochgeladen
-* Bei Stromausfall werden alle noch nicht gespeicherten Änderungen verworfen
-// Zuverlässigkeit beinhaltet die Fähigkeit des Produkts und/oder des Systems unter Stress und ungünstigen Bedingungen am laufen zu bleiben. Spezifizieren Sie Anforderungen für zuverlässige Akzeptanzstufen, und wie diese gemessen und evaluiert werden. Vorgeschlagene Themen sind Verfügbarkeit, Häufigkeit und Schwere von Fehlern und Wiederherstellbarkeit.
+* R1: Das System soll 99,5% Verfügbarkeit pro Jahr (43,8h Downtime pro Jahr) mit maximal 4h Ausfallzeit am Stück haben.
+* R2: Nach Störungen muss das System alle eingegebenen Daten wiederherstellen. 
 
-=== Effizienz (Performance)
-* System soll sehr effizient sein
-** Zeit zum starten und beenden extrem niedrig
-** Schnelle Eingaben und Suchen möglich
-** Direkte Antwort des Systems, kaum Verarbeitungszeit
-// Die Performanz Charakteristiken des Systems sollten in diesem Bereich ausgeführt werden. Beispiele sind Antwortzeit, Durchsatz, Kapazität und Zeiten zum Starten oder Beenden.
+=== Leistung (Performance)
+* P1: Das System muss bis zu 20 Nutzer gleichzeitig unterstützen können.
+* P2: Der Wechsel zwischen zwei verschiedenen Ansichten darf für den Nutzer nicht länger als 2 Sekunden dauern.
+* P3: Start- und Shutdownzeit darf nicht länger als 8 Sekunden dauern.
 
-=== Wartbarkeit (Supportability)
-
-* Code soll einfach verständlich und überall mit Notizen versehen sein, damit das Programm von Externen einfach zu warten ist
-* Programm ist Windows-Kompatibel, so wie vom Kunden gefordert
-* Veränderungen, Verbesserungen und Erweiterungen sind einfach möglich, da wir abgesehen von .NET nur mit OpenSource-Programmen arbeiten
-* Programm läuft absolut unabhhängig von der firmeninternen IT und ohne Server-Auslastung und kann somit jederzeit verändert werden
-* Programm kann auf jedem firmeninternen Rechner installiert werden
-* Support kommt nach Beendigung des Projektes von den Mitarbeitern, welche dann für das Programm verantwortlich sind
-// Dieser Bereich beschreibt sämtliche Anforderungen welche die Supportfähigkeit oder Wartbarkeit des zu entwickelnden Systems verbessern, einschließlich Anpassungsfähigkeit und Erweiterbarkeit, Kompatibilität, Skalierbarkeit und Anforderungen bezüglich der System Installation sowie Maß an Support und Wartbarkeit.
+=== Unterstützbarkeit (Supportability)
+* S1: Das System soll einfach um Änderungsmitteilungen erweiterbar sein.
+* S2: Das System soll einfach um eine Statistikerzeugung zu den Einträgen erweiterbar sein.
+* S3: Die Anwendung wird nicht mit firmeninterner IT korrelieren.
+* S4: Das System soll auf Windows 10 laufen.
 
 == Zusätzliche Anforderungen
-=== Einschränkungen
-* Programm sollte kaum Wartungsarbeit erforderlich machen, Grundfunktionen sollen funktionieren
-* zuverlässige Internetverbindung sollte bereitgestellt werden
-* zu nutzende Komponenten / Bibliotheken / Frameworks
-* HTML/CSS und C# 
-* Programm soll nur auf Windows laufen und mit .NET programmiert werden
-* Als Web-Framework wird die Open-Source-Variante "Blazor" verwendet, welche in unserem Rating die beste Bewertung erhielt
-//* Physische Begrenzungen für Hardware, auf der das System betrieben werden soll
+=== Einschränkungen (Constraints)
+* C1: Das System muss Windows-kompatibel sein.
+* C2: Das System wird eine online-Datenbank nutzen.
+* C3: Das Backend wird mit C# programmiert.
+* C4: Das Frontend wird mit HTML/CSS programmiert.
+* C5: Die Anwendung wird über das Webframework Blazor laufen.
 
-=== Organisatorische Randbedingungen
-//Angaben ergänzen, nicht relevante Unterpunkte streichen oder auskommentieren
-* Betrieb/Management muss Verantwortlichen ernennen, welcher dann für die Wartung und Instandhaltung verantwortlich ist
+=== Organisatorische Randbedingungen (Interface Requirements)
+* I1: Die Anwendung muss für verschiedene Bildschirmgrößen nutzbar sein.
+* I2: Filter sollen über ein ausklappbares Akkordeon auswählbar sein.
+* I3: Ein Workflow soll den Nutzer durch eine Hinzufügung navigieren.
+* I4: Das Interface soll sehr clean sein und dem Standard von gewohnten Softwares (z.B. IOS, Windows) entsprechen.
 
-
-=== Rechtliche Anforderungen
-//Angaben ergänzen, nicht relevante Unterpunkte streichen oder auskommentieren
-* Lizensierung der Anwendung
-* Datenschutz einhalten, lediglich veröffentlichte Beiträge hinzufügen, sodass Datenschutz nicht verletzt wird
+=== Rechtliche Anforderungen (Business Rules)
+* B1: Bei gewünschter Hinzufügung muss das Sales Department kontaktiert werden, welches die Rechte für Hinzufügungen innehat.
+* B2: Die Anwendung darf nur firmenintern genutzt werden und Daten dürfen nicht weitergegeben werden.
