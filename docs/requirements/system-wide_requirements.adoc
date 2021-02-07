@@ -24,7 +24,8 @@ NOTE: Die funktionalen Anforderungen, die sich aus der Interaktion von Nutzern m
 * U1: Ein durchschnittlicher Internetnutzer muss ohne Anleitung in der Lage sein, alle Funktionen des Systems zu bedienen.
 * U2: Keine Aktion wird mehr als 5 Mausklicks erforderlich machen.
 * U3: Mehr als 80% der User sollen zufrieden mit der Anwendung sein.
-* U4: Jede System- oder Fehlermeldung muss eindeutig für den User sein.
+* U4: Jede Fehlermeldung muss den User direkt zum Fehlerursprung dirigieren.
+* U5: Eine Systemmeldung gibt dem User direktes Feedback zu gemachten Einträgen.
 
 === Zuverlässigkeit (Reliability)
 * R1: Das System soll 99,5% Verfügbarkeit pro Jahr (43,8h Downtime pro Jahr) mit maximal 4h Ausfallzeit am Stück haben.
@@ -53,7 +54,8 @@ NOTE: Die funktionalen Anforderungen, die sich aus der Interaktion von Nutzern m
 * I1: Die Anwendung muss für verschiedene Bildschirmgrößen nutzbar sein.
 * I2: Filter sollen über ein ausklappbares Akkordeon auswählbar sein.
 * I3: Ein Workflow soll den Nutzer durch eine Hinzufügung navigieren.
+* I4: Das Interface soll sehr clean sein und dem Standard von gewohnten Softwares (z.B. IOS, Windows) entsprechen.
 
 === Rechtliche Anforderungen (Business Rules)
 * B1: Bei gewünschter Hinzufügung muss das Sales Department kontaktiert werden, welches die Rechte für Hinzufügungen innehat.
-* B2: Die Anwendung darf nur firmenintern genutzt werden und Daten dürfen nciht weitergegeben werden.
+* B2: Die Anwendung darf nur firmenintern genutzt werden und Daten dürfen nicht weitergegeben werden.
