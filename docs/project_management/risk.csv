@@ -1,0 +1,40 @@
+Auswertung;;;;;;;;;;;;;
+;;;;;;;;;;;;;
+;;;;;;;;;;;;;
+;;;;;;;;;;;;;
+;;;;;;;;;;;;;
+;;;;;;;;;;;;;
+;;;;;;;;;;;;;
+;;;;;;;;;;;;;
+;;Iteration;1;2;3;4;5;6;7;8;9;10;11
+;;It. Risikosumme;8278;7645;6762;6406;0;0;0;0;0;0;0
+Nummer;Beschreibung;Owner;RPZ;RPZ;RPZ;RPZ;RPZ;RPZ;RPZ;RPZ;RPZ;RPZ;RPZ
+1;"Team Mitglied Verlässt den Kurs; Skill fehlt; Konzentration von Fähigkeiten";Paul;96;80;64;70;0;0;0;0;0;0;0
+2;"Team Mitglied Verlässt den Kurs; Informationen Fehlen; Informationen nicht Verschriftlicht";Paul;48;40;32;40;0;0;0;0;0;0;0
+3;"es wird zu früh mit dem Coding angefangen; Workarounds; Nicht asureichende Planung";Paul;432;432;486;432;0;0;0;0;0;0;0
+4;"Nicht befolgen des Vorgehensmodells; Wirksame Werkzeuge werden vernachlässigt; unkenntnis der Werkzeuge";Paul;280;240;200;200;0;0;0;0;0;0;0
+5;"Nicht befolgen des Vorgehensmodells; Wirksame Werkzeuge werden vernachlässigt; Falsche anwendung der Werkzeuge";Paul;120;100;100;100;0;0;0;0;0;0;0
+6;"Nicht befolgen des Vorgehensmodells; Unsichere Planung; Nicht jeder nennt notwendige Aufgaben";Paul;105;105;90;72;0;0;0;0;0;0;0
+7;"Unrealistische Terminvorgaben; Demotivation der Mitglieder; zu viel Zeitdruck";Paul;180;144;216;180;0;0;0;0;0;0;0
+8;"Unrealistische Terminvorgaben; Mitarbeiter fühlen sich übergangen; zu hohe Ziele";Nina;100;100;125;100;0;0;0;0;0;0;0
+9;"An Zielstellung vorbei entwickelt; Zeitdruck/schlechtes Produkt; Nicht abnahmen der Zwischenergebnisse durch Auftragssteller";Peter/JP;432;384;160;384;0;0;0;0;0;0;0
+10;"An Zielstellung vorbei entwickelt; Zeitdruck/schlechtes Produkt; Zu viele Iterationen ohne Guten Abschluss ""über Iterationsrand hinaus Programmieren"" -> zuviel Arbeit ohne Abnahme";Paul;192;168;126;126;0;0;0;0;0;0;0
+11;"Unzureichende Testung; unsystematische Testung; Zeitdruck";Paul;504;504;504;392;0;0;0;0;0;0;0
+12;"Unzureichende Testung; nicht entdeckte kritische Fehler; unsystematische Testung";Peter/JP;420;420;420;350;0;0;0;0;0;0;0
+13;"nicht festgelegte Systemanforderung und Qualitätsmerkmale; Falsche Software wird gebaut; Visionsdokument nicht Vollständig/ Validiert";Nina;216;180;144;180;0;0;0;0;0;0;0
+14;"nicht festgelegte Systemanforderung und Qualitätsmerkmale; Falsche Software wird gebaut; Qualitätsmerkmale werden nicht ausreichen besprochen";Nina/ Vanessa;486;378;315;336;0;0;0;0;0;0;0
+15;"nicht festgelegte Systemanforderung und Qualitätsmerkmale; Falsche Software wird gebaut; Änderung der Anforderung des Kunden";Nina;80;64;56;64;0;0;0;0;0;0;0
+16;"fehlende Begriffsdefinition; Unverständliche Kommunikation; nicht Ausreichend geführtes Glossar";Nina;216;192;160;160;0;0;0;0;0;0;0
+17;"Architektur ist garnicht oder nur mit Großem aufwand erweiterbar; Änderungen werden nicht mögliche; entwurfsvarianten werden nicht diskutiert";Vanessa;512;512;448;320;0;0;0;0;0;0;0
+18;"Architektur ist garnicht oder nur mit Großem aufwand erweiterbar; erhöter Aufwand für Tests; Testapplikationen funktionieren nicht";Peter/JP;180;216;216;72;0;0;0;0;0;0;0
+19;"Fehlende/unvollständige Dokumentation; schlechte Wartbarkeit; Termindruck";Paul;448;448;512;224;0;0;0;0;0;0;0
+20;"Fehlende/unvollständige Dokumentation; schlechte Wartbarkeit; Wichtigkeit wird nicht erkannt";Oliver;256;192;128;168;0;0;0;0;0;0;0
+21;"Fehlende/unvollständige Dokumentation; schlechte Wartbarkeit; Änderung der Sofware ohne dass die Dokumentation geändert wird";Oliver;648;576;448;392;0;0;0;0;0;0;0
+22;"Programmier-Standards/richtlinien werden nicht befolgt; schlechte Wartbarkeit; es existieren keine Standards";Stephan;24;48;48;48;0;0;0;0;0;0;0
+23;"Programmier-Standards/richtlinien werden nicht befolgt; schlechte Wartbarkeit; die Standards sind nicht Praxisgerecht/schwer anwendbar";Stephan;168;120;120;120;0;0;0;0;0;0;0
+24;"Ungünstige Namensvergebung; schlechte Wartbarkeit; Keine einheitlichen Regeln zur Namensvergebung";Oliver;324;324;324;324;0;0;0;0;0;0;0
+25;"Nicht Modular aufgebautes System; schlechte Wartbarkeit; Unvollständigfe anforderungen zum beginn des Projektes";Vanessa/ Nina;315;378;324;378;0;0;0;0;0;0;0
+26;"Nicht Modular aufgebautes System; Unzureichend geschützte Datenstrukturen; Unvollständigfe anforderungen zum beginn des Projektes";Vanessa/ Nina;245;210;140;210;0;0;0;0;0;0;0
+26;"Unzureichendes Konfigurationsmanagement; Verwendung Alter Module/ überschreibung Neuer; Unterschätzung der Lebensdauer des Programms";Jonas;567;486;324;360;0;0;0;0;0;0;0
+27;"Unzureichendes Konfigurationsmanagement; Verwendung alter Module/ überschreibung neuer; Unterschätzung der Beherrschbarkeit kleiner Programme";Vanessa/ Stephan;324;324;252;324;0;0;0;0;0;0;0
+28;"Unzureichendes Konfigurationsmanagement; Verschlimmbesserungen, weil z.B. eine Testversion eingebaut wurde, die nicht so funktioniert, wie bei verbesserung eines anderen Modules gedacht; Termindruck";Jonas;360;280;280;280;0;0;0;0;0;0;0

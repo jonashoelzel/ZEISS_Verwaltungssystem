@@ -64,6 +64,7 @@ Beim erstellen des MVP haben sich einige Probleme ergeben. Wir haben die Ersten 
 | 
 * IOC Meilenstein MVP
 |
+25.01.2021
 | I4
 |
 * Release Minimal Working Product
