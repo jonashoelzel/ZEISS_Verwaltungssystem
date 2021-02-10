@@ -19,7 +19,7 @@ In diesem Projektplan wir das Vorgehen zur Erstellung eines Verwaltungssystems f
 | Nina Püschmann | Administration | Analyst | - (Python)
 | Stephan Joneleit | Implementation | Environment | "C#/.NET"
 | Vanessa Bayer | Implementation | Architecture |
-| Jonas Hölzel | Logic | Deployment |
+| Jonas Hölzel | Logic | Deployment | C#, Dart (Flutter), C, Python
 | Jean-Pierre  Kaiser | Logic | Tester | "C, (grundlagen Java, Python), Visual Basic, Pascal"
 | Oliver Wünsche | UI | Developer | "C, Java, R, HTML, CSS, (Python)" 
 | Peter Holland-Moritz | UI | Tester |"C,C++,Java,Bash,(Html,C#,CSS)"
@@ -28,15 +28,15 @@ In diesem Projektplan wir das Vorgehen zur Erstellung eines Verwaltungssystems f
 === Beziehungen Der Themen
 
 === Kommunikations Kanäle
-Als Kommunikationsplattform mit dem Auftragssteller hat sich Jitsy als am besten herausgestellt. Unterinander werden schnelle gespräche meist auf discord abgehalten. Die wöchentlichen Meetings auf Teams.
+Als Kommunikationsplattform mit dem Auftragssteller hat sich Jitsy als am besten herausgestellt. Untereinander werden schnelle gespräche meist auf discord abgehalten. Die wöchentlichen Meetings auf Teams.
 
 == Praktiken und Bewertung
 //Describe or reference which management and technical practices will be used in the project, such as iterative development, continuous integration, independent testing and list any changes or particular configuration to the project. Specify how you will track progress in each practice. As an example, for iterative development the team may decide to use iteration assessments and iteration burndown reports and collect metrics such as velocity (completed work item points/ iteration).
 
 Wie vorgeschrieben wird in iterativen abläufen gearbeitet werden. Grundlage dafür wird der OpenUP sein. die Iterationen werden jeweils zwei Wochen andauern.
-Jeden Sonntag wird es ein Meeting geben. Zur Mitte der 2. Iterationswoche wird die Letze Iteration von jedem Bewertet, und die Ergebnisse zum letzten Sonntagsmeeting in der Iteration besprochen. +  
+Jeden Sonntag wird es ein Meeting geben. Zur Mitte der 2. Iteration wird die letzte Iteration von jedem Bewertet, und die Ergebnisse zum letzten Sonntagsmeeting in der Iteration besprochen. +  
 Als Projekt-Planungstool haben wir uns Für Github-Issues entschieden, die als Kanban angeordnet werden. +
-Der scope des MVP wurde Mithilfe von Userstories, Wireframes und einem Domainmodell Festgelegt und am 04.12.21 vom Auftraggeber Genehmigt. das Vorgehen wure von Auftraggeber verlangt, da er zur Überzeugung der Stakeholder seinerseits ein Minimal Viable Product bis zum 27.01.21 benötigt. 
+Der scope des MVP wurde Mithilfe von Userstories, Wireframes und einem Domainmodell Festgelegt und am 04.12.21 vom Auftraggeber Genehmigt. das Vorgehen wurde von Auftraggeber verlangt, da er zur Überzeugung der Stakeholder seinerseits ein Minimal Viable Product bis zum 27.01.21 benötigt. 
 Beim erstellen des MVP haben sich einige Probleme ergeben. Wir haben die Ersten 2 Iterationen darauf verwendet das Gesamtprogramm zu planen, zum Ende der 2 Iteration wurde uns Klar, dass wir statt einem Prototypen ein MVP bereitzustellen haben. In dem Verlauf haben wir den Fehler gemacht nicht rechtzeitig auszuloten, welche Abteilung schon mit Programmieren anfangen kann, und welche noch auf Analysen warten/selber bereitstellen muss. Hier hätte das UI-Team schon wesentlich früher anfangen können. Zudem haben wir die Wichtigkeit der Erfahrung in einer Programmiersprache bei der Auswahl dieser unterschätzt.
 
 == Meilesteine und Ziele

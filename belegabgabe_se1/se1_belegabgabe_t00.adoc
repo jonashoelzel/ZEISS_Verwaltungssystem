@@ -1,11 +1,8 @@
 // --- 1. Projektthema -------------------------
 = SE I - Belegabgabe: ZEISS-Verwaltungssystem für Veröffentlichungen
 // --- 2. Teammitglieder -----------------------
-Paul Stefan Joksch <s79396@htw-dresden.de>; Stephan Joneleit <s80463@htw-dresden.de>; Nina Püschmann s79289@htw-dresden.de; Oliver Wünsche <s00000@htw-dresden.de>; Jonas Hölzel <s80484@htw-dresden.de>; Vanessa Bayer <s00000@htw-dresden.de>; Peter Holland-Moritz <s00000@htw-dresden.de>; Jean-Pierre Kaiser <s80430@htw-dresden.de>
+Paul Stefan Joksch <s79396@htw-dresden.de>; Stephan Joneleit <s80463@htw-dresden.de>; Nina Püschmann s79289@htw-dresden.de; Oliver Wünsche <s78991@htw-dresden.de>; Jonas Hölzel <s80484@htw-dresden.de>; Vanessa Bayer <s80494@htw-dresden.de>; Peter Holland-Moritz <s80479@htw-dresden.de>; Jean-Pierre Kaiser <s80430@htw-dresden.de>
 
-// --- 3. Abgabedatum --------------------------
-12. Februar 2021
-// ---------------------------------------------
 
 :docs: ../docs
 include::{docs}/_includes/default-attributes.inc.adoc[]
@@ -76,13 +73,13 @@ include::{docs-requirements}/domain_model.adoc[lines=1..1;4..-1,leveloffset=+1]
 include::{docs-project-management}/project_plan.adoc[lines=1..1;4..-1,leveloffset=+1]
 <<<
 // Risikoliste
-include::{docs-project-management}/risk_list.adoc[lines=1..1;4..-1,leveloffset=+1]
-<<<
-// Iteration 1
-include::{docs-project-management}/iteration_plan_01.adoc[lines=1..1;4..-1,leveloffset=+1]
+//include::{docs-project-management}/risk.csv[lines=1..1;4..-1,leveloffset=+1]
 <<<
 // Iteration 2
-//include::{docs-project-management}/iteration_plan_02.adoc[lines=1..1;4..-1,leveloffset=+1]
+include::{docs-project-management}/iteration_plan_02.adoc[lines=1..1;4..-1,leveloffset=+1]
+<<<
+// Iteration 4
+include::{docs-project-management}/iteration_plan_04.adoc[lines=1..1;4..-1,leveloffset=+1]
 <<<
 // Iteration 3
 //include::{docs-project-management}/iteration_plan_03.adoc[lines=1..1;4..-1,leveloffset=+1]
@@ -103,8 +100,8 @@ include::{docs-architecture}/architecture_notebook.adoc[lines=1..1;4..-1,levelof
 include::{docs-test}/test_cases.adoc[lines=1..1;4..-1,leveloffset=+1]
 <<<
 // Design
-:imagesdir: {docs-development}/images
-include::{docs-development}/design.adoc[lines=1..1;4..-1,leveloffset=+1]
+:imagesdir: {docs-requirements}/images
+include::{docs-requirements}/Wireframes.adoc[lines=1..1;4..-1,leveloffset=+1]
 <<<
 
 // ---------------------------------------------

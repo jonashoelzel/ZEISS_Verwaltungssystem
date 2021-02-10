@@ -5,107 +5,104 @@ include::../_includes/default-attributes.inc.adoc[]
 
 == Veröffentlichung Hinzufügen
 
-:imagesdir: images/wireframe_use_case_01
 
 === Landing Page
 
-image::Veröffentlichung hinzufügen - Wireframe - Landing Page.jpg[]
+image::wireframe_use_case_01/Veröffentlichung hinzufügen - Wireframe - Landing Page.jpg[]
 
 === Workflow wichtige Angaben
 
 .Titelname
-image::Veröffentlichung hinzufügen - Wireframe - Titelname.jpg[]
+image::wireframe_use_case_01/Veröffentlichung hinzufügen - Wireframe - Titelname.jpg[]
 
 .Autor
-image::Veröffentlichung hinzufügen - Wireframe - Autor.jpg[]
+image::wireframe_use_case_01/Veröffentlichung hinzufügen - Wireframe - Autor.jpg[]
 
 .Geschäftsbereich
-image::Veröffentlichung hinzufügen - Wireframe - Geschäftsbereich.jpg[]
+image::wireframe_use_case_01/Veröffentlichung hinzufügen - Wireframe - Geschäftsbereich.jpg[]
 
 ==== Neuen Geschäftsbereich Hinzufügen
 
-image::Veröffentlichung hinzufügen - Wireframe - neuer Geschäftsbereich.jpg[]
+image::wireframe_use_case_01/Veröffentlichung hinzufügen - Wireframe - neuer Geschäftsbereich.jpg[]
 
 .Datum der Veröffentlichung
-image::Veröffentlichung hinzufügen - Wireframe - Datum der Veröffentlichung.jpg[]
+image::wireframe_use_case_01/Veröffentlichung hinzufügen - Wireframe - Datum der Veröffentlichung.jpg[]
 
 .Art der Veröffentlichung
-image::Veröffentlichung hinzufügen - Wireframe - Art der Veröffentlichung.jpg[]
+image::wireframe_use_case_01/Veröffentlichung hinzufügen - Wireframe - Art der Veröffentlichung.jpg[]
 
 === Workflow optionale Angaben
 
 .Tags
-image::Veröffentlichung hinzufügen - Wireframe - Tags.jpg[]
+image::wireframe_use_case_01/Veröffentlichung hinzufügen - Wireframe - Tags.jpg[]
 
 .Beschreibung
-image::Veröffentlichung hinzufügen - Wireframe - Beschreibung.jpg[]
+image::wireframe_use_case_01/Veröffentlichung hinzufügen - Wireframe - Beschreibung.jpg[]
 
 .Verlag des Mediums
-image::Veröffentlichung hinzufügen - Wireframe - Verlag des Mediums.jpg[]
+image::wireframe_use_case_01/Veröffentlichung hinzufügen - Wireframe - Verlag des Mediums.jpg[]
 
 
 === Vorschau Veröffentlichung
 
-image::Veröffentlichung hinzufügen - Wireframe - Vorschau hinzufügen.jpg[]
+image::wireframe_use_case_01/Veröffentlichung hinzufügen - Wireframe - Vorschau hinzufügen.jpg[]
 
 === Veröffentlichung abschließen
 
-image::Veröffentlichung hinzufügen - Wireframe - Veröffentlichung hinzugefügt.jpg[]
+image::wireframe_use_case_01/Veröffentlichung hinzufügen - Wireframe - Veröffentlichung hinzugefügt.jpg[]
 
 === Nicht Vollständige Veröffentlichung Fehlermeldung
 
-image::Veröffentlichung hinzufügen - Wireframe - Fehlermeldung fehlende Angaben.jpg[]
+image::wireframe_use_case_01/Veröffentlichung hinzufügen - Wireframe - Fehlermeldung fehlende Angaben.jpg[]
 
 == Beitrag Suchen & Filtern
 
-:imagesdir: images/wireframe_use_case_02
 
 === Landing Page
 
-image::Beitrag suchen - Wireframe - Landing Page.jpg[]
+image::wireframe_use_case_02/Beitrag suchen - Wireframe - Landing Page.jpg[]
 
 === Beiträge Übersicht
 
-image::Beitrag suchen - Wireframe - Anzeigeübersicht Beiträge.jpg[]
+image::wireframe_use_case_02/Beitrag suchen - Wireframe - Anzeigeübersicht Beiträge.jpg[]
 
 === Informationen zu einem Beitrag anzeigen
 
-image::Beitrag suchen - Wireframe - Alle Informationen eines Beitrages.jpg[]
+image::wireframe_use_case_02/Beitrag suchen - Wireframe - Alle Informationen eines Beitrages.jpg[]
 
 === Filtern und Sortieren
 
-image::Beitrag suchen - Wireframe - Beiträge filtern.jpg[]
+image::wireframe_use_case_02/Beitrag suchen - Wireframe - Beiträge filtern.jpg[]
 
 == Einträge Bearbeiten
 
-:imagesdir: images/wireframe_use_case_03
 
 === Beitrag aus Übersicht zur Bearbeitung auswählen
 
-image::Eintrag bearbeiten - Wireframe - Auswahl Beitrag bearbeiten.jpg[]
+image::wireframe_use_case_03/Eintrag bearbeiten - Wireframe - Auswahl Beitrag bearbeiten.jpg[]
 
 === Workflow Eigenschaften Bearbeiten
 
-image::Eintrag bearbeiten - Wireframe - Titelname.jpg[]
+image::wireframe_use_case_03/Eintrag bearbeiten - Wireframe - Titelname.jpg[]
 
-image::Eintrag bearbeiten - Wireframe - Autor.jpg[]
+image::wireframe_use_case_03/Eintrag bearbeiten - Wireframe - Autor.jpg[]
 
-image::Eintrag bearbeiten - Wireframe - Geschäftsbereich.jpg[]
+image::wireframe_use_case_03/Eintrag bearbeiten - Wireframe - Geschäftsbereich.jpg[]
 
-image::Eintrag bearbeiten - Wireframe - Datum der Veröffentlichung.jpg[]
+image::wireframe_use_case_03/Eintrag bearbeiten - Wireframe - Datum der Veröffentlichung.jpg[]
 
-image::Eintrag bearbeiten - Wireframe - Art der Veröffentlichung.jpg[]
+image::wireframe_use_case_03/Eintrag bearbeiten - Wireframe - Art der Veröffentlichung.jpg[]
 
-image::Eintrag bearbeiten - Wireframe - Tags.jpg[]
+image::wireframe_use_case_03/Eintrag bearbeiten - Wireframe - Tags.jpg[]
 
-image::Eintrag bearbeiten - Wireframe - Beschreibung.jpg[]
+image::wireframe_use_case_03/Eintrag bearbeiten - Wireframe - Beschreibung.jpg[]
 
-image::Eintrag bearbeiten - Wireframe - Verlag des Mediums.jpg[]
+image::wireframe_use_case_03/Eintrag bearbeiten - Wireframe - Verlag des Mediums.jpg[]
 
 === Vorschau Bearbeitung
 
-image::Eintrag bearbeiten - Wireframe - Vorschau Bearbeitung.jpg[]
+image::wireframe_use_case_03/Eintrag bearbeiten - Wireframe - Vorschau Bearbeitung.jpg[]
 
 === Bearbeitung gespeichert
 
-image::Eintrag bearbeiten - Wireframe - Erfolgreiche Bearbeitung.jpg[]
+image::wireframe_use_case_03/Eintrag bearbeiten - Wireframe - Erfolgreiche Bearbeitung.jpg[]

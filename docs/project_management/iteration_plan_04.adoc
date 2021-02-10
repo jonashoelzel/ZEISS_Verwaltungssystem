@@ -25,7 +25,6 @@ include::../_includes/default-attributes.inc.adoc[]
 Fertigstellung des MVP. da der Gesamte Scope vorrausichtlich nicht erreicht wird haben wir uns darauf geeinigt lediglich das HInzufügen von Veröffentlichungen bereitzustellen.
 
 == Alphas
-:imagesdir: images
 image::Alphas Iteration 4.png[]
 
 == Aufgabenzuordnung
