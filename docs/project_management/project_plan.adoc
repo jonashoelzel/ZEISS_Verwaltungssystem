@@ -3,6 +3,7 @@ Vorname Nachname <email@domain.org>; Vorname2 Nachname2 <email2@domain.org>; Vor
 {localdatetime}
 include::../_includes/default-attributes.inc.adoc[]
 // Platzhalter für weitere Dokumenten-Attribute
+:imagesdir: images
 
 == Einführung
 //Briefly describe the content of the project plan.
@@ -36,6 +37,7 @@ Wie vorgeschrieben wird in iterativen abläufen gearbeitet werden. Grundlage daf
 Jeden Sonntag wird es ein Meeting geben. Zur Mitte der 2. Iterationswoche wird die Letze Iteration von jedem Bewertet, und die Ergebnisse zum letzten Sonntagsmeeting in der Iteration besprochen. +  
 Als Projekt-Planungstool haben wir uns Für Github-Issues entschieden, die als Kanban angeordnet werden. +
 Der scope des MVP wurde Mithilfe von Userstories, Wireframes und einem Domainmodell Festgelegt und am 04.12.21 vom Auftraggeber Genehmigt. das Vorgehen wure von Auftraggeber verlangt, da er zur Überzeugung der Stakeholder seinerseits ein Minimal Viable Product bis zum 27.01.21 benötigt. 
+Beim erstellen des MVP haben sich einige Probleme ergeben. Wir haben die Ersten 2 Iterationen darauf verwendet das Gesamtprogramm zu planen, zum Ende der 2 Iteration wurde uns Klar, dass wir statt einem Prototypen ein MVP bereitzustellen haben. In dem Verlauf haben wir den Fehler gemacht nicht rechtzeitig auszuloten, welche Abteilung schon mit Programmieren anfangen kann, und welche noch auf Analysen warten/selber bereitstellen muss. Hier hätte das UI-Team schon wesentlich früher anfangen können. Zudem haben wir die Wichtigkeit der Erfahrung in einer Programmiersprache bei der Auswahl dieser unterschätzt.
 
 == Meilesteine und Ziele
 //Define and describe the high-level objectives for the iterations and define milestones. For example, use the following table to lay out the schedule. If needed you may group the iterations into phases and use a separate table for each phase
@@ -89,5 +91,5 @@ Der scope des MVP wurde Mithilfe von Userstories, Wireframes und einem Domainmod
 * selbst bei einer guten Aufgabenstellung gibt es Missverständnisse
 * Regelmäßigeren E-mailkontakt mit Updates zum Stand des Produktes an Auftragsteller
 * früher herausfinden, welche bereiche schon mit Programmieren anfangen können (früherer UI start)
-* zweierteams parallel Programmieren um probleme kurzfristig klären zu können
+* zweierteams parallel programmieren um Probleme kurzfristig klären zu können
 
