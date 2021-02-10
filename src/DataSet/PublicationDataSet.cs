@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace PublicationDataSet
+namespace DataSet
 {
     public class PublicationDataSet : DataObject, IPublicationDataSet
     {
@@ -17,20 +17,22 @@ namespace PublicationDataSet
         public IAuthor MainAuthor { get; set; } = new Author();
         public List<IAuthor> CoAuthors { get; set; }
 
-
-        // Additional Information
-        public IState CurrentState { get; set; } = new State();
-        public DateTime DateOfStartWorking { get; set; }
-        public DateTime DateOfRelease { get; set; }
-        public List<ITag> Tags { get; set; }
-        public string Description { get; set; }
-        public string AdditionalInformation { get; set; }
-
         public string Division { get; set; }
 
+
+        // Publication State Information
+        public DateTime DateOfStartWorking { get; set; }
+        public IState CurrentState { get; set; } = new State();
+        public DateTime DateOfRelease { get; set; }
 
 
         // Publisher Information
         public IPublisher PublishedBy { get; set; } = new Publisher();
+
+
+        // Additional Information
+        public List<ITag> Tags { get; set; }
+        public string Description { get; set; }
+        public string AdditionalInformation { get; set; }
     }
 }

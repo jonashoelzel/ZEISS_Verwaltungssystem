@@ -1,4 +1,4 @@
-﻿namespace PublicationDataSet
+namespace DataSet
 {
     public class DataObject : IDataObject
     {
@@ -9,8 +9,15 @@
             set
             {
                 if (_ID is null)
-                    _ID = ID;
+                    _ID = value;
+                else if (value is null)
+                    _ID = null;
             }
+        }
+
+        public void ResetID()
+        {
+            _ID = null;
         }
     }
 }
