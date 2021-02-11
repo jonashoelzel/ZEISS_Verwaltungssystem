@@ -85,6 +85,9 @@ Beim erstellen des MVP haben sich einige Probleme ergeben. Wir haben die Ersten 
 
 == Deployment
 //Outline the strategy for deploying the software (and its updates) into the production environment.
+Da die Software nur Windows unterstützen soll, wird eine .exe erzeugt, die sich der Kunde auf seinem Computer installieren kann. Um eine bereits installierte Version zu updaten wird die .exe der neuen Version über das bereits installierte Programm installiert und so geupdatet.
+
+Zum Kompilieren wird das Electron-CLI Tool benötigt, es kann mit dem Befehl `dotnet tool install ElectronNET.CLI -g` installiert werden. Das eigentliche Kompilieren passiert mit dem Befehl `electronize build /target win`.
 
 == Erkenntnisse (Lessons learned)
 //List lessons learned from the retrospective, with special emphasis on actions to be taken to improve, for example: the development environment, the process, or team collaboration.
