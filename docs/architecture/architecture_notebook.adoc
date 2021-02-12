@@ -6,7 +6,7 @@ include::../_includes/default-attributes.inc.adoc[]
 
 
 == Zweck
-Dieses Dokument beschreibt die Philosophie, Entscheidungen, Nebenbedingungen, Begründungen, wesentliche Elemente und andere übergreifende Aspekte des Systems, die Einfluss auf Entwurf und Implementierung haben.
+Dieses Dokument beschreibt die Philosophie, Entscheidungen, Nebenbedingungen, Begründungen, wesentliche Elemente und andere übergreifende Aspekte des Systems, die Einfluss auf Entwurf und Implementierung haben. 
 
 //Hinweise: Bearbeiten Sie immer die Abschnitte 2-6 dieser Vorlage. Nachfolgende Abschnitte sind empfohlen, aber optional und sollten je nach Umfang der künftigen Wartungsarbeiten, Fähigkeiten des Entwicklungsteams und Bedeutung anderer architektureller Belange.
 
@@ -44,7 +44,7 @@ Hinzuzufügende Features wie Filterfunktionen, Sortierfunktionen, Overviewmögli
 
 Zudem ist ein Benachrichtigungssystem geplant, welche den Nutzer auf Updates hinweisen. 
 
-Die vorliegend beschriebene Anwendung soll ferner weiter ausgebaut werden. Das Programm ist mittels der Three-Tier-Architektur umzusetzen, um den Austausch von Technologien zu vereinfachen. Zusätzlich wird Flexibilität, durch die einfache Änderung der Datenherkunft geschaffen.  
+Die vorliegend beschriebene Anwendung soll ferner weiter ausgebaut werden. Das Programm ist mittels der Three-Tier-Architektur umzusetzen, um den Austausch von Technologien zu vereinfachen. Zusätzlich wird Flexibilität, durch die einfache Änderung der Datenherkunft geschaffen.    
 //Hinweise: Beschreiben Sie die Philosophie der Architektur, d.h. den zentralen Ansatz für ihre Architektur. Identifizieren Sie alle Aspekte, die die Philosophie beeinflussen, z.B. komplexe Auslieferung Aspekte, Anpassung von Altsystemen oder besondere Geschwindigkeitsanforderungen. Muss es besonders robust sein, um eine langfristige Wartung und Pflege zu ermöglichen?
 
 //Formulieren Sie eine Reihe von Zielen, die die Architektur in ihrer Struktur und ihrem Verhalten erfüllen muss. Identifizieren Sie kritische Fragen, die von der Architektur adressiert werden müssen, z.B. besondere Hardware-Abhängigkeiten, die vom Rest des Systems isoliert werden sollten oder Sicherstellung der Funktionsfähigkeit unter besonderen Bedingungen (z.B. Offline-Nutzung).
@@ -55,11 +55,8 @@ Die vorliegend beschriebene Anwendung soll ferner weiter ausgebaut werden. Das P
 
 * jeder Benutzer besitzt Zugang zu einem - mindestens temporär - internetverbundenen Computer 
 
-* .NET Framework 5.0 ist aktiviert 
+* .NET 5.0 Runtime ist installiert
 
-* NuGet Package „DocumentFormat.OpenXml“ ist auf dem jeweiligen Computer installiert   
-
- 
 
 *Abhängigkeiten*
 
@@ -93,14 +90,15 @@ NFAS-3	Berechtigungsvergabe über Aktive Directory
 //[List the decisions that have been made regarding architectural approaches and the constraints being placed on the way that the developers build the system. These will serve as guidelines for defining architecturally significant parts of the system. Justify each decision or constraint so that developers understand the importance of building the system according to the context created by those decisions and constraints. This may include a list of DOs and DON’Ts to guide the developers in building the system.]
 
 |===
-|Entscheidung |Nebenbedingung/Begründung
-|1. Nutzung von Excel als Datenbank 
+|*Entscheidung* |*Nebenbedingung/Begründung*
+|*1. Nutzung von Excel als Datenbank* 
 a|
 * keine Einrichtung einer Datenbank notwendig +
     -> Aufwand wird reduziert 
-* Bekannte Technologie   
+* Bekannte Technologie
+    -> einfache Wartbarkeit
 
-|2. Blazor als Framework 
+|*2. Blazor als Framework *
 a| 
 * Weborientierte Anwendung + 
 ! BEDINGUNG VON KUNDE! 
@@ -112,19 +110,19 @@ a|
 * . NET Bibliothek +
     -> Verringerung des Programmieraufwandes
 
-|3. Elektron als weiteres Framework 
+|*3. Elektron als weiteres Framework* 
 a|
 * Realisierung einer Desktop Anwendung + 
 ! BEDINGUNG VON KUNDE! 
 * CSS und HTML Kenntnisse im Team vorhanden + 
     -> Zeitersparnis
 
-|4. Three-Tier-Architektur 
+|*4. Three-Tier-Architektur* 
 a| 
 * Unabhängigkeit UI Layer von der Data Layer +
     -> hohe Flexibilität
 
-|5. OPEN XML 
+|*5. OPEN XML* 
 a| 
 * kompatibel zu .NET Core +
 ! BEDINGUNG VON KUNDE! + 
