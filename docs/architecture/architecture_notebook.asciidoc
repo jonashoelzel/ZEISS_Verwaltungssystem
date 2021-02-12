@@ -2,14 +2,14 @@
 
 //[arabic]
 //==. [.underline]
-***Zweck****
+***Zweck***
 
 Dieses Dokument beschreibt die Philosophie, Entscheidungen,
 Nebenbedingungen, Begründungen, wesentliche Elemente und andere
 übergreifende Aspekte des Systems, die Einfluss auf Entwurf und
 Implementierung haben.
 
-[arabic, start=2]
+[arabic, start=5]
 ==. [.underline]#Architekturziele und Philosophie#
 
 ____
