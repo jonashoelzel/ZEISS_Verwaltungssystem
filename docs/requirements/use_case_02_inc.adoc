@@ -18,7 +18,7 @@ Aus Gründen der Information oder zur Bearbeitung will das Sales Department eine
 . Kann dort nach Titel, Autor, Tags, etc. suchen, weitere Filter (z.B. nach Bereich) sind unter Dropdown-Menüs zu finden
 . Wählt gewollte Filter aus und kann sich dann die Liste dazu anzeigen lassen (nach gewünschter Sortierung: z.B. "zuletzt" oder "Alphabetisch")
 . Der Use Case endet
-
+<<<
 === Alternative Abläufe
 ==== Bearbeiten von Einträgen
 Wenn der Nutzer nach dem Filtern einen Eintrag bearbeiten will

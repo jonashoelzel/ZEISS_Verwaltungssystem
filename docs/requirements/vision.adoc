@@ -104,6 +104,8 @@ Beschreiben Sie die Arbeitsumgebung des Nutzers. Hier sind einige Anregungen:
 
 //Hier können zudem bei Bedarf Teile des Unternehmensmodells (Prozesse, Organigramme, IT-Landschaft, ...) eingefügt werden, um die beteiligten Aufgaben und Rollen zu skizzieren.
 
+<<<
+
 == Produkt-/Lösungsüberblick
 === Bedarfe und Hauptfunktionen
 //Vermeiden Sie Angaben zum Entwurf. Nennen wesentliche Features (Produktmerkmale) auf allgemeiner Ebene. Fokussieren Sie sich auf die benötigten Fähigkeiten des Systems und warum (nicht wie!) diese realisiert werden sollen. Geben Sie die von den Stakeholdern vorgegebenen Prioritäten und das geplante Release für die Veröffentlichung der Features an.

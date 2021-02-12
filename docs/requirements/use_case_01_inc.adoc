@@ -25,7 +25,7 @@ Veröffentlicht in Zeitschrift, auf Plattform oder Blog einen Fachbeitrag des Au
 . Nutzer wählt "Veröffentlichung hinzufügen"
 . Die Veröffentlichung wird der Liste zugefügt
 . Der Use Case ist abgeschlossen.
-
+<<<
 === Alternative Abläufe
 ==== Nicht alle notwendigen Felder ausgefüllt
 Wenn nicht alle notwendigen Angaben zu einer neuen Veröffentlichung durch das Sales Department gemacht werden
