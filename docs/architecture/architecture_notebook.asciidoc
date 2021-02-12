@@ -2,7 +2,7 @@
 
 //[arabic]
 //==. [.underline]
-***Zweck***
+==Zweck
 
 Dieses Dokument beschreibt die Philosophie, Entscheidungen,
 Nebenbedingungen, Begründungen, wesentliche Elemente und andere
