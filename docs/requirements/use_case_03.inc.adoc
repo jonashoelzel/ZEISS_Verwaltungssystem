@@ -1,5 +1,4 @@
 == Use-Case: Eintrag bearbeiten
-===	Attribute eines Beitrags sollen bearbeitet werden
 
 ===	Kurzbeschreibung der Akteure
 ==== Mitarbeiter Sales Department

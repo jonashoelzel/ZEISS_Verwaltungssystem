@@ -1,11 +1,7 @@
 = Use-Case Model: Veröffentlichungen im ZEISS System
-Nina Püschmann s79289@htw-dresden.de
-{localdatetime}
 include::../_includes/default-attributes.inc.adoc[]
 // Platzhalter für weitere Dokumenten-Attribute
 
-
-== Allgemeine Informationen
 // ...
 
 //Fügen Sie nachfolgend eine Liste aller Use-Cases per Include ein.

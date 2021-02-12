@@ -16,8 +16,6 @@ Dieses Visions-Dokument bezieht sich auf das ZEISS-Verwaltungssystem, das von Te
 
 include::glossary.adoc[]
 
-=== Referenzen
-(hier externe Verweise zu anderen Dokumenten, Quellen, Standards etc. einfügen, sofern notwendig)
 
 == Positionierung
 === Fachliche Motivation

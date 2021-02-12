@@ -1,5 +1,4 @@
 == Use-Case: Beitrag suchen
-===	Fachbeitrag wird gesucht
 
 ===	Kurzbeschreibung der Akteure
 ==== Mitarbeiter
@@ -41,8 +40,4 @@ Wenn der Nutzer seine Filterergebnisse als CSV exportieren will
 . Kann sich dann die Liste der Beiträge aus dem Bereich ansehen
 
 ===	Nachbedingungen
-==== User hat Beitrag gefunden
-
-=== Besondere Anforderungen
-
-==== <Besondere Anforderung 1>
+User hat Beitrag gefunden

@@ -25,7 +25,6 @@ In diesem Projektplan wir das Vorgehen zur Erstellung eines Verwaltungssystems f
 | Peter Holland-Moritz | UI | Tester |"C,C++,Java,Bash,(Html,C#,CSS)"
 |===
 
-=== Beziehungen Der Themen
 
 === Kommunikations Kanäle
 Als Kommunikationsplattform mit dem Auftragssteller hat sich Jitsy als am besten herausgestellt. Untereinander werden schnelle gespräche meist auf discord abgehalten. Die wöchentlichen Meetings auf Teams.

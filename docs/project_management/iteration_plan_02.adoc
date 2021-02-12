@@ -1,4 +1,4 @@
-= Iteration Plan 01: {project-name}
+= Iteration Plan 02: {project-name}
 Vorname Nachname <email@domain.org>; Vorname2 Nachname2 <email2@domain.org>; Vorname3 Nachname3 <email3@domain.org>
 {localdatetime}
 include::../_includes/default-attributes.inc.adoc[]
@@ -13,8 +13,8 @@ include::../_includes/default-attributes.inc.adoc[]
 | Meilenstein
 | Datum
 
-| Beginn der Iteration | 23.11.2020
-| Ende der Iteration | 06.12.2020
+| Beginn der Iteration | 06.12.2020
+| Ende der Iteration | 20.12.2020
 |===
 
 
@@ -43,7 +43,7 @@ https://github.com/jonashoelzel/ZEISS_Verwaltungssystem/projects/2
 [%header, cols="1,3"]
 |===
 | Assessment Ziel | Gesamt Projekt
-| Assessment Datum | ...
+| Assessment Datum | 13.12.2020
 | Teilnehmer | Paul, Nina
 | Projektstatus	| grün
 |===

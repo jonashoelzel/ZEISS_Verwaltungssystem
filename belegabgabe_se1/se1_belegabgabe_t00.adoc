@@ -38,7 +38,7 @@ include::{docs}/_includes/default-attributes.inc.adoc[]
 // --- Technische Spezifikation ---
 = Technische Spezifikation
 * Vision
-* Use Case Model (inkl. Wireframes, sofern vorhanden)
+* Use Case Model
 * System-wide Requirements
 * Glossar
 * Domänenmodel
@@ -67,7 +67,6 @@ include::{docs-requirements}/domain_model.adoc[lines=1..1;4..-1,leveloffset=+1]
 * Risikoliste
 * Iteration Plan (für zwei ausgewählte Iterationen)
 
-:imagesdir: {docs-project-management}/images
 
 // Projektplan
 include::{docs-project-management}/project_plan.adoc[lines=1..1;4..-1,leveloffset=+1]
@@ -78,6 +77,8 @@ include::{docs-project-management}/project_plan.adoc[lines=1..1;4..-1,leveloffse
 // Iteration 2
 include::{docs-project-management}/iteration_plan_02.adoc[lines=1..1;4..-1,leveloffset=+1]
 <<<
+
+:imagesdir: ../docs/project_management/images
 // Iteration 4
 include::{docs-project-management}/iteration_plan_04.adoc[lines=1..1;4..-1,leveloffset=+1]
 <<<
