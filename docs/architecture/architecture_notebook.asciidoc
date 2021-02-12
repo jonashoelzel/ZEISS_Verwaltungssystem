@@ -1,4 +1,4 @@
-==*Architecture Notebook*
+**Architecture Notebook**
 
 [arabic]
 ==. [.underline]#Zweck#
