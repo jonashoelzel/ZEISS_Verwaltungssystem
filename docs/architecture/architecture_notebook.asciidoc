@@ -179,8 +179,9 @@ Team
 ! BEDINGUNG VON KUNDE! +
 ! WIRD VON BLAZOR VORAUSGESETZT!
 
-|
-=== Architekturmechanismen
+|===
+
+== Architekturmechanismen
 
 Der Zugriff auf Informationen bzw. Änderungen und Neuerungen von Daten
 muss auf den gesamten Datenumfang des Systems grundsätzlich vorhanden
