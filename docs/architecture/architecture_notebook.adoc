@@ -95,10 +95,10 @@ NFAS-3	Berechtigungsvergabe über Aktive Directory
 a|
 * keine Einrichtung einer Datenbank notwendig +
     -> Aufwand wird reduziert 
-* Bekannte Technologie
+* Bekannte Technologie +
     -> einfache Wartbarkeit
 
-|*2. Blazor als Framework *
+|*2. Blazor als Framework*
 a| 
 * Weborientierte Anwendung + 
 ! BEDINGUNG VON KUNDE! 
