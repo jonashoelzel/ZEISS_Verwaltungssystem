@@ -1,0 +1,225 @@
+*Architecture Notebook*
+
+[arabic]
+. [.underline]#Zweck#
+
+Dieses Dokument beschreibt die Philosophie, Entscheidungen,
+Nebenbedingungen, Begründungen, wesentliche Elemente und andere
+übergreifende Aspekte des Systems, die Einfluss auf Entwurf und
+Implementierung haben.
+
+[arabic, start=2]
+. [.underline]#Architekturziele und Philosophie#
+
+____
+Die Zeiss Digital Innovation GmbH sieht sich als professioneller
+Kooperationspartner und Arbeitgeber. Um diese Zielsetzung zu erfüllen
+unterstützt die GmbH Ihre Mitarbeiter bei der Veröffentlichung diverser
+Fachbeiträge. Die Grundlage dafür bildete bisher eine einfache
+Excel-Liste. Der Nutzen besteht in der Dokumentation der Beiträge, der
+Informationsaufnahme diverser Kriterien bzw. Bezugspunkte, die
+Erstellung einer Übersicht, die Möglichkeit der Verwaltung von Beiträgen
+und die Auswertung von vorliegenden Informationen. Die steigende Anzahl
+von Veröffentlichungen, korrelierend mit einer steigenden Menge an
+Datenvolumen und Benutzern implizierte eine hohe Fehleranfälligkeit der
+Anwendung. Der Prozess der Veröffentlichung wurde entscheiden
+beeinträchtigt. Eine reine Excel-Liste bewies sich demgemäß als
+unzureichend.
+
+Maßgeblich verantwortlich dafür ist die unzureichende Aufbereitung der
+Daten, das fehlende Abfangen von Eingabefehlern und die dazu konkrete
+Anleitung für Benutzer. Diesbezüglich ergab sich für die Zeiss Digital
+Innovation GmbH Handlungsbedarf, welcher zur Auftragsvergabe zur
+Einsetzung eines neuen Systems führte.
+
+Zielsetzung ist die Prozessoptimierung und Erweiterung der
+Funktionalität mittels bestehender Technologien des Unternehmens.
+Charakterisiert durch die Anforderung eines geringen
+Einrichtungsbedarfs, die Voraussetzung der einfachen Wartbarkeit des
+Systems und eine wesentliche Unterstützung des
+Veröffentlichungsprozesses.
+
+Damit eine Excel-Datei weiterhin als Datenspeicherungsoberfläche benutzt
+werden kann, ist eine präzisere Einteilung der Datensätze nötigt.
+Folglich kann die Datei weiterhin als Datenbank fungieren.
+
+Entscheidend ist primär das Hinzufügen einer zusätzlichen Schnittstelle
+zwischen User und Datenbank. Die Anwendung kann über ein neues Programm,
+welche diese darbietet, realisiert werden.
+
+Das neue System setzt sich demgemäß aus einer überarbeiteten Excel-Datei
+und einem Anwendungsprogramm zusammen.
+
+Realisiert als Desktop-Anwendung, auf Basis einer Webanwendung, soll ein
+einfacher Aufruf der Anwendung gewährleistet werden.
+
+Technologisch betrachtet ist zudem eine gewisse Modernität gewünscht.
+Die Benutzung von NET 5.0 gilt damit als ein weiteres Ziel der neuen
+Anwendung.
+
+Die Mindestanzahl der Parallelnutzer ist durch die nicht eindeutige
+prozentuale Anstiegsrate der Veröffentlichungen unpräzise. Eine
+Parallelnutzung sollte prinzipiell umgesetzt werden und kann
+nachträglich im Programm entsprechend angepasst werden.
+
+Das System benötigt User-Gruppen, welche durch die IT-Administration der
+Zeiss Digital Innovation GmbH erweitert und geändert werden können,
+damit Einschränkungen der Nutzung einfach zu realisieren sind. Die
+Zugriffsrechte sollten zweckmäßig über ein Active Directory verwaltet
+werden.
+
+Der Zugriff auf Informationen bzw. Änderungen und Neuerungen von Daten
+sollte für End-Benutzer nur über die neue Software möglich sein. Demnach
+wird der Anwender über das Programm angeleitet - ein einfaches Handling
+ist gewährleistet. +
+Die ausreichende Anleitung ist angesichts Navigationsleiste und
+bekannten Icons sicherzustellen.
+
+Die Umsetzung einer mehrseitige Benutzeroberfläche stellt dem Anwender
+eine strukturierte Benutzeroberfläche bereit.
+
+Maßgeblich ist die Durchführung von Kontrollen bezüglich Aktionen der
+User. Es ist notwendig Eingabefehler mittels Fehlermeldungen abzufangen
+und entsprechenden Mitteilungen zu übermitteln.
+
+Hinzuzufügende Features wie Filterfunktionen, Sortierfunktionen,
+Overviewmöglichkeiten erweitern die Funktionalität der Anwendung und
+tragen infolgedessen erheblich zu einer Optimierung der Handhabung bei.
+
+Zudem ist ein Benachrichtigungssystem geplant, welche den Nutzer auf
+Updates hinweisen.
+
+Die vorliegend beschriebene Anwendung soll ferner weiter ausgebaut
+werden. Das Programm ist mittels der Three-Tier-Architektur umzusetzen,
+um den Austausch von Technologien zu vereinfachen. Zusätzlich wird
+Flexibilität, durch die einfache Änderung der Datenherkunft geschaffen.
+____
+
+[arabic, start=3]
+. [.underline]#Annahmen und Abhängigkeiten#
+
+*Annahmen*
+
+* jeder Benutzer besitzt Zugang zu einem - mindestens temporär -
+internetverbundenen Computer
+* .NET 5.0 Runtime ist installiert
+
+*Abhängigkeiten*
+
+* Framework muss gepflegt werden
+* Administration von Software wird von Zeiss übernommen
+
+[arabic, start=4]
+. [.underline]#Architektur-relevante Anforderungen#
+
+*Funktionalität*
+
+NFAF-1 Zugriff auf Excel-Datei
+
+NFAF-1 Veröffentlichungsdaten persistent speichern
+
+NFAF-2 Überprüfung von Berechtigungen der jeweiligen
+Benutzer/Benutzergruppen
+
+NFAF-3 Korrekte und vollständige Weitergabe, Wiedergabe und Speicherung
+von Daten
+
+*Wartbarkeit*
+
+NFAS-1 Möglichkeit von Systemerweiterung
+
+NFAS-2 Möglichkeit der Änderung des Speicherplatzes
+
+NFAS-3 Berechtigungsvergabe über Aktive Directory
+
+[arabic, start=5]
+. [.underline]#Entscheidungen, Nebenbedingungen +
+und Begründungen#
+
+[cols=",",]
+|===
+|*ENTSCHEIDUNG* |*Nebenbedingung/ +
+Begründung*
+
+|*1. Nutzung von Excel als Datenbank* a|
+* keine Einrichtung einer Datenbank notwendig
+** Aufwand wird reduziert
+* Bekannte Technologie
+** einfache Wartbarkeit
+
+|*2. Blazor als Framework* a|
+* Weborientierte Anwendung
+
+! BEDINGUNG VON KUNDE!
+
+* Single-Page-Anwendung
+
+____
+! BEDINGUNG VON KUNDE!
+____
+
+* WebAssemply
+** keine JavaScript Kenntnisse nötig, nicht vorhandene Kenntnisse im
+Team
+** Zeitersparnis
+* .NET Bibliothek
+
+* Verringerung des Programmieraufwandes
+
+|*3. Elektron als weiteres Framework* a|
+* Realisierung einer Desktop Anwendung +
+! BEDINGUNG VON KUNDE!
+* CSS und HTML Kenntnisse im Team vorhanden
+
+* Zeitersparnis
+
+|*4.* *Three-Tier-Architektur* a|
+* Unabhängigkeit UI Layer von der Data Layer
+
+* hohe Flexibilität
+
+|*5. OPEN XML* a|
+* kompatibel zu .NET Core
+
+! BEDINGUNG VON KUNDE! +
+! WIRD VON BLAZOR VORAUSGESETZT!
+
+|===
+
+[arabic, start=6]
+. [.underline]#Architekturmechanismen#
+
+Der Zugriff auf Informationen bzw. Änderungen und Neuerungen von Daten
+muss auf den gesamten Datenumfang des Systems grundsätzlich vorhanden
+sein. Die Voraussetzung dafür sind persistente Daten. Mittels Active
+Directory werden die Zugriffsrechte auf die bestehenden Daten reguliert.
+Aufgrund der Kundenwünsche dient dabei die Exel – Tabelle als Datenbank.
+Dies resultiert aus dem geringen Einrichtungsaufwandes.
+
+Benutzer des Programms benötigen zur Nutzung der Anwendung eine
+Registrierung durch Administratoren. Das Userinterface wird durch die
+Desktopanwendung bereitgestellt. Dabei wurde die Desktopanwendung
+gezielt eingesetzt, um eine einfache Anwendung der Software zu
+garantieren und zusätzlich die Möglichkeit des Offline Modus zu
+bewerkstelligen.
+
+Eine Schnittstelle zwischen der Exel – Tabelle und Anwendungsprogramm
+ist im Data Layer definiert. Folglich ist eine Verbindung zwischen der
+Datenbank dem UI Layer und dem Business Layer gewährleistet und somit
+grundsätzlich zwischen User und der Excel-Datei.
+
+[arabic, start=7]
+. [.underline]#Wesentliche Abstraktionen#
+
+- *Veröffentlichung / Publikationen*
+
+Beinhaltet die gesamten Eigenschaften der Veröffentlichungen.
+
+- *Herausgeber*
+
+Enthält eine 1:n Beziehung zu Publikationen (Herausgeber – ID).
+
+- *Autor*
+
+Wird mittels einer n:m Beziehung zur Veröffentlichung von Publikationen
+realisiert (Autor - ID).
