@@ -9,10 +9,9 @@ Nebenbedingungen, Begründungen, wesentliche Elemente und andere
 übergreifende Aspekte des Systems, die Einfluss auf Entwurf und
 Implementierung haben.
 
-[arabic, start=5]
-==. [.underline]#Architekturziele und Philosophie#
+== Architekturziele und Philosophie
 
-____
+
 Die Zeiss Digital Innovation GmbH sieht sich als professioneller
 Kooperationspartner und Arbeitgeber. Um diese Zielsetzung zu erfüllen
 unterstützt die GmbH Ihre Mitarbeiter bei der Veröffentlichung diverser
@@ -94,26 +93,24 @@ Die vorliegend beschriebene Anwendung soll ferner weiter ausgebaut
 werden. Das Programm ist mittels der Three-Tier-Architektur umzusetzen,
 um den Austausch von Technologien zu vereinfachen. Zusätzlich wird
 Flexibilität, durch die einfache Änderung der Datenherkunft geschaffen.
-____
 
-[arabic, start=3]
-. [.underline]#Annahmen und Abhängigkeiten#
 
-==*Annahmen*
+== Annahmen und Abhängigkeiten
+
+=== Anahmen 
 
 * jeder Benutzer besitzt Zugang zu einem - mindestens temporär -
 internetverbundenen Computer
 * .NET 5.0 Runtime ist installiert
 
-==*Abhängigkeiten*
+=== Abhängigkeiten
 
 * Framework muss gepflegt werden
 * Administration von Software wird von Zeiss übernommen
 
-[arabic, start=4]
-. [.underline]#Architektur-relevante Anforderungen#
+=== Architektur-relevante Anforderungen#
 
-==*Funktionalität*
+=== Funktionalität
 
 NFAF-1 Zugriff auf Excel-Datei
 
@@ -125,7 +122,7 @@ Benutzer/Benutzergruppen
 NFAF-3 Korrekte und vollständige Weitergabe, Wiedergabe und Speicherung
 von Daten
 
-==*Wartbarkeit*
+=== Wartbarkeit
 
 NFAS-1 Möglichkeit von Systemerweiterung
 
@@ -133,13 +130,10 @@ NFAS-2 Möglichkeit der Änderung des Speicherplatzes
 
 NFAS-3 Berechtigungsvergabe über Aktive Directory
 
-[arabic, start=5]
-. [.underline]#Entscheidungen, Nebenbedingungen +
+=== Entscheidungen, Nebenbedingungen +
 und Begründungen#
 
-[cols=",",]
-|===
-|*ENTSCHEIDUNG* |*Nebenbedingung/ +
+=== ENTSCHEIDUNG* |*Nebenbedingung/ +
 Begründung*
 
 |*1. Nutzung von Excel als Datenbank* a|
@@ -155,9 +149,9 @@ Begründung*
 
 * Single-Page-Anwendung
 
-____
+
 ! BEDINGUNG VON KUNDE!
-____
+
 
 * WebAssemply
 ** keine JavaScript Kenntnisse nötig, nicht vorhandene Kenntnisse im
@@ -209,18 +203,17 @@ ist im Data Layer definiert. Folglich ist eine Verbindung zwischen der
 Datenbank dem UI Layer und dem Business Layer gewährleistet und somit
 grundsätzlich zwischen User und der Excel-Datei.
 
-[arabic, start=7]
-==. [.underline]#Wesentliche Abstraktionen#
+== Wesentliche Abstraktionen
 
-- *Veröffentlichung / Publikationen*
+=== Veröffentlichung / Publikationen
 
 Beinhaltet die gesamten Eigenschaften der Veröffentlichungen.
 
-- *Herausgeber*
+=== Herausgeber
 
 Enthält eine 1:n Beziehung zu Publikationen (Herausgeber – ID).
 
-- *Autor*
+=== Autor
 
 Wird mittels einer n:m Beziehung zur Veröffentlichung von Publikationen
 realisiert (Autor - ID).
