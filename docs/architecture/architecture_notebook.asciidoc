@@ -1,7 +1,8 @@
-**Architecture Notebook**
+= Architecture Notebook: {project-name}
 
-[arabic]
-==. [.underline]##Zweck##
+//[arabic]
+//==. [.underline]
+==Zweck
 
 Dieses Dokument beschreibt die Philosophie, Entscheidungen,
 Nebenbedingungen, Begründungen, wesentliche Elemente und andere
