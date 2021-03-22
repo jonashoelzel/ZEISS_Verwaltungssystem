@@ -1,5 +1,3 @@
-using BlazorElectron.Data;
-using BlazorElectron.Data.PublicationDataSet;
 using ElectronNET.API;
 using ElectronNET.API.Entities;
 using Microsoft.AspNetCore.Builder;
@@ -13,6 +11,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
+using Zeiss.Data;
+using Zeiss.Data.DataSet;
+using Zeiss.Data.ExcelIO;
+using Zeiss.Data.PublicationDataSetModel;
 
 namespace BlazorElectron
 {

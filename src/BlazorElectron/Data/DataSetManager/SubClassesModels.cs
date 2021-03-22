@@ -1,15 +1,16 @@
-﻿using BlazorElectron.Data.DataLogic;
-using Data.DataSet;
-using System.ComponentModel.DataAnnotations;
-using DataSetIOComponentTest;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace BlazorElectron.Data.PublicationDataSet
+using Zeiss.Data.DataSet;
+using Zeiss.Data.ExcelIO;
+
+
+namespace Zeiss.Data.PublicationDataSetModel
 {
     public class PublicationTypeModel : DataObject, IPublicationType
     {
         public PublicationTypeModel()
         {
-            ID = TestDataSetIO.GetRandomID();
+            ID = ExcelIO.ComponentTest.WriteDataSet.TestDataSetIO.GetRandomID();
         }
         [Required]
         [MaxLength(100, ErrorMessage = "Name ist zu lang")]
@@ -21,7 +22,7 @@ namespace BlazorElectron.Data.PublicationDataSet
     {
         public StateModel()
         {
-            ID = TestDataSetIO.GetRandomID();
+            ID = ExcelIO.ComponentTest.WriteDataSet.TestDataSetIO.GetRandomID();
         }
         [Required(ErrorMessage = "Name ist ein Pflichtfeld")]
         [MaxLength(100, ErrorMessage = "Name ist zu lang")]
@@ -33,7 +34,7 @@ namespace BlazorElectron.Data.PublicationDataSet
     {
         public TagModel()
         {
-            ID = TestDataSetIO.GetRandomID();
+            ID = ExcelIO.ComponentTest.WriteDataSet.TestDataSetIO.GetRandomID();
         }
         [Required(ErrorMessage = "Name ist ein Pflichtfeld")]
         [MaxLength(100, ErrorMessage = "Name ist zu lang")]
@@ -46,7 +47,7 @@ namespace BlazorElectron.Data.PublicationDataSet
         public AuthorModel()
         {
             // ID = Logic.GetNewAuthorID();
-            ID = TestDataSetIO.GetRandomID();
+            ID = ExcelIO.ComponentTest.WriteDataSet.TestDataSetIO.GetRandomID();
         }
         [Required(ErrorMessage = "Vorname ist ein Pflichtfeld")]
         [MaxLength(100, ErrorMessage = "Name ist zu lang")]
@@ -63,7 +64,7 @@ namespace BlazorElectron.Data.PublicationDataSet
     {
         public PublisherModel()
         {
-            ID = TestDataSetIO.GetRandomID();
+            ID = ExcelIO.ComponentTest.WriteDataSet.TestDataSetIO.GetRandomID();
         }
         [Required(ErrorMessage = "Name ist ein Pflichtfeld")]
         [MaxLength(100, ErrorMessage = "Name ist zu lang")]

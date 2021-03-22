@@ -1,18 +1,19 @@
-﻿using Data.DataSet;
-using DataSetIOComponentTest;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BlazorElectron.Data.PublicationDataSet
+using Zeiss.Data.DataSet;
+using Zeiss.Data.ExcelIO;
+
+namespace Zeiss.Data.PublicationDataSetModel
 {
     public class PublicationDataSetModel : DataObject, IPublicationDataSet
     {
         public PublicationDataSetModel()
         {
-            ID = TestDataSetIO.GetRandomID();
+            ID = ExcelIO.ComponentTest.WriteDataSet.TestDataSetIO.GetRandomID();
         }
 
         // Publication Information

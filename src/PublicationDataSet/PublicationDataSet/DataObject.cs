@@ -1,4 +1,4 @@
-﻿namespace Data.DataSet
+namespace Zeiss.Data.DataSet
 {
     public class DataObject : IDataObject
     {
@@ -13,6 +13,11 @@
                 else if (value is null)
                     _ID = null;
             }
+        }
+
+        public void ResetID()
+        {
+            _ID = null;
         }
     }
 }

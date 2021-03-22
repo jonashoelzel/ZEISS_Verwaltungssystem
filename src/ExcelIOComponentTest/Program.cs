@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Data.DataSet;
-using Data.ExcelIO;
 
-namespace DataSetIOComponentTest
+using Zeiss.Data.DataSet;
+using Zeiss.Data.ExcelIO;
+
+namespace Zeiss.Data.ExcelIO.ComponentTest.WriteDataSet
 {
     class Program
     {
@@ -162,7 +163,7 @@ namespace DataSetIOComponentTest
         {
             for (int i = 1; i <= count; i++)
             {
-                WriteDataSet.Insert(filepath, worksheetNames[Randomizer.Next(worksheetNames.Length)], GenerateDataSet());
+                ExcelIO.WriteDataSet.Insert(filepath, worksheetNames[Randomizer.Next(worksheetNames.Length)], GenerateDataSet());
 
                 //System.Threading.Thread.Sleep(500);
 

@@ -1,11 +1,12 @@
-﻿using Data.DataSet;
-using Data.ExcelIO;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BlazorElectron.Data.DataLogic
+using Zeiss.Data.DataSet;
+using Zeiss.Data.ExcelIO;
+
+namespace Zeiss.Data.DataLogic
 {
     public class Logic
     {

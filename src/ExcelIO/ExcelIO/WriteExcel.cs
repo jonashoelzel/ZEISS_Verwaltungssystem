@@ -10,13 +10,27 @@ using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
 
-using Data.DataSet;
+using Zeiss.Data.DataSet;
 
-namespace Data.ExcelIO
+namespace Zeiss.Data.ExcelIO
 {
     public class WriteDataSet
     {
-        public static void Insert(string filepath, string worksheetName, List<PublicationDataSet> dataSets)
+        private string _filePath;
+        private string _workSheetName;
+
+        public WriteDataSet(string filePaht, string workSheetName)
+        {
+            _filePath = filePaht;
+            _workSheetName = workSheetName;
+        }
+
+        public void Insert(IPublicationDataSet dataSet)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static void Insert(string filepath, string worksheetName, List<IPublicationDataSet> dataSets)
         {
             foreach (var dataSet in dataSets)
             {
@@ -24,7 +38,7 @@ namespace Data.ExcelIO
             }
         }
 
-        public static void Insert(string filepath, string worksheetName, PublicationDataSet dataSet)
+        public static void Insert(string filepath, string worksheetName, IPublicationDataSet dataSet)
         {
             InitializeDataSetWorksheet(filepath, worksheetName);
 
@@ -43,7 +57,7 @@ namespace Data.ExcelIO
                 dataSet.Division,
 
                 dataSet.DateOfStartWorking.Year,
-                dataSet.CurrentState.Name,
+                dataSet.CurrentState,
                 dataSet.DateOfRelease,
 
                 dataSet.PublishedBy.ID,
@@ -59,6 +73,9 @@ namespace Data.ExcelIO
 
         private static string ConvertCoAuthorsToCSV(List<IAuthor> coAuthors)
         {
+            if (coAuthors is null)
+                return string.Empty;
+
             StringBuilder csv = new StringBuilder();
 
             foreach (var author in coAuthors)
@@ -76,6 +93,9 @@ namespace Data.ExcelIO
 
         private static string ConvertTagsToCSV(List<ITag> tags)
         {
+            if (tags is null)
+                return string.Empty;
+
             StringBuilder csv = new StringBuilder();
 
             foreach (var tag in tags)

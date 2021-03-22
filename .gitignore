@@ -35,3 +35,4 @@ nunit-*.xml
 
 
 src/BlazorElectron/ExcelDataBase.xlsx
+*.xlsx
