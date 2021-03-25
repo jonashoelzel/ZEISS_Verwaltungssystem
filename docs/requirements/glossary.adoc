@@ -4,7 +4,7 @@ include::../_includes/default-attributes.inc.adoc[]
 
 
 == Einführung
-In diesem Dokument werden die wesentlichen Begriffe aus dem Anwendungsgebiet (Fachdomäne) der <Projektthema-Systems> definiert. Zur besseren Übersichtlichkeit sind Begriffe, Abkürzungen und Datendefinitionen gesondert aufgeführt.
+In diesem Dokument werden die wesentlichen Begriffe aus dem Anwendungsgebiet (Fachdomäne) des ZEISS-Verwaltungssystems definiert. Zur besseren Übersichtlichkeit sind Begriffe, Abkürzungen und Datendefinitionen gesondert aufgeführt.
 
 Hinweis: 
 Zur Verkürzung und Vereinfachung der Schreibweise wurde (stets) die maskuline Form eines Wortes verwendet. Es werden aber stets beide Geschlechter gemeint. Sollte es deswegen Probleme geben bitten wir dies zu entschuldigen.

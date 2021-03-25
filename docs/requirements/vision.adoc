@@ -14,9 +14,6 @@ Der Zweck dieses Dokuments ist es, die wesentlichen Anforderungen an das System 
 === Gültigkeitsbereich (Scope)
 Dieses Visions-Dokument bezieht sich auf das ZEISS-Verwaltungssystem, das von Team E1 entwickelt wird. Das System wird es ZEISS erlauben, Fachbeiträge einfacher zu systematisieren, zu warten und zu verwalten, als es bisher mit der Excel-Liste war.
 
-include::glossary.adoc[]
-
-
 == Positionierung
 === Fachliche Motivation
 Mitarbeiter von ZEISS veröffentlichen hin und wieder Beiträge, aus Informationgründen, für die eigene ZEISS-Artikelseite oder auch auf Anfrage von z.B. Fachzeitschriften. Diese Veröffentlichungen sollen dann so im System verwaltet werden, dass jederzeit abgerufen werden kann, welcher Mitarbeiter beispielweise wieviele Artikel veröffentlicht hat. Die Datenverwaltung erfolgt über eine unübersichtliche Excelliste, in welcher Eingaben zu Fachbeiträgen unvollständig und/oder falsch gemacht wurden. So gibt es zum Beispiel Unterschiede, je nachdem, welche Mitarbeiterin die Daten in die Liste eingetragen hat. Diese Unterschiede sind vor allem durch zu viel Spielraum und keine eindeutigen Eingabvorschriften entstanden: "Vorname Nachname" im Vergleich zu "Nachname, Vorname". Die Excel-Liste ist damit nicht sinnvoll filterbar, geschweige denn sortier- oder wartbar. Unsere Aufgabe ist es jetzt, eine Verbesserte Anwendung (angelehnt an die Excel-Liste) zu entwickeln und zu realisieren, welche extrem einfach zu warten ist, eine eineindeutige Eingabe der verschiedenen Dokumentenattribute fordert und aus diesen eine filterbare Liste erstellt. 
