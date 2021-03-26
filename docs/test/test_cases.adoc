@@ -4,11 +4,320 @@ Vorname Nachname <email@domain.org>; Vorname2 Nachname2 <email2@domain.org>; Vor
 include::../_includes/default-attributes.inc.adoc[]
 // Platzhalter für weitere Dokumenten-Attribute
 
-
 == Allgemeine Informationen
 
 == Test Cases
 
-=== Test Case 01
+=== Umschalten Seiten 
 
-=== Test Case 02
+[cols=4*]
+|===
+
+|Schritt
+|Beschreibung
+|Input/Data
+|erwartetes Ergebnis
+
+|1.1
+|Startseite: Click "Veröffentlichung Hinzufügen"
+|
+|Seite "addTitle" öffnet sich
+
+|1.2
+|"addTitle": Click "weiter"
+|
+|Seite "addAuthor" öffnet sich
+
+|1.3
+|"addAuthor": Click "weiter"
+|
+|Seite "addDivision" öffnet sich
+
+|1.4
+|"addDivision": Click "weiter"
+|
+|Seite "addDateOfRelease" öffnet sich
+
+|1.5
+|"addDateOfRelease": Click "weiter"
+|
+|Seite "addPublicationType" öffnet sich
+
+|1.6
+|"addPublicationType": Click "optionale Angaben"
+|
+|Seite "addDescription" öffnet sich
+
+|1.7
+|"addDescription": Click "weiter"
+|
+|Seite "addPublisher" öffnet sich
+
+
+|1.8
+|"addPublisher", "addDescription", "addPublicationType": Click "Veröffentlichung hinzufügen"
+|
+|Seite "Preview" öffnet sich
+
+|1.9
+|"all sites" Click "zurück"
+|
+|Vorherige Seite öffnet sich
+
+
+|===
+=== Veröffentlichung hinzufügen
+==== Eingabe Textfeld
+
+[cols=5*]
+|===
+
+|Schritt
+|Beschreibung
+|Input/Data
+|Eingabe Akzeptieren
+|Beschreibung
+
+
+|1.1
+|Eingabe Text - Bestätigen per "Weiter" Knopf 
+|Text unter x Zeichen, nur erlaubte Sonderzeichen (siehe Spezifikation)
+|Ja
+|Hinzufügen Erfolgreich -> Eingabe in Dokumentenvorschau sichtbar
+
+|1.2
+|Eingabe Text - Bestätigen per "Weiter" Knopf  
+|Text über x Zeichen
+|Nein
+|Fehlermeldung -> Text zu lang 
+
+|1.3
+|Eingabe Text - Bestätigen per "Weiter" Knopf 
+|Keine Eingabe
+|Nein
+|Fehlermeldung -> Eingabe Erforderlich 
+
+
+|1.4
+|Eingabe Text - Bestätigen per "Weiter" Knopf 
+|Eingabe nicht erlaubter Sonderzeichen (siehe Spezifikation)
+|Nein
+|Fehlermeldung -> keine Sonderzeichen Erlaubt 
+|===
+
+==== Drop Down Menu
+
+[cols=5*]
+|===
+|Schritt
+|Beschreibung
+|Input/Data
+|Eingabe Akzeptieren
+|Beschreibung
+
+|2.1 
+|Auswahl Datenfeld - Bestätigen per "Weiter" Knopf 
+|Auswahl verfügbarer Datenpunkt  
+|Ja
+|Auswahl Erfolgreich -> Auswahl in Dokumentenvorschau sichtbar
+
+|2.2 
+|Auswahl Datenfeld - Bestätigen per "Weiter" Knopf 
+|Auswahl Datenpunkt Platzhalter: Auswahl Erforderlich
+|Nein
+|Fehlermeldung -> Auswahl Erforderlich 
+
+|===
+
+==== Datums Eingabe 
+
+[cols=5*]
+|===
+|Schritt
+|Beschreibung
+|Input/Data
+|Eingabe Akzeptieren
+|Beschreibung
+ 
+|3.1
+|Datum Auswählen - Bestätigen per "Weiter" Knopf  
+|Auswahl valides Datum (z.b.: 1.1.2020) 
+|Ja
+|Auswahl Erfolgreich -> Datum in Dokumentenvorschau sichtbar
+
+|3.2
+|Datum Auswählen - Bestätigen per "Weiter" Knopf   
+|Auswahl Datum über 1.1.XXXX 
+|Nein
+|Fehlermeldung -> Datum liegt außerhalb akzeptablem bereich 
+
+|3.3
+|Datum Auswählen - Bestätigen per "Weiter" Knopf   
+|Auswahl Datum vor 1.1.XXXX
+|Nein
+|Fehlermeldung -> Datum liegt außerhalb akzeptablem bereich 
+
+|===
+
+==== Neuer Bereich Hinzufügen
+
+[cols=5*]
+|===
+|Schritt
+|Beschreibung
+|Input/Data
+|Eingabe Akzeptieren
+|Beschreibung
+
+|4.1
+|Neuer Geschäftsbereich Hinzufügen
+|Klick auf "Neuer Geschäftsbereich" Auf Seite "addDivision"
+| -- 
+|Fenster zur Eingabe öffnet sich 
+
+
+|4.2
+|Neuer Geschäftsbereich Hinzufügen - schließen
+|Klick auf "Abbrechen"
+|--
+|Fenster zur Eingabe schließt sich
+
+
+|4.2
+|Eingabe Geschäftsbereich - Bestätigen per "Hinzufügen" Knopf 
+|Geschäftsbereich unter x Zeichen, keine Sonderzeichen (siehe Spezifikation)
+|Ja
+|Meldung -> Hinzufügen Erfolgreich - Eingabe im Drop Down Menu "Geschäftsbereich" sichtbar 
+
+|4.3
+|Eingabe Geschäftsbereich - Bestätigen per "Hinzufügen" Knopf  
+|Geschäftsbereich über x Zeichen 
+|Nein
+|Fehlermeldung -> Text zu lang 
+
+
+|4.4
+|Eingabe Geschäftsbereich - Bestätigen per "Hinzufügen" Knopf 
+|Keine Eingabe
+|Nein
+|Fehlermeldung -> Eingabe Erforderlich 
+
+
+|4.5
+|Eingabe Geschäftsbereich - Bestätigen per "Hinzufügen" Knopf 
+|Eingabe Sonderzeichen (siehe Spezifikation)
+|Nein
+|Fehlermeldung -> keine Sonderzeichen Erlaubt
+
+|===
+
+==== Eingabe Beschreibung
+
+[cols=5*]
+|===
+|Schritt
+|Beschreibung
+|Input/Data
+|Eingabe Akzeptieren
+|Beschreibung
+
+
+|5.1
+|Eingabe Beschreibung - Bestätigen per "Weiter" Knopf 
+|Text unter x Zeichen
+|Ja
+|Hinzufügen Erfolgreich -> Beschreibung in Dokumentenvorschau sichtbar
+
+|5.2
+|Eingabe Beschreibung - Bestätigen per "Weiter" Knopf  
+|Text über x Zeichen
+|Nein
+|Fehlermeldung -> Beschreibung zu lang 
+
+|===
+
+
+=== Fachbetrag suchen
+
+
+[cols=5*]
+|===
+|Schritt
+|Beschreibung
+|Input/Data
+|Eingabe Akzeptieren
+|Beschreibung
+
+|1.1
+|Öffnen "Fachbeitrag suchen" Fenster
+|-- 
+|--
+|Datensätze werden angezeigt
+
+|1.2
+|Sortiern Einträge
+|Klick "Titelname" oder "Art der Veröffentlichung"
+|--
+|Datensätze werden nach Titelname oder Art der Veröffentlichung alphabetisch sortiert angezeigt
+
+|1.3
+|Sortiern Einträge
+|Klick "Titelname" oder "Art der Veröffentlichung" 2 mal
+|--
+|Datensätze werden nach Titelname oder Art der Veröffentlichung entgegengesetzt alphabetisch sortiert angezeigt
+
+|1.4
+|Sortiern Einträge
+|Klick "Datum der Veröffentlichung"
+|--
+|Datensätze werden nach Datum absteigend sortiert angezeigt
+
+|1.5
+|Sortiern Einträge
+|Klick "Datum der Veröffentlichung" 2 mal
+|--
+|Datensätze werden nach Datum aufsteigend sortiert angezeigt
+
+|1.6
+|Eintrag Bearbeiten
+|Klick "Bearbeiten"
+|--
+|Eintrag wird in "Veröffentlichung hinzufügen"-Maske mit eingetragenen Daten des Eintrags angezeigt 
+
+|1.7
+|Eintrag Bearbeiten - speichern
+|Klick "Bearbeiten" - Formatkompatible Daten eintragen/ändern - Klick "Speichern"
+|--
+|Eintrag wird überschrieben und veränderte Daten werden angezeigt
+
+|1.8
+|Eintrag löschen
+|Klick "Löschen"
+|--
+|Eintrag wird aus Liste entfernt 
+
+|1.9
+|Eintrag suchen
+|Eingabe Suchbegriff
+|--
+|anzeigen Einträge teils/identisch zum Suchbegriff  
+
+|1.10
+|Eintrag suchen
+|Eingabe Suchbegriff NICHT teil irgend eines Datensatzes
+|--
+|kein Datensatz wird angezeigt 
+
+|1.11
+|Eintrag ausklappen per Drop Down pfeil
+|Klick Drop Down pfeil eines Datensatzes
+|--
+|Eintrag wird ausgeklappt und alle Informationen des Eintrages werden angezeigt
+
+|1.12
+|Vergleich angezeigte Daten der Einträge zu Daten in Excel Datei
+|Vergleich Daten des Drop Down Menus mit Excel einträgen
+|--
+|Datensätze müssen identisch sein, auch bei veränderten Einträgen
+
+|===

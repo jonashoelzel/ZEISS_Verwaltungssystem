@@ -14,17 +14,10 @@ Der Zweck dieses Dokuments ist es, die wesentlichen Anforderungen an das System 
 === Gültigkeitsbereich (Scope)
 Dieses Visions-Dokument bezieht sich auf das ZEISS-Verwaltungssystem, das von Team E1 entwickelt wird. Das System wird es ZEISS erlauben, Fachbeiträge einfacher zu systematisieren, zu warten und zu verwalten, als es bisher mit der Excel-Liste war.
 
-=== Definitionen, Akronyme und Abkürzungen
-
-//include::glossary.adoc[]
-
-=== Referenzen
-(hier externe Verweise zu anderen Dokumenten, Quellen, Standards etc. einfügen, sofern notwendig)
-
 == Positionierung
 === Fachliche Motivation
 Mitarbeiter von ZEISS veröffentlichen hin und wieder Beiträge, aus Informationgründen, für die eigene ZEISS-Artikelseite oder auch auf Anfrage von z.B. Fachzeitschriften. Diese Veröffentlichungen sollen dann so im System verwaltet werden, dass jederzeit abgerufen werden kann, welcher Mitarbeiter beispielweise wieviele Artikel veröffentlicht hat. Die Datenverwaltung erfolgt über eine unübersichtliche Excelliste, in welcher Eingaben zu Fachbeiträgen unvollständig und/oder falsch gemacht wurden. So gibt es zum Beispiel Unterschiede, je nachdem, welche Mitarbeiterin die Daten in die Liste eingetragen hat. Diese Unterschiede sind vor allem durch zu viel Spielraum und keine eindeutigen Eingabvorschriften entstanden: "Vorname Nachname" im Vergleich zu "Nachname, Vorname". Die Excel-Liste ist damit nicht sinnvoll filterbar, geschweige denn sortier- oder wartbar. Unsere Aufgabe ist es jetzt, eine Verbesserte Anwendung (angelehnt an die Excel-Liste) zu entwickeln und zu realisieren, welche extrem einfach zu warten ist, eine eineindeutige Eingabe der verschiedenen Dokumentenattribute fordert und aus diesen eine filterbare Liste erstellt. 
-Das sind die Grundanforderungen, welche der Kunde ZEISS an das Programm hat. Jedoch soll von Anfang an darauf geachtet werden, dass das Programm in verschiedner Hinsicht ausbaufähig bleibt - so soll in Zukunft eine Kommunikation zwischen den Nutzern oder ein Statusbericht der Fachbeiträge möglich sein.
+Das sind die Grundanforderungen, welche der Kunde ZEISS an das Programm hat. Jedoch soll von Anfang an darauf geachtet werden, dass das Programm in verschiedener Hinsicht ausbaufähig bleibt - so soll in Zukunft eine Kommunikation zwischen den Nutzern oder ein Statusbericht der Fachbeiträge möglich sein.
 
 
 
@@ -84,11 +77,11 @@ Beispiel Produkt:
 |Name|Beschreibung|Verantwortlichkeiten|Einfluss|Konfliktpotenzial|Einstellung
 
 |*ZEISS* |Gesellschaft als Auftraggeber|interessiert an einem funktionierenden Verwaltungssystem für deren Veröffentlichungen|hoch|gering - mittel (bei Unstimmigkeiten zwischen Planung/Vorstellung und Ausführung)  |positiv, ebenfalls an einem erfolgreichen Ausgang interessiert
-|*Herr Lösch*|Betreuer, Interessensvertreter für ZEISS|"überwacht"/kontrolliert in regelmäßigen Abständen Projektfortschritt und sorgt dafür, dass Anforderungen von ZEISS erfüllt werden|sehr hoch|_siehe ZEISS_|_siehe ZEISS_
-|[.small]#*Paul, Vanessa, Stephan, Peter, Jean-Pierre, Jonas, Oliver, Nina*#|Projektmitglieder|aktives und eigenständiges Umsetzen der Anfoderungen von ZEISS|extrem hoch|sehr gering, lediglich Unstimmigkeiten zwischen Projektmitgliedern möglich → durch klare Aufgabenverteilung minimiert|positiv
+|*Herr Lösch*|Betreuer, Interessenvertreter für ZEISS|"überwacht"/kontrolliert in regelmäßigen Abständen Projektfortschritt und sorgt dafür, dass Anforderungen von ZEISS erfüllt werden|sehr hoch|_siehe ZEISS_|_siehe ZEISS_
+|[.small]#*Paul, Vanessa, Stephan, Peter, Jean-Pierre, Jonas, Oliver, Nina*#|Projektmitglieder|aktives und eigenständiges Umsetzen der Anforderungen von ZEISS|extrem hoch|sehr gering, lediglich Unstimmigkeiten zwischen Projektmitgliedern möglich → durch klare Aufgabenverteilung minimiert|positiv
 |*Jürgen Anke*|Betreuer, Ansprechpartner|bei Fragen zum Projektmanagement, Projektablauf, etc.|gering|sehr gering|positiv, Hilfestellung
 |*Christoph Zirkelbach*|Betreuer, Ansprechpartner|bei Fragen zum Programmierteil|gering|sehr gering|positiv, Hilfestellung
-|*Mitarbeiter von ZEISS*|Veröffentlichende, Management, sonstige MA|bestimmen indirekt die Anfoderungen an das Projekt|mittel (Anforderungen entspringen dem unerfüllten Bedarf an ein funktionierendes Verwaltungssystem, sind aber fix)|gering, höchstens in der Implementierung|positiv
+|*Mitarbeiter von ZEISS*|Veröffentlichende, Management, sonstige MA|bestimmen indirekt die Anforderungen an das Projekt|mittel (Anforderungen entspringen dem unerfüllten Bedarf an ein funktionierendes Verwaltungssystem, sind aber fix)|gering, höchstens in der Implementierung|positiv
 |*Gesetzgeber, Datenschutz* |x|prüft Einhaltung des Rechtes & Datenschutzes|gering, wenn von Anfang an ein sensibler Umgag mit DAten gewährleistet ist|gering-mittel|neutral
 |*Hacker* |mögliche Bedrohung für unser System|unrechtmäßige Entwendung von Daten, Veränderung des Systems|schwierig zu definieren; kann gering-hoch sein, je nachdem, welche Anforderungen datenschutztechnisch an die Anwendung gestellt werden|kann extrem hoch werden, bis zum Verlust von sensiblen Daten|negativ
 |*Sponsoren* |Kunde möchte mit dem Programm Sponsoren werben |definieren Kernfunktionalitäten, interessiert an guter Benutzbarkeit und Wartbarkeit, um sich einen Überblick verschaffen zu können|mittel-hoch|mittel, wenn Kernanforderungen unvollständig erfüllt sind|neutral
@@ -108,6 +101,8 @@ Beschreiben Sie die Arbeitsumgebung des Nutzers. Hier sind einige Anregungen:
 
 //Hier können zudem bei Bedarf Teile des Unternehmensmodells (Prozesse, Organigramme, IT-Landschaft, ...) eingefügt werden, um die beteiligten Aufgaben und Rollen zu skizzieren.
 
+<<<
+
 == Produkt-/Lösungsüberblick
 === Bedarfe und Hauptfunktionen
 //Vermeiden Sie Angaben zum Entwurf. Nennen wesentliche Features (Produktmerkmale) auf allgemeiner Ebene. Fokussieren Sie sich auf die benötigten Fähigkeiten des Systems und warum (nicht wie!) diese realisiert werden sollen. Geben Sie die von den Stakeholdern vorgegebenen Prioritäten und das geplante Release für die Veröffentlichung der Features an.
@@ -117,10 +112,10 @@ Beschreiben Sie die Arbeitsumgebung des Nutzers. Hier sind einige Anregungen:
 |===
 |Bedarf|	Priorität|	Features|	Geplantes Release
 |*Wartbarkeit*|sehr hoch|Einträge sollen aus Gründen der Systematisierung über eine filterbare Liste verändert und angepasst werden können|x
-|*Benutzerfreundlichkeit*|sehr hoch|Facheiträge können extrem schnell durchsucht, systematisiert und verändert werden|x
+|*Benutzerfreundlichkeit*|sehr hoch|Fachbeiträge können extrem schnell durchsucht, systematisiert und verändert werden|x
 |*Effizienz*|hoch|mit wenigen Schritten kann jedes Zeil erreicht werden (Attribute verändern, Beitrag hinzufügen)|x
 |*Funktionalität*|mittel| systematisierbare Liste|x
-|*Zuverlässigkeit*|mittel|Ausfälle/Störungen können durch extrem einfche Wartbarkeit schnell behoben werden|x
+|*Zuverlässigkeit*|mittel|Ausfälle/Störungen können durch extrem einfache Wartbarkeit schnell behoben werden|x
 |*Sicherheit*|niedrig|Bereits veröffentlichte Fachbeiträge sind öffentlich zugänglich; *ABER* Status soll nicht von allen Nutzern einsehbar sein|x
 |*Kompatibilität*|niedrig|x|x
 |*Portabilität*|sehr niedrig|x|x
@@ -133,7 +128,7 @@ image::spidernet.jpg[]
 Hinweise:
 
 . Das Programm/die *Desktop-App* muss nur auf *Windows* laufen, die entsprechenden PCs mit dem Betriebssystem befinden sich im Unternehmen. Die Desktop-App soll auf allen Rechnern der MA laufen und alle sollen die darin enthaltenen Daten sehen können, die für sie freigegeben sind.
-. Das Programm soll lediglich die Namen der Beiträge systematisieren, die *Leistungsanforderung hält sich in Grenzen*, da kaum Daten (Beiträge) gespeichert werden müssen. Dadurch, dass die Anwendung zu größten Teilen vom Sales Department (3 Mitarbeiterinnen) gepflegt und aktualisiert wird, ist eine *hohe Robustheit nicht notwendig*. Die *Ausfallltoleranz wird recht groß gehalten*, da das System eine einfache Wartbarkeit vorsieht. Mögliche Bugs können schnell behoben werden. Große Server sind nicht vonnöten, da die Beiträge nicht in der Anwendung gespeichert sind, sondern lediglich ein Verzeichnis listen.  
+. Das Programm soll lediglich die Namen der Beiträge systematisieren, die *Leistungsanforderung hält sich in Grenzen*, da kaum Daten (Beiträge) gespeichert werden müssen. Dadurch, dass die Anwendung zu größten Teilen vom Sales Department (3 Mitarbeiterinnen) gepflegt und aktualisiert wird, ist eine *hohe Robustheit nicht notwendig*. Die *Ausfalltoleranz wird recht groß gehalten*, da das System eine einfache Wartbarkeit vorsieht. Mögliche Bugs können schnell behoben werden. Große Server sind nicht vonnöten, da die Beiträge nicht in der Anwendung gespeichert sind, sondern lediglich ein Verzeichnis listen.  
 . Auf die Listen soll auch im *Offline-Modus* zugegriffen werden können. Änderungen werden dann synchronisiert, wenn eine Intranet/Internet(?)-Verbindung vorliegt.
 
 . Die Anforderung an die Anwendung ist, ein komplett *eigenständiges System* darzustellen, was in keinster Weise die firmeninterne IT beeinflusst.

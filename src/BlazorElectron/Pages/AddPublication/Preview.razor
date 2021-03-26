@@ -1,5 +1,6 @@
 ﻿@page "/Preview"
 @using BlazorElectron.Data.PublicationDataSet
+@using Data.DataLogic
 
 @inject NavigationManager NavigationManager
 @inject PublicationDataSetModel Publication
@@ -12,6 +13,18 @@
         <h4 class="panel-title">Dokumentenvorschau</h4>
     </header>
     <div class="panel-body">
-       
     </div>
 </section>
+<button class="addPub" type="button" @onclick="Save">
+    Veröffentlichung Speichern
+</button>
+
+
+@code
+{
+    private void Save()
+    {
+        Logic.Save(Publication);
+        NavigationManager.NavigateTo("/");
+    }
+}

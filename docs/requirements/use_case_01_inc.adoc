@@ -1,5 +1,4 @@
 == Use-Case: Veröffentlichung hinzufügen
-===	Neue Veröffentlichung zur Liste hinzufügen
 
 ===	Kurzbeschreibung der Akteure
 ==== Mitarbeiter Sales Department
@@ -72,7 +71,3 @@ Die Beschreibung des Fachbeitrages wurde verändert.
 
 ==== Bereich hinzugefügt
 Ein neuer Bereich wurde hinzugefügt und kann nun standardmäßig bei Bearbeitung/Neuhinzufügung als Bereich ausgewählt werden.
-
-=== Besondere Anforderungen
-
-==== <Besondere Anforderung 1>

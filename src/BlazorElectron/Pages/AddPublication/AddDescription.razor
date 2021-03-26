@@ -14,12 +14,12 @@
     <div class="description panel-body">
         <form>
             <div class="description-default">
-                <label for="titleDescr">Titel</label>
-                <input type="text" id="titleDescr" name="titleDescr" /><br />
+                <label for="titleDescr">Veröffentlichungstitel</label>
+                <input type="text" id="titleDescr" name="titleDescr" @bind="Publication.PublicationTitle" /><br />
             </div>
             <div class="description-default">
                 <label for="description">Beschreibung</label>
-                <textarea id="description" name="description" /><br />
+                <textarea id="description" name="description" @bind="Publication.Description" /><br />
             </div>
         </form>
     </div>

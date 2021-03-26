@@ -33,3 +33,7 @@ bld/
 TestResult.xml
 nunit-*.xml
 
+
+src/BlazorElectron/ExcelDataBase.xlsx
+
+*.zip
