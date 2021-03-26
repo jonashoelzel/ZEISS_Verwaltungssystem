@@ -14,7 +14,7 @@ include::{docs}/_includes/default-attributes.inc.adoc[]
 :toc:
 :toclevels: 2
 :toc-title: Inhaltsverzeichnis
-:sectnums:
+:sectnums: 
 :icons: font
 //:source-highlighter: highlightjs
 :source-highlighter: rouge
