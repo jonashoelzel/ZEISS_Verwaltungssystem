@@ -1,8 +1,16 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
+    <!--
+    In some systems the folder/configuration win-x64 can cause problems (especially when reading/writing the Excel File) due security settings, anti-virus and Co.
+    When you need to compile to Electron App, you must uncomment the RuntimeIdentifier.
+    If the folder/configuration win-x64 does not cause any problems for you, you also can uncomment this line.
+    YOU MUST do this ON ALL '.csproj' files
+    -->
+    <!--
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    -->
 	<LangVersion>9.0</LangVersion>
   </PropertyGroup>
 

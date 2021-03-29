@@ -1,6 +1,6 @@
 ﻿@page "/Preview"
-@using BlazorElectron.Data.PublicationDataSet
-@using Data.DataLogic
+@using Zeiss.PublicationManager.Data.DataSet.Model
+@using Zeiss.PublicationManager.Business.Logic
 
 @inject NavigationManager NavigationManager
 @inject PublicationDataSetModel Publication
@@ -24,7 +24,7 @@
 {
     private void Save()
     {
-        Logic.Save(Publication);
+        DataLogic.Save(Publication);
         NavigationManager.NavigateTo("/");
     }
 }

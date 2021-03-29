@@ -1,5 +1,3 @@
-using BlazorElectron.Data;
-using BlazorElectron.Data.PublicationDataSet;
 using ElectronNET.API;
 using ElectronNET.API.Entities;
 using Microsoft.AspNetCore.Builder;
@@ -14,7 +12,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BlazorElectron
+
+using Zeiss.PublicationManager.Data.IO.Excel;
+using Zeiss.PublicationManager.Data.DataSet;
+using Zeiss.PublicationManager.Data.DataSet.Model;
+
+
+namespace Zeiss.PublicationManager.UI
 {
     public class Startup
     {
