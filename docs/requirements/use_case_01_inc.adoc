@@ -1,23 +1,22 @@
 == Use-Case: Veröffentlichung hinzufügen
 
+Wenn ein 
+
 ===	Kurzbeschreibung der Akteure
-==== Mitarbeiter Sales Department
-Nur die (3) Verantwortlichen im Sales Department haben die Rechte, Veröffentlichungen in die Liste aufzunehmen, zu bearbeiten und neue Bereiche hinzuzufügen.
+==== Mitarbeiter Sales Department (SD)
+Nur die (3) Verantwortlichen im Sales Department haben das Recht, den Namen und die Beschreibungn einer Veröffentlichung in die Liste aufzunehmen. Dazu bekommen die Verantwortlichen (und auch nur die) einen Zugang und müssen sich einloggen.
 
 ==== Autor
-Der Autor der Veröffentlichung hat bereits der Veröffentlichung im veröffentlichenden Medium zugestimmt (vor allem Fachzeitschriften) und wird nun in der internen Liste mit gelistet. Jeder Autor ist gleichzeitig auch ein Mitarbeiter von ZEISS.
-
-==== Veröffentlichendes Medium
-Veröffentlicht in Zeitschrift, auf Plattform oder Blog einen Fachbeitrag des Autors.
+Der Autor ist der Autor der Veröffentlichung und tritt mit dem SD in Kontakt, damit seine Veröffentlichung in die Liste aufgenommen wird. Er muss sich nicht einloggen, er gibt lediglich die nötigen Informationen bezüglich seiner Veröffentlichung ans SD.
 
 === Vorbedingungen
-* Anwendung ist geöffnet
-* Sales Department ist als solches authorisiert, um weitere Veröffentlichungen hinzufügen zu können
-* Es fand eine Veröffentlichung eines Mitarbeiters statt, welche noch nicht im System gelistet ist
+* Eine Person des SD ist im System angemeldet.
+* Es fand eine Veröffentlichung eines Mitarbeiters statt, welche noch nicht im System gelistet ist.
 * Zur neuen Veröffentlichung liegen dem Sales Department alle Informationen vor, die mit eingegeben werden sollen
 ** *mindestens Vorname, Nachname des Autors, dessen Geschäftsbereich, Datum und Art der Veröffentlichung*
 
 === Standardablauf (Basic Flow)
+
 
 . Der Use Case beginnt, wenn eine berechtigte Person eine Veröffentlichung hinzufügen möchte
 . Es öffnet sich eine Ansicht, in der alle oben genannten Eintragungen gemacht werden müssen
