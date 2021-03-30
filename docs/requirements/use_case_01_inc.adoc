@@ -54,25 +54,19 @@ Es kommt durch den Nutzer zum Abbruch des Hinzufügungs-Flows und die Eingaben w
 ==== (5.) Bereich hinzufügen
 Wenn Geschäftsbereich noch nicht existiert, kann dieser hinzugefügt werden.
 
-. Neben der Bereichsauswahl gibt es die Möglichkeit, weitere Bereiche hinzuzufügen
-. Bereich wird dann ins System aufgenommen
-. Aktueller Beitrag kann dem neu hinzugefügten Bereich zugeordnet werden
+. Neben der Bereichsauswahl gibt es die Möglichkeit, weitere Bereiche hinzuzufügen.
+. Bereich wird dann ins System aufgenommen.
+. Aktueller Beitrag kann dem neu hinzugefügten Bereich zugeordnet werden.
 . Use Case wird bei fortgesetzt bei der Angabe der Optionalen Angaben.
 
 ==== (5.) Tag hinzufügen
-Wenn ein Tag zu Beschreibungszwecken hinzugefügt werden soll, welcher noch nicht im System existiert, kann dieser hinzugefügt werden
+Wenn ein Tag zu Beschreibungszwecken hinzugefügt werden soll, welcher noch nicht im System existiert, kann dieser hinzugefügt werden.
 
 . Neben der Tagauswahl gibt es die Möglichkeit, weitere Tags hinzuzufügen.
-. Tag kann danach unter den optionalen Angaben ausgewählt und dem Beitrag hinzugefügt werden
+. Tag kann danach unter den optionalen Angaben ausgewählt und dem Beitrag hinzugefügt werden.
 . Use Case wird bei fortgesetzt bei der Angabe der Optionalen Angaben.
 
 ===	Nachbedingungen
 
 ==== Beitrag in Liste aufgenommen
 Der Fachbeitrag ist nun gelistet.
-
-==== Tags/zusätzliche Information hinzugefügt
-Die Beschreibung des Fachbeitrages wurde verändert.
-
-==== Bereich hinzugefügt
-Ein neuer Bereich wurde hinzugefügt und kann nun standardmäßig bei Bearbeitung/Neuhinzufügung als Bereich ausgewählt werden.
