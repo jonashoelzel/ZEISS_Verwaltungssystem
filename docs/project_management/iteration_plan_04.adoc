@@ -65,3 +65,37 @@ Das Hinzufügen von Veröffentlichungen ist auf einem Guten weg. Die UI Kommt vo
 * *Andere Belange und Abweichungen* +
 //Führen Sie weitere Themen auf, für die eine Bewertung durchgeführt wurde. Beispiele sind Finanzen, Zeitabweichungen oder Feedback von Stakeholdern, die nicht bereits an anderer Stelle dokumentiert wurden.
 Jean-Pierre hat immer wieder Internetprobleme, Warum er nicht Vollständig mitarbeiten konnte
+
+== Issues der Iteration
+Stand: 30.03.2021 16:00
+[%header]
+|===
+| #Nr. | Issue | Stand | geschätzter Arbeitsaufwand 
+| #72 | Add Mandatory | To Do | 1h
+| #88 | Projektorganisation, Tools | To Do | 1h
+| #53 | Be stopped of mandatory input is missing | To Do | 1h
+| #49 | Get a success message when i added a publication | To Do | 1h
+| #56 | Add new divisions | To Do | 1h
+| #75 | Sort and filter entries | To Do | 1h
+| #68 | sort the list by name alphabetically | To Do | 1h
+| #57 | Get a success message when i edited a publication | To Do | 1h
+| #55 | add new tags to the list | To Do | 1h
+| #51 | Choose a publication from a list | To Do | 1h
+| #52 | Edit entry | To Do | 1h
+| #76 | Search entries | To Do | 1h
+| #65 | Filter entries by tags | To Do | 1h
+| #67 | Filter entries by kind | To Do | 1h
+| #54 | Delete entries | To Do | 1h
+| #69 |Sort by date | To Do | 1h
+| #96 | Anforderungen Überarbeiten | To Do Iteration | 1h
+| #92 | Iterationsplan für Iteration 5 | To Do Iteration | 1h
+| #99 | Durchführung Punkt 1 | To Do Iteration | 1h
+| #89 | Eingesetzte Techniken und Praktiken im Projekt | To Do Iteration | 1h
+| #93 | Risk List für Construction Phase | To Do Iteration | 1h
+| #94 | Backlog aufräumen | In Progress | 1h
+| #98 | Test existing Code | In Progress | 1h
+| #87 | Aufgabenssituation zum Semesterbeginn | In Progress | 1h
+| #91 | Iterartionsplan in Dok + Neues Dok | In Progress | 2h
+| #95 | Improve Code | Review | 1h
+| #90 | Fix UI | Done | 1h
+|===
