@@ -32,10 +32,12 @@ Entspricht einer öffentlichen Plattform / einem Medium, auf / von welcher der v
 ** Art der Veröffentlichung
 . Der Nutzer navgiert mit den Buttons "Weiter" und "Zurück" durch die Angaben.
 . Wenn der Nutzer alle Pflichteingaben gemacht hat, erscheint die Buttons "Veröffentlichung hinzufügen" und "Optionale Angaben".
-. Nutzer kann an der Stelle optionale Angaben hinzufügen. Diese können folgende sein:
-* Name des Herausgebers
-* Beschreibung (Infobox)
-* Tags auswählen
+* Nutzer kann an der Stelle optionale Angaben hinzufügen und wird auch durch diese mithilfe eines Workflows geleitet. 
+* Bei Unvollständigkeit kann der Nutzer trotzdem über "Weiter" und "Zurück" durch die Eingaben navigieren, ohne dass er zur Eingabe aufgefordert wird. 
+* Optionale Angaben sind folgende:
+** Name des Herausgebers
+** Beschreibung (Infobox)
+** Tags auswählen
 .. Diese Angaben sind optional, der Nutzer wird auch durch diese über einen Workflow geleitet.
 .. Bei Unvollständigkeit kann der Nutzer trotzdem über "Weiter" und "Zurück" durch die Eingaben navigieren, ohne dass er zur Eingabe aufgefordert wird.
 . Nutzer navigiert bis zum Ende über "Weiter" und dann erscheint der Button "Veröffentlichung beantragen".
@@ -51,6 +53,7 @@ Es kommt durch den Nutzer zum Abbruch des Hinzufügungs-Flows und die Eingaben w
 
 ==== Falsche Angaben wurden gemacht
 Durch den Nutzer wurden falsche Angaben gemacht, welche dem Sales Department auffallen. Danach bestehen folgende Möglichkeiten:
+
 . Das SD bearbeitet den Fehler, da dem Sales Department die korrekten Angaben vorliegen und veröffentlicht anschließend den Beitrag.
 . Das SD fordert den Nutzer auf, die falschen Angaben zu korrigieren wartet einen neuen Antrag ab.
 
