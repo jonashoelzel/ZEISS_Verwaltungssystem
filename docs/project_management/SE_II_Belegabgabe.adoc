@@ -1,0 +1,21 @@
+= *SE II Belegabgabe*
+Stephan Joneleit, Nina Püschmann, Oliver Wünsche, Jonas Hölzel, Vanessa Bayer, Peter Holland-Moritz, Jean-Pierre Kaiser
+include::../_includes/default-attributes.inc.adoc[]
+// Platzhalter für weitere Dokumenten-Attribute
+
+== Projektbericht
+(Projektorganisation, eingesetzten Methoden, Technologien, Tools, mind. vier Besprechungsprotokolle)
+
+== Aktualisierte Anforderungsspezifikation aus SE I
+
+== Anwenderdokumentation 
+(für praktische Nutzung)
+
+== Entwicklerdokumentation 
+(für Weiterentwicklung: Systemarchitektur,Schnittstellen,…)
+
+== Testdokumentation 
+(Testplan, Testfälle, Testdaten, Testprotokolle, …)
+
+== Betriebsdokumentation 
+(für Administratoren: Inbetriebnahme, Konfiguration, Fehlersuche/-behebung)
