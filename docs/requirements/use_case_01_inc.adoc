@@ -38,8 +38,6 @@ Entspricht einer öffentlichen Plattform / einem Medium, auf / von welcher der v
 ** Name des Herausgebers
 ** Beschreibung (Infobox)
 ** Tags auswählen
-.. Diese Angaben sind optional, der Nutzer wird auch durch diese über einen Workflow geleitet.
-.. Bei Unvollständigkeit kann der Nutzer trotzdem über "Weiter" und "Zurück" durch die Eingaben navigieren, ohne dass er zur Eingabe aufgefordert wird.
 . Nutzer navigiert bis zum Ende über "Weiter" und dann erscheint der Button "Veröffentlichung beantragen".
 . Antrag wird direkt ans Sales Department gesendet, welches den Antrag prüft und bei Vollständigkeit und Korrektheit der Daten veröffentlicht.
 . Der Use Case ist abgeschlossen.
