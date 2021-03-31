@@ -3,15 +3,15 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
-    <!--
-    In some systems the folder/configuration win-x64 can cause problems (especially when reading/writing the Excel File) due security settings, anti-virus and Co.
-    When you need to compile to Electron App, you must uncomment the RuntimeIdentifier.
-    If the folder/configuration win-x64 does not cause any problems for you, you also can uncomment this line.
-    YOU MUST do this ON ALL '.csproj' files
-    -->
-    <!--
+  </PropertyGroup>
+
+  <!-- 
+  When you compile the project to an Electron.NET App, you need to set condition to 'Release'.
+  Then the RuntimeIdentifier is set to win-x64 a folder win-x64 will be created.
+  In some systems this folder can cause problems in IO Operations due to system security settings and/or AV systems and Co.
+  -->
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
-    -->
   </PropertyGroup>
 
   <ItemGroup>
