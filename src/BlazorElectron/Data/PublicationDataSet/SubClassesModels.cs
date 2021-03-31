@@ -1,7 +1,9 @@
-﻿using DataSet;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace BlazorElectron.Data.PublicationDataSet
+using Zeiss.PublicationManager.Data.IO.Excel;
+using Zeiss.PublicationManager.Data.DataSet;
+
+namespace Zeiss.PublicationManager.Data.DataSet.Model
 {
     public class PublicationTypeModel : DataObject, IPublicationType
     {

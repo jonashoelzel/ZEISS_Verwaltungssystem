@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using DataSet;
-using ExcelIO;
 
-namespace DataSetIOComponentTest
+using Zeiss.PublicationManager.Data.IO.Excel;
+using Zeiss.PublicationManager.Data.DataSet;
+using System.IO;
+
+namespace Zeiss.PublicationManager.Data.IO.Excel.ComponentTest
 {
     class Program
     {
@@ -25,7 +27,9 @@ namespace DataSetIOComponentTest
 
     public class TestDataSetIO
     {
-        private string filepath = "ExcelIOComponentTestFile.xlsx";
+        private string folderPath = @"\TestFiles";
+        private string fileName = @"\ExcelIOComponentTestFile.xlsx";
+
         private string[] worksheetNames = new string[] { "sheet00", "Sheet0", "sheet1", "sheet2", "sheet3", "Publications", "test" };
 
 
@@ -155,6 +159,10 @@ namespace DataSetIOComponentTest
 
         public void DataSetWriteOnly(int count = 100)
         {
+            string directory = System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + folderPath;
+            Directory.CreateDirectory(directory);
+            string filepath = directory + fileName;
+
             for (int i = 1; i <= count; i++)
             {
                 WriteDataSet.Insert(filepath, worksheetNames[Randomizer.Next(worksheetNames.Length)], GenerateDataSet());

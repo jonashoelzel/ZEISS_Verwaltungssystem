@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BlazorElectron.Data.PublicationDataSet
+namespace Zeiss.PublicationManager.Data.DataSet.Model
 {
     public class Randomizer
     {

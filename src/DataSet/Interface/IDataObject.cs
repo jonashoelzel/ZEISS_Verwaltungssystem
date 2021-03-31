@@ -1,4 +1,4 @@
-﻿namespace DataSet
+﻿namespace Zeiss.PublicationManager.Data.DataSet
 {
     public interface IDataObject
     {

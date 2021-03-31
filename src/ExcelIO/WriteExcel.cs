@@ -1,15 +1,17 @@
-﻿using DataSet;
-using DocumentFormat.OpenXml;
-using DocumentFormat.OpenXml.Packaging;
-using DocumentFormat.OpenXml.Spreadsheet;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace ExcelIO
+using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Spreadsheet;
+
+using Zeiss.PublicationManager.Data.DataSet;
+
+namespace Zeiss.PublicationManager.Data.IO.Excel
 {
     public class WriteDataSet
     {
