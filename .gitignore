@@ -34,7 +34,16 @@ TestResult.xml
 nunit-*.xml
 
 
-src/BlazorElectron/ExcelDataBase.xlsx
+src/BlazorElectron/*.xlsx
+src/BlazorElectron/bin/Debug/net5.0/*.xlsx
+src/BlazorElectron/bin/Release/net5.0/*.xlsx
+src/BlazorElectron/bin/Debug/net5.0/win-x64/*.xlsx
+src/BlazorElectron/bin/Release/net5.0/win-x64/*.xlsx
+
+src/ExcelIOComponentTest/*.xlsx
+src/ExcelIOComponentTest/bin/Debug/net5.0/*.xlsx
+src/ExcelIOComponentTest/bin/Release/net5.0/*.xlsx
+src/ExcelIOComponentTest/bin/Debug/net5.0/win-x64/*.xlsx
+src/ExcelIOComponentTest/bin/Release/net5.0/win-x64/*.xlsx
 
 *.zip
-*.xlsx
