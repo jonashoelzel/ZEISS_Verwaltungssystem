@@ -10,7 +10,7 @@ namespace Zeiss.PublicationManager.Business.Logic
         public static void Save(IPublicationDataSet dataSet)
         {
             string folderPath = @"\TestFiles";
-            string fileName = @"\ExcelDataBase.xlsx.xlsx";
+            string fileName = @"\ExcelDataBase.xlsx";
             string directory = System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + folderPath;
             Directory.CreateDirectory(directory);
             string filepath = directory + fileName;
