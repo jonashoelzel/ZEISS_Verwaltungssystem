@@ -98,13 +98,13 @@ a|
 * Bekannte Technologie +
     -> einfache Wartbarkeit
 * bei misslingen den Projektes kann der Kunde wieder auf Excel umsteigen ohne dass ein aufwendiger export notwendig ist +
-! BEDINGUNG VON KUNDE!
+
 |*2. Blazor als Framework*
 a| 
 * Weborientierte Anwendung + 
-! BEDINGUNG VON KUNDE! 
+ 
 * Single-Page-Anwendung +
-! BEDINGUNG VON KUNDE!  
+  
 * WebAssemply + 
     -> keine JavaScript Kenntnisse nötig, nicht vorhandene Kenntnisse im Team +  
     -> Zeitersparnis  
@@ -116,7 +116,7 @@ a|
 |*3. Elektron als wrapper für Blazor* 
 a|
 * Realisierung einer Desktop Anwendung + 
-! BEDINGUNG VON KUNDE! 
+ 
 
 |*4. Three-Tier-Architektur* 
 a| 
@@ -126,7 +126,7 @@ a|
 |*5. OPEN XML* 
 a| 
 * kompatibel zu .NET Core +
-! BEDINGUNG VON KUNDE! + 
+ + 
 ! WIRD VON BLAZOR VORAUSGESETZT! 
 |===
 
