@@ -1,0 +1,253 @@
+Ziele, Ergebnisse und Aktivitäten in einzelnen Open Up Phasen. Dabei zusammenspiel der einzelnen Rollen beachten.
+
+
+= 1) Inception Phase 
+
+== Understand what to build 
+Identify and Refine Requirements
+
+ During Inception, the focus is on gaining agreement on the problem to be solved, gathering stakeholder needs, and capturing high-level system features. 
+
+Roles: Analyst, Architect, Developer,Tester
+
+*Ergebnisse*
+
+- Use Case + Use-Case Model
+
+- Work Items List
+
+- System-Wide Requirements 
+
+- Test Cases 
+
+- Glossary 
+
+
+== Identify key system functionality 
+Roles: Analyst, Project Manager
+
+*Aktivitäten/Objectives*
+
+- Initiate Project 
+
+- Identify and Refine Requirements  
+
+ This activity describes the tasks you perform to gather, specify, analyze, and validate a subset of system's requirements prior to implementation and verification. This does not imply that all requirements are detailed prior to commencing implementation. Rather, you perform this activity throughout the lifecycle with stakeholders and the entire development team collaborating to ensure that a clear, consistent, correct, verifiable, and feasible set of requirements is available, as needed, to drive implementation and verification. 
+
+== Agree on Technical Approach 
+(Determine at least one possible solution)
+
+Roles: Architect,Analyst
+
+*Aktivitäten/Objectives*
+
+- Envision the Architecture
+
+    Work with the team to create an initial sketch of the technical approach to the proposed system
+    Ensure that the technical decisions are adequately captured and communicated
+    Ensure that the team has enough information to understand the approach that your are taking
+
+
+- Architecture Notebook
+
+
+== Understand the cost, schedule, and risks associated with the project 
+
+Roles: Analyst, Project Manager  
+
+*Aktivitäten/Objectives*
+
+- Initiate Project 
+
+    Project Plan, Glossary,Vision 
+
+
+- Iteration Plan / Manage Iteration
+
+    Each team member breaks down the work items into development tasks and estimates the effort. This provides a more accurate estimate of the amount of time that will be spent, and of what can be realistically achieved, in a given iteration. 
+
+    As the iteration runs, the team meets regularly to report status of work completed, the work to do next, and issues blocking the progress. As necessary, the team makes corrections to achieve what was planned. The overall idea is that risks and issues are identified and managed throughout the iteration, and everyone knows the project status in a timely manner. 
+
+
+- Assess Results
+
+    Coordinate the assessment and discuss with the team how the iteration results will be best presented to stakeholders, so that they can learn as much about the solution as possible. Listen to what the team has to say about what went wrong (and what went right) during the iteration. This knowledge will help everybody make informed decisions about the next iteration planning, and determine the best course of action for the project
+
+
+
+
+
+
+
+
+= 2) Elaboration
+
+== Get a more detailed understanding of the requirements 
+
+Identify and Refine Requirements 
+
+ During Elaboration, the focus shifts to defining the solution. This consists of finding those requirements that have the most value to stakeholders, that are particularly challenging or risky, or that are architecturally significant. You then describe requirements (that are prioritized, via the work items list, for implementation in the early iterations) in sufficient detail to validate the development team's understanding of the requirements, to ensure concurrence with stakeholders, and to permit software development to begin. For each of these requirements, define associated test cases to ensure that the requirements are verifiable, and to provide the guidance needed for verification and validation. 
+
+Roles: Analyst, Architect, Developer, Tester
+
+
+*Aktivitäten/Objectives*
+
+- Glossary 
+
+- System-Wide Requirements 
+
+- Use Case + Use-Case Model 
+
+- Work Items List 
+
+
+== Design, implement, validate, and baseline an architecture 
+
+Develop the Architecture 
+
+    The objective is to produce stable software that adequately addresses the technical risks in scope.
+    
+
+Roles: Architect, Developer 
+
+
+    -Refine the initial sketch of the architecture into concrete design elements
+    -Ensure that the architecture decisions are adequately captured and communicated
+    -Ensure that the team has enough information to enable software to be developed
+    -Ensure that the requirements that were prioritized for the current iteration are adequately addressed in the software
+
+*Aktivitäten*
+
+- Architecture Notebook 
+ 
+- Develop Solution Increment (Entwicklungs Iteration) 
+
+    Design the Solution, Implement Developer Tests, Implement Solution, Run Developer Tests, Integrate and Create Build
+  
+- Implement and Run Tests
+
+== Plan and Manage Iteration
+    The goal of this activity is to identify risks and issues early enough that they can be mitigated, to establish the goals for the iteration, and to support the development team in reaching these goals.
+
+    The project manager, stakeholders, and team members agree on what is supposed to be developed during that iteration.  
+
+Roles: Project Manager
+
+*Aktivitäten/Objectives*
+
+- Iteration Plan / Manage Iteration
+
+    Each team member breaks down the work items into development tasks and estimates the effort. This provides a more accurate estimate of the amount of time that will be spent, and of what can be realistically achieved, in a given iteration. 
+
+    As the iteration runs, the team meets regularly to report status of work completed, the work to do next, and issues blocking the progress. As necessary, the team makes corrections to achieve what was planned. The overall idea is that risks and issues are identified and managed throughout the iteration, and everyone knows the project status in a timely manner. 
+
+- Assess Results
+
+    Coordinate the assessment and discuss with the team how the iteration results will be best presented to stakeholders, so that they can learn as much about the solution as possible. Listen to what the team has to say about what went wrong (and what went right) during the iteration. This knowledge will help everybody make informed decisions about the next iteration planning, and determine the best course of action for the project
+-
+
+
+
+
+
+
+= 3) Construction Phase
+ The architecture should be stable when the Construction phase starts, allowing the remaining requirements to be implemented on top of it. Another advantage of validating the architecture and eliminating as many risks as possible during Elaboration is that it provides more predictability in Construction, which allows the project manager to focus on team efficiency and cost reduction. 
+
+ Functionality is continuously implemented, tested, and integrated, resulting in builds that are more and more complete and stable. 
+
+== Iteratively develop a complete product that is ready to transition to the user community
+
+Roles: Project Manager,Analyst
+
+*Aktivitäten/Objectives*
+
+- Identify and Refine Requirements 
+
+ During Construction, the focus shifts to refining the system definition. This consists of detailing the remaining requirements and associated test cases as necessary to drive implementation and verification, and managing requirements change. 
+
+
+- Develop Solution Increment (Entwicklungs Iteration) 
+
+    Design the Solution, Implement Developer Tests, Implement Solution, Run Developer Tests, Integrate and Create Build
+  
+- Test Solution
+
+
+== Minimize development costs and achieve some degree of parallelism
+
+Roles: Project Manager,Analyst,Tester
+
+
+*Aktivitäten/Objectives*
+
+
+- Plan and Manage Iteration
+
+    The goal of this activity is to identify risks and issues early enough that they can be mitigated, to establish the goals for the iteration, and to support the development team in reaching these goals.
+
+    The project manager, stakeholders, and team members agree on what is supposed to be developed during that iteration.  
+
+
+- Develop Solution Increment (Entwicklungs Iteration) 
+
+    Design the Solution, Implement Developer Tests, Implement Solution, Run Developer Tests, Integrate and Create Build
+  
+- Test Solution 
+
+
+
+
+
+
+
+
+
+= 4)Transition Phase  
+
+ In the Transition phase, the main objectives are to fine-tune the functionality, performance, and overall quality of the beta product from the end of the Construction phase. 
+
+== Beta test to validate that user expectations are met
+
+Roles: Project Manager,Analyst,Tester
+
+*Aktivitäten/Objectives*
+
+- Ongoing Tasks 
+
+    Perform ongoing tasks that are not necessarily part of the project schedule.
+
+
+- Develop Solution Increment (Entwicklungs Iteration) 
+
+    Design the Solution, Implement Developer Tests, Implement Solution, Run Developer Tests, Integrate and Create Build
+  
+- Test Solution 
+
+== Achieve stakeholder concurrence that deployment is complete 
+
+Roles:Project Manager,Tester
+
+*Aktivitäten/Objectives*
+
+- Plan and Manage Iteration
+
+    The goal of this activity is to identify risks and issues early enough that they can be mitigated, to establish the goals for the iteration, and to support the development team in reaching these goals.
+
+    The project manager, stakeholders, and team members agree on what is supposed to be developed during that iteration.  
+-Test Solution 
+
+
+== Improve future project performance through lessons learned 
+
+Roles: Project Manager,Analyst,Tester
+
+*Aktivitäten/Objectives*
+
+
+- Plan and Manage Iteration
+
+    The goal of this activity is to identify risks and issues early enough that they can be mitigated, to establish the goals for the iteration, and to support the development team in reaching these goals.
+
+    The project manager, stakeholders, and team members agree on what is supposed to be developed during that iteration.  
