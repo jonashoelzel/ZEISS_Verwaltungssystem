@@ -13,133 +13,7 @@ using Zeiss.PublicationManager.Data.DataSet;
 
 namespace Zeiss.PublicationManager.Data.IO.Excel
 {
-    public class WriteDataSet
-    {
-        private string _filePath;
-        private string _workSheetName;
-
-        public WriteDataSet(string filePaht, string workSheetName)
-        {
-            _filePath = filePaht;
-            _workSheetName = workSheetName;
-        }
-
-        public void Insert(IPublicationDataSet dataSet)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static void Insert(string filepath, string worksheetName, List<IPublicationDataSet> dataSets)
-        {
-            foreach (var dataSet in dataSets)
-            {
-                Insert(filepath, worksheetName, dataSet);
-            }
-        }
-
-        public static void Insert(string filepath, string worksheetName, IPublicationDataSet dataSet)
-        {
-            InitializeDataSetWorksheet(filepath, worksheetName);
-
-            List<object> entry = new List<object>()
-            {
-                dataSet.ID,
-                dataSet.WorkingTitle,
-                dataSet.PublicationTitle,
-
-                dataSet.TypeOfPublication.Name,
-
-                dataSet.MainAuthor.ID,
-                dataSet.MainAuthor.Name,
-                dataSet.MainAuthor.Surname,
-                ConvertCoAuthorsToCSV(dataSet.CoAuthors),
-                dataSet.Division,
-
-                dataSet.DateOfStartWorking.Year,
-                dataSet.CurrentState,
-                dataSet.DateOfRelease,
-
-                dataSet.PublishedBy.ID,
-                dataSet.PublishedBy.Name,
-
-                ConvertTagsToCSV(dataSet.Tags),
-                dataSet.Description,
-                dataSet.AdditionalInformation
-            };
-
-            WriteExcel.Insert(filepath, worksheetName, entry);
-        }
-
-        private static string ConvertCoAuthorsToCSV(List<IAuthor> coAuthors)
-        {
-            if (coAuthors is null)
-                return string.Empty;
-
-            StringBuilder csv = new StringBuilder();
-
-            foreach (var author in coAuthors)
-            {
-                csv.Append(
-                    author.ID + "," +
-                    author.Name + "," +
-                    author.Surname + ";"
-                    );
-            }
-
-            string csvstr = csv.ToString();
-            return ((!String.IsNullOrEmpty(csvstr)) ? csvstr[..^1] : "");
-        }
-
-        private static string ConvertTagsToCSV(List<ITag> tags)
-        {
-            if (tags is null)
-                return string.Empty;
-
-            StringBuilder csv = new StringBuilder();
-
-            foreach (var tag in tags)
-            {
-                csv.Append(tag.Name + ",");
-            }
-
-            string csvstr = csv.ToString();
-            return ((!String.IsNullOrEmpty(csvstr)) ? csvstr[..^1] : "");
-        }
-
-        private static void InitializeDataSetWorksheet(string filepath, string worksheetName)
-        {
-            if (!WriteExcel.WorksheetExists(ref filepath, worksheetName))
-            {
-                List<object> entry = new List<object>()
-                {
-                    "Publikations-ID",
-                    "Arbeitstitel",
-                    "Veröffentlichungstitel",
-                    "Veröffentlichungsmedium",
-
-                    "Autor-ID",
-                    "Vorname",
-                    "Nachname",
-                    "Co-Autoren",
-                    "Division",
-
-                    "Arbeitsbeginn (Startjahr)",
-                    "Derzeitiger Arbeitsstatus",
-                    "Veröffentlichungsdatum",
-
-                    "Publisher-ID",
-                    "Publisher",
-
-                    "Tags",
-                    "Beschreibung (zusätzlich)",
-                    "Zusätzliche Informationen"
-                };
-
-                WriteExcel.Insert(filepath, worksheetName, entry);
-            }
-        }
-    }
-
+    
     public class WriteExcel
     {
         #region GetCellInformation
@@ -151,7 +25,7 @@ namespace Zeiss.PublicationManager.Data.IO.Excel
         }
 
         //Excel column names are from A-Z over AA-AZ and ZA-ZZ up to AAA-ZZZ, [...]
-        private static string ConvertNumberToExcelLetters(int number)
+        private static string ConvertNumberToCellLetters(int number)
         {
             //If the number is invalid
             if (number <= 0)
@@ -189,17 +63,36 @@ namespace Zeiss.PublicationManager.Data.IO.Excel
 
             return columnname;
         }
+
+        private static Cell GetReferenceCell(Row row, string cellName)
+        {
+            if (String.IsNullOrEmpty(cellName))
+                return null;
+
+            foreach (Cell cell in row.Elements<Cell>())
+            {
+                if (string.Compare(cell.CellReference.Value, cellName, true) > 0)
+                {
+                    return cell;
+                }
+            }
+
+            return null;
+        }
+
         #endregion
 
-
         #region Insert
+        #region Public_Insert
         public static void Insert(string filepath, string worksheetName, List<object> columnValues)
         {
             List<string> columnLetterIDs = new List<string>();
             for (int i = 1; i <= columnValues.Count; i++)
-                columnLetterIDs.Add(ConvertNumberToExcelLetters(i));
+                columnLetterIDs.Add(ConvertNumberToCellLetters(i));
 
-            Inserter(filepath, worksheetName, columnLetterIDs, columnValues);
+            SpreadsheetDocument spreadsheetDocument = OpenSpreadSheetDocument(filepath, worksheetName, out SheetData sheetData);
+            InsertRow(ref spreadsheetDocument, sheetData, columnLetterIDs, columnValues);
+            SaveSpreadSheetDocument(ref spreadsheetDocument);
         }
 
         /*
@@ -219,10 +112,133 @@ namespace Zeiss.PublicationManager.Data.IO.Excel
         }
         */
 
-        private static void Inserter(string filepath, string worksheetName, List<string> columnLetterIDs, List<object> columnValues)
+        #endregion
+
+        #region Private_Insert
+        private static void InsertRow(ref SpreadsheetDocument spreadsheetDocument, SheetData sheetData, List<string> columnLetterIDs, List<object> columnValues)
+        {
+            //Create new row
+            int rowCount = sheetData.Elements<Row>().Count();
+            Row row = new Row { RowIndex = UInt32Value.FromUInt32((uint)(++rowCount)) };
+            sheetData.Append(row);
+
+            for (int i = 0; i < columnValues.Count; i++)
+            {
+                //Format XX00
+                string cellReference = columnLetterIDs[i] + rowCount;
+                //Get reference cell
+                Cell referenceCell = GetReferenceCell(row, cellReference);
+                // Add the cell to the cell table at A1.
+                Cell newCell = new Cell() { CellReference = cellReference };
+                row.InsertBefore(newCell, referenceCell);
+
+                object obj = columnValues[i];
+                switch (obj)
+                {
+                    case string objstr:
+                        AddSharedString(ref spreadsheetDocument, ref newCell, objstr);
+                        break;
+
+                    case DateTime objdate:
+                        //Normal way. Does NOT work for xlsx (!)
+                        //string strdate = objdate.ToOADate().ToString();
+                        //newCell.DataType = CellValues.Date;
+                        //newCell.CellValue = new CellValue(strdate);
+
+                        //"StyleIndex" is "1", because we added a new stylesheet (index 0 would be default) with "NumberFormatId=14"
+                        //is in the 2nd item of 'CellFormats' array.
+                        newCell.DataType = new EnumValue<CellValues>(CellValues.Number);
+                        newCell.StyleIndex = 1;
+                        newCell.CellValue = new CellValue(objdate.ToOADate().ToString(CultureInfo.InvariantCulture));
+                        break;
+
+                    case bool objbool:
+                        AddSharedString(ref spreadsheetDocument, ref newCell, objbool.ToString());
+                        break;
+
+                    default:
+                        if (obj is not null)
+                        {
+                            if (Decimal.TryParse(obj.ToString(), out decimal objdec))
+                            {
+                                newCell.DataType = new EnumValue<CellValues>(CellValues.Number);
+                                newCell.CellValue = new CellValue(objdec.ToString(CultureInfo.InvariantCulture));
+                            }
+                        }
+                        else
+                        {
+                            //Enter an empty cell to make IO easier
+                            AddSharedString(ref spreadsheetDocument, ref newCell, " ");
+                        }
+                        break;
+                }
+            }
+        }
+        #endregion
+#endregion
+
+        #region Public_HelperMethods
+        public static bool WorksheetExists(ref SpreadsheetDocument spreadsheetDocument, string worksheetName, out IEnumerable<Sheet> sheetsIEnum)
+        {
+            //Search for specific sheet
+            sheetsIEnum = spreadsheetDocument?.WorkbookPart?.Workbook?.Descendants<Sheet>()?.Where(s => s.Name == worksheetName);
+
+            return sheetsIEnum.Any();
+        }
+
+        public static bool WorksheetExists(ref string filepath, string worksheetName)
+        {
+            if (!CheckPathExist(ref filepath))
+                return false;
+
+            SpreadsheetDocument spreadsheetDocument = SpreadsheetDocument.Open(filepath, false);
+
+            //Search for specific sheet
+            IEnumerable<Sheet> sheetsIEnum = spreadsheetDocument?.WorkbookPart?.Workbook?.Descendants<Sheet>()?.Where(s => s.Name == worksheetName);
+            //If specified sheet does not exists => return false
+            bool exists = sheetsIEnum.Any();
+
+            spreadsheetDocument.Close();
+
+            return exists;
+        }
+        #endregion
+
+        #region CreateSpreadSheetParts
+        #region CheckPaths
+        //Does check, if the filepath does exist
+        public static bool CheckPathExist(ref string filepath)
+        {
+            CheckAndConvertLongFilePath(ref filepath);
+
+            //If the path exists, it returns true and other functions can work further
+            return (File.Exists(filepath));
+        }
+
+        public static void CheckAndConvertLongFilePath(ref string filepath)
+        {
+            //Checks for longer filepaths (MAX_PATH is regularly 260)
+            if (filepath.Length >= 256)
+            {
+                //Checks if file does not exists or/and if system cannot access it
+                if (!File.Exists(filepath))
+                {
+                    //Adds the prefix to exceed MAX_PATH
+                    filepath = @"\\?\" + filepath;
+
+                    //Either file does not exist or prefix is unsupported if true
+                    if (!File.Exists(filepath))
+                        throw new PathTooLongException("The entered filepath:\n" + filepath +
+                            "\nis too long (and current IO API does not support \"" + @"\\?\" + "\") or does not exist");
+                }
+            }
+        }
+        #endregion
+
+        #region CreateSpreadsheet
+        private static SpreadsheetDocument OpenSpreadSheetDocument(string filepath, string worksheetName, out SheetData sheetData)
         {
             SpreadsheetDocument spreadsheetDocument;
-            SheetData sheetData;
 
             if (CheckPathExist(ref filepath))
             {
@@ -247,64 +263,15 @@ namespace Zeiss.PublicationManager.Data.IO.Excel
                 sheetData = CreateNewWorkbookPartAndGetSheetData(ref spreadsheetDocument, worksheetName, false);
             }
 
+            return spreadsheetDocument;
+        }
 
-            //Create new row
-            int rowCount = sheetData.Elements<Row>().Count();
-            Row row = new Row { RowIndex = UInt32Value.FromUInt32((uint)(++rowCount)) };
-            sheetData.Append(row);
-
-            for (int i = 0; i < columnValues.Count; i++)
-            {
-                string cellReference = columnLetterIDs[i] + rowCount;
-                //Get reference cell
-                Cell referenceCell = GetReferenceCell(row, cellReference);
-
-                // Add the cell to the cell table at A1.
-                Cell newCell = new Cell() { CellReference = cellReference };
-                row.InsertBefore(newCell, referenceCell);
-
-                object obj = columnValues[i];
-
-                if (obj is string objstr)
-                {
-                    AddSharedString(ref spreadsheetDocument, ref newCell, objstr);
-                }
-                else if (obj is DateTime objdate)
-                {
-                    //Normal way. Does NOT work for xlsx (!)
-                    /*
-                    string strdate = objdate.ToOADate().ToString();
-
-                    newCell.DataType = CellValues.Date;
-                    newCell.CellValue = new CellValue(strdate);
-                    */
-
-                    // "StyleIndex" is "1", because "NumberFormatId=14"
-                    // is in the 2nd item of 'CellFormats' array.
-                    newCell.DataType = new EnumValue<CellValues>(CellValues.Number);
-                    newCell.StyleIndex = 1;
-                    newCell.CellValue = new CellValue(objdate.ToOADate().ToString(CultureInfo.InvariantCulture));
-                }
-                else if (obj is bool objbool)
-                {
-                    AddSharedString(ref spreadsheetDocument, ref newCell, objbool.ToString());
-                }
-                else if (obj is not null)
-                {
-                    if (Decimal.TryParse(obj.ToString(), out decimal objdec))
-                    {
-                        newCell.DataType = new EnumValue<CellValues>(CellValues.Number);
-                        newCell.CellValue = new CellValue(objdec.ToString(CultureInfo.InvariantCulture));
-                    }
-                }
-            }
-
-
+        private static void SaveSpreadSheetDocument(ref SpreadsheetDocument spreadsheetDocument)
+        {
             // Save Close the document.
             spreadsheetDocument.Close();
         }
         #endregion
-
 
         #region CreateWorkbook
         private static SheetData CreateNewWorkbookPartAndGetSheetData(ref SpreadsheetDocument spreadsheetDocument, string worksheetName, bool append = true)
@@ -372,6 +339,7 @@ namespace Zeiss.PublicationManager.Data.IO.Excel
                     new CellFormats(
                         new CellFormat(),
                         //This Style is for dates in xlsx (Excel) files
+                        //To use it call StyleIndex=1
                         new CellFormat
                         {
                             NumberFormatId = 14,
@@ -393,86 +361,7 @@ namespace Zeiss.PublicationManager.Data.IO.Excel
         }
         #endregion
 
-
-        #region Public_HelperMethods
-        public static bool WorksheetExists(ref SpreadsheetDocument spreadsheetDocument, string worksheetName, out IEnumerable<Sheet> sheetsIEnum)
-        {
-            //Search for specific sheet
-            sheetsIEnum = spreadsheetDocument?.WorkbookPart?.Workbook?.Descendants<Sheet>()?.Where(s => s.Name == worksheetName);
-
-            return sheetsIEnum.Any();
-        }
-
-        public static bool WorksheetExists(ref string filepath, string worksheetName)
-        {
-            if (!CheckPathExist(ref filepath))
-                return false;
-
-            SpreadsheetDocument spreadsheetDocument = SpreadsheetDocument.Open(filepath, false);
-
-            //Search for specific sheet
-            IEnumerable<Sheet> sheetsIEnum = spreadsheetDocument?.WorkbookPart?.Workbook?.Descendants<Sheet>()?.Where(s => s.Name == worksheetName);
-            //If specified sheet does not exists => return false
-            bool exists = sheetsIEnum.Any();
-
-            spreadsheetDocument.Close();
-
-            return exists;
-        }
-        #endregion
-
-        #region Private_HelperMethods
-        private static Cell GetReferenceCell(Row row, string cellName)
-        {
-            if (String.IsNullOrEmpty(cellName))
-                return null;
-
-            foreach (Cell cell in row.Elements<Cell>())
-            {
-                if (string.Compare(cell.CellReference.Value, cellName, true) > 0)
-                {
-                    return cell;
-                }
-            }
-
-            return null;
-        }
-
-
-        #region IO
-        //Does check, if the filepath does exist
-        public static bool CheckPathExist(ref string filepath)
-        {
-            CheckAndConvertLongFilePath(ref filepath);
-
-            //If the path exists, it returns true and other functions can work further
-            return (File.Exists(filepath));
-        }
-
-        public static void CheckAndConvertLongFilePath(ref string filepath)
-        {
-            //Checks for longer filepaths (MAX_PATH is regularly 260)
-            if (filepath.Length >= 256)
-            {
-                //Checks if file does not exists or/and if system cannot access it
-                if (!File.Exists(filepath))
-                {
-                    //Adds the prefix to exceed MAX_PATH
-                    filepath = @"\\?\" + filepath;
-
-                    //Either file does not exist or prefix is unsupported if true
-                    if (!File.Exists(filepath))
-                        throw new PathTooLongException("The entered filepath:\n" + filepath +
-                            "\nis too long (and current IO API does not support \"" + @"\\?\" + "\") or does not exist");
-                }
-            }
-        }
-        #endregion
-
-        #endregion
-
-
-        #region SharedString
+        #region CreateSharedString
         private static SharedStringTablePart GetSharedStringTablePart(ref SpreadsheetDocument spreadsheetDocument)
         {
             SharedStringTablePart sharedStringTablePart;
@@ -511,7 +400,6 @@ namespace Zeiss.PublicationManager.Data.IO.Excel
             }
 
             int i = 0;
-
             // Iterate through all the items in the SharedStringTable. If the text already exists, return its index.
             foreach (SharedStringItem item in sharedStringTablePart.SharedStringTable.Elements<SharedStringItem>())
             {
@@ -529,6 +417,7 @@ namespace Zeiss.PublicationManager.Data.IO.Excel
 
             return i;
         }
+        #endregion
         #endregion
     }
 }
