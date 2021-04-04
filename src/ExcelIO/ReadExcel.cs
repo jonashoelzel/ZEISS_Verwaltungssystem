@@ -10,10 +10,10 @@ using DocumentFormat.OpenXml.Spreadsheet;
 
 //Make sure to set under Debuggen->Debugeigenschaften->Anwendung-Zielframework to .NET 5 !!!
 
-namespace ExcelIO
+namespace Zeiss.PublicationManager.Data.IO.Excel
 {
     //NOTE: When we use with Console, all members have to be static !!!
-    public static class ReadExcel
+    public class ReadExcel : ExcelIOBase
     {
         //We using DOM instead of SAX for easier reading management
         public static List<List<string>> OpenExcelDOM(string filepath)
