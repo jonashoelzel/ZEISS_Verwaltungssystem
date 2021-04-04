@@ -194,7 +194,7 @@ namespace Zeiss.PublicationManager.Data.IO.Excel
                 uint sheetId = GetUniqueSheetID(ref sheets);
 
                 // Append the new worksheet and associate it with the workbook.
-                Sheet sheet = new Sheet() { Id = relationshipId, SheetId = sheetId, Name = worksheetName };
+                Sheet sheet = new() { Id = relationshipId, SheetId = sheetId, Name = worksheetName };
 
                 sheets.Append(sheet);
 
@@ -221,7 +221,7 @@ namespace Zeiss.PublicationManager.Data.IO.Excel
                 uint sheetID = GetUniqueSheetID(ref sheets);
 
                 // Append a new worksheet and associate it with the workbook.
-                Sheet sheet = new Sheet() { Id = spreadsheetDocument.WorkbookPart.GetIdOfPart(worksheetPart), SheetId = UInt32Value.FromUInt32(sheetID), Name = worksheetName };
+                Sheet sheet = new() { Id = spreadsheetDocument.WorkbookPart.GetIdOfPart(worksheetPart), SheetId = UInt32Value.FromUInt32(sheetID), Name = worksheetName };
 
                 sheets.Append(sheet);
 

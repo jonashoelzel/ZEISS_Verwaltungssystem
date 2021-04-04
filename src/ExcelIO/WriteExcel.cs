@@ -19,7 +19,7 @@ namespace Zeiss.PublicationManager.Data.IO.Excel
         #region Public_Insert
         public static void Insert(string filepath, string worksheetName, List<object> columnValues)
         {
-            List<string> columnLetterIDs = new List<string>();
+            List<string> columnLetterIDs = new();
             for (int i = 1; i <= columnValues.Count; i++)
                 columnLetterIDs.Add(ConvertNumberToCellLetters(i));
 
@@ -34,10 +34,10 @@ namespace Zeiss.PublicationManager.Data.IO.Excel
         //
         //}
 
-        public static void Insert(string filepath, string worksheetName, List<string> columnNames, List<List<object>> columnValues)
-        {
+        //public static void Insert(string filepath, string worksheetName, List<string> columnNames, List<List<object>> columnValues)
+        //{
 
-        }
+        //}
 
         //public static void Insert(string filepath, string worksheetName, string startColumnID, List<string> columnNames, List<List<object>> columnValues)
         //{
@@ -52,7 +52,7 @@ namespace Zeiss.PublicationManager.Data.IO.Excel
         {
             //Create new row
             int rowCount = sheetData.Elements<Row>().Count();
-            Row row = new Row { RowIndex = UInt32Value.FromUInt32((uint)(++rowCount)) };
+            Row row = new() { RowIndex = UInt32Value.FromUInt32((uint)(++rowCount)) };
             sheetData.Append(row);
 
             for (int i = 0; i < columnValues.Count; i++)
@@ -129,7 +129,7 @@ namespace Zeiss.PublicationManager.Data.IO.Excel
             //Get reference cell
             Cell referenceCell = GetReferenceCell(row, cellReference);
             // Add the cell to the cell table at cellReference.
-            Cell newCell = new Cell() { CellReference = cellReference };
+            Cell newCell = new() { CellReference = cellReference };
             row.InsertBefore(newCell, referenceCell);
 
             switch (cellEntry)
