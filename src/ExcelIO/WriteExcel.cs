@@ -90,27 +90,27 @@ namespace Zeiss.PublicationManager.Data.IO.Excel
             for (int i = 1; i <= columnValues.Count; i++)
                 columnLetterIDs.Add(ConvertNumberToCellLetters(i));
 
-            SpreadsheetDocument spreadsheetDocument = OpenSpreadSheetDocument(filepath, worksheetName, out SheetData sheetData);
+            SpreadsheetDocument spreadsheetDocument = OpenSpreadsheetDocument(filepath, worksheetName, out SheetData sheetData);
             InsertRow(ref spreadsheetDocument, sheetData, columnLetterIDs, columnValues);
-            SaveSpreadSheetDocument(ref spreadsheetDocument);
+            SaveSpreadsheetDocument(ref spreadsheetDocument);
         }
 
-        /*
-        public static void Insert(string filepath, string worksheetName, string startColumnID, List<List<object>> columnValues)
-        {
-
-        }
+        //
+        //public static void Insert(string filepath, string worksheetName, string startColumnID, List<List<object>> columnValues)
+        //{
+        //
+        //}
 
         public static void Insert(string filepath, string worksheetName, List<string> columnNames, List<List<object>> columnValues)
         {
 
         }
 
-        public static void Insert(string filepath, string worksheetName, string startColumnID, List<string> columnNames, List<List<object>> columnValues)
-        {
-
-        }
-        */
+        //public static void Insert(string filepath, string worksheetName, string startColumnID, List<string> columnNames, List<List<object>> columnValues)
+        //{
+        //
+        //}
+        //
 
         #endregion
 
@@ -126,52 +126,7 @@ namespace Zeiss.PublicationManager.Data.IO.Excel
             {
                 //Format XX00
                 string cellReference = columnLetterIDs[i] + rowCount;
-                //Get reference cell
-                Cell referenceCell = GetReferenceCell(row, cellReference);
-                // Add the cell to the cell table at A1.
-                Cell newCell = new Cell() { CellReference = cellReference };
-                row.InsertBefore(newCell, referenceCell);
-
-                object obj = columnValues[i];
-                switch (obj)
-                {
-                    case string objstr:
-                        AddSharedString(ref spreadsheetDocument, ref newCell, objstr);
-                        break;
-
-                    case DateTime objdate:
-                        //Normal way. Does NOT work for xlsx (!)
-                        //string strdate = objdate.ToOADate().ToString();
-                        //newCell.DataType = CellValues.Date;
-                        //newCell.CellValue = new CellValue(strdate);
-
-                        //"StyleIndex" is "1", because we added a new stylesheet (index 0 would be default) with "NumberFormatId=14"
-                        //is in the 2nd item of 'CellFormats' array.
-                        newCell.DataType = new EnumValue<CellValues>(CellValues.Number);
-                        newCell.StyleIndex = 1;
-                        newCell.CellValue = new CellValue(objdate.ToOADate().ToString(CultureInfo.InvariantCulture));
-                        break;
-
-                    case bool objbool:
-                        AddSharedString(ref spreadsheetDocument, ref newCell, objbool.ToString());
-                        break;
-
-                    default:
-                        if (obj is not null)
-                        {
-                            if (Decimal.TryParse(obj.ToString(), out decimal objdec))
-                            {
-                                newCell.DataType = new EnumValue<CellValues>(CellValues.Number);
-                                newCell.CellValue = new CellValue(objdec.ToString(CultureInfo.InvariantCulture));
-                            }
-                        }
-                        else
-                        {
-                            //Enter an empty cell to make IO easier
-                            AddSharedString(ref spreadsheetDocument, ref newCell, " ");
-                        }
-                        break;
-                }
+                CreateCell(ref spreadsheetDocument, columnValues[i], row, cellReference);              
             }
         }
         #endregion
@@ -236,7 +191,7 @@ namespace Zeiss.PublicationManager.Data.IO.Excel
         #endregion
 
         #region CreateSpreadsheet
-        private static SpreadsheetDocument OpenSpreadSheetDocument(string filepath, string worksheetName, out SheetData sheetData)
+        private static SpreadsheetDocument OpenSpreadsheetDocument(string filepath, string worksheetName, out SheetData sheetData)
         {
             SpreadsheetDocument spreadsheetDocument;
 
@@ -266,7 +221,7 @@ namespace Zeiss.PublicationManager.Data.IO.Excel
             return spreadsheetDocument;
         }
 
-        private static void SaveSpreadSheetDocument(ref SpreadsheetDocument spreadsheetDocument)
+        private static void SaveSpreadsheetDocument(ref SpreadsheetDocument spreadsheetDocument)
         {
             // Save Close the document.
             spreadsheetDocument.Close();
@@ -416,6 +371,57 @@ namespace Zeiss.PublicationManager.Data.IO.Excel
             sharedStringTablePart.SharedStringTable.Save();
 
             return i;
+        }
+        #endregion
+
+        #region CreateCell
+        private static void CreateCell(ref SpreadsheetDocument spreadsheetDocument, object cellEntry, Row row, string cellReference)
+        {
+            //Get reference cell
+            Cell referenceCell = GetReferenceCell(row, cellReference);
+            // Add the cell to the cell table at cellReference.
+            Cell newCell = new Cell() { CellReference = cellReference };
+            row.InsertBefore(newCell, referenceCell);
+
+            switch (cellEntry)
+            {
+                case string objstr:
+                    AddSharedString(ref spreadsheetDocument, ref newCell, objstr);
+                    break;
+
+                case DateTime objdate:
+                    //Normal way. Does NOT work for xlsx (!)
+                    //string strdate = objdate.ToOADate().ToString();
+                    //newCell.DataType = CellValues.Date;
+                    //newCell.CellValue = new CellValue(strdate);
+
+                    //"StyleIndex" is "1", because we added a new stylesheet (index 0 would be default) with "NumberFormatId=14"
+                    //is in the 2nd item of 'CellFormats' array.
+                    newCell.DataType = new EnumValue<CellValues>(CellValues.Number);
+                    newCell.StyleIndex = 1;
+                    newCell.CellValue = new CellValue(objdate.ToOADate().ToString(CultureInfo.InvariantCulture));
+                    break;
+
+                case bool objbool:
+                    AddSharedString(ref spreadsheetDocument, ref newCell, objbool.ToString());
+                    break;
+
+                default:
+                    if (cellEntry is not null)
+                    {
+                        if (Decimal.TryParse(cellEntry.ToString(), out decimal objdec))
+                        {
+                            newCell.DataType = new EnumValue<CellValues>(CellValues.Number);
+                            newCell.CellValue = new CellValue(objdec.ToString(CultureInfo.InvariantCulture));
+                        }
+                    }
+                    else
+                    {
+                        //Enter an empty cell to make IO easier
+                        AddSharedString(ref spreadsheetDocument, ref newCell, " ");
+                    }
+                    break;
+            }
         }
         #endregion
         #endregion
