@@ -98,11 +98,11 @@ namespace Zeiss.PublicationManager.Data.IO.Excel
             //Search for specific sheet
             IEnumerable<Sheet> sheetsIEnum = spreadsheetDocument?.WorkbookPart?.Workbook?.Descendants<Sheet>()?.Where(s => s.Name == worksheetName);
             //If specified sheet does not exists => return false
-            bool exists = sheetsIEnum.Any();
+            bool isExists = sheetsIEnum.Any();
 
             spreadsheetDocument.Close();
 
-            return exists;
+            return isExists;
         }
         #endregion
 
@@ -137,17 +137,17 @@ namespace Zeiss.PublicationManager.Data.IO.Excel
         #endregion
 
         #region ExcelIO
-        protected static SpreadsheetDocument OpenSpreadsheetDocument(string filepath, string worksheetName, out SheetData sheetData, bool createable = true, bool editable = true)
+        protected static SpreadsheetDocument OpenSpreadsheetDocument(string filepath, string worksheetName, out SheetData sheetData, bool isCreateable = true, bool isEditable = true)
         {
             SpreadsheetDocument spreadsheetDocument;
 
             if (CheckPathExist(ref filepath))
             {
-                spreadsheetDocument = SpreadsheetDocument.Open(filepath, editable);
+                spreadsheetDocument = SpreadsheetDocument.Open(filepath, isEditable);
                 //Open worksheet and if it doesn't exist - create it
                 if (!OpenWorksheet(ref spreadsheetDocument, worksheetName, out sheetData))
                 {
-                    if (editable && createable)
+                    if (isEditable && isCreateable)
                     {
                         sheetData = CreateNewWorkbookPartAndGetSheetData(ref spreadsheetDocument, worksheetName);
                     }
@@ -157,10 +157,9 @@ namespace Zeiss.PublicationManager.Data.IO.Excel
             }
             // Create a spreadsheet document by supplying the filepath.
             // By default, AutoSave = true, Editable = true, and Type = xlsx.
-            else if (createable)
+            else if (isCreateable)
             {
-                spreadsheetDocument = SpreadsheetDocument.Create(filepath, SpreadsheetDocumentType.Workbook);
-                sheetData = CreateNewWorkbookPartAndGetSheetData(ref spreadsheetDocument, worksheetName, false);
+                spreadsheetDocument = CreateSpreadsheetDocument(filepath, worksheetName, out sheetData);               
             }
             else
                 throw new FileNotFoundException("Unable to open (or create) file at path: " + filepath);
@@ -168,10 +167,23 @@ namespace Zeiss.PublicationManager.Data.IO.Excel
             return spreadsheetDocument;
         }
 
-        #region CreateWorkbook
-        protected static SheetData CreateNewWorkbookPartAndGetSheetData(ref SpreadsheetDocument spreadsheetDocument, string worksheetName, bool append = true)
+        protected static SpreadsheetDocument CreateSpreadsheetDocument(string filepath, string worksheetName, out SheetData sheetData)
         {
-            if (append)
+            SpreadsheetDocument spreadsheetDocument = SpreadsheetDocument.Create(filepath, SpreadsheetDocumentType.Workbook);
+            sheetData = CreateNewWorkbookPartAndGetSheetData(ref spreadsheetDocument, worksheetName, false);
+
+            return spreadsheetDocument;
+        }
+
+        protected static void SaveSpreadsheetDocument(ref SpreadsheetDocument spreadsheetDocument)
+        {
+            // Save Close the document.
+            spreadsheetDocument.Close();
+        }
+        #region CreateWorkbook
+        protected static SheetData CreateNewWorkbookPartAndGetSheetData(ref SpreadsheetDocument spreadsheetDocument, string worksheetName, bool isAppendable = true)
+        {
+            if (isAppendable)
             {
                 // Add a blank WorksheetPart.
                 WorksheetPart worksheetPart = spreadsheetDocument.WorkbookPart.AddNewPart<WorksheetPart>();
@@ -269,12 +281,6 @@ namespace Zeiss.PublicationManager.Data.IO.Excel
 
             sheetData = null;
             return false;
-        }
-
-        protected static void SaveSpreadsheetDocument(ref SpreadsheetDocument spreadsheetDocument)
-        {
-            // Save Close the document.
-            spreadsheetDocument.Close();
         }
         #endregion
     }
