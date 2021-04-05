@@ -1,7 +1,8 @@
-﻿using Zeiss.PublicationManager.Data.IO.Excel;
-using Zeiss.PublicationManager.Data.DataSet;
+﻿using Zeiss.PublicationManager.Data.DataSet;
 using System;
 using System.IO;
+
+using Zeiss.PublicationManager.Data.DataSet.IO.Write;
 
 namespace Zeiss.PublicationManager.Business.Logic
 {

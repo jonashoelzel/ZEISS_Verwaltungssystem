@@ -11,59 +11,11 @@ using DocumentFormat.OpenXml.Spreadsheet;
 
 using Zeiss.PublicationManager.Data.DataSet;
 
-namespace Zeiss.PublicationManager.Data.IO.Excel
+namespace Zeiss.PublicationManager.Data.Excel.IO.Write
 {  
     public class WriteExcel : ExcelIOBase
     {       
-        #region Insert
-        #region Public_Insert
-        public static void Insert(string filepath, string worksheetName, List<object> columnValues)
-        {
-            List<string> columnLetterIDs = new();
-            for (int i = 1; i <= columnValues.Count; i++)
-                columnLetterIDs.Add(ConvertNumberToCellLetters(i));
-
-            SpreadsheetDocument spreadsheetDocument = OpenSpreadsheetDocument(filepath, worksheetName, out SheetData sheetData);
-            InsertRow(ref spreadsheetDocument, sheetData, columnLetterIDs, columnValues);
-            SaveSpreadsheetDocument(ref spreadsheetDocument);
-        }
-
-        //
-        //public static void Insert(string filepath, string worksheetName, string startColumnID, List<List<object>> columnValues)
-        //{
-        //
-        //}
-
-        //public static void Insert(string filepath, string worksheetName, List<string> columnNames, List<List<object>> columnValues)
-        //{
-
-        //}
-
-        //public static void Insert(string filepath, string worksheetName, string startColumnID, List<string> columnNames, List<List<object>> columnValues)
-        //{
-        //
-        //}
-        //
-
-        #endregion
-
-        #region Private_Insert
-        private static void InsertRow(ref SpreadsheetDocument spreadsheetDocument, SheetData sheetData, List<string> columnLetterIDs, List<object> columnValues)
-        {
-            //Create new row
-            int rowCount = sheetData.Elements<Row>().Count();
-            Row row = new() { RowIndex = UInt32Value.FromUInt32((uint)(++rowCount)) };
-            sheetData.Append(row);
-
-            for (int i = 0; i < columnValues.Count; i++)
-            {
-                //Format XX00
-                string cellReference = columnLetterIDs[i] + rowCount;
-                CreateCell(ref spreadsheetDocument, columnValues[i], row, cellReference);              
-            }
-        }
-        #endregion
-        #endregion
+       
         #region CreateSpreadSheetEntries       
         #region CreateSharedString
         private static SharedStringTablePart GetSharedStringTablePart(ref SpreadsheetDocument spreadsheetDocument)
@@ -81,7 +33,7 @@ namespace Zeiss.PublicationManager.Data.IO.Excel
             return sharedStringTablePart;
         }
 
-        private static void AddSharedString(ref SpreadsheetDocument spreadsheetDocument, ref Cell newCell, string text)
+        protected static void AddSharedString(ref SpreadsheetDocument spreadsheetDocument, ref Cell newCell, string text)
         {
             //If no SharedStringTable is created, we create new one if no exist.
             //We shouldn't create a SharedStringTable if it's not used, because it can corrupt the file
@@ -95,7 +47,7 @@ namespace Zeiss.PublicationManager.Data.IO.Excel
 
         // Given text and a SharedStringTablePart, creates a SharedStringItem with the specified text 
         // and inserts it into the SharedStringTablePart. If the item already exists, returns its index.
-        private static int InsertSharedStringItem(string text, ref SharedStringTablePart sharedStringTablePart)
+        protected static int InsertSharedStringItem(string text, ref SharedStringTablePart sharedStringTablePart)
         {
             // If the part does not contain a SharedStringTable, create one.
             if (sharedStringTablePart.SharedStringTable is null)
@@ -124,7 +76,7 @@ namespace Zeiss.PublicationManager.Data.IO.Excel
         #endregion
 
         #region CreateCell
-        private static void CreateCell(ref SpreadsheetDocument spreadsheetDocument, object cellEntry, Row row, string cellReference)
+        protected static void CreateCell(ref SpreadsheetDocument spreadsheetDocument, object cellEntry, Row row, string cellReference)
         {
             //Get reference cell
             Cell referenceCell = GetReferenceCell(row, cellReference);

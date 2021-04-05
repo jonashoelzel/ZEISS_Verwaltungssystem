@@ -7,9 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorElectron", "BlazorEle
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataSetlIOComponentTest", "..\ExcelIOComponentTest\DataSetlIOComponentTest.csproj", "{013AD4AA-D741-4ED8-8D72-B57A382ADB67}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataSet", "..\DataSet\DataSet.csproj", "{18B2878F-7EFD-404F-8906-25B62FD4C527}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataSet", "..\DataSet\DataSet.csproj", "{18B2878F-7EFD-404F-8906-25B62FD4C527}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelIO", "..\ExcelIO\ExcelIO.csproj", "{8856F983-BA02-450F-8F4E-DBB353004151}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExcelIO", "..\ExcelIO\ExcelIO.csproj", "{8856F983-BA02-450F-8F4E-DBB353004151}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataSetIO", "..\DataSetIO\DataSetIO.csproj", "{B2ECAA65-9AD3-407A-AEC7-4F2B377F6556}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{8856F983-BA02-450F-8F4E-DBB353004151}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8856F983-BA02-450F-8F4E-DBB353004151}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8856F983-BA02-450F-8F4E-DBB353004151}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B2ECAA65-9AD3-407A-AEC7-4F2B377F6556}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B2ECAA65-9AD3-407A-AEC7-4F2B377F6556}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B2ECAA65-9AD3-407A-AEC7-4F2B377F6556}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B2ECAA65-9AD3-407A-AEC7-4F2B377F6556}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
