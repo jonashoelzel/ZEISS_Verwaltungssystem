@@ -4,7 +4,7 @@ using System.IO;
 
 using Zeiss.PublicationManager.Data.DataSet.IO.Write;
 
-namespace Zeiss.PublicationManager.Business.Logic.Write
+namespace Zeiss.PublicationManager.Business.Logic.IO.Write
 {
     public class WriteData
     {
