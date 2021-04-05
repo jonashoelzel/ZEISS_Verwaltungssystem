@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DataSetIO\DataSetIO.csproj" />
     <ProjectReference Include="..\DataSet\DataSet.csproj" />
     <ProjectReference Include="..\ExcelIO\ExcelIO.csproj" />
   </ItemGroup>

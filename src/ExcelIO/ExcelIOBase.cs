@@ -10,7 +10,7 @@ using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
 
 
-namespace Zeiss.PublicationManager.Data.IO.Excel
+namespace Zeiss.PublicationManager.Data.Excel.IO
 {
     public class ExcelIOBase
     {

@@ -10,7 +10,7 @@ using DocumentFormat.OpenXml.Spreadsheet;
 
 //Make sure to set under Debuggen->Debugeigenschaften->Anwendung-Zielframework to .NET 5 !!!
 
-namespace Zeiss.PublicationManager.Data.IO.Excel
+namespace Zeiss.PublicationManager.Data.Excel.IO.Read
 {
     //NOTE: When we use with Console, all members have to be static !!!
     public class ReadExcel : ExcelIOBase

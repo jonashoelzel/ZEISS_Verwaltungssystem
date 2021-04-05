@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using Zeiss.PublicationManager.Data.DataSet;
+using Zeiss.PublicationManager.Data.Excel.IO.Write;
 
-namespace Zeiss.PublicationManager.Data.IO.Excel
+namespace Zeiss.PublicationManager.Data.DataSet.IO
 {
     public class WriteDataSet
     {
@@ -62,7 +62,7 @@ namespace Zeiss.PublicationManager.Data.IO.Excel
                 dataSet.AdditionalInformation
             };
 
-            WriteExcel.Insert(filepath, worksheetName, entry);
+            ExcelInsert.Insert(filepath, worksheetName, entry);
         }
 
         private static string ConvertCoAuthorsToCSV(List<IAuthor> coAuthors)
@@ -130,7 +130,7 @@ namespace Zeiss.PublicationManager.Data.IO.Excel
                     "Zusätzliche Informationen"
                 };
 
-                WriteExcel.Insert(filepath, worksheetName, entry);
+                ExcelInsert.Insert(filepath, worksheetName, entry);
             }
         }
     }

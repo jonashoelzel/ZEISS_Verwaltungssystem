@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-
-using Zeiss.PublicationManager.Data.IO.Excel;
-using Zeiss.PublicationManager.Data.DataSet;
 using System.IO;
 
-namespace Zeiss.PublicationManager.Data.IO.Excel.ComponentTest
+using Zeiss.PublicationManager.Data.DataSet;
+using Zeiss.PublicationManager.Data.DataSet.IO;
+
+
+namespace Zeiss.PublicationManager.Data.Excel.IO.ComponentTest
 {
     class Program
     {
