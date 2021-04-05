@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 using Zeiss.PublicationManager.Data.Excel.IO.Write;
 
-namespace Zeiss.PublicationManager.Data.DataSet.IO
+namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
 {
     public class WriteDataSet
     {

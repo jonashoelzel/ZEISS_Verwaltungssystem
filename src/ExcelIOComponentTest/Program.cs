@@ -4,7 +4,7 @@ using System.Text;
 using System.IO;
 
 using Zeiss.PublicationManager.Data.DataSet;
-using Zeiss.PublicationManager.Data.DataSet.IO;
+using Zeiss.PublicationManager.Data.DataSet.IO.Write;
 
 
 namespace Zeiss.PublicationManager.Data.Excel.IO.ComponentTest

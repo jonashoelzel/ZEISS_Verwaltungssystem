@@ -2,7 +2,7 @@
 using System;
 using System.IO;
 
-using Zeiss.PublicationManager.Data.DataSet.IO;
+using Zeiss.PublicationManager.Data.DataSet.IO.Write;
 
 namespace Zeiss.PublicationManager.Business.Logic
 {
