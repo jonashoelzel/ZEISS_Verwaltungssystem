@@ -14,6 +14,9 @@ Der Zweck dieses Dokuments ist es, die wesentlichen Anforderungen an das System 
 === Gültigkeitsbereich (Scope)
 Dieses Visions-Dokument bezieht sich auf das ZEISS-Verwaltungssystem, das von Team E1 entwickelt wird. Das System wird es ZEISS erlauben, Fachbeiträge einfacher zu systematisieren, zu warten und zu verwalten, als es bisher mit der Excel-Liste war.
 
+=== Definitionen, Akronyme und Abkürzungen
+siehe Glossar: <<Glossar: ZEISS-Verwaltungssystem,Kapitel 4>>
+
 == Positionierung
 === Fachliche Motivation
 Mitarbeiter von ZEISS veröffentlichen hin und wieder Beiträge, aus Informationgründen, für die eigene ZEISS-Artikelseite oder auch auf Anfrage von z.B. Fachzeitschriften. Diese Veröffentlichungen sollen dann so im System verwaltet werden, dass jederzeit abgerufen werden kann, welcher Mitarbeiter beispielweise wieviele Artikel veröffentlicht hat. Die Datenverwaltung erfolgt über eine unübersichtliche Excelliste, in welcher Eingaben zu Fachbeiträgen unvollständig und/oder falsch gemacht wurden. So gibt es zum Beispiel Unterschiede, je nachdem, welche Mitarbeiterin die Daten in die Liste eingetragen hat. Diese Unterschiede sind vor allem durch zu viel Spielraum und keine eindeutigen Eingabvorschriften entstanden: "Vorname Nachname" im Vergleich zu "Nachname, Vorname". Die Excel-Liste ist damit nicht sinnvoll filterbar, geschweige denn sortier- oder wartbar. Unsere Aufgabe ist es jetzt, eine Verbesserte Anwendung (angelehnt an die Excel-Liste) zu entwickeln und zu realisieren, welche extrem einfach zu warten ist, eine eineindeutige Eingabe der verschiedenen Dokumentenattribute fordert und aus diesen eine filterbare Liste erstellt. 
@@ -58,7 +61,7 @@ Beispiel
 |ist unser Produkt|	extrem wartungseinfach, leicht zu verwalten und vorteilhaft beim Filtern von Veröffentlichungen.
 |===
 
-
+////
 Beispiel Produkt:
 |===
 |Für|	Gruppenleiter von ZEISS
@@ -68,6 +71,7 @@ Beispiel Produkt:
 |Im Gegensatz zu	| einer unübersichtlichen Excel-Liste (wie sie aktuell noch existiert)
 |Können mit unserem Produkt| einfach Fachbeiträge hinzugefügt, gefiltert, eingesehen und gewartet werden.
 |===
+////
 
 ==	Stakeholder Beschreibungen
 ===	Zusammenfassung der Stakeholder
@@ -84,19 +88,46 @@ Beispiel Produkt:
 |*Mitarbeiter von ZEISS*|Veröffentlichende, Management, sonstige MA|bestimmen indirekt die Anforderungen an das Projekt|mittel (Anforderungen entspringen dem unerfüllten Bedarf an ein funktionierendes Verwaltungssystem, sind aber fix)|gering, höchstens in der Implementierung|positiv
 |*Gesetzgeber, Datenschutz* |x|prüft Einhaltung des Rechtes & Datenschutzes|gering, wenn von Anfang an ein sensibler Umgag mit DAten gewährleistet ist|gering-mittel|neutral
 |*Hacker* |mögliche Bedrohung für unser System|unrechtmäßige Entwendung von Daten, Veränderung des Systems|schwierig zu definieren; kann gering-hoch sein, je nachdem, welche Anforderungen datenschutztechnisch an die Anwendung gestellt werden|kann extrem hoch werden, bis zum Verlust von sensiblen Daten|negativ
-|*Sponsoren* |Kunde möchte mit dem Programm Sponsoren werben |definieren Kernfunktionalitäten, interessiert an guter Benutzbarkeit und Wartbarkeit, um sich einen Überblick verschaffen zu können|mittel-hoch|mittel, wenn Kernanforderungen unvollständig erfüllt sind|neutral
+// |*Sponsoren* |Kunde möchte mit dem Programm Sponsoren werben |definieren Kernfunktionalitäten, interessiert an guter Benutzbarkeit und Wartbarkeit, um sich einen Überblick verschaffen zu können|mittel-hoch|mittel, wenn Kernanforderungen unvollständig erfüllt sind|neutral
 |===
 
-
 === Benutzerumgebung
-Beschreiben Sie die Arbeitsumgebung des Nutzers. Hier sind einige Anregungen:
+
+*Autor*
+
+* Anzahl wird zukünftig steigen, da mehr selbst veröffentlichen
+* nutzen System, um ihren Fachbeitrag zu listen
+
+*Sales Department*
+
+* Anzahl aus drei festgelegten Mitarbeiterinnen von ZEISS, ändert sich voraussichtlich nicht mehr
+* Verantwortliche haben exklusive Rechte
+** Überprüfung des Eintrags auf Korrektheit
+** finale Aufnahme einer Veröffentlichung in die Liste
+** Bearbeitung einer Veröffentlichung
+
+//*Herausgeber*
+
+//*Gruppenleiter*
+
+//*Reporter*
+
+*Systemplattform:*
+
+_Aktuelle Systemplattform:_
+
+* zentrale Verwaltung erfolgt über Liste in MS Excel
+
+_Zukünftige Systemplattform:_
+
+* Softwaresystem zum Einpflegen und Verwalten neuer Daten und Speicherung der Daten in einer internen Cloud
 
 //Zutreffendes angeben, nicht zutreffendes streichen oder auskommentieren
-. Die Anzahl der Gesamtnutzer (hier: Autoren) steigt an, da laut Herr Lösch immer mehr Kollegen selbst veröffentlichen. Die Verwaltung bleibt in der Hand von den 3 Mitarbeiterinnen des Sales Departments, jedoch können Befugte (wie z.B. Gruppenleiter oder Reporter) auch Veränderungen vornehmen. 
+//. Die Anzahl der Gesamtnutzer (hier: Autoren) steigt an, da laut Herr Lösch immer mehr Kollegen selbst veröffentlichen. Die Verwaltung bleibt in der Hand von den 3 Mitarbeiterinnen des Sales Departments, jedoch können Befugte (wie z.B. Gruppenleiter oder Reporter) auch Veränderungen vornehmen. 
 
-. Die Zeit für eine Veröffentlichung bleibt immer gleich, da dieselben Schritte unternommen werden müssen. Jeder Schritt (Bereich, Name etc eingeben) umfasst dabei nur wenige Sekunden.
+//. Die Zeit für eine Veröffentlichung bleibt immer gleich, da dieselben Schritte unternommen werden müssen. Jeder Schritt (Bereich, Name etc eingeben) umfasst dabei nur wenige Sekunden.
 
-. Aktuell erfolgt die Verwaltung über eine unübersichtliche Liste in MS Excel. Zukünftig soll diese durch z.B. eine Desktop-Anwendung ersetzt werden, welche auf Windows läuft.
+//. Aktuell erfolgt die Verwaltung über eine unübersichtliche Liste in MS Excel. Zukünftig soll diese durch z.B. eine Desktop-Anwendung ersetzt werden, welche auf Windows läuft.
 
 
 //Hier können zudem bei Bedarf Teile des Unternehmensmodells (Prozesse, Organigramme, IT-Landschaft, ...) eingefügt werden, um die beteiligten Aufgaben und Rollen zu skizzieren.
