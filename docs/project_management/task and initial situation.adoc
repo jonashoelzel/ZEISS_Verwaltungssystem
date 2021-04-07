@@ -1,0 +1,19 @@
+include::../_includes/default-attributes.inc.adoc[]
+// Platzhalter für weitere Dokumenten-Attribute
+
+= Aufgabenstellung und Auftraggeber (AG) sowie Ausgangssituation zum Semesterbeginn
+
+Der zum Ende des letzten Semesters ausgelieferte MVP erfüllte die festgelegten Anforderungen bzw. den geforderten Funktionsumfang nicht vollständig. Er wies Mängel in Form von komplett fehlenden Funktionen oder teilweise umgesetzten Funktionen auf, als auch Fehler im Bezug zum UI, welche bereits zum Ende des letzten Semesters behoben wurden. 
+Der Workflow zum Hinzufügen einer Publikation war wie gefordert vorhanden. Die Daten wurden lokal in einer Excel Liste gespeichert. Innerhalb des Workflows war die Positionierung einiger Buttons mangelhaft, sowie deren Skalierung nicht entsprechend angepasst. 
+Die Funktion zur Suche einer Publikation fehlte komplett, lediglich ein Button auf der Landing Page repräsentierte sie. Ebenso war damit das Filtern nach Publikationen nicht im MVP enthalten.
+
+Die Dokumentation enthielt einige inhaltliche Lücken, Widersprüche und fehlende Begründungen zu getroffenen Entscheidungen. Hier bedarf es zu Semesterbeginn während der Construction-Phase einer ausgiebigen Korrektur, um eine gute Grundlage für die zukünftige Projektarbeit zu festigen.
+Überwiegend soll dies in einer Überarbeitung der Use-Cases, einer Ausformulierung zu getroffenen technischen Entscheidungen im Architecture Notebook und einer Berichtigung der Anforderungen und Test-Cases stattfinden (Verweis auf Feedbackgespräch vom 25.03.2021 mit Prof. Anke).
+
+Des Weiteren bedarf es einer kleineren Neustrukturierung innerhalb des Teams, aufgrund des Wegfalls von Paul und Nina im Projektmanagement. Ein erster Lösungsansatz wurde im Meeting vom 25.03.2021 mit Herrn Loesch besprochen (Verweis auf Kundengesprächsprotokoll vom 25.03.2021).
+
+Gleichzeitig soll bereits an der Erstellung des Projektberichts gearbeitet werden. Im Fokus steht zunächst die Planung, welche folgende Dokumente beinhaltet: 
+
+* Aufgabenstellung und Auftraggeber (AG) sowie Ausgangssituation zum Semesterbeginn (diese Dokument)
+* Projektorganisation (Team, Rollen, Kommunikation im Team und zum Auftraggeber, eingesetzte Tools in der Projektarbeit)
+* eingesetzte Techniken und Praktiken im Projekt
