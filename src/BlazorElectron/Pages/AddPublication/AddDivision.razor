@@ -1,5 +1,5 @@
 ﻿@page "/addDivision"
-@using BlazorElectron.Data.PublicationDataSet
+@using Zeiss.PublicationManager.Data.DataSet.Model
 
 @inject NavigationManager NavigationManager
 @inject PublicationDataSetModel Publication
@@ -9,22 +9,23 @@
 
 @if (ShowPopup)
 {
-<div class="modal" tabindex="1" style="display: block; top: 20%;" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content" >
-            <div class="modal-header">
-                <h3 class="modal-title">Geschäftsbereich hinzufügen</h3>
-            </div>
-            <div class="modal-body" >
-                <h5>Fügen Sie einen neuen Geschäftsbereich hinzu.</h5><br/>
-                <input class="form-control" type="text"/><br/>
-                <button type="submit" class="add"
-                        @onclick"SaveDivision">Hinzufügen
-                </button>
+    <div class="modal" tabindex="1" style="display: block; top: 20%;" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Geschäftsbereich hinzufügen</h3>
+                </div>
+                <div class="modal-body">
+                    <h5>Fügen Sie einen neuen Geschäftsbereich hinzu.</h5><br />
+                    <input class="form-control" type="text" /><br />
+                    <button type="submit" class="add"
+                            @onclick"SaveDivision">
+                        Hinzufügen
+                    </button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 }
 
 <EditForm Model="Publication" OnValidSubmit="NavigateToNextScreen">

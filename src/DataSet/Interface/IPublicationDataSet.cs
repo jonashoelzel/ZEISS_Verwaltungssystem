@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace DataSet
+namespace Zeiss.PublicationManager.Data.DataSet
 {
     public interface IPublicationDataSet : IDataObject
     {

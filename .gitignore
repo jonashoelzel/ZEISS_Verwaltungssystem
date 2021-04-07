@@ -33,7 +33,9 @@ bld/
 TestResult.xml
 nunit-*.xml
 
-
-src/BlazorElectron/ExcelDataBase.xlsx
+# Excel-Dateien
+src/BlazorElectron/*.xlsx
+src/ExcelIOComponentTest/*.xlsx
+src/**/bin/**/*.xlsx
 
 *.zip

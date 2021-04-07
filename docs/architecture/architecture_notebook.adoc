@@ -19,13 +19,13 @@ Maßgeblich verantwortlich dafür ist die unzureichende Aufbereitung der Daten, 
 
 Zielsetzung ist die Prozessoptimierung und Erweiterung der Funktionalität mittels bestehender Technologien des Unternehmens. Charakterisiert durch die Anforderung eines geringen Einrichtungsbedarfs, die Voraussetzung der einfachen Wartbarkeit des Systems und eine wesentliche Unterstützung des Veröffentlichungsprozesses. 
 
-Damit eine Excel-Datei weiterhin als Datenspeicherungsoberfläche benutzt werden kann, ist eine präzisere Einteilung der Datensätze nötigt. Folglich kann die Datei weiterhin als Datenbank fungieren.  
+Damit eine Excel-Datei weiterhin zur Datenspeicherung genutzt werden kann, ist eine präzisere Einteilung der Datensätze nötigt. Folglich kann die Datei weiterhin als Datenbank fungieren.  
 
 Entscheidend ist primär das Hinzufügen einer zusätzlichen Schnittstelle zwischen User und Datenbank. Die Anwendung kann über ein neues Programm, welche diese darbietet, realisiert werden. 
 
-Das neue System setzt sich demgemäß aus einer überarbeiteten Excel-Datei und einem Anwendungsprogramm zusammen.  
+Das neue System setzt sich demgemäß aus einer überarbeiteten Excel-Datei und einem Anwendungsprogramm zusammen, welches auf die Daten der Excel-Datei zugreift und diese dem Nutzer übersichtlich präsentriet.
 
-Realisiert als Desktop-Anwendung, auf Basis einer Webanwendung, soll ein einfacher Aufruf der Anwendung gewährleistet werden.   
+Realisiert als Electron-Desktop-Anwendung, auf Basis einer Webanwendung, soll ein einfacher Aufruf der Anwendung gewährleistet werden.   
 
 Technologisch betrachtet ist zudem eine gewisse Modernität gewünscht. Die Benutzung von NET 5.0 gilt damit als ein weiteres Ziel der neuen Anwendung.  
 
@@ -33,12 +33,12 @@ Die Mindestanzahl der Parallelnutzer ist durch die nicht eindeutige prozentuale 
 
 Das System benötigt User-Gruppen, welche durch die IT-Administration der Zeiss Digital Innovation GmbH erweitert und geändert werden können, damit Einschränkungen der Nutzung einfach zu realisieren sind. Die Zugriffsrechte sollten zweckmäßig über ein Active Directory verwaltet werden.  
 
-Der Zugriff auf Informationen bzw. Änderungen und Neuerungen von Daten sollte für End-Benutzer nur über die neue Software möglich sein. Demnach wird der Anwender über das Programm angeleitet - ein einfaches Handling ist gewährleistet.  
+Der Zugriff auf Informationen bzw. Änderungen und Neuerungen von Daten sollte für End-Benutzer nur über die neue Software und nicht mehr direkt in Excel möglich sein. Demnach wird der Anwender über das Programm angeleitet - ein einfaches Handling ist gewährleistet.
 Die ausreichende Anleitung ist angesichts Navigationsleiste und bekannten Icons sicherzustellen. 
 
-Die Umsetzung einer mehrseitige Benutzeroberfläche stellt dem Anwender eine strukturierte Benutzeroberfläche bereit. 
+Die Umsetzung einer mehrseitigen Benutzeroberfläche stellt dem Anwender eine strukturierte Benutzeroberfläche bereit. 
 
-Maßgeblich ist die Durchführung von Kontrollen bezüglich Aktionen der User.  Es ist notwendig Eingabefehler mittels Fehlermeldungen abzufangen und entsprechenden Mitteilungen zu übermitteln.  
+Maßgeblich ist die Durchführung von Kontrollen bezüglich Aktionen der User. Es ist notwendig Eingabefehler mittels Fehlermeldungen abzufangen und entsprechenden Mitteilungen zu übermitteln.  
 
 Hinzuzufügende Features wie Filterfunktionen, Sortierfunktionen, Overviewmöglichkeiten erweitern die Funktionalität der Anwendung und tragen infolgedessen erheblich zu einer Optimierung der Handhabung bei.    
 
@@ -68,7 +68,7 @@ Die vorliegend beschriebene Anwendung soll ferner weiter ausgebaut werden. Das P
 == Architektur-relevante Anforderungen
 *Funktionalität*  
 
-NFAF-1	Zugriff auf Excel-Datei 
+NFAF-1	Zugriff auf Excel-Datei
 
 NFAF-1	Veröffentlichungsdaten persistent speichern  
 
@@ -97,25 +97,26 @@ a|
     -> Aufwand wird reduziert 
 * Bekannte Technologie +
     -> einfache Wartbarkeit
+* bei misslingen den Projektes kann der Kunde wieder auf Excel umsteigen ohne dass ein aufwendiger export notwendig ist +
 
 |*2. Blazor als Framework*
 a| 
 * Weborientierte Anwendung + 
-! BEDINGUNG VON KUNDE! 
+ 
 * Single-Page-Anwendung +
-! BEDINGUNG VON KUNDE!  
+  
 * WebAssemply + 
     -> keine JavaScript Kenntnisse nötig, nicht vorhandene Kenntnisse im Team +  
     -> Zeitersparnis  
 * . NET Bibliothek +
     -> Verringerung des Programmieraufwandes
-
-|*3. Elektron als weiteres Framework* 
-a|
-* Realisierung einer Desktop Anwendung + 
-! BEDINGUNG VON KUNDE! 
 * CSS und HTML Kenntnisse im Team vorhanden + 
     -> Zeitersparnis
+
+|*3. Elektron als wrapper für Blazor* 
+a|
+* Realisierung einer Desktop Anwendung + 
+ 
 
 |*4. Three-Tier-Architektur* 
 a| 
@@ -125,7 +126,7 @@ a|
 |*5. OPEN XML* 
 a| 
 * kompatibel zu .NET Core +
-! BEDINGUNG VON KUNDE! + 
+ + 
 ! WIRD VON BLAZOR VORAUSGESETZT! 
 |===
 
