@@ -66,7 +66,7 @@ Das Hinzufügen von Veröffentlichungen ist auf einem Guten weg. Die UI Kommt vo
 //Führen Sie weitere Themen auf, für die eine Bewertung durchgeführt wurde. Beispiele sind Finanzen, Zeitabweichungen oder Feedback von Stakeholdern, die nicht bereits an anderer Stelle dokumentiert wurden.
 Jean-Pierre hat immer wieder Internetprobleme, Warum er nicht Vollständig mitarbeiten konnte
 
-== Issues der Iteration
+== Issues
 Stand: 30.03.2021 16:00
 [%header]
 |===
@@ -110,14 +110,30 @@ Abgeschlossen in Iteration 4:
 [%header]
 |===
 | #Nr. | Issue | Stand | geschätzter Arbeitsaufwand | Verantwortlicher
-| #15 | risk assesment | Done | 1h | Paul
+| #15 | Risk assesment | Done | 1h | Paul
 | #36 | I want to be forced to input mandatory info | Done| 1h | -
-| #38 | Improve Code | Review | 1h | -
-| #39 | Improve Code | Review | 1h | -
-| #43 | Improve Code | Review | 1h | -
-| #44 | Improve Code | Review | 1h | -
-| #42 | Improve Code | Review | 1h | -
-| #46 | Improve Code | Review | 1h | -
+| #38 | Add additional Descirption to a publication| Review | 1h | -
+| #39 | Add a Division to a publication | Review | 1h | -
+| #43 | Add a title to a publication | Review | 1h | -
+| #44 | Add a date | Review | 1h | -
+| #42 | Add the authors name | Review | 1h | -
+| #46 | Add Publisher to a publication | Review | 1h | -
 | #77 | Add infomration | Done | 1h | Jonas, Peter, Jean-Pierre, Vanessa, Stefan, Paul, Oliver
 
+|===
+
+== Tests
+|===
+| Issue #Nr. | Inhalt | Tests | Ergebnins |
+| Issue #Nr. | Inhalt | Tests | Ergebnins |
+| Issue #Nr. | Inhalt | Tests | Ergebnins |
+| Issue #Nr. | Inhalt | Tests | Ergebnins |
+| Issue #Nr. | Inhalt | Tests | Ergebnins |
+| Issue #Nr. | Inhalt | Tests | Ergebnins |
+| Issue #Nr. | Inhalt | Tests | Ergebnins |
+| Issue #Nr. | Inhalt | Tests | Ergebnins |
+| Issue #Nr. | Inhalt | Tests | Ergebnins |
+| Issue #Nr. | Inhalt | Tests | Ergebnins |
+| Issue #Nr. | Inhalt | Tests | Ergebnins |
+| Issue #Nr. | Inhalt | Tests | Ergebnins |
 |===
