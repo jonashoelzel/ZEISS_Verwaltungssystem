@@ -1,0 +1,37 @@
+= Besprechungsprotokoll Gruppe E1
+
+*Besprechungsdatum:*
+
+Phase:
+
+Iterationsnummer:
+
+[cols=",,,",options="header",]
+|===
+|Teilnehmer |Verteilung | |
+|Anwesende | |*an* |
+|Entschuldigt | |*Kopie an* |
+|===
+
+[cols=",",options="header",]
+|===
+|Besprechungsthemen |
+|TOP |*Thema*
+|1 |
+|2 |
+|… |
+| |
+| |
+|===
+
+[cols=",,,",options="header",]
+|===
+|*Protokoll* | | |
+|*Kennzeichnung: Entscheidung (E), Information (I), Maßnahme (M)* | | |
+|*Kennung* |*Thema* |*Verantwortlicher* |*Zieldatum*
+| | | |
+| | | |
+| | | |
+| | | |
+| | | |
+|===

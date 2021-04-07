@@ -70,32 +70,54 @@ Jean-Pierre hat immer wieder Internetprobleme, Warum er nicht Vollständig mitar
 Stand: 30.03.2021 16:00
 [%header]
 |===
-| #Nr. | Issue | Stand | geschätzter Arbeitsaufwand 
-| #72 | Add Mandatory | To Do | 1h
-| #88 | Projektorganisation, Tools | To Do | 1h
-| #53 | Be stopped of mandatory input is missing | To Do | 1h
-| #49 | Get a success message when i added a publication | To Do | 1h
-| #56 | Add new divisions | To Do | 1h
-| #75 | Sort and filter entries | To Do | 1h
-| #68 | sort the list by name alphabetically | To Do | 1h
-| #57 | Get a success message when i edited a publication | To Do | 1h
-| #55 | add new tags to the list | To Do | 1h
-| #51 | Choose a publication from a list | To Do | 1h
-| #52 | Edit entry | To Do | 1h
-| #76 | Search entries | To Do | 1h
-| #65 | Filter entries by tags | To Do | 1h
-| #67 | Filter entries by kind | To Do | 1h
-| #54 | Delete entries | To Do | 1h
-| #69 |Sort by date | To Do | 1h
-| #96 | Anforderungen Überarbeiten | To Do Iteration | 1h
-| #92 | Iterationsplan für Iteration 5 | To Do Iteration | 1h
-| #99 | Durchführung Punkt 1 | To Do Iteration | 1h
-| #89 | Eingesetzte Techniken und Praktiken im Projekt | To Do Iteration | 1h
-| #93 | Risk List für Construction Phase | To Do Iteration | 1h
-| #94 | Backlog aufräumen | In Progress | 1h
-| #98 | Test existing Code | In Progress | 1h
-| #87 | Aufgabenssituation zum Semesterbeginn | In Progress | 1h
-| #91 | Iterartionsplan in Dok + Neues Dok | In Progress | 2h
-| #95 | Improve Code | Review | 1h
-| #90 | Fix UI | Done | 1h
+| #Nr. | Issue | Stand | geschätzter Arbeitsaufwand | Verantwortlicher
+| #49 | Get a success message when i added a publication | To Do | 1h | Oliver
+| #51 | Choose a publication from a list | To Do | 1h | Vanessa, Jean-Pierre, Stefan, Oliver
+| #52 | Edit entry | To Do | 1h | -
+| #53 | Be stopped of mandatory input is missing | To Do | 1h | -
+| #54 | Delete entries | To Do | 1h | Vanessa, Jean-Pierre, Stefan, Oliver
+| #55 | add new tags to the list | To Do | 1h | -
+| #56 | Add new divisions | To Do | 1h | -
+| #57 | Get a success message when i edited a publication | To Do | 1h | -
+| #65 | Filter entries by tags | To Do | 1h | -
+| #67 | Filter entries by kind | To Do | 1h | -
+| #68 | sort the list by name alphabetically | To Do | 1h | -
+| #69 |Sort by date | To Do | 1h | -
+| #72 | Add Mandatory | To Do | 1h | -
+| #75 | Sort and filter entries | To Do | 1h | Jonas, Peter, Jean-Pierre, Oliver
+| #76 | Search entries | To Do | 1h | Jonas, Peter, Jean-Pierre, Oliver
+|===
+
+Neues aus Iteration 5:
+[%header]
+|===
+| #Nr. | Issue | Stand | geschätzter Arbeitsaufwand | Verantwortlicher
+| #88 | Projektorganisation, Tools | To Do | 1h | Nina, Vanessa
+| #89 | Eingesetzte Techniken und Praktiken im Projekt | To Do Iteration | 1h | Vanessa
+| #87 | Aufgabenssituation zum Semesterbeginn | In Progress | 1h | Oliver
+| #91 | Iterartionsplan in Dok + Neues Dok | In Progress | 2h | Jean-Pierre
+| #90 | Fix UI | Done | 1h | Oliver
+| #92 | Iterationsplan für Iteration 5 | To Do Iteration | 1h | Vanessa
+| #93 | Risk List für Construction Phase | To Do Iteration | 1h | Jonas
+| #94 | Backlog aufräumen | In Progress | 1h | Nina
+| #95 | Improve Code | Review | 1h | -
+| #96 | Anforderungen Überarbeiten | To Do Iteration | 1h | Jonas, Nina, Peter, Jean-Pierre, Stefan, Oliver
+| #98 | Test existing Code | In Progress | 1h | Jonas
+| #99 | Durchführung Punkt 1 | To Do Iteration | 1h | Peter
+|===
+
+Abgeschlossen in Iteration 4:
+[%header]
+|===
+| #Nr. | Issue | Stand | geschätzter Arbeitsaufwand | Verantwortlicher
+| #15 | risk assesment | Done | 1h | Paul
+| #36 | I want to be forced to input mandatory info | Done| 1h | -
+| #38 | Improve Code | Review | 1h | -
+| #39 | Improve Code | Review | 1h | -
+| #43 | Improve Code | Review | 1h | -
+| #44 | Improve Code | Review | 1h | -
+| #42 | Improve Code | Review | 1h | -
+| #46 | Improve Code | Review | 1h | -
+| #77 | Add infomration | Done | 1h | Jonas, Peter, Jean-Pierre, Vanessa, Stefan, Paul, Oliver
+
 |===
