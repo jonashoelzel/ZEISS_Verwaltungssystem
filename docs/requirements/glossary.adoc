@@ -13,13 +13,23 @@ Zur Verkürzung und Vereinfachung der Schreibweise wurde (stets) die maskuline F
 [%header]
 |===
 |Begriff|Definition und Erläuterung|	Synonyme
+|Fachbeitrag||x
+|Veröffentlichung| Ein Fachbeitrag wurde vom Herausgeber publiziert|x
+|Autor| Sind Mitarbeiter von ZEISS und zugleich Urheber eines Fachbeitrags|x
+|Sales Department| Drei festgelegte Mitarbeiterinnen von ZEISS verantwortlich für Verwaltung des zukünftigen Software-Systems |x
+|Herausgeber|Entspricht einer öffentlichen Plattform / einem Medium, auf / von welcher der vom Autor erstellte Fachbeitrag inhaltlich und in Gänze veröffentlicht wurde|x
+|Workflow|Arbeitsverlauf zur Abarbeitung der Eingabe von Pflichtdaten oder Optionaldaten|x
+|Dokumenttitel|Entspricht dem Titel, unter welchem die Veröffentlichung publiziert wird|x
+|Datum der Veröffentlichung|Datum, an dem der Herausgeber den Fachbeitrag publizierte|x
+|Geschäftsbereich des Autors|Arbeitsbereich, in welchem der Autor bei ZEISS tätig ist|x
+|Art der Veröffentlichung|Informationsträger zur Verbreitung eines Fachbeitrags|x
+|Beschreibung|Zusätzliche Information zur Veröffentlichung|x
+|Tags|Auszeichnung eines Fachbeitrags mit zusätzlichen Informationen|Etikett, Schlagwort
 |BLAZOR|Open-Source-Webframework, welches für dieses Programm genutzt wird|x
 |.NET|(Open Source) Framework von Microsoft, welches für dieses Programm genutzt wird|x
 |KANBAN|Methode der Softwareentwicklung, bei der der aktuelle Stand in verschiedenen Spalten (open, doing und done) übersichtlich erkennbar ist|Agiles PM
 |Spreadsheet|Dokument, das aus einer Tabelle besteht|Worksheet/Excel-Tabelle
 |Workbook|Datei, die eine oder mehrere Dokumente zur Tabellenkalkulation enthält|Excel-Datei
-
-
 |===
 
 
@@ -31,7 +41,7 @@ Zur Verkürzung und Vereinfachung der Schreibweise wurde (stets) die maskuline F
 |UI|User Interface|Benutzeroberflächen oder Benutzerschnittstellen, der die Art und Weise beschreibt, mit der ein Anwender mit dem Programm in Kontakt tritt
 |PL|Presentation Layer/Logic|Layer für UI-Code/Logik (Validierung von Benutzereingaben und anzeigen von bestimmten Ergebnissen)
 |BL|Business Layer/Logic|Layer für Business-Code/Logik (Datenvalidierung und -Konvertierung, sowie Code der Softwarefunktionalitäten)
-|IL|Implementation Layer/Logic|Layer für Datenverarbeitung und externe Komponenten (Alternativer Begriff: Business Layer) (Lesen/Schreiben von Daten und Verwaltung externer Komponenten)
+// |IL|Implementation Layer/Logic|Layer für Datenverarbeitung und externe Komponenten (Alternativer Begriff: Business Layer) (Lesen/Schreiben von Daten und Verwaltung externer Komponenten)
 |DL|Data Layer/Logic|Layer für Datenverarbeitung und externe Komponenten (Lesen/Schreiben von Daten und Verwaltung externer Komponenten)
 |--|Layer|Sammlung von zusammengehörigen Komponenten, die eine Unabhängigkeit bestimmter Funktionalitäten gewährleistet. Ein Layer trennt verschiedene Logiken
 |--|Logic|Sammlung zusammengehöriger Komponenten, die eine bestimmte Aufgaben wie UI, Datenverwaltung, [...] erledigen. Die Logic wird in verschiedene Layer eingeteilt
@@ -45,6 +55,8 @@ Zur Verkürzung und Vereinfachung der Schreibweise wurde (stets) die maskuline F
 |===
 |Bezeichnung|	Definition |	Format | Gültigkeitsregeln | Aliase
 |Anmeldedaten|Zusammensetzung von Benutzername und Passwort.|String|Emailadresse muss @-Zeichen und Punkt enthalten.|Login
+|Pflichtdaten|Dokumenttitel, Vorname und Nachname des Autors, Datum der Veröffentlichung, Geschäftsbereich des Autors, Art der Veröffentlichung|mehrere: String, Date||Pflichtangaben
+|Optionaldaten|Name des Herausgebers, Beschreibung, Tags|String||optionale Angaben
 |===
 
 == Tabellen-Spaltenbezeichnungen
