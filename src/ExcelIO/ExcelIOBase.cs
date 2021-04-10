@@ -137,6 +137,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
         #endregion
 
         #region ExcelIO
+        #region Write
         protected static SpreadsheetDocument OpenSpreadsheetDocument(string filepath, string worksheetName, out SheetData sheetData, bool isCreateable = true, bool isEditable = true)
         {
             SpreadsheetDocument spreadsheetDocument;
@@ -254,7 +255,10 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
                         })
             };
         }
+        #endregion
+        #endregion
 
+        #region Read
         protected static uint GetUniqueSheetID(ref Sheets sheets)
         {
             // Get a unique ID for the new worksheet.
@@ -266,7 +270,6 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
 
             return sheetId;
         }
-        #endregion
 
         protected static bool OpenWorksheet(ref SpreadsheetDocument spreadsheetDocument, string worksheetName, out SheetData sheetData)
         {        
@@ -282,6 +285,59 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
             sheetData = null;
             return false;
         }
+
+        protected static object ReadCell(Cell cell, SharedStringTable sharedStringTable)
+        {
+            //Make sure that the Excel has a SharedStringTable, the Cell has a DataType and is a String
+            if (cell.DataType is not null && sharedStringTable is not null && cell.DataType == CellValues.SharedString)
+            {
+                var cellValue = cell.InnerText;
+                //Return String
+                return (sharedStringTable.ElementAt(Int32.Parse(cellValue)).InnerText);
+            }
+            //DataType is null
+            else
+            {
+                //Check if StyleIndex is a Date Format
+                int styleIndex = -1;
+                if (Int32.TryParse(cell.StyleIndex?.InnerText, out styleIndex))
+                {
+                    //Standard date format
+                    if (styleIndex >= 12 && styleIndex <= 22
+                        //Formatted date format
+                        || styleIndex >= 165 && styleIndex <= 180
+                        //Number formats that can be interpreted as a number
+                        || styleIndex >= 1 && styleIndex <= 5)
+                    {
+                        double dateTimeDouble;
+                        if (double.TryParse(cell.CellValue.Text, out dateTimeDouble))
+                        {
+                            //Return Date
+                            return (DateTime.FromOADate(dateTimeDouble).ToString("dd/MM/yyyy"));
+                        }
+                    }
+                }
+
+                //Default is number (if StyleIndex is null or any other StyleIndex)
+                return Convert.ToDecimal(cell.CellValue.Text);
+            }
+        }
+
+        protected static List<string> GetColumnIDsOfColumnNames(List<string> columnNames)
+        {
+
+        }
+
+        protected static Row SearchRow(ref SpreadsheetDocument spreadsheetDocument, List<object> columnConditions)
+        {
+
+        }
+
+        //protected static Row SearchRow(ref SpreadsheetDocument spreadsheetDocument, List<string> columnIDs, List<object> columnConditions)
+        //{
+
+        //}
+        #endregion
         #endregion
     }
 }

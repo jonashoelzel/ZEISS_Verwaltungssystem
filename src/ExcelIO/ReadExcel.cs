@@ -16,67 +16,93 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Read
     public class ReadExcel : ExcelIOBase
     {
         //We using DOM instead of SAX for easier reading management
-        public static List<List<string>> OpenExcelDOM(string filepath)
+        //public static List<List<string>> OpenExcelDOM(string filepath)
+        //{
+        //    // Open the document for editing.
+        //    using (SpreadsheetDocument spreadsheetDocument =
+        //        SpreadsheetDocument.Open(filepath, true))
+        //    {
+        //        //Open Excel
+        //        WorkbookPart workbookPart = spreadsheetDocument.WorkbookPart;
+        //        WorksheetPart worksheetPart = workbookPart.WorksheetParts.First();
+        //        SheetData sheetData = worksheetPart.Worksheet.Elements<SheetData>().First();
+
+        //        //Try to read SharedStringTable if it exists. If not, make sure to do NOT try to read from it
+        //        SharedStringTable sharedStringTable = spreadsheetDocument?.WorkbookPart?.SharedStringTablePart?.SharedStringTable;
+
+        //        List<List<string>> entries = new List<List<string>>();
+
+        //        foreach (Row row in sheetData.Elements<Row>())
+        //        {
+        //            List<string> entry = new List<string>();
+
+        //            foreach (Cell cell in row.Elements<Cell>())
+        //            {
+        //                //Make sure that the Excel has a SharedStringTable, the Cell has a DataType and is a String
+        //                if (cell.DataType is not null && sharedStringTable is not null && cell.DataType == CellValues.SharedString)
+        //                {
+        //                    var cellValue = cell.InnerText;
+        //                    entry.Add(sharedStringTable.ElementAt(Int32.Parse(cellValue)).InnerText);
+        //                }
+        //                //DataType is null
+        //                else
+        //                {
+        //                    //Check if StyleIndex is a Date Format
+        //                    int styleIndex = -1;
+        //                    if (Int32.TryParse(cell.StyleIndex?.InnerText, out styleIndex))
+        //                    {
+        //                        //Standard date format
+        //                        if (styleIndex >= 12 && styleIndex <= 22 
+        //                            //Formatted date format
+        //                            || styleIndex >= 165 && styleIndex <= 180
+        //                            //Number formats that can be interpreted as a number
+        //                            || styleIndex >= 1 && styleIndex <= 5)
+        //                        {
+        //                            double dateTimeDouble;
+        //                            if (double.TryParse(cell.CellValue.Text, out dateTimeDouble))
+        //                            {
+        //                                entry.Add(DateTime.FromOADate(dateTimeDouble).ToString("dd/MM/yyyy"));
+        //                            }
+        //                        }
+        //                    }
+        //                    //Default is number (if StyleIndex is null or any other StyleIndex
+        //                    else
+        //                        entry.Add(cell.CellValue.Text);
+        //                }                                            
+        //            }
+
+        //            entries.Add(entry);
+        //        }
+
+        //        return entries;
+        //    }
+        //}
+
+        public static List<List<object>> ReadSpreadsheet(string filepath, string worksheetName)
         {
-            // Open the document for editing.
-            using (SpreadsheetDocument spreadsheetDocument =
-                SpreadsheetDocument.Open(filepath, true))
+            SpreadsheetDocument spreadsheetDocument = OpenSpreadsheetDocument(filepath, worksheetName, out SheetData sheetData, false, false);
+
+            //Try to read SharedStringTable if it exists. If not, make sure to do NOT try to read from it
+            SharedStringTable sharedStringTable = spreadsheetDocument?.WorkbookPart?.SharedStringTablePart?.SharedStringTable;
+
+            List<List<object>> rowsList = new List<List<object>>();
+
+            foreach (Row row in sheetData.Elements<Row>())
             {
-                //Open Excel
-                WorkbookPart workbookPart = spreadsheetDocument.WorkbookPart;
-                WorksheetPart worksheetPart = workbookPart.WorksheetParts.First();
-                SheetData sheetData = worksheetPart.Worksheet.Elements<SheetData>().First();
+                List<object> rowList = new List<object>();
 
-                //Try to read SharedStringTable if it exists. If not, make sure to do NOT try to read from it
-                SharedStringTable sharedStringTable = spreadsheetDocument?.WorkbookPart?.SharedStringTablePart?.SharedStringTable;
-
-
-                List<List<string>> entries = new List<List<string>>();
-
-                foreach (Row row in sheetData.Elements<Row>())
+                foreach (Cell cell in row.Elements<Cell>())
                 {
-                    List<string> entry = new List<string>();
-
-                    foreach (Cell cell in row.Elements<Cell>())
-                    {
-                        //Make sure that the Excel has a SharedStringTable, the Cell has a DataType and is a String
-                        if (cell.DataType is not null && sharedStringTable is not null && cell.DataType == CellValues.SharedString)
-                        {
-                            var cellValue = cell.InnerText;
-                            entry.Add(sharedStringTable.ElementAt(Int32.Parse(cellValue)).InnerText);
-                        }
-                        //DataType is null
-                        else
-                        {
-                            //Check if StyleIndex is a Date Format
-                            int styleIndex = -1;
-                            if (Int32.TryParse(cell.StyleIndex?.InnerText, out styleIndex))
-                            {
-                                //Standard date format
-                                if (styleIndex >= 12 && styleIndex <= 22 
-                                    //Formatted date format
-                                    || styleIndex >= 165 && styleIndex <= 180
-                                    //Number formats that can be interpreted as a number
-                                    || styleIndex >= 1 && styleIndex <= 5)
-                                {
-                                    double dateTimeDouble;
-                                    if (double.TryParse(cell.CellValue.Text, out dateTimeDouble))
-                                    {
-                                        entry.Add(DateTime.FromOADate(dateTimeDouble).ToString("dd/MM/yyyy"));
-                                    }
-                                }
-                            }
-                            //Default is number (if StyleIndex is null or any other StyleIndex
-                            else
-                                entry.Add(cell.CellValue.Text);
-                        }                                            
-                    }
-
-                    entries.Add(entry);
+                    rowList.Add(ReadCell(cell, sharedStringTable));
                 }
 
-                return entries;
+                rowsList.Add(rowList);
             }
-        }
+
+            //This will only close the document to release resources
+            SaveSpreadsheetDocument(ref spreadsheetDocument);
+
+            return rowsList;
+        }        
     }
 }
