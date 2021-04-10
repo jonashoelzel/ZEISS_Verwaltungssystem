@@ -313,7 +313,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
                         if (double.TryParse(cell.CellValue.Text, out dateTimeDouble))
                         {
                             //Return Date
-                            return (DateTime.FromOADate(dateTimeDouble).ToString("dd/MM/yyyy"));
+                            return (DateTime.FromOADate(dateTimeDouble));
                         }
                     }
                 }
@@ -323,14 +323,78 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
             }
         }
 
+
+
         protected static List<string> GetColumnIDsOfColumnNames(List<string> columnNames)
         {
 
         }
 
-        protected static Row SearchRow(ref SpreadsheetDocument spreadsheetDocument, List<object> columnConditions)
+        protected static Row SearchRow(ref SpreadsheetDocument spreadsheetDocument, SheetData sheetData, List<object> columnConditions)
         {
+            //Try to read SharedStringTable if it exists. If not, make sure to do NOT try to read from it
+            SharedStringTable sharedStringTable = spreadsheetDocument?.WorkbookPart?.SharedStringTablePart?.SharedStringTable;
 
+            foreach (Row row in sheetData.Elements<Row>())
+            {
+                if (CompareRows(row, sharedStringTable, columnConditions))
+                    return row;
+            }
+
+            //Row not found
+            return null;
+        }
+
+        protected static bool CompareRows(Row row, SharedStringTable sharedStringTable, List<object> columnConditions)
+        {
+            //Create 'copy'
+            List<object> leftConditions = new(columnConditions);
+            foreach (Cell cell in row.Elements<Cell>())
+            {
+                object entry = ReadCell(cell, sharedStringTable);
+
+                foreach (var condition in leftConditions)
+                {
+                    if (CompareObjects(entry, condition))
+                    {
+                        leftConditions.Remove(condition);
+                        break;
+                    }                    
+                }
+            }
+
+            //If an condition is left that means that not all conditions were matched
+            return !(leftConditions.Any());
+        }
+
+        protected static bool CompareObjects(object a, object b)
+        {
+            //Compare datatypes
+            if (a.GetType() == b.GetType())
+            {
+                switch (a)
+                {
+                    case string objstr:
+                        return objstr.Equals(b);
+
+                    case DateTime objdate:
+                        return objdate.Equals(b);
+
+                    case bool objbool:
+                        return objbool.Equals(b);
+
+                    default:
+                        if (a is not null)
+                        {
+                            return (Convert.ToDecimal(a) == Convert.ToDecimal(b));
+                        }
+                        //Both objects are null
+                        else
+                            return true;
+                }
+            }
+
+            return false;
         }
 
         //protected static Row SearchRow(ref SpreadsheetDocument spreadsheetDocument, List<string> columnIDs, List<object> columnConditions)
