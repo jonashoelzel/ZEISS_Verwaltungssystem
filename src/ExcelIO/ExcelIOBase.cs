@@ -299,8 +299,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
             else
             {
                 //Check if StyleIndex is a Date Format
-                int styleIndex = -1;
-                if (Int32.TryParse(cell.StyleIndex?.InnerText, out styleIndex))
+                if (Int32.TryParse(cell.StyleIndex?.InnerText, out int styleIndex))
                 {
                     //Standard date format
                     if (styleIndex >= 12 && styleIndex <= 22
@@ -309,8 +308,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
                         //Number formats that can be interpreted as a number
                         || styleIndex >= 1 && styleIndex <= 5)
                     {
-                        double dateTimeDouble;
-                        if (double.TryParse(cell.CellValue.Text, out dateTimeDouble))
+                        if (double.TryParse(cell.CellValue.Text, out double dateTimeDouble))
                         {
                             //Return Date
                             return (DateTime.FromOADate(dateTimeDouble));
@@ -324,10 +322,34 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
         }
 
 
-
-        protected static List<string> GetColumnIDsOfColumnNames(List<string> columnNames)
+        protected static List<string> GetColumnIDsOfColumnNames(ref SpreadsheetDocument spreadsheetDocument, SheetData sheetData, List<string> columnNames)
         {
+            //Try to read SharedStringTable if it exists. If not, make sure to do NOT try to read from it
+            SharedStringTable sharedStringTable = spreadsheetDocument?.WorkbookPart?.SharedStringTablePart?.SharedStringTable;
 
+            List<string> ids = new();
+
+            List<object> objectList = new();
+            foreach (string strobj in columnNames)
+            {
+                objectList.Add(strobj);
+            }
+
+            Row columns = SearchRow(ref spreadsheetDocument, sheetData, objectList);           
+            foreach (string name in columnNames)
+            {
+                foreach (Cell cell in columns.Elements<Cell>())
+                {
+                    object entry = ReadCell(cell, sharedStringTable);
+                    if (CompareObjects(name, entry))
+                    {
+                        ids.Add(cell.CellReference);
+                        break;
+                    }
+                }
+            }
+
+            return ids;
         }
 
         protected static Row SearchRow(ref SpreadsheetDocument spreadsheetDocument, SheetData sheetData, List<object> columnConditions)
