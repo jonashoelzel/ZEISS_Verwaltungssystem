@@ -233,7 +233,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
             }
         }
 
-        protected static void AddAndAppendStyleSheet(ref SpreadsheetDocument spreadsheetDocument)
+        private static void AddAndAppendStyleSheet(ref SpreadsheetDocument spreadsheetDocument)
         {
             // Add minimal Stylesheet
             var stylesPart = spreadsheetDocument.WorkbookPart.AddNewPart<WorkbookStylesPart>();
@@ -259,7 +259,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
         #endregion
 
         #region Read
-        protected static uint GetUniqueSheetID(ref Sheets sheets)
+        private static uint GetUniqueSheetID(ref Sheets sheets)
         {
             // Get a unique ID for the new worksheet.
             uint sheetId = 1;

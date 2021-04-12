@@ -27,22 +27,26 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Write
             SaveSpreadsheetDocument(ref spreadsheetDocument);
         }
 
+        public static void Insert(string filepath, string worksheetName, List<string> columnNames, List<object> columnValues)
+        {
+            SpreadsheetDocument spreadsheetDocument = OpenSpreadsheetDocument(filepath, worksheetName, out SheetData sheetData);
+            List<string> columnLetterIDs = GetColumnIDsOfColumnNames(ref spreadsheetDocument, sheetData, columnNames);
+            InsertRow(ref spreadsheetDocument, sheetData, columnLetterIDs, columnValues);
+            SaveSpreadsheetDocument(ref spreadsheetDocument);
+        }
+
         //
         //public static void Insert(string filepath, string worksheetName, string startColumnID, List<List<object>> columnValues)
         //{
         //
         //}
 
-        //public static void Insert(string filepath, string worksheetName, List<string> columnNames, List<List<object>> columnValues)
-        //{
-
-        //}
 
         //public static void Insert(string filepath, string worksheetName, string startColumnID, List<string> columnNames, List<List<object>> columnValues)
         //{
-        //
+
         //}
-        //
+
 
         #endregion
 

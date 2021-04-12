@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -64,6 +65,42 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
 
             ExcelInsert.Insert(filepath, worksheetName, entry);
         }
+
+
+        /*
+        public static void Insert(string filepath, string worksheetName, List<string> columnNames, IPublicationDataSet dataSet)
+        {
+            InitializeDataSetWorksheet(filepath, worksheetName);
+
+            List<object> entry = new List<object>()
+            {
+                dataSet.ID,
+                dataSet.WorkingTitle,
+                dataSet.PublicationTitle,
+
+                dataSet.TypeOfPublication.Name,
+
+                dataSet.MainAuthor.ID,
+                dataSet.MainAuthor.Name,
+                dataSet.MainAuthor.Surname,
+                ConvertCoAuthorsToCSV(dataSet.CoAuthors),
+                dataSet.Division,
+
+                dataSet.DateOfStartWorking.Year,
+                dataSet.CurrentState,
+                dataSet.DateOfRelease,
+
+                dataSet.PublishedBy.ID,
+                dataSet.PublishedBy.Name,
+
+                ConvertTagsToCSV(dataSet.Tags),
+                dataSet.Description,
+                dataSet.AdditionalInformation
+            };
+
+            ExcelInsert.Insert(filepath, worksheetName, entry);
+        }
+        */
 
         private static string ConvertCoAuthorsToCSV(List<IAuthor> coAuthors)
         {
@@ -133,6 +170,6 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
                 ExcelInsert.Insert(filepath, worksheetName, entry);
             }
         }
-    }
 
+    }
 }
