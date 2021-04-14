@@ -29,14 +29,16 @@
 }
 
 <EditForm Model="Publication" OnValidSubmit="NavigateToNextScreen">
+    
     <DataAnnotationsValidator />
-    <ValidationSummary />
+
     <section class="division panel-default">
         <header class="panel-heading">
             <h4 class="panel-title">Geschäftsbereich</h4>
         </header>
         <div class="panel-body">
-            <InputSelect DisplayName="division" class="division-select" @bind-Value="Publication.Division">
+            <InputSelect DisplayName="division" class="form-control" @bind-Value="Publication.Division">
+                <option></option>
                 <option>DAC</option>
                 <option>DQA</option>
                 <option>DQA I</option>

@@ -1,5 +1,6 @@
 ﻿@page "/addPublicationType"
 @using Zeiss.PublicationManager.Data.DataSet.Model
+@using Zeiss.PublicationManager.Business.Logic
 
 @inject NavigationManager NavigationManager
 @inject PublicationDataSetModel Publication
@@ -8,44 +9,26 @@
      class="logo" />
 
 <EditForm Model="Publication.TypeOfPublication" OnValidSubmit="NavigateToNextScreen">
+    
     <DataAnnotationsValidator />
-    <ValidationSummary />
+
     <section class="publicationType panel-default">
         <header class="panel-heading">
             <h4 class="panel-title">Art der Veröffentlichung</h4>
         </header>
         <div class="panel-body">
-            <InputSelect DisplayName="division" class="division-select" @bind-Value="Publication.TypeOfPublication.Name">
-                <option>App</option>
+            <InputSelect DisplayName="division" class="form-control" @bind-Value="Publication.TypeOfPublication.Name">
+                <option></option>
                 <option>Artikel</option>
-                <option>Beitrag in einem Buch</option>
                 <option>Blogbeitrag</option>
                 <option>Buch</option>
-                <option>Deep Dive</option>
-                <option>Dev Session</option>
-                <option>Dojo</option>
-                <option>eBook</option>
-                <option>Excerpt</option>
-                <option>Fachposter</option>
-                <option>Gala</option>
-                <option>Hackathon</option>
-                <option>Interview</option>
-                <option>Kata</option>
-                <option>Networking Lounge</option>
-                <option>Pecha Kucha</option>
-                <option>Podcast</option>
-                <option>Podiumsdiskussion</option>
-                <option>Rede</option>
-                <option>Seminar</option>
                 <option>Videotraining</option>
                 <option>Vortrag</option>
-                <option>Webcast</option>
-                <option>Webinar</option>
                 <option>Workshop</option>
             </InputSelect>
         </div>
     </section>
-    <button class="addPub" type="button" @onclick="Preview">
+    <button class="addPub" type="button" @onclick="Save">
         Veröffentlichung hinzufügen
     </button>
     <button class="back" type="button" @onclick="NavigateToPreviousScreen">
@@ -66,6 +49,12 @@
     private void NavigateToNextScreen()
     {
         NavigationManager.NavigateTo("addDescription");
+    }
+
+    private void Save()
+    {
+        DataLogic.Save(Publication);
+        NavigationManager.NavigateTo("/");
     }
 
     private void Preview()

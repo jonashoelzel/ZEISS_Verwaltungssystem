@@ -7,7 +7,7 @@ body {
 .add_publication {
     border: 3px groove rgba(28,110,164,0.55);
     border-radius: 15px;
-    background-color: #007dc1;
+    background-color: #2449a4;
     color: #ffffff;
     font-family: Arial;
     font-size: 150%;
@@ -19,12 +19,14 @@ body {
     left: 20%;
     width: 23%;
     height: 20%;
+    min-width: 210px;
+    min-height: 50px;
 }
 /*Button Fachbeitrag suchen*/
 .search_publication {
     border: 3px groove rgba(28,110,164,0.55);
     border-radius: 15px;
-    background-color: #007dc1;
+    background-color: #2449a4;
     color: #ffffff;
     font-family: Arial;
     font-size: 150%;
@@ -36,20 +38,22 @@ body {
     right: 20%;
     width: 23%;
     height: 20%;
+    min-width: 210px;
+    min-height: 50px;
 }
 /*Bild ZEISS Schriftzug*/
 .logo {             
-    object-fit: fill;
-    display: grid;
-    margin: auto;
-    height: 20vh;
-    width: 50%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    height: 50%;
+    width: 15%;
 }
 /*Weiter-Button*/
 .continue {
     border: 3px groove rgba(28,110,164,0.55);
     border-radius: 15px;
-    background-color: #007dc1;
+    background-color: #2449a4;
     color: #ffffff;
     font-family: Arial;
     font-size: 150%;
@@ -58,15 +62,17 @@ body {
     line-height: 20px;
     position: absolute;
     bottom: 7%;
-    right: 10%;
+    right: 7%;
     width: 20%;
     height: 10%;
+    min-width: 130px;
+    min-height: 50px;
 }
 /*Zurück-Button*/
 .back {
     border: 3px groove rgba(28,110,164,0.55);
     border-radius: 15px;
-    background-color: #007dc1;
+    background-color: #2449a4;
     color: #ffffff;
     font-family: Arial;
     font-size: 150%;
@@ -75,15 +81,17 @@ body {
     line-height: 20px;
     position: absolute;
     bottom: 7%;
-    left: 10%;
+    left: 7%;
     width: 20%;
     height: 10%;
+    min-width: 130px;
+    min-height: 50px;
 }
 /*Veröffentlichung hinzufügen-Button*/
 .addPub {
     border: 3px groove rgba(28,110,164,0.55);
     border-radius: 15px;
-    background-color: #007dc1;
+    background-color: #2449a4;
     color: #ffffff;
     font-family: Arial;
     font-size: 150%;
@@ -269,3 +277,7 @@ input[type=text] {
         right: 0.75rem;
         top: 0.5rem;
     }
+
+.validation-message {
+    color: red;
+}
