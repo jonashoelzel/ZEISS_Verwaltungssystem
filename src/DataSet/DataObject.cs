@@ -1,9 +1,11 @@
+using System;
+
 namespace Zeiss.PublicationManager.Data.DataSet
 {
     public class DataObject : IDataObject
     {
-        private int? _ID;
-        public int? ID
+        private Guid? _ID;
+        public Guid? ID
         {
             get { return _ID; }
             set

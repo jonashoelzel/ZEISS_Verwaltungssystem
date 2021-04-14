@@ -13,7 +13,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.Model
     {
         public PublicationDataSetModel()
         {
-            ID = Randomizer.GetRandomID();
+            ID = new Guid();
         }
 
         // Publication Information
