@@ -1,0 +1,19 @@
+@startuml example-usecase-diagram
+
+left to right direction
+actor Autor as a
+actor :Sales Department: as sd
+
+rectangle "ZEISS-Verwaltungssoftware" {
+    (UC01\nVeröffentlichung hinzufügen) as (UC1)
+    (UC02\nVeröffentlichung suchen) as (UC2)
+    (UC03\nVeröffentlichung bearbeiten) as (UC3)
+}
+
+a --> (UC1)
+a --> (UC2)
+(UC1) <-- sd
+(UC2) <-- sd
+(UC3) <-- sd
+
+@enduml
