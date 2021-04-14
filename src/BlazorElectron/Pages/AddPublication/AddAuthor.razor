@@ -1,5 +1,6 @@
 ﻿@page "/addAuthor"
 @using Zeiss.PublicationManager.Data.DataSet.Model
+@using Zeiss.PublicationManager.UI
 
 @inject NavigationManager NavigationManager
 @inject PublicationDataSetModel Publication
@@ -7,9 +8,10 @@
 <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg"
      class="logo" />
 
-<EditForm Model="@Publication.MainAuthor" OnValidSubmit="@NavigateToNextScreen">
+<EditForm Model="@Publication.MainAuthor" OnInvalidSubmit="@HandleInvalidSubmit" OnValidSubmit="@NavigateToNextScreen">
+
     <DataAnnotationsValidator />
-    <ValidationSummary />
+
     <section class="author panel-default">
         <header class="panel-heading">
             <h4 class="panel-title">Autor</h4>
@@ -17,23 +19,20 @@
         <div class="author panel-body">
             <div class="author-default">
                 <label for="firstname">Vorname</label>
-                <InputText id="firstname" DisplayName="firstname" @bind-Value="Publication.MainAuthor.Name" /><br />
+                <InputText class="form-control" id="firstname" @bind-Value="Publication.MainAuthor.Name" /><br />
                 <ValidationMessage For="@(()=> Publication.MainAuthor.Name)" />
             </div>
             <div class="author-default">
                 <label for="surname">Nachname</label>
-                <InputText id="surname" DisplayName="surname" @bind-Value="Publication.MainAuthor.Surname" /><br />
+                <InputText class="form-control" id="surname" @bind-Value="Publication.MainAuthor.Surname" /><br />
                 <ValidationMessage For="@(()=> Publication.MainAuthor.Surname)" />
             </div>
         </div>
     </section>
 
-    <button class="back" type="button" @onclick="NavigateToPreviousScreen">
-        Zurück
-    </button>
-    <button class="continue" type="submit" @onclick="NavigateToNextScreen">
-        Weiter
-    </button>
+    <button class="back" type="button" @onclick="NavigateToPreviousScreen">Zurück</button>
+    <button class="continue" type="submit">Weiter</button>
+
 </EditForm>
 
 @code
