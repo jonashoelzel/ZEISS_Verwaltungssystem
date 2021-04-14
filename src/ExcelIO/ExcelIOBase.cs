@@ -271,6 +271,15 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
             return sheetId;
         }
 
+        protected static List<string> GetCellReferenceLetters(int count)
+        {
+            List<string> columnLetterIDs = new();
+            for (int i = 1; i <= count; i++)
+                columnLetterIDs.Add(ConvertNumberToCellLetters(i));
+
+            return columnLetterIDs;
+        }
+
         protected static bool OpenWorksheet(ref SpreadsheetDocument spreadsheetDocument, string worksheetName, out SheetData sheetData)
         {        
             if (WorksheetExists(ref spreadsheetDocument, worksheetName, out IEnumerable<Sheet> sheetsIEnum))
@@ -322,12 +331,12 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
         }
 
 
-        protected static List<string> GetColumnIDsOfColumnNames(ref SpreadsheetDocument spreadsheetDocument, SheetData sheetData, List<string> columnNames)
+        protected static List<string> GetColumnLetterIDsOfColumnNames(ref SpreadsheetDocument spreadsheetDocument, SheetData sheetData, List<string> columnNames)
         {
             //Try to read SharedStringTable if it exists. If not, make sure to do NOT try to read from it
             SharedStringTable sharedStringTable = spreadsheetDocument?.WorkbookPart?.SharedStringTablePart?.SharedStringTable;
 
-            List<string> ids = new();
+            List<string> letterIDs = new();
 
             List<object> objectList = new();
             foreach (string strobj in columnNames)
@@ -343,13 +352,26 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
                     object entry = ReadCell(cell, sharedStringTable);
                     if (CompareObjects(name, entry))
                     {
-                        ids.Add(cell.CellReference);
+                        letterIDs.Add(GetLetterIDOfCellReference(cell.CellReference));
                         break;
                     }
                 }
             }
 
-            return ids;
+            return letterIDs;
+        }
+
+        protected static string GetLetterIDOfCellReference(string cellReference)
+        {
+            for (int i = 0; i < cellReference.Length; i++)
+            {
+                char c = cellReference[i];
+                if (Int32.TryParse(c.ToString(), out _))
+                    return cellReference[0..i];
+            }
+
+            //Already letters only
+            return cellReference;
         }
 
         protected static Row SearchRow(ref SpreadsheetDocument spreadsheetDocument, SheetData sheetData, List<object> columnConditions)

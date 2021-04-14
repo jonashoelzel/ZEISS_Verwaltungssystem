@@ -18,11 +18,8 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Write
         #region Public_Insert
         public static void Insert(string filepath, string worksheetName, List<object> columnValues)
         {
-            List<string> columnLetterIDs = new();
-            for (int i = 1; i <= columnValues.Count; i++)
-                columnLetterIDs.Add(ConvertNumberToCellLetters(i));
-
             SpreadsheetDocument spreadsheetDocument = OpenSpreadsheetDocument(filepath, worksheetName, out SheetData sheetData);
+            List<string> columnLetterIDs = GetCellReferenceLetters(columnValues.Count);
             InsertRow(ref spreadsheetDocument, sheetData, columnLetterIDs, columnValues);
             SaveSpreadsheetDocument(ref spreadsheetDocument);
         }
@@ -30,7 +27,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Write
         public static void Insert(string filepath, string worksheetName, List<string> columnNames, List<object> columnValues)
         {
             SpreadsheetDocument spreadsheetDocument = OpenSpreadsheetDocument(filepath, worksheetName, out SheetData sheetData);
-            List<string> columnLetterIDs = GetColumnIDsOfColumnNames(ref spreadsheetDocument, sheetData, columnNames);
+            List<string> columnLetterIDs = GetColumnLetterIDsOfColumnNames(ref spreadsheetDocument, sheetData, columnNames);
             InsertRow(ref spreadsheetDocument, sheetData, columnLetterIDs, columnValues);
             SaveSpreadsheetDocument(ref spreadsheetDocument);
         }

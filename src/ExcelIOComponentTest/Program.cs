@@ -29,7 +29,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.ComponentTest
     public class TestDataSetIO
     {
         private string folderPath = @"\TestFiles";
-        private string fileName = @"\ExcelIOComponentTestFile.xlsx";
+        private string fileName = @"\IntelligentExcelIOComponentTestFileV2.xlsx";
 
         private string[] worksheetNames = new string[] { "sheet00", "Sheet0", "sheet1", "sheet2", "sheet3", "Publications", "test" };
 
@@ -166,7 +166,8 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.ComponentTest
 
             for (int i = 1; i <= count; i++)
             {
-                WriteDataSet.Insert(filepath, worksheetNames[Randomizer.Next(worksheetNames.Length)], GenerateDataSet());
+                //WriteDataSet.Insert(filepath, worksheetNames[Randomizer.Next(worksheetNames.Length)], GenerateDataSet());
+                WriteDataSet.Insert2(filepath, worksheetNames[Randomizer.Next(worksheetNames.Length)], GenerateDataSet());
 
                 //System.Threading.Thread.Sleep(500);
 

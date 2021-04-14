@@ -60,10 +60,68 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
 
                 ConvertTagsToCSV(dataSet.Tags),
                 dataSet.Description,
-                dataSet.AdditionalInformation
+                dataSet.AdditionalInformation,
             };
 
             ExcelInsert.Insert(filepath, worksheetName, entry);
+        }
+
+        public static void Insert2(string filepath, string worksheetName, IPublicationDataSet dataSet)
+        {
+            InitializeDataSetWorksheet(filepath, worksheetName);
+
+            List<string> columns = new()
+            {
+                "Publikations-ID",
+                "Arbeitstitel",
+                "Veröffentlichungstitel",
+                "Veröffentlichungsmedium",
+
+                "Autor-ID",
+                "Vorname",
+                "Nachname",
+                "Co-Autoren",
+                "Division",
+
+                "Arbeitsbeginn (Startjahr)",
+                "Derzeitiger Arbeitsstatus",
+                "Veröffentlichungsdatum",
+
+                "Publisher-ID",
+                "Publisher",
+
+                "Tags",
+                "Beschreibung (zusätzlich)",
+                "Zusätzliche Informationen",
+            };
+
+            List<object> entry = new List<object>()
+            {
+                dataSet.ID,
+                dataSet.WorkingTitle,
+                dataSet.PublicationTitle,
+
+                dataSet.TypeOfPublication.Name,
+
+                dataSet.MainAuthor.ID,
+                dataSet.MainAuthor.Name,
+                dataSet.MainAuthor.Surname,
+                ConvertCoAuthorsToCSV(dataSet.CoAuthors),
+                dataSet.Division,
+
+                dataSet.DateOfStartWorking.Year,
+                dataSet.CurrentState,
+                dataSet.DateOfRelease,
+
+                dataSet.PublishedBy.ID,
+                dataSet.PublishedBy.Name,
+
+                ConvertTagsToCSV(dataSet.Tags),
+                dataSet.Description,
+                dataSet.AdditionalInformation,
+            };
+
+            ExcelInsert.Insert(filepath, worksheetName, columns, entry);
         }
 
 
@@ -164,7 +222,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
 
                     "Tags",
                     "Beschreibung (zusätzlich)",
-                    "Zusätzliche Informationen"
+                    "Zusätzliche Informationen",
                 };
 
                 ExcelInsert.Insert(filepath, worksheetName, entry);
