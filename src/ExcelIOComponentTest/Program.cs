@@ -167,7 +167,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.ComponentTest
             for (int i = 1; i <= count; i++)
             {
                 //WriteDataSet.Insert(filepath, worksheetNames[Randomizer.Next(worksheetNames.Length)], GenerateDataSet());
-                WriteDataSet.Insert2(filepath, worksheetNames[Randomizer.Next(worksheetNames.Length)], GenerateDataSet());
+                WriteDataSet.InsertIntelligent(filepath, worksheetNames[Randomizer.Next(worksheetNames.Length)], GenerateDataSet());
 
                 //System.Threading.Thread.Sleep(500);
 

@@ -66,7 +66,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
             ExcelInsert.Insert(filepath, worksheetName, entry);
         }
 
-        public static void Insert2(string filepath, string worksheetName, IPublicationDataSet dataSet)
+        public static void InsertIntelligent(string filepath, string worksheetName, IPublicationDataSet dataSet)
         {
             InitializeDataSetWorksheet(filepath, worksheetName);
 
