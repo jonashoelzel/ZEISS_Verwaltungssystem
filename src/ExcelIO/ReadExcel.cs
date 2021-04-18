@@ -85,11 +85,11 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Read
             //Try to read SharedStringTable if it exists. If not, make sure to do NOT try to read from it
             SharedStringTable sharedStringTable = spreadsheetDocument?.WorkbookPart?.SharedStringTablePart?.SharedStringTable;
 
-            List<List<object>> rowsList = new List<List<object>>();
+            List<List<object>> rowsList = new();
 
             foreach (Row row in sheetData.Elements<Row>())
             {
-                List<object> rowList = new List<object>();
+                List<object> rowList = new();
 
                 foreach (Cell cell in row.Elements<Cell>())
                 {
@@ -105,7 +105,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Read
             return rowsList;
         }      
         
-        public List<List<object>> Select(string filepath, string worksheetName, List<string> columnNames)
+        public static List<List<object>> Select(string filepath, string worksheetName, List<string> columnNames)
         {
             SpreadsheetDocument spreadsheetDocument = OpenSpreadsheetDocument(filepath, worksheetName, out SheetData sheetData, false, false);
 
@@ -116,10 +116,10 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Read
 
         }
 
-        protected List<List<object>> Reader(SheetData sheetData, SharedStringTable sharedStringTable, List<string> columnLetterIDs)
+        protected static List<List<object>> Reader(SheetData sheetData, SharedStringTable sharedStringTable, List<string> columnLetterIDs)
         {
             //Create a List<List<object>> with empty List<object>, so that we can insert cell entries at letter ID in the correct index
-            List<List<object>> rowsList = new List<List<object>>(columnLetterIDs.Select(x => new List<object>()));
+            List<List<object>> rowsList = new(columnLetterIDs.Select(x => new List<object>()));
 
             foreach (Row row in sheetData.Elements<Row>())
             {

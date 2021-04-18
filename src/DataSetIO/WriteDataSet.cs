@@ -14,6 +14,9 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
         private string _filePath;
         private string _workSheetName;
 
+        public string FilePath { get => _filePath; set => _filePath = value; }
+        public string WorkSheetName { get => _workSheetName; set => _workSheetName = value; }
+
         public WriteDataSet(string filePaht, string workSheetName)
         {
             _filePath = filePaht;
@@ -86,7 +89,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
             if (coAuthors is null)
                 return string.Empty;
 
-            StringBuilder csv = new StringBuilder();
+            StringBuilder csv = new();
 
             foreach (var author in coAuthors)
             {
@@ -106,7 +109,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
             if (tags is null)
                 return string.Empty;
 
-            StringBuilder csv = new StringBuilder();
+            StringBuilder csv = new();
 
             foreach (var tag in tags)
             {
