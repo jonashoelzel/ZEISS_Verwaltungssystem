@@ -12,7 +12,7 @@ using Zeiss.PublicationManager.Data.DataSet;
 
 namespace Zeiss.PublicationManager.Data.Excel.IO.Write
 {
-    public class ExcelInsert : WriteExcel
+    public class RowInsert : WriteExcel
     {
         #region Insert
         #region Public_Insert

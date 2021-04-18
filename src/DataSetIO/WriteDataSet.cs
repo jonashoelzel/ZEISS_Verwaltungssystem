@@ -39,13 +39,13 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
         public static void Insert(string filepath, string worksheetName, IPublicationDataSet dataSet)
         {
             InitializeDataSetWorksheet(filepath, worksheetName);
-            ExcelInsert.Insert(filepath, worksheetName, GetNewRow(dataSet));
+            RowInsert.Insert(filepath, worksheetName, GetNewRow(dataSet));
         }
 
         public static void InsertIntelligent(string filepath, string worksheetName, IPublicationDataSet dataSet)
         {
             InitializeDataSetWorksheet(filepath, worksheetName);                
-            ExcelInsert.Insert(filepath, worksheetName, GetColumnNames().Select(x => x.ToString()).ToList(), GetNewRow(dataSet));
+            RowInsert.Insert(filepath, worksheetName, GetColumnNames().Select(x => x.ToString()).ToList(), GetNewRow(dataSet));
         }
 
 
@@ -124,7 +124,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
         {
             if (!WriteExcel.WorksheetExists(ref filepath, worksheetName))
             {              
-                ExcelInsert.Insert(filepath, worksheetName, GetColumnNames());
+                RowInsert.Insert(filepath, worksheetName, GetColumnNames());
             }
         }
 

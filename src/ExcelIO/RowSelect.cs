@@ -13,7 +13,7 @@ using DocumentFormat.OpenXml.Spreadsheet;
 namespace Zeiss.PublicationManager.Data.Excel.IO.Read
 {
     //NOTE: When we use with Console, all members have to be static !!!
-    public class ReadExcel : ExcelIOBase
+    public class RowSelect : ExcelIOBase
     {
         //We using DOM instead of SAX for easier reading management
         //public static List<List<string>> OpenExcelDOM(string filepath)
