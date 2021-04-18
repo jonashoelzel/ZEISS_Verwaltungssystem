@@ -62,6 +62,44 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
             return columnname;
         }
 
+
+        protected static object ReadCell(Cell cell, SharedStringTable sharedStringTable)
+        {
+            //Make sure that the Excel has a SharedStringTable, the Cell has a DataType and is a String
+            if (cell.DataType is not null && sharedStringTable is not null && cell.DataType == CellValues.SharedString)
+            {
+                var cellValue = cell.InnerText;
+                //Return String
+                return (sharedStringTable.ElementAt(Int32.Parse(cellValue)).InnerText);
+            }
+            //DataType is null
+            else
+            {
+                //Check if StyleIndex is a Date Format
+                if (Int32.TryParse(cell.StyleIndex?.InnerText, out int styleIndex))
+                {
+                    //Standard date format
+                    if (styleIndex >= 12 && styleIndex <= 22
+                        //Formatted date format
+                        || styleIndex >= 165 && styleIndex <= 180
+                        //Number formats that can be interpreted as a number
+                        || styleIndex >= 1 && styleIndex <= 5)
+                    {
+                        if (double.TryParse(cell.CellValue.Text, out double dateTimeDouble))
+                        {
+                            //Return Date
+                            return (DateTime.FromOADate(dateTimeDouble));
+                        }
+                    }
+                }
+
+                //Default is number (if StyleIndex is null or any other StyleIndex)
+                return Convert.ToDecimal(cell.CellValue.Text);
+            }
+        }
+
+
+
         protected static Cell GetReferenceCell(Row row, string cellName)
         {
             if (String.IsNullOrEmpty(cellName))
@@ -77,6 +115,60 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
 
             return null;
         }
+
+        protected static List<string> GetCellReferenceLetters(int count)
+        {
+            List<string> columnLetterIDs = new();
+            for (int i = 1; i <= count; i++)
+                columnLetterIDs.Add(ConvertNumberToCellLetters(i));
+
+            return columnLetterIDs;
+        }
+
+
+        protected static List<string> GetColumnLetterIDsOfColumnNames(ref SpreadsheetDocument spreadsheetDocument, SheetData sheetData, List<string> columnNames)
+        {
+            //Try to read SharedStringTable if it exists. If not, make sure to do NOT try to read from it
+            SharedStringTable sharedStringTable = spreadsheetDocument?.WorkbookPart?.SharedStringTablePart?.SharedStringTable;
+
+            List<string> letterIDs = new();
+
+            List<object> objectList = new();
+            foreach (string strobj in columnNames)
+            {
+                objectList.Add(strobj);
+            }
+
+            Row columns = SearchRow(ref spreadsheetDocument, sheetData, objectList);
+            foreach (string name in columnNames)
+            {
+                foreach (Cell cell in columns.Elements<Cell>())
+                {
+                    object entry = ReadCell(cell, sharedStringTable);
+                    if (CompareObjects(name, entry))
+                    {
+                        letterIDs.Add(GetLetterIDOfCellReference(cell.CellReference));
+                        break;
+                    }
+                }
+            }
+
+            return letterIDs;
+        }
+
+        protected static string GetLetterIDOfCellReference(string cellReference)
+        {
+            for (int i = 0; i < cellReference.Length; i++)
+            {
+                char c = cellReference[i];
+                if (Int32.TryParse(c.ToString(), out _))
+                    return cellReference[0..i];
+            }
+
+            //Already letters only
+            return cellReference;
+        }
+
         #endregion
 
         #region CheckExists
@@ -271,15 +363,6 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
             return sheetId;
         }
 
-        protected static List<string> GetCellReferenceLetters(int count)
-        {
-            List<string> columnLetterIDs = new();
-            for (int i = 1; i <= count; i++)
-                columnLetterIDs.Add(ConvertNumberToCellLetters(i));
-
-            return columnLetterIDs;
-        }
-
         protected static bool OpenWorksheet(ref SpreadsheetDocument spreadsheetDocument, string worksheetName, out SheetData sheetData)
         {        
             if (WorksheetExists(ref spreadsheetDocument, worksheetName, out IEnumerable<Sheet> sheetsIEnum))
@@ -294,86 +377,10 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
             sheetData = null;
             return false;
         }
+        #endregion
+        #endregion
 
-        protected static object ReadCell(Cell cell, SharedStringTable sharedStringTable)
-        {
-            //Make sure that the Excel has a SharedStringTable, the Cell has a DataType and is a String
-            if (cell.DataType is not null && sharedStringTable is not null && cell.DataType == CellValues.SharedString)
-            {
-                var cellValue = cell.InnerText;
-                //Return String
-                return (sharedStringTable.ElementAt(Int32.Parse(cellValue)).InnerText);
-            }
-            //DataType is null
-            else
-            {
-                //Check if StyleIndex is a Date Format
-                if (Int32.TryParse(cell.StyleIndex?.InnerText, out int styleIndex))
-                {
-                    //Standard date format
-                    if (styleIndex >= 12 && styleIndex <= 22
-                        //Formatted date format
-                        || styleIndex >= 165 && styleIndex <= 180
-                        //Number formats that can be interpreted as a number
-                        || styleIndex >= 1 && styleIndex <= 5)
-                    {
-                        if (double.TryParse(cell.CellValue.Text, out double dateTimeDouble))
-                        {
-                            //Return Date
-                            return (DateTime.FromOADate(dateTimeDouble));
-                        }
-                    }
-                }
-
-                //Default is number (if StyleIndex is null or any other StyleIndex)
-                return Convert.ToDecimal(cell.CellValue.Text);
-            }
-        }
-
-
-        protected static List<string> GetColumnLetterIDsOfColumnNames(ref SpreadsheetDocument spreadsheetDocument, SheetData sheetData, List<string> columnNames)
-        {
-            //Try to read SharedStringTable if it exists. If not, make sure to do NOT try to read from it
-            SharedStringTable sharedStringTable = spreadsheetDocument?.WorkbookPart?.SharedStringTablePart?.SharedStringTable;
-
-            List<string> letterIDs = new();
-
-            List<object> objectList = new();
-            foreach (string strobj in columnNames)
-            {
-                objectList.Add(strobj);
-            }
-
-            Row columns = SearchRow(ref spreadsheetDocument, sheetData, objectList);           
-            foreach (string name in columnNames)
-            {
-                foreach (Cell cell in columns.Elements<Cell>())
-                {
-                    object entry = ReadCell(cell, sharedStringTable);
-                    if (CompareObjects(name, entry))
-                    {
-                        letterIDs.Add(GetLetterIDOfCellReference(cell.CellReference));
-                        break;
-                    }
-                }
-            }
-
-            return letterIDs;
-        }
-
-        protected static string GetLetterIDOfCellReference(string cellReference)
-        {
-            for (int i = 0; i < cellReference.Length; i++)
-            {
-                char c = cellReference[i];
-                if (Int32.TryParse(c.ToString(), out _))
-                    return cellReference[0..i];
-            }
-
-            //Already letters only
-            return cellReference;
-        }
-
+        #region GetRowInformation
         protected static Row SearchRow(ref SpreadsheetDocument spreadsheetDocument, SheetData sheetData, List<object> columnConditions)
         {
             //Try to read SharedStringTable if it exists. If not, make sure to do NOT try to read from it
@@ -389,6 +396,12 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
             return null;
         }
 
+
+        //protected static Row SearchRow(ref SpreadsheetDocument spreadsheetDocument, List<string> columnIDs, List<object> columnConditions)
+        //{
+
+        //}
+
         protected static bool CompareRows(Row row, SharedStringTable sharedStringTable, List<object> columnConditions)
         {
             //Create 'copy'
@@ -403,13 +416,16 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
                     {
                         leftConditions.Remove(condition);
                         break;
-                    }                    
+                    }
                 }
             }
 
             //If an condition is left that means that not all conditions were matched
             return !(leftConditions.Any());
         }
+        #endregion
+
+        #region Protected_Helper_Methods
 
         protected static bool CompareObjects(object a, object b)
         {
@@ -441,11 +457,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
             return false;
         }
 
-        //protected static Row SearchRow(ref SpreadsheetDocument spreadsheetDocument, List<string> columnIDs, List<object> columnConditions)
-        //{
+        #endregion
 
-        //}
-        #endregion
-        #endregion
     }
 }
