@@ -103,6 +103,34 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Read
             SaveSpreadsheetDocument(ref spreadsheetDocument);
 
             return rowsList;
-        }        
+        }      
+        
+        public List<List<object>> Select(string filepath, string worksheetName, List<string> columnNames)
+        {
+            SpreadsheetDocument spreadsheetDocument = OpenSpreadsheetDocument(filepath, worksheetName, out SheetData sheetData, false, false);
+
+            //Try to read SharedStringTable if it exists. If not, make sure to do NOT try to read from it
+            SharedStringTable sharedStringTable = spreadsheetDocument?.WorkbookPart?.SharedStringTablePart?.SharedStringTable;
+
+            return Reader(sheetData, sharedStringTable, GetColumnLetterIDsOfColumnNames(ref spreadsheetDocument, sheetData, columnNames));
+
+        }
+
+        protected List<List<object>> Reader(SheetData sheetData, SharedStringTable sharedStringTable, List<string> columnLetterIDs)
+        {
+            //Create a List<List<object>> with empty List<object>, so that we can insert cell entries at letter ID in the correct index
+            List<List<object>> rowsList = new List<List<object>>(columnLetterIDs.Select(x => new List<object>()));
+
+            foreach (Row row in sheetData.Elements<Row>())
+            {
+                foreach (Cell cell in row.Elements<Cell>())
+                {
+                    //Get index of 'letterID' in 'columnLettersIDs' to insert cell into correct list in 'rowsList'
+                    rowsList[columnLetterIDs.IndexOf(GetLetterIDOfCellReference(cell.CellReference))].Add(ReadCell(cell, sharedStringTable));
+                }
+            }
+
+            return rowsList;
+        }
     }
 }
