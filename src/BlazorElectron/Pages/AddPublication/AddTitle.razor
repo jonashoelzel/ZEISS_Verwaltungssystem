@@ -7,59 +7,23 @@
 <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg"
      class="logo" />
 
-<!--
-    <div class="mandatory-types">
-        <input type="radio" name="mandatory-types" values="title"
-               id="title" />
-        <label for="title">
-            Titelname
-        </label>
-
-        <input type="radio" name="mandatory-types" values="author"
-               id="auhtor" />
-        <label for="author">
-            Autor
-        </label>
-
-        <input type="radio" name="mandatory-types" values="division"
-               id="division" />
-        <label for="division">
-            Geschäftsbereich
-        </label>
-
-        <input type="radio" name="mandatory-types" values="dateofrelease"
-               id="dateofrelease" />
-        <label for="dateofrelease">
-            Datum der Veröffentlichung
-        </label>
-
-        <input type="radio" name="mandatory-types" values="publicationtype"
-               id="publicationtype" />
-        <label for="publicationtype">
-            Art der Veröffentlichung
-        </label>
-    </div>
--->
-
-<EditForm Model="@Publication" OnValidSubmit="NavigateToNextScreen">
+<EditForm Model="@Publication" OnInvalidSubmit="@HandleInvalidSubmit" OnValidSubmit="@NavigateToNextScreen">
+    
     <DataAnnotationsValidator />
-    <ValidationSummary />
+
     <section class="title panel-default">
         <header class="panel-heading">
             <h4 class="panel-title">Dokument</h4>
         </header>
         <div class="panel-body">
             <label for="workingtitle">Titelname</label>
-            <InputText id="workingtitle" DisplayName="workingtitle" @bind-Value="@Publication.WorkingTitle" /><br />
+            <InputText id="workingtitle" class="form-control" @bind-Value="@Publication.WorkingTitle" /><br />
         </div>
     </section>
 
-    <button class="back" type="button" @onclick="NavigateToPreviousScreen">
-        Startseite
-    </button>
-    <button class="continue" type="submit" @onclick="NavigateToNextScreen">
-        Weiter
-    </button>
+    <button class="back" type="button" @onclick="NavigateToPreviousScreen">Startseite</button>
+    <button class="continue" type="submit">Weiter</button>
+
 </EditForm>
 
 @code
@@ -76,6 +40,6 @@
 
     private void HandleInvalidSubmit()
     {
-
+        NavigateToNextScreen();
     }
 }

@@ -5,11 +5,27 @@
 @inject NavigationManager NavigationManager
 @inject PublicationDataSetModel Publication
 
-<img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg"
-     class="logo" />
+<img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg" class="logo" />
 
-<EditForm Model="Publication.TypeOfPublication" OnValidSubmit="NavigateToNextScreen">
-    
+@if (ShowPopup)
+{
+    <div class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title w-100 text-center">Erfolgreich gespeichert</h3>
+                </div>
+                <div class="modal-body">
+                    <p>Die Veröffentlichung wurde erfolgreich der Liste hinzugefügt.</p>
+                    <button type="submit" id="backToLandingPage" class="form-control" @onclick="@NavigateToLandingPage">Zurück zur Startseite</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<EditForm Model="Publication.TypeOfPublication" OnInvalidSubmit="@HandleInvalidSubmit" OnValidSubmit="@SuccessfulSavePublication">
+
     <DataAnnotationsValidator />
 
     <section class="publicationType panel-default">
@@ -26,17 +42,14 @@
                 <option>Vortrag</option>
                 <option>Workshop</option>
             </InputSelect>
+            <ValidationMessage For="@(()=> Publication.TypeOfPublication.Name)" />
         </div>
     </section>
-    <button class="addPub" type="button" @onclick="Save">
-        Veröffentlichung hinzufügen
-    </button>
-    <button class="back" type="button" @onclick="NavigateToPreviousScreen">
-        Zurück
-    </button>
-    <button class="continue" type="button" @onclick="NavigateToNextScreen">
-        Optionale Angaben
-    </button>
+
+    <button class="addPub" type="submit">Veröffentlichung hinzufügen</button>
+    <button class="back" type="button" @onclick="NavigateToPreviousScreen">Zurück</button>
+    @*<button class="continue" type="submit" >Optionale Angaben</button>*@
+
 </EditForm>
 
 @code
@@ -51,19 +64,32 @@
         NavigationManager.NavigateTo("addDescription");
     }
 
-    private void Save()
+    private void NavigateToLandingPage()
     {
-        DataLogic.Save(Publication);
         NavigationManager.NavigateTo("/");
     }
 
-    private void Preview()
+    private void Save()
     {
-        NavigationManager.NavigateTo("Preview");
+        DataLogic.Save(Publication);
+        SuccessfulSavePublication();
     }
+    @*
+        private void Preview()
+        {
+            NavigationManager.NavigateTo("Preview");
+        }
+    *@
 
     private void HandleInvalidSubmit()
     {
 
+    }
+
+    // Dialogfenster zum erfolgreichen Hinzufügen einer Veröffentlichung
+    bool ShowPopup = false;
+    private void SuccessfulSavePublication()
+    {
+        ShowPopup = true;
     }
 }

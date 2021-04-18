@@ -9,7 +9,7 @@
 
 @if (ShowPopup)
 {
-    <div class="modal" tabindex="1" style="display: block; top: 20%;" role="dialog">
+    <div class="modal fade show" tabindex="1" style="display: block; top: 20%;" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -18,7 +18,7 @@
                 <div class="modal-body">
                     <h5>Fügen Sie einen neuen Geschäftsbereich hinzu.</h5><br />
                     <input class="form-control" type="text" /><br />
-                    <button type="submit" class="add"
+                    <button type="submit" class="form-control"
                             @onclick"SaveDivision">
                         Hinzufügen
                     </button>
@@ -28,7 +28,7 @@
     </div>
 }
 
-<EditForm Model="Publication" OnValidSubmit="NavigateToNextScreen">
+<EditForm Model="@Publication" OnInvalidSubmit="@NavigateToNextScreen" OnValidSubmit="@NavigateToNextScreen">
     
     <DataAnnotationsValidator />
 
@@ -37,7 +37,7 @@
             <h4 class="panel-title">Geschäftsbereich</h4>
         </header>
         <div class="panel-body">
-            <InputSelect DisplayName="division" class="form-control" @bind-Value="Publication.Division">
+            <InputSelect class="form-control" @bind-Value="@Publication.Division">
                 <option></option>
                 <option>DAC</option>
                 <option>DQA</option>
@@ -56,17 +56,16 @@
                 <option>Vorstand</option>
                 <option>Vorstand, TAD I</option>
             </InputSelect>
-            <button class="addDivision" @onclick="AddNewDivision">
-                Neuer Geschäftsbereich
-            </button>
+            <ValidationMessage For="@(()=> Publication.Division)" />
+
+            @*<button class="addDivision" @onclick="AddNewDivision">Neuer Geschäftsbereich</button>*@
+       
         </div>
     </section>
-    <button class="back" type="button" @onclick="NavigateToPreviousScreen">
-        Zurück
-    </button>
-    <button class="continue" type="submit" @onclick="NavigateToNextScreen">
-        Weiter
-    </button>
+
+    <button class="back" type="button" @onclick="NavigateToPreviousScreen">Zurück</button>
+    <button class="continue" type="submit">Weiter</button>
+
 </EditForm>
 
 
@@ -86,7 +85,7 @@
     {
 
     }
-
+    // Dialogfenster zum Hinzufuegen eines neuen Geschaeftsbereichs
     bool ShowPopup = false;
     private void AddNewDivision()
     {
