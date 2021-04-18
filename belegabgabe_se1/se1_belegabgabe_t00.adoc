@@ -4,7 +4,6 @@
 
 Paul Stefan Joksch <s79396@htw-dresden.de>; Stephan Joneleit <s80463@htw-dresden.de>; Nina Püschmann s79289@htw-dresden.de; Oliver Wünsche <s78991@htw-dresden.de>; Jonas Hölzel <s80484@htw-dresden.de>; Vanessa Bayer <s80494@htw-dresden.de>; Peter Holland-Moritz <s80479@htw-dresden.de>; Jean-Pierre Kaiser <s80430@htw-dresden.de>
 
-
 :docs: ../docs
 include::{docs}/_includes/default-attributes.inc.adoc[]
 // ---
@@ -63,7 +62,7 @@ include::{docs-requirements}/domain_model.adoc[lines=1..1;4..-1,leveloffset=+1]
 <<<
 
 // --- Projektdokumentation ---
-= Projektdokumentation
+==== Projektdokumentation
 * Projektplan
 * Risikoliste
 * Iteration Plan (für zwei ausgewählte Iterationen)
@@ -88,7 +87,7 @@ include::{docs-project-management}/iteration_plan_04.adoc[lines=1..1;4..-1,level
 <<<
 
 // --- Entwurfsdokumentation ---
-= Entwurfsdokumentation
+===== Entwurfsdokumentation
 * Architektur-Notizbuch
 * Test Cases
 * Design
