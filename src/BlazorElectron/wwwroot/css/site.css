@@ -193,6 +193,7 @@ input[type=text] {
 .modal {
     display: block;
     font-family: Arial;
+    background-color: rgba(10,10,10,.8);
 }
 
 .modal-dialog {
