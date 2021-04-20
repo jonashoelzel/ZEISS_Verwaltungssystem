@@ -205,10 +205,10 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
             CheckAndConvertLongFilePath(ref filepath);
 
             //If the path exists, it returns true and other functions can work further
-            return (File.Exists(filepath));
+            return File.Exists(filepath);
         }
 
-        public static void CheckAndConvertLongFilePath(ref string filepath)
+        private static void CheckAndConvertLongFilePath(ref string filepath)
         {
             //Checks for longer filepaths (MAX_PATH is regularly 260)
             if (filepath.Length >= 256)
