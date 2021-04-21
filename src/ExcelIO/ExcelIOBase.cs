@@ -62,6 +62,44 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
             return columnname;
         }
 
+
+        protected static object ReadCell(Cell cell, SharedStringTable sharedStringTable)
+        {
+            //Make sure that the Excel has a SharedStringTable, the Cell has a DataType and is a String
+            if (cell.DataType is not null && sharedStringTable is not null && cell.DataType == CellValues.SharedString)
+            {
+                var cellValue = cell.InnerText;
+                //Return String
+                return (sharedStringTable.ElementAt(Int32.Parse(cellValue)).InnerText);
+            }
+            //DataType is null
+            else
+            {
+                //Check if StyleIndex is a Date Format
+                if (Int32.TryParse(cell.StyleIndex?.InnerText, out int styleIndex))
+                {
+                    //Standard date format
+                    if (styleIndex >= 12 && styleIndex <= 22
+                        //Formatted date format
+                        || styleIndex >= 165 && styleIndex <= 180
+                        //Number formats that can be interpreted as a number
+                        || styleIndex >= 1 && styleIndex <= 5)
+                    {
+                        if (double.TryParse(cell.CellValue.Text, out double dateTimeDouble))
+                        {
+                            //Return Date
+                            return (DateTime.FromOADate(dateTimeDouble));
+                        }
+                    }
+                }
+
+                //Default is number (if StyleIndex is null or any other StyleIndex)
+                return Convert.ToDecimal(cell.CellValue.Text);
+            }
+        }
+
+
+
         protected static Cell GetReferenceCell(Row row, string cellName)
         {
             if (String.IsNullOrEmpty(cellName))
@@ -77,6 +115,60 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
 
             return null;
         }
+
+        protected static List<string> GetCellReferenceLetters(int count)
+        {
+            List<string> columnLetterIDs = new();
+            for (int i = 1; i <= count; i++)
+                columnLetterIDs.Add(ConvertNumberToCellLetters(i));
+
+            return columnLetterIDs;
+        }
+
+
+        protected static List<string> GetColumnLetterIDsOfColumnNames(ref SpreadsheetDocument spreadsheetDocument, SheetData sheetData, List<string> columnNames)
+        {
+            //Try to read SharedStringTable if it exists. If not, make sure to do NOT try to read from it
+            SharedStringTable sharedStringTable = spreadsheetDocument?.WorkbookPart?.SharedStringTablePart?.SharedStringTable;
+
+            List<string> letterIDs = new();
+
+            List<object> objectList = new();
+            foreach (string strobj in columnNames)
+            {
+                objectList.Add(strobj);
+            }
+
+            Row columns = SearchRow(ref spreadsheetDocument, sheetData, objectList);
+            foreach (string name in columnNames)
+            {
+                foreach (Cell cell in columns.Elements<Cell>())
+                {
+                    object entry = ReadCell(cell, sharedStringTable);
+                    if (CompareObjects(name, entry))
+                    {
+                        letterIDs.Add(GetLetterIDOfCellReference(cell.CellReference));
+                        break;
+                    }
+                }
+            }
+
+            return letterIDs;
+        }
+
+        protected static string GetLetterIDOfCellReference(string cellReference)
+        {
+            for (int i = 0; i < cellReference.Length; i++)
+            {
+                char c = cellReference[i];
+                if (Int32.TryParse(c.ToString(), out _))
+                    return cellReference[0..i];
+            }
+
+            //Already letters only
+            return cellReference;
+        }
+
         #endregion
 
         #region CheckExists
@@ -113,10 +205,10 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
             CheckAndConvertLongFilePath(ref filepath);
 
             //If the path exists, it returns true and other functions can work further
-            return (File.Exists(filepath));
+            return File.Exists(filepath);
         }
 
-        public static void CheckAndConvertLongFilePath(ref string filepath)
+        private static void CheckAndConvertLongFilePath(ref string filepath)
         {
             //Checks for longer filepaths (MAX_PATH is regularly 260)
             if (filepath.Length >= 256)
@@ -137,6 +229,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
         #endregion
 
         #region ExcelIO
+        #region Write
         protected static SpreadsheetDocument OpenSpreadsheetDocument(string filepath, string worksheetName, out SheetData sheetData, bool isCreateable = true, bool isEditable = true)
         {
             SpreadsheetDocument spreadsheetDocument;
@@ -232,7 +325,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
             }
         }
 
-        protected static void AddAndAppendStyleSheet(ref SpreadsheetDocument spreadsheetDocument)
+        private static void AddAndAppendStyleSheet(ref SpreadsheetDocument spreadsheetDocument)
         {
             // Add minimal Stylesheet
             var stylesPart = spreadsheetDocument.WorkbookPart.AddNewPart<WorkbookStylesPart>();
@@ -254,8 +347,11 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
                         })
             };
         }
+        #endregion
+        #endregion
 
-        protected static uint GetUniqueSheetID(ref Sheets sheets)
+        #region Read
+        private static uint GetUniqueSheetID(ref Sheets sheets)
         {
             // Get a unique ID for the new worksheet.
             uint sheetId = 1;
@@ -266,7 +362,6 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
 
             return sheetId;
         }
-        #endregion
 
         protected static bool OpenWorksheet(ref SpreadsheetDocument spreadsheetDocument, string worksheetName, out SheetData sheetData)
         {        
@@ -283,5 +378,86 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
             return false;
         }
         #endregion
+        #endregion
+
+        #region GetRowInformation
+        protected static Row SearchRow(ref SpreadsheetDocument spreadsheetDocument, SheetData sheetData, List<object> columnConditions)
+        {
+            //Try to read SharedStringTable if it exists. If not, make sure to do NOT try to read from it
+            SharedStringTable sharedStringTable = spreadsheetDocument?.WorkbookPart?.SharedStringTablePart?.SharedStringTable;
+
+            foreach (Row row in sheetData.Elements<Row>())
+            {
+                if (CompareRows(row, sharedStringTable, columnConditions))
+                    return row;
+            }
+
+            //Row not found
+            return null;
+        }
+
+
+        //protected static Row SearchRow(ref SpreadsheetDocument spreadsheetDocument, List<string> columnIDs, List<object> columnConditions)
+        //{
+
+        //}
+
+        protected static bool CompareRows(Row row, SharedStringTable sharedStringTable, List<object> columnConditions)
+        {
+            //Create 'copy'
+            List<object> leftConditions = new(columnConditions);
+            foreach (Cell cell in row.Elements<Cell>())
+            {
+                object entry = ReadCell(cell, sharedStringTable);
+
+                foreach (var condition in leftConditions)
+                {
+                    if (CompareObjects(entry, condition))
+                    {
+                        leftConditions.Remove(condition);
+                        break;
+                    }
+                }
+            }
+
+            //If an condition is left that means that not all conditions were matched
+            return !(leftConditions.Any());
+        }
+        #endregion
+
+        #region Protected_Helper_Methods
+
+        protected static bool CompareObjects(object a, object b)
+        {
+            //Compare datatypes
+            if (a.GetType() == b.GetType())
+            {
+                switch (a)
+                {
+                    case string objstr:
+                        return objstr.Equals(b);
+
+                    case DateTime objdate:
+                        return objdate.Equals(b);
+
+                    case bool objbool:
+                        return objbool.Equals(b);
+
+                    default:
+                        if (a is not null)
+                        {
+                            return (Convert.ToDecimal(a) == Convert.ToDecimal(b));
+                        }
+                        //Both objects are null
+                        else
+                            return true;
+                }
+            }
+
+            return false;
+        }
+
+        #endregion
+
     }
 }

@@ -20,7 +20,7 @@ namespace Zeiss.PublicationManager.Business.Logic.IO.Write
 
 
 
-            WriteDataSet.Insert(filepath, "Publication", dataSet);
+            WriteDataSet.InsertIntelligent(filepath, "Publication", dataSet);
         }
     }
 }
