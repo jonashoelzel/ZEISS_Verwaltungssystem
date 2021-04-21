@@ -120,13 +120,16 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Read
         {
             //Create a List<List<object>> with empty List<object>, so that we can insert cell entries at letter ID in the correct index
             List<List<object>> rowsList = new(columnLetterIDs.Select(x => new List<object>()));
+            int count = rowsList.Count;
 
             foreach (Row row in sheetData.Elements<Row>())
             {
                 foreach (Cell cell in row.Elements<Cell>())
                 {
                     //Get index of 'letterID' in 'columnLettersIDs' to insert cell into correct list in 'rowsList'
-                    rowsList[columnLetterIDs.IndexOf(GetLetterIDOfCellReference(cell.CellReference))].Add(ReadCell(cell, sharedStringTable));
+                    int index = columnLetterIDs.IndexOf(GetLetterIDOfCellReference(cell.CellReference));
+                    if (index >= 0 && index < count)
+                        rowsList[index].Add(ReadCell(cell, sharedStringTable));
                 }
             }
 
