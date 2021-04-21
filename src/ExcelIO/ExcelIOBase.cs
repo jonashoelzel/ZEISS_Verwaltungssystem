@@ -458,6 +458,5 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
         }
 
         #endregion
-
     }
 }
