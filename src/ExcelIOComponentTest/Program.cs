@@ -94,4 +94,12 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.ComponentTest
             Console.WriteLine();
         }
     }
+
+    public class SpreadsheetInfos
+    {
+        public readonly string FolderPath = @"\TestFiles";
+        public readonly string FileName = @"\IntelligentExcelIOComponentTestFileV3.xlsx";
+
+        public readonly string[] WorksheetNames = new string[] { "sheet00", "Sheet0", "sheet1", "sheet2", "sheet3", "Publications", "test" };
+    }
 }

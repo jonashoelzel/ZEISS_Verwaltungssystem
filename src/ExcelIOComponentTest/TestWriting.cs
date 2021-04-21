@@ -14,11 +14,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.ComponentTest.Write
 {
     public class TestWriting
     {
-        private readonly string folderPath = @"\TestFiles";
-        private readonly string fileName = @"\IntelligentExcelIOComponentTestFileV2.xlsx";
-
-        private readonly string[] worksheetNames = new string[] { "sheet00", "Sheet0", "sheet1", "sheet2", "sheet3", "Publications", "test" };
-
+        private readonly SpreadsheetInfos SheetInfo = new();
 
         private readonly int[] IDs = new int[] { 1, 2, 3, 5, 7, 11, 13, 37, 42, 73, 97, 100 };
         private readonly string[] Titles = new string[] { "C#" , ".NET", "Visual Studio", "C# 9", ".NET 5", "Visual Studio 2019", "C-Sharp", "dot-NET", "Visual Studio Code",
@@ -151,14 +147,14 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.ComponentTest.Write
 
         public void WriteRandomDataSet(int count)
         {
-            string directory = System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + folderPath;
+            string directory = System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + SheetInfo.FolderPath;
             Directory.CreateDirectory(directory);
-            string filepath = directory + fileName;
+            string filepath = directory + SheetInfo.FileName;
 
             for (int i = 1; i <= count; i++)
             {
                 //WriteDataSet.Insert(filepath, worksheetNames[Randomizer.Next(worksheetNames.Length)], GenerateDataSet());
-                WriteDataSet.InsertIntelligent(filepath, worksheetNames[Randomizer.Next(worksheetNames.Length)], GenerateRandomDataSet());
+                WriteDataSet.InsertIntelligent(filepath, SheetInfo.WorksheetNames[Randomizer.Next(SheetInfo.WorksheetNames.Length)], GenerateRandomDataSet());
 
                 //System.Threading.Thread.Sleep(500);
 
