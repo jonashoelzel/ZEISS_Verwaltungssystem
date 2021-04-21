@@ -1,35 +1,39 @@
-== Use-Case: Eintrag bearbeiten
+== Use-Case 03: Veröffentlichung bearbeiten
+
+=== Kurzbeschreibung
+In diesem Use-Case wird das Bearbeiten einer Veröffentlichung durch das Sales Department beschrieben.
 
 ===	Kurzbeschreibung der Akteure
-==== Mitarbeiter Sales Department
-Nur die (3) Verantwortlichen im Sales Department haben die Rechte, Veröffentlichungen in die Liste aufzunehmen, zu bearbeiten und neue Bereiche hinzuzufügen.
+
+*Sales Department*
+
+Das Sales Department will eine Veröffentlichung bearbeiten.
 
 === Vorbedingungen
+* Die Software ist installiert und geöffnet
 * Liste der Veröffentlichungen ist nicht leer
 * Sales Department ist als solches autorisiert
 
 === Standardablauf (Basic Flow)
 
-. Der Use Case beginnt, wenn ein Mitarbeiter des Sales Department nach dem Filtern/Suchen nach einem Beitrag einen gefundenen Eintrag bearbeiten will
-. Wählt gewünschten Beitrag aus und wählt dann "Beitrag bearbeiten"
-. Gelangt in dieselbe Ansicht wie auch beim Hinzufügen eines Beitrags
-. Alle bisherigen Einträge können separat verändert werden
-. Die finale Version wird gespeichert
-. Der Use Case ist abgeschlossen.
-
+. Der Use-Case beginnt, wenn das Sales Department "Fachbeitrag suchen" auswählt.
+. Das System gibt eine Übersicht von Veröffentlichungen aus.
+. Das Sales Department wählt bei gewünschter Veröffentlichung "Bearbeiten" aus.
+. Das System gibt einen Workflow zur Bearbeitung von Pflichtangaben und Optionaldaten aus.
+. Das Sales Department ändert den Wert der zu bearbeitenden Angabe.
+. Das Sales Department wählt "Speichern" aus.
+. Das System speichert sämtliche eingetragenen Angaben.
+. Der Use-Case ist abgeschlossen.
 
 === Wesentliche Szenarios
 
-==== Name bearbeiten
-. Sales Department möchte Name eines Autors verändern, da dieser bei einem Artikel falsch eingegeben wurde
-. Sucht über z.B. den Namen des Autors den gewünschten Artikel
-. Wählt Fachbeitrag aus, wählt "bearbeiten"
-. Kann gewünschte(s) Attribut(e) bearbeiten
-. Speichert finale Version
+*Beitrag bearbeiten*
+
+* Sc1: Sales Department Mitarbeiterin A wählt Veröffentlichung X aus Übersicht aus. A ändert unter Art der Veröffentlichung den Wert von "Artikel" zu "Vortrag". A speichert die vorgenommene Änderung ab.
 
 ===	Nachbedingungen
 
-==== Bearbeitete Version 
+==== Bearbeitete Veröffentlichung 
 Attribute eines Fachbeitrags liegen nun verändert im System vor und können nun unter diesen gefunden werden.
 
 

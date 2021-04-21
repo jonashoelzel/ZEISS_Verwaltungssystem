@@ -1,78 +1,89 @@
-== Use-Case: Veröffentlichung hinzufügen
+== Use-Case 01: Veröffentlichung hinzufügen
 
-Ein Autor der ZEISS hat einen Fachbeitrag erstellt/geschrieben, welcher bereits vollständig von einem Herausgeber veröffentlicht wurde. Nun soll diese Veröffentlichung namentlich gelistet werden (inkl. optionaler Angaben), damit sich z.B. andere Mitarbeiter über getätigte Veröffentlichungen informieren können.
+=== Kurzbeschreibung
+In diesem Use-Case wird das Hinzufügen einer Veröffentlichung durch einen Autor (oder das Sales Department) beschrieben.
 
 ===	Kurzbeschreibung der Akteure
-==== Nutzer
-Ein Nutzer hat das Recht, eine Veröffentlichung hinzuzufügen. Jeder Mitarbeiter von ZEISS ist Nutzer und kann einen Antrag einer Listung von einem Fachbeitrag stellen, welcher danach vom Sales Department geprüft und bei Korrektheit veröffentlicht wird. Der Nutzer muss sich nicht einloggen.
 
-==== Sales Department (SD)
-Das Sales Department verfügt über die Rechte, beantragte Einträge zu veröffentlichen sowie auch selbst Beiträge hinzufügen, wenn es dafür über andere Kommunikationskanäle die erforderlichen Infromationen erhalten hat.
+*Autor*
 
-==== Autor
-Ein Autor ist diejenige Person, welche der/die Urheber/in eines Fachbeitrags ist. Der Fachbeitrag wurde bereits in einem Medium veröffentlicht und soll nun intern gelistet werden. 
+Der Autor will eine Veröffentlichung in die Liste eintragen. 
 
-==== Herausgeber
-Entspricht einer öffentlichen Plattform / einem Medium, auf / von welcher der vom Autor erstellten Fachbeitrag inhaltlich und in Gänze veröffentlicht wurde.
+
+*Sales Department*
+
+Das Sales Department überprüft die eingetragenen Veröffentlichungen und kann eine Veröffentlichung im Auftrag eines Autors in die Liste eintragen.
 
 === Vorbedingungen
-* Die Anwendung ist installiert und geöffnet
-* Das SD ist als solches eingeloggt 
+* Fachbeitrag wurde von Herausgeber bereits veröffentlicht
+* Die Software ist installiert und geöffnet
+* Das Sales Department ist als solches eingeloggt 
 
 === Standardablauf (Basic Flow)
 
-. Der Use Case beginnt, wenn ein Nutzer "Veröffentlichung hinzufügen" auswählt
-. Es beginnt ein Workflow, Nutzer wird aufgefordert, schrittweise Pflichtangaben zu machen. 
-* Wenn die jeweils geforderten Eingaben nicht gemacht werden, bekommt der Nutzer eine Fehlermeldung und wird aufgefordert, die letzte Eingabe vollständig zu machen. 
-* Plichtangaben sind folgende:
-** Dokumenttitel (entspricht dem Titel, unter welchem die Veröffentlichung vom Herausgeber veröffentlicht wurde)
-** Vorname, Nachname des Autors
-** Datum der Veröffentlichung
-** Geschäftsbereich des Autors 
-** Art der Veröffentlichung
-. Der Nutzer navgiert mit den Buttons "Weiter" und "Zurück" durch die Angaben.
-. Wenn der Nutzer alle Pflichteingaben gemacht hat, erscheint die Buttons "Veröffentlichung hinzufügen" und "Optionale Angaben".
-* Nutzer kann an der Stelle optionale Angaben hinzufügen und wird auch durch diese mithilfe eines Workflows geleitet. 
-* Bei Unvollständigkeit kann der Nutzer trotzdem über "Weiter" und "Zurück" durch die Eingaben navigieren, ohne dass er zur Eingabe aufgefordert wird. 
-* Optionale Angaben sind folgende:
-** Name des Herausgebers
-** Beschreibung (Infobox)
-** Tags auswählen
-. Nutzer navigiert bis zum Ende über "Weiter" und dann erscheint der Button "Veröffentlichung beantragen".
-. Antrag wird direkt ans Sales Department gesendet, welches den Antrag prüft und bei Vollständigkeit und Korrektheit der Daten veröffentlicht.
-. Der Use Case ist abgeschlossen.
-
-=== Wesentliche Szenarios
-==== Erfolgreiche Hinzufügung eines Fachbeitrags
-Ein Fachbeitrag wurde erfolgreich gelistet und ist nun für alle Nutzer mit allen Informationen sichtbar.
-
-==== Abbruch einer Hinzufügung 
-Es kommt durch den Nutzer zum Abbruch des Hinzufügungs-Flows und die Eingaben werden nicht gespeichert.
-
-==== Falsche Angaben wurden gemacht
-Durch den Nutzer wurden falsche Angaben gemacht, welche dem Sales Department auffallen. Danach bestehen folgende Möglichkeiten:
-
-. Das SD bearbeitet den Fehler, da dem Sales Department die korrekten Angaben vorliegen und veröffentlicht anschließend den Beitrag.
-. Das SD fordert den Nutzer auf, die falschen Angaben zu korrigieren wartet einen neuen Antrag ab.
-
-//==== Abbruch einer Hinzufügung mit Speicherung des Entwurfes
-//Es kommt durch den Nutzer zum Abbruch des Hinzufügungs-Flows, er hat aber die Möglichkeit, seine bereits eingegebenen Daten als Entwurf zu speichern.
+. Der Use-Case beginnt, sobald "Veröffentlichung hinzufügen" auswählt wird.
+. Der Autor (oder das Sales Department) gibt in einem Workflow schrittweise sämtliche Pflichtangaben ein.
+. IF jeweilige Pflichtangabe eingetragen UND "Weiter" auswählt
+.. Der Autor (oder das Sales Department) navigiert mit "Weiter" zur jeweiligen nächsten Pflichteingabe.
+. ELSE jeweilige Pflichtangabe nicht eingetragen UND "Weiter" auswählt
+.. Ausgabe Dialogfenster mit entsprechender Fehlermeldung und Aufforderung zur erneuten Eingabe. 
+.. Der Autor (oder das Sales Department) bestätigt mit "Okay".
+.. Das Dialogfenster schließt sich.
+. Der Autor (oder das Sales Department) navigiert mit "Zurück" zur jeweiligen vorherigen Pflichtangabe.
+. Am Ende des Workflows erscheinen die Buttons "Veröffentlichung hinzufügen" und "Optionale Angaben".
+. IF Auswahl "Veröffentlichung hinzufügen"
+.. Alle bisher eingetragenen Angaben werden abgeschickt.
+. ELSE Auswahl "Optionale Angaben"
+.. Es öffnet sich ein weiterer Workflow zur Eingabe optionaler Daten, welcher nicht vollständig sein muss.
+.. Der Autor (oder das Sales Department) navigiert mit "Weiter" oder "Zurück" jeweils zur nächsten Eingabe oder zur vorherigen Eingabe im Workflow.
+. Das System gibt eine Vorschau der Veröffentlichung als Übersicht aller eingegebenen Daten aus.
+. IF "Vorschau beenden" auswählt
+.. Der Autor (oder das Sales Department) gelangt in den ursprünglichen Workflow
+. ELSE "Veröffentlichen" auswählt
+.. Dialogfenster mit erfolgreichem Hinzufügen wird ausgegeben.
+.. Der Autor (oder das Sales Department) gelangt über "Weiter" zur Landing Page.
+. Antrag wird direkt an das Sales Department gesendet.
+. Der Use-Case ist abgeschlossen.
 
 === Alternative Abläufe
-==== (5.) Bereich hinzufügen
-Wenn Geschäftsbereich noch nicht existiert, kann dieser hinzugefügt werden.
 
-. Neben der Bereichsauswahl gibt es die Möglichkeit, weitere Bereiche hinzuzufügen.
-. Bereich wird dann ins System aufgenommen.
-. Aktueller Beitrag kann dem neu hinzugefügten Bereich zugeordnet werden.
-. Use Case wird bei fortgesetzt bei der Angabe der Optionalen Angaben.
+*(3.) neuen Geschäftsbereich eines Autors hinzufügen*
 
-==== (5.) Tag hinzufügen
+. Der Autor (oder das Sales Department) wählt im Abschnitt "Geschäftsbereich des Autors" des Workflows "Neuer Geschäftsbereich" aus
+. Ein Dialogfenster mit Textfeld öffnet sich
+. Der Autor (oder das Sales Department) trägt in das Textfeld den gewünschten Geschäftsbereich ein
+. Mit der Auswahl von "Hinzufügen" wird der Geschäftsbereich anschließend hinzugefügt
+
+////
+==== (.) neuen Tag hinzufügen
 Wenn ein Tag zu Beschreibungszwecken hinzugefügt werden soll, welcher noch nicht im System existiert, kann dieser hinzugefügt werden.
 
 . Neben der Tagauswahl gibt es die Möglichkeit, weitere Tags hinzuzufügen.
 . Tag kann danach unter den optionalen Angaben ausgewählt und dem Beitrag hinzugefügt werden.
 . Use Case wird bei fortgesetzt bei der Angabe der Optionalen Angaben.
+////
+
+=== Wesentliche Szenarios
+
+*Erfolgreiches Hinzufügen einer Veröffentlichung*
+
+* Sc1: Der Autor A wählt im System "Veröffentlichung hinzufügen" aus. Er gibt im Workflow Titel,  ein und navigiert mit "Weiter" zur nächsten Pflichteingabe. Nachdem er sämtlich Eingaben getätigt hat, wählt er am Ende des Workflows "Veröffentlichung hinzufügen" aus. Eine Veröffentlichung wurde erfolgreich hinzugefügt und ist nun für alle Autoren (oder das Sales Department) mit allen Informationen sichtbar.
+
+*Abbruch beim Hinzufügen*
+
+* Sc2: Der Autor B befindet sich im Workflow zu Eingabe der Pflichtdaten. Autor B schließt die Anwendung. Das System bricht die Eingabe ab und verwirft alle Eingaben.
+
+*Falsche Angaben wurden gemacht*
+
+* Sc3: Der Autor C wählt im System "Veröffentlichung hinzufügen" aus. Autor C gibt als Titel "XYZ" ein, anstelle von "ABC". Nach der Eingabe der restlichen Angaben speichert er die Veröffentlichung. Das Sales Department Mitarbeiterin X bemerkt bei Prüfung der Angaben den Fehler. Folgende Möglichkeiten bestehen anschließend:
+
+** Sales Department Mitarbeiterin X bearbeitet den Fehler, da Sales Department Mitarbeiterin X die korrekten Angaben vorliegen und fügt die Veröffentlichung der Liste hinzu.
+** Sales Department Mitarbeiterin X fordert Autor C auf, die falschen Angaben zu korrigieren.
+
+////
+==== Abbruch beim Hinzufügen mit Speicherung des Entwurfes
+Der Workflow wird durch den Autor (oder das Sales Department) abgebrochen, es besteht aber die Möglichkeit, seine bereits eingegebenen Daten als Entwurf zu speichern.
+////
 
 ===	Nachbedingungen
 
