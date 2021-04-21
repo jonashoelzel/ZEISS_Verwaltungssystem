@@ -123,17 +123,8 @@ Abgeschlossen in Iteration 4:
 |===
 
 == Tests
+[%header]
 |===
-| Issue #Nr. | Inhalt | Tests | Ergebnins |
-| Issue #Nr. | Inhalt | Tests | Ergebnins |
-| Issue #Nr. | Inhalt | Tests | Ergebnins |
-| Issue #Nr. | Inhalt | Tests | Ergebnins |
-| Issue #Nr. | Inhalt | Tests | Ergebnins |
-| Issue #Nr. | Inhalt | Tests | Ergebnins |
-| Issue #Nr. | Inhalt | Tests | Ergebnins |
-| Issue #Nr. | Inhalt | Tests | Ergebnins |
-| Issue #Nr. | Inhalt | Tests | Ergebnins |
-| Issue #Nr. | Inhalt | Tests | Ergebnins |
-| Issue #Nr. | Inhalt | Tests | Ergebnins |
-| Issue #Nr. | Inhalt | Tests | Ergebnins |
+| Issue #Nr. | Inhalt | Tests | Ergebnins 
+
 |===
