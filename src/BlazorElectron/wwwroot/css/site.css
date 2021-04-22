@@ -3,11 +3,12 @@
 body {
     background-color: #d4f8ff;
 }
-/*Button Veröffentlichung hinzufügen*/
+
+/*Button Veröffentlichung hinzufügen(Landing Page)*/
 .add_publication {
     border: 3px groove rgba(28,110,164,0.55);
     border-radius: 15px;
-    background-color: #007dc1;
+    background-color: #2449a4;
     color: #ffffff;
     font-family: Arial;
     font-size: 150%;
@@ -19,12 +20,15 @@ body {
     left: 20%;
     width: 23%;
     height: 20%;
+    min-width: 210px;
+    min-height: 50px;
 }
-/*Button Fachbeitrag suchen*/
+
+/*Button Fachbeitrag suchen(Landing Page)*/
 .search_publication {
     border: 3px groove rgba(28,110,164,0.55);
     border-radius: 15px;
-    background-color: #007dc1;
+    background-color: #2449a4;
     color: #ffffff;
     font-family: Arial;
     font-size: 150%;
@@ -36,20 +40,24 @@ body {
     right: 20%;
     width: 23%;
     height: 20%;
+    min-width: 210px;
+    min-height: 50px;
 }
+
 /*Bild ZEISS Schriftzug*/
 .logo {             
-    object-fit: fill;
-    display: grid;
-    margin: auto;
-    height: 20vh;
-    width: 50%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    height: 50%;
+    width: 15%;
 }
+
 /*Weiter-Button*/
 .continue {
     border: 3px groove rgba(28,110,164,0.55);
     border-radius: 15px;
-    background-color: #007dc1;
+    background-color: #2449a4;
     color: #ffffff;
     font-family: Arial;
     font-size: 150%;
@@ -58,15 +66,18 @@ body {
     line-height: 20px;
     position: absolute;
     bottom: 7%;
-    right: 10%;
+    right: 7%;
     width: 20%;
     height: 10%;
+    min-width: 130px;
+    min-height: 50px;
 }
+
 /*Zurück-Button*/
 .back {
     border: 3px groove rgba(28,110,164,0.55);
     border-radius: 15px;
-    background-color: #007dc1;
+    background-color: #2449a4;
     color: #ffffff;
     font-family: Arial;
     font-size: 150%;
@@ -75,17 +86,20 @@ body {
     line-height: 20px;
     position: absolute;
     bottom: 7%;
-    left: 10%;
+    left: 7%;
     width: 20%;
     height: 10%;
+    min-width: 130px;
+    min-height: 50px;
 }
-/*Veröffentlichung hinzufügen-Button*/
+
+/*Veröffentlichung hinzufügen-Button(Speichern)*/
 .addPub {
     border: 3px groove rgba(28,110,164,0.55);
     border-radius: 15px;
-    background-color: #007dc1;
+    background-color: #2449a4;
     color: #ffffff;
-    font-family: Arial;
+    font-family: Consolas;
     font-size: 150%;
     font-weight: bold;
     text-align: center;
@@ -95,88 +109,10 @@ body {
     right: 3%;
     width: 30%;
     height: 8%;
-}
-/*
-.mandatory-types {
-    display: inline-flex;
-    width: 95%;
-    position: relative;
-    user-select: none;
-    -webkit-tap-highlight-color: rgb(255, 255, 255);
-    position: relative;
-    z-index: 1;
-    margin: 0 auto;
-    font-size: 14px;
-    border: 1px solid #263eab;
-    border-radius: 3px;
-    color: #263eab;
+    min-width: 225px;
+    min-height: 50px;
 }
 
-    .mandatory-types > input {
-        display: none;
-    }
-
-        .mandatory-types > input:checked + label {
-            color: #fff;
-        }
-
-        .mandatory-types > input:nth-of-type(1):checked ~ label:last-of-type:before {
-            transform: translateX(calc(0% + 0px));
-        }
-
-        .mandatory-types > input:nth-of-type(2):checked ~ label:last-of-type:before {
-            transform: translateX(calc(100px));
-        }
-
-        .mandatory-types > input:nth-of-type(3):checked ~ label:last-of-type:before {
-            transform: translateX(calc(200% + 0px));
-        }
-
-        .mandatory-types > input:nth-of-type(4):checked ~ label:last-of-type:before {
-            transform: translateX(calc(300% + 0px));
-        }
-
-        .mandatory-types > input:nth-of-type(5):checked ~ label:last-of-type:before {
-            transform: translateX(calc(400% + 0px));
-        }
-
-    .mandatory-types label {
-        flex: 1;
-        text-align: center;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        cursor: pointer;
-    }
-
-        .mandatory-types label:last-of-type:before {
-            content: "";
-            display: block;
-            max-width: calc(20% - 0px);
-            margin: 0px;
-            position: absolute;
-            top: 0;
-            right: 0;
-            bottom: 0;
-            left: 0;
-            z-index: -1;
-            transform: translateX(0);
-        }
-    .mandatory-types label {
-        padding: 6px 3px;
-        transition: color 250ms cubic-bezier(0, 0.95, 0.38, 0.98);
-    }
-
-        .mandatory-types label:before {
-            background: #263eab;
-            transition: all 250ms cubic-bezier(0, 0.95, 0.1, 0.98);
-        }
-
-        .mandatory-types label:not(:last-child) {
-            border-right: 1px solid #263eab;
-        }
-*/
-/*Panel*/
 .panel-title {
     font-size: 150%;
     font-weight: bold;
@@ -190,20 +126,23 @@ body {
     height: 10%;
     font-weight: bold;
 }
+
  .panel-body {
     border: 3px groove rgba(28,110,164,0.55);
     border-radius: 15px;
-    padding: 10%;
+    padding: 4%;
  }
 
 input[type=text] {
     width: 75%;
     margin-left: 5%;
 }
+
 /*Autor Panel*/
 .author-default {
     margin: 3%;
 }
+
 /*Geschäftsbereich Panel*/
 .division-select {
     width: 50%;
@@ -211,6 +150,7 @@ input[type=text] {
     left: 25%;
     top: 80%;
 }
+
 /*Neuer Geschäftsbereich Button*/
 .addDivision {
     position: relative;
@@ -219,16 +159,12 @@ input[type=text] {
     margin-top: 10%;
     padding: 8px;
 }
-/*Box Datum auswählen*/
-#releaseDate {
-    position: absolute;
-    left: 30%;
-    top: 80%;
-}
+
 /*Beschreibung panel*/
 .description-default {
     padding: 4%;
 }
+
 /*Beschreibung panel body*/
 .description-panel-body {
     border: 3px groove rgba(28,110,164,0.55);
@@ -237,12 +173,14 @@ input[type=text] {
     width: 110%;
     height: 350%;
 }
+
 /*Textbox Beschreibung-Titel*/
 #titleDescr {
     position: absolute;
     left: 35%;
     width: 40%;
 }
+
 /*Textbox Beschreibung-Beschreibung*/
 #description {
     position: absolute;
@@ -250,6 +188,41 @@ input[type=text] {
     width: 60%;
     height: 150%;
 }
+
+/*Popup-Fenster "Erfolgreich hinzugefügte Veröffentlichung"*/
+.modal {
+    display: block;
+    font-family: Arial;
+    background-color: rgba(10,10,10,.8);
+}
+
+.modal-dialog {
+    border: 3px groove rgb(8 4 120);
+    border-radius: 10px;
+    position: center;
+    top: 30%;
+}
+
+.modal-content {
+    background-color: #6c9ef8;
+}
+
+.modal-header {
+    padding: 2%;
+}
+
+#backToLandingPage {
+    border: 3px groove rgba(28,110,164,0.55);
+    border-radius: 20px;
+    background-color: #2449a4;
+    color: #ffffff;
+    font-family: Arial;
+    font-size: 150%;
+    font-weight: bold;
+    text-align: center;
+    line-height: 20px;
+} 
+
 /*drin lassen*/
 #blazor-error-ui {
     background: lightyellow;
@@ -269,3 +242,8 @@ input[type=text] {
         right: 0.75rem;
         top: 0.5rem;
     }
+
+/*Validierung*/
+.validation-message {
+    color: red;
+}
