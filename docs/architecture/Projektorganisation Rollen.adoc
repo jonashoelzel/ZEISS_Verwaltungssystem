@@ -1,0 +1,31 @@
+= Rollenverteilung im Team
+
+Unser Team besteht aus Stephan Joneleit, Nina Püschmann, Oliver Wünsche, Jonas Hölzel, Vanessa Bayer, Peter Holland-Moritz und Jean-Pierre Kaiser.
+
+Nina absolviert während SE 2 ihr Praxis Semester bei Zeiss Digital Innovation und übernimmt somit in diesem Semester nicht mehr die Rolle als Projekt-Leiter sondern den Proxy-Productowner. Als Proxy-Productowner übernimmt sie nun eher die Rolle als Vermittler zwischen Auftragsgeber und Entwicklungsteam. Dabei ist zu beachten, dass sie nun primär im Arbeitsgeber Verhältnis zum Team steht, welcher die Anforderungen des Productowners analysiert, als Issues aufbereitet und mit dem Team bespricht.
+
+Das Development Team entwickelt das Produkt und stellt sicher, dass alle Features zuverlässig funktionieren. 
+
+Jonas hat die Rolle des Deployment Engineer und arbeitet mit Oliver am Web Front-End als Entwickler und stellen Oberfläche und Eingabefunktionalitäten zur verfügung.
+
+Stefan arbeitet primär am Back-End und der  Integration und Funktionalität von Excel und deren Kommunikation mit der Web-Anwendung. 
+-Styleguides?
+
+Jean-Pierre arbeitet mit Peter zusammen am Testing, wobei Jean-Pierre auch an der Oberflächengestalltung gearbeitet hat und Peter mit an der Dokumentation.
+
+Vanessa arbeitet primär an der Dokumentation und stellt sicher, dass die Dokumentation vollständig den Angaben entspricht und alle Schritte dokumentiert werden. 
+Die erstellung und überprüfung der Iterationspläne wird von Vanessa und Nina/Paul getätigt.
+
+Hendrik Loesch ist unser Auftragsgeber von Zeiss Digital Innovation. Herr Loesch hat als Kunde klare Vorstellungen des Produkts und kommuniziert diese direkt mit uns. Zur Abstimmung unserer Arbeit und abgleichen der Anforderungen werden nach 2-wöchige Sprints in einem Meeting mit Herr Loesch diese besprochen.
+
+Damit die Entwickler nicht von neuen Anforderungen überschüttet werden, handelt Nina bzw. Herr Loesch den Scrum Master um realistische Sprint Ziele zu realisieren.
+
+
+
+
+
+---------------
+Projektorganisation (Team, Rollen, Kommunikation im Team und zum Auftraggeber)
+
+Mit rein?
+-Weekly Meeting 17:00 VS Meeting mit Hendrik (großes Sprint Meeting), Scrum Poker, QA (JP Quallitätssicherung)

@@ -1,0 +1,41 @@
+= Technologien und Tools
+
+== 1. Nutzung von Excel als Datenbank 
+
+Excel als Datenbank zu verwenden wurde als Bedingung vom Kunden gestellt. Dies reduziert für unseren Kunden stark den Aufwand, da keine Datenbank eingerichtet werden muss. Außerdem sind dadurch die Daten unabhängig von Softwareausfällen und relativ Robust gespeichert, da Excel eine lang bekannte und gewartete Software ist. 
+
+
+== 2. Blazor als Framework
+
+Frameworks ermöglichen eine einfache Oberflächengestlaltung und sind somit Kern Bestandteil unseres Projekts. Als zu verwendendes Framework wurde Angular, React und Blazor in betracht gezogen. Als Programmiersprache hat der Kunde sich dabei C# gewünscht und so ist die Entscheidung auf Blazor gefallen. Blazor hat den Vorteil, dass die gesamte Webanwendung als Single-Page-Anwendung also aus einem einzigen HTML-Dokument besteht und Inhalte dynamisch nachgeladen werden können.
+
+Zudem wird WebAssemply zur Verfügung gestellt und JavaScript Kenntnisse sind somit nicht mehr zwingend für die Entwicklung unserer Web-Anwendung. Weiterhin wird die intigrierte .Net Bibliothek durch ihre ausgeprägte Funktionsbibilothek den Programmieraufwand für neue Funktionen reduzieren.
+
+
+== 3. Electron zur Realisierung einer Desktop Anwendung
+
+Durch Electron können in HTML, CSS und JavaScript geschriebene Desktop-Anwendungen ausgeführt werden. In Kombination mit Blazor wird so die installation von Server und Client auf ein einzelnes installationspaket reduziert. Diese Kombination erfüllt die Anforderungen des Kunden, dass die Software als .exe zu installieren ist.
+
+== 4. Open XML
+Open XML ist eine bibliothek, die für die Kommunikation zwischen unserer Excel Datenbank und den Frameworks brauchen um dynamisch inhalte aus Excel auszulesen oder zu ändern. Open XML wird außerdem von Blazor vorrausgesetzt und ist mit .Net kompatibel.
+
+
+= Tools
+
+== Teams 
+
+Microsoft Teams ist ein kostenloses Chat-Video Programm auf dem wir unsere Wöchentlichen Meetings innerhalb des Teams und auch mti dem Kunden abhalten. Teams unterstützt einen eine einfachen Daten Speicherung, wo wir Protokolle und Dokumentations Datein ablegen.
+
+== Visual Studio
+
+Visual Studio ist eine Entwicklungsumgebung, mit der wir im laufe des Studiums mehrfach vertraut gemacht wurden. Aufgrund der guten C# unterstützung verwenden wir Visual Studio
+für die meiste Software Entwicklung.
+
+== Visual Studio Code
+
+Visual studio Code ist ein optimisierter Editor, welcher verschiedene Programmiersprachen unterstützt und debuggen lässt. Visual Studio Code unterstützt AsciiDoc-Datein, welche das vorgegebene Format der Dokumentation sind. AsciiDoc-Datein lassen sich leicht und schnell schreiben durch eine live aktualisierung der Dokumentenvorschau.
+
+== Github
+
+Github ermöglicht ein effektives zusammenarbeiten mehrerer Personen an dem gleichen Projekt oder Datei. Wir verwenden Github primär zum Austausch während der Entwicklung und im zusammenspiel mit  der Software Gitkraken lassen sich änderungen und neue COmmits leicht managen.
+
