@@ -1,6 +1,6 @@
 ﻿@page "/addPublicationType"
 @using Zeiss.PublicationManager.Data.DataSet.Model
-@using Zeiss.PublicationManager.Business.Logic
+@using Zeiss.PublicationManager.Business.Logic.IO.Write
 
 @inject NavigationManager NavigationManager
 @inject PublicationDataSetModel Publication
@@ -71,7 +71,7 @@
 
     private void Save()
     {
-        DataLogic.Save(Publication);
+        WriteData.Save(Publication);
         SuccessfulSavePublication();
     }
     @*
