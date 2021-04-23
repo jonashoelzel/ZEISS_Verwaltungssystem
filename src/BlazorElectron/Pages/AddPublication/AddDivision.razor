@@ -37,8 +37,7 @@
             <h4 class="panel-title">Geschäftsbereich</h4>
         </header>
         <div class="panel-body">
-            <InputSelect class="form-control" @bind-Value="@Publication.Division">
-                <option></option>
+            <InputSelect DisplayName="division" class="division-select" @bind-Value="Publication.Division.Name">
                 <option>DAC</option>
                 <option>DQA</option>
                 <option>DQA I</option>

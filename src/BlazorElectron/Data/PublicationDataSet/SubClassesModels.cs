@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 using Zeiss.PublicationManager.Data.Excel.IO;
 using Zeiss.PublicationManager.Data.DataSet;
@@ -64,8 +64,16 @@ namespace Zeiss.PublicationManager.Data.DataSet.Model
     {
         public PublisherModel()
         {
-            ID = new Guid();
+            ID = Guid.NewGuid();
         }
+        [Required(ErrorMessage = "Name ist ein Pflichtfeld")]
+        [MaxLength(100, ErrorMessage = "Name ist zu lang")]
+        [MinLength(1, ErrorMessage = "Bitte Name eingeben")]
+        public string Name { get; set; }
+    }
+
+    public class DivisionModel : DataObject, IDivision
+    {
         [Required(ErrorMessage = "Name ist ein Pflichtfeld")]
         [MaxLength(100, ErrorMessage = "Name ist zu lang")]
         [MinLength(1, ErrorMessage = "Bitte Name eingeben")]
