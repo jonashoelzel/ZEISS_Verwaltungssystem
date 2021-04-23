@@ -24,7 +24,7 @@
     </div>
 }
 
-<EditForm Model="Publication.TypeOfPublication" OnInvalidSubmit="@HandleInvalidSubmit" OnValidSubmit="@SuccessfulSavePublication">
+<EditForm Model="Publication.TypeOfPublication" OnInvalidSubmit="@HandleInvalidSubmit" OnValidSubmit="@CheckEvent">
 
     <DataAnnotationsValidator />
 
@@ -46,14 +46,16 @@
         </div>
     </section>
 
-    <button class="addPub" type="submit">Veröffentlichung hinzufügen</button>
+    <button class="addPub" type="submit" @onclick="SetNextFalse">Veröffentlichung hinzufügen</button>
     <button class="back" type="button" @onclick="NavigateToPreviousScreen">Zurück</button>
-    @*<button class="continue" type="submit" >Optionale Angaben</button>*@
+    <button class="continue" type="submit" @onclick="SetNextTrue">Optionale Angaben</button>
 
 </EditForm>
 
 @code
 {
+    bool Next = true;
+
     private void NavigateToPreviousScreen()
     {
         NavigationManager.NavigateTo("addDateOfRelease");
@@ -69,11 +71,34 @@
         NavigationManager.NavigateTo("/");
     }
 
+    private void SetNextFalse()
+    {
+        Next = false;
+    }
+
+    private void SetNextTrue()
+    {
+        Next = true;
+    }
+    /* differentiate between the buttons */
+    private void CheckEvent()
+    {
+        if(Next)
+        {
+            NavigateToNextScreen();
+        }
+        else
+        {
+            Save();
+        }
+    }
+
     private void Save()
     {
         WriteData.Save(Publication);
         SuccessfulSavePublication();
     }
+
     @*
         private void Preview()
         {
@@ -88,7 +113,7 @@
 
     // Dialogfenster zum erfolgreichen Hinzufügen einer Veröffentlichung
     bool ShowPopup = false;
-    private void SuccessfulSavePublication()
+    private void PopupSuccessfulSave()
     {
         ShowPopup = true;
     }

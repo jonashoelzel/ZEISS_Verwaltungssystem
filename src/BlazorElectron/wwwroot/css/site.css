@@ -69,7 +69,7 @@ body {
     right: 7%;
     width: 20%;
     height: 10%;
-    min-width: 130px;
+    min-width: 190px;
     min-height: 50px;
 }
 
@@ -89,7 +89,7 @@ body {
     left: 7%;
     width: 20%;
     height: 10%;
-    min-width: 130px;
+    min-width: 190px;
     min-height: 50px;
 }
 
@@ -162,31 +162,11 @@ input[type=text] {
 
 /*Beschreibung panel*/
 .description-default {
-    padding: 4%;
+    margin: 3%;
 }
 
-/*Beschreibung panel body*/
-.description-panel-body {
-    border: 3px groove rgba(28,110,164,0.55);
-    border-radius: 15px;
-    padding: 10%;
-    width: 110%;
-    height: 350%;
-}
-
-/*Textbox Beschreibung-Titel*/
-#titleDescr {
-    position: absolute;
-    left: 35%;
-    width: 40%;
-}
-
-/*Textbox Beschreibung-Beschreibung*/
 #description {
-    position: absolute;
-    left: 40%;
-    width: 60%;
-    height: 150%;
+    resize: none;
 }
 
 /*Popup-Fenster "Erfolgreich hinzugefügte Veröffentlichung"*/

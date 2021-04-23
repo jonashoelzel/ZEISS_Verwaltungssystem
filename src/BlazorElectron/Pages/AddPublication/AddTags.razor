@@ -1,4 +1,4 @@
-﻿@page "/addDescription"
+﻿@page "/addTags"
 @using Zeiss.PublicationManager.Data.DataSet.Model
 @using Zeiss.PublicationManager.Business.Logic
 
@@ -25,44 +25,37 @@
 }
 
 <EditForm Model="@Publication">
-    <section class="description panel-default">
+
+    <section class="tags panel-default">
         <header class="panel-heading">
-            <h4 class="panel-title">Zusätzliche Information</h4>
+            <h4 class="panel-title">Tags</h4>
         </header>
-        <div class="description panel-body">
-            <form>
-                <div class="description-default">
-                    <label for="titleDescr">Veröffentlichungstitel</label>
-                    <InputText id="titleDescr" class="form-control" @bind-Value="@Publication.AdditionalInformation" />
-                </div>
-                <div class="description-default">
-                    <label for="description">Beschreibung</label>
-                    <InputTextArea id="description" class="form-control" @bind-Value="@Publication.Description" rows="5" />
-                </div>
-            </form>
+        <div class="tags panel-body">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="Frontend" Value="" />
+                <label class="form-check-label" for="Frontend">Frontend</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="Backend" Value="" />
+                <label class="form-check-label" for="Backend">Backend</label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="Development" Value="" />
+                <label class="form-check-label" for="Development">Development</label>
+            </div>
         </div>
     </section>
 
-    <button class="addPub" type="button" @onclick="Save">Veröffentlichung hinzufügen</button>
-    <button class="back" type="button" @onclick="NavigateToPreviousScreen">Pflichtangaben</button>
-    <button class="continue" type="button" @onclick="NavigateToNextScreen">Weiter</button>
+    <button class="addPub" type="submit" @onclick="Save">Veröffentlichung hinzufügen</button>
+    <button class="back" type="button" @onclick="NavigateToPreviousScreen">Zurück</button>
+
 </EditForm>
 
 @code
 {
     private void NavigateToPreviousScreen()
     {
-        NavigationManager.NavigateTo("addPublicationType");
-    }
-
-    private void NavigateToNextScreen()
-    {
         NavigationManager.NavigateTo("addPublisher");
-    }
-
-    private void NavigateToLandingPage()
-    {
-        NavigationManager.NavigateTo("/");
     }
 
     private void Save()
@@ -71,17 +64,15 @@
         PopupSuccessfulSave();
     }
 
+    private void NavigateToLandingPage()
+    {
+        NavigationManager.NavigateTo("/");
+    }
+
     // Dialogfenster zum erfolgreichen Hinzufügen einer Veröffentlichung
     bool ShowPopup = false;
     private void PopupSuccessfulSave()
     {
         ShowPopup = true;
     }
-
-    @*
-        private void Preview()
-        {
-            NavigationManager.NavigateTo("Preview");
-        }
-    *@
 }
