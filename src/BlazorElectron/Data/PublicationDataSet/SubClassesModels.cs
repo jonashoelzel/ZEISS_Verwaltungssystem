@@ -1,4 +1,4 @@
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 using Zeiss.PublicationManager.Data.Excel.IO;
 using Zeiss.PublicationManager.Data.DataSet;
@@ -10,7 +10,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.Model
     {
         public PublicationTypeModel()
         {
-            ID = new Guid();
+            ID = Guid.NewGuid();
         }
         [Required(ErrorMessage = "Art der Veröffentlichung ist ein Pflichtfeld")]
         [MaxLength(100, ErrorMessage = "Name ist zu lang")]
@@ -22,7 +22,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.Model
     {
         public StateModel()
         {
-            ID = new Guid();
+            ID = Guid.NewGuid();
         }
         [Required(ErrorMessage = "Name ist ein Pflichtfeld")]
         [MaxLength(100, ErrorMessage = "Name ist zu lang")]
@@ -34,7 +34,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.Model
     {
         public TagModel()
         {
-            ID = new Guid();
+            ID = Guid.NewGuid();
         }
         [Required(ErrorMessage = "Name ist ein Pflichtfeld")]
         [MaxLength(100, ErrorMessage = "Name ist zu lang")]
@@ -46,8 +46,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.Model
     {
         public AuthorModel()
         {
-            // ID = Logic.GetNewAuthorID();
-            ID = new Guid();
+            ID = Guid.NewGuid();
         }
         [Required(ErrorMessage = "Vorname ist ein Pflichtfeld")]
         [MaxLength(100, ErrorMessage = "Name ist zu lang")]

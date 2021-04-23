@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -13,7 +13,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.Model
     {
         public PublicationDataSetModel()
         {
-            ID = new Guid();
+            ID = Guid.NewGuid();
         }
 
         // Publication Information
