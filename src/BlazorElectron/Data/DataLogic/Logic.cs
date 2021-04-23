@@ -19,9 +19,12 @@ namespace Zeiss.PublicationManager.Business.Logic.IO.Write
             // var excelIO = new WriteDataSet("filePaht", "sheetName");
             // excelIO.Insert(dataSet);
 
+            // Debug only
+            //if (File.Exists(filepath))
+                // File.Delete(filepath);
 
-
-            WriteDataSet.InsertIntelligent(filepath, "Publication", dataSet);
+            // WriteDataSet.InsertIntelligent(filepath, "Publication", dataSet);
+            WriteDataSet.InsertPublication(filepath, dataSet);
         }
     }
 }

@@ -26,6 +26,33 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Write
             InsertRow(ref spreadsheetDocument, sheetData, letterIDsAndValues);
             SaveSpreadsheetDocument(ref spreadsheetDocument);
         }
+
+        public static void Insert(string filepath, string worksheetName, List<string> columnNames, List<object> columnValues)
+        {
+            SpreadsheetDocument spreadsheetDocument = OpenSpreadsheetDocument(filepath, worksheetName, out SheetData sheetData);
+            List<string> columnLetterIDs = GetColumnLetterIDsOfColumnNames(ref spreadsheetDocument, sheetData, columnNames);
+            InsertRow(ref spreadsheetDocument, sheetData, columnLetterIDs, columnValues);
+            SaveSpreadsheetDocument(ref spreadsheetDocument);
+        }
+
+        public static void Insert(string filepath, string worksheetName, Dictionary<string, object> attributesDict)
+        {
+            var columnNames = new List<string>();
+            var columnValues = new List<object>();
+            foreach (var attribute in attributesDict)
+            {
+                columnNames.Add(attribute.Key);
+                columnValues.Add(attribute.Value);
+            }
+            var spreadsheetDocument = OpenSpreadsheetDocument(filepath, worksheetName, out SheetData sheetData);
+
+            var columnLetterIDs = GetColumnLetterIDsOfColumnNames(ref spreadsheetDocument, sheetData, columnNames);
+
+            
+            InsertRow(ref spreadsheetDocument, sheetData, columnLetterIDs, columnValues);
+            SaveSpreadsheetDocument(ref spreadsheetDocument);
+        }
+
         #endregion
 
         #region Private_Insert
