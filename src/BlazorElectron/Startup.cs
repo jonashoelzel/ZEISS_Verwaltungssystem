@@ -13,7 +13,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 
-using Zeiss.PublicationManager.Data.IO.Excel;
+using Zeiss.PublicationManager.Data.Excel.IO;
 using Zeiss.PublicationManager.Data.DataSet;
 using Zeiss.PublicationManager.Data.DataSet.Model;
 

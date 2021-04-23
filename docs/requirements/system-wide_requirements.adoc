@@ -1,5 +1,5 @@
 = System-Wide Requirements: ZEISS Verwaltungssystem
-Nina Püschmann s79289@htw-dresden.de; Vorname2 Nachname2 <email2@domain.org>; Vorname3 Nachname3 <email3@domain.org>
+Nina Püschmann s79289@htw-dresden.de; Stephan Joneleit <s80463@htw-dresden.de>; Vorname3 Nachname3 <email3@domain.org>
 {localdatetime}
 include::../_includes/default-attributes.inc.adoc[]
 // Platzhalter für weitere Dokumenten-Attribute
@@ -15,47 +15,57 @@ In diesem Dokument werden die systemweiten Anforderungen für das Projekt "ZEISS
 NOTE: Die funktionalen Anforderungen, die sich aus der Interaktion von Nutzern mit dem System ergeben, sind als Use Cases in einem separaten Dokument festgehalten.
 
 == Systemweite funktionale Anforderungen (F)
-* F1: Mit Ausnahme der Einsicht und Filterung nach bestimmten Einträgen muss das System eine Authorisierung fordern.
-* F2: Der Export der Daten erfolgt in eine Excel-Datei (ist durch die Verwendung von Excel als Daten Bank gegeben).
+* F1: Mit Ausnahme der Einsicht und Filterung nach bestimmten Einträgen muss das System eine Authentifizierung und Authorisierung fordern, wenn Einträge geändert werden sollen.
+* F2: Es sollen Einträge hinzugefügt, geändert oder gelöscht werden können.
+* F3: Einträge sollen sortiert und gefiltert werden können.
+
 
 == Qualitätsanforderungen für das Gesamtsystem
 
 === Benutzbarkeit (Usability)
-* U1: Ein durchschnittlicher Internetnutzer muss ohne Anleitung in der Lage sein, alle Funktionen des Systems zu bedienen.
-* U2: Keine Aktion wird mehr als 5 Mausklicks erforderlich machen.
-* U3: Mehr als 80% der User sollen zufrieden mit der Anwendung sein.
-* U4: Jede Fehlermeldung muss den User direkt zum Fehlerursprung dirigieren.
-* U5: Eine Systemmeldung gibt dem User direktes Feedback zu gemachten Einträgen.
+* U1: Das System soll intuitiv und selbsterklärend sein, sodass der Benutzer nicht in externen Dokumentation zur Bedinung nachschlagen muss.
+* U2: Keine Aktion soll mehr als 5 Mausklicks benötigen.
+* U3: Jede Fehlermeldung muss deskriptiv sein und den User direkt zum Fehlerursprung dirigieren.
+* U4: Eine Systemmeldung gibt dem User direktes Feedback zu gemachten Einträgen.
+
 
 === Zuverlässigkeit (Reliability)
-* R1: Das System soll 99,5% Verfügbarkeit pro Jahr (43,8h Downtime pro Jahr) mit maximal 4h Ausfallzeit am Stück haben.
+* R1: Der Kunde wünscht sich eine Verfügbarkeit von 99,5% pro Jahr (43,8h Downtime pro Jahr) mit maximal 4h Ausfallzeit am Stück.
 * R2: Nach Störungen muss das System alle eingegebenen Daten wiederherstellen. 
+* R3: Die Einträge sollen alle konistent gespeichert werden.
+
 
 === Leistung (Performance)
-* P1: Das System muss bis zu 20 Nutzer gleichzeitig unterstützen können.
+* P1: Das System soll bis zu 20 Nutzer gleichzeitig unterstützen können.
 * P2: Der Wechsel zwischen zwei verschiedenen Ansichten darf für den Nutzer nicht länger als 2 Sekunden dauern.
-* P3: Start- und Shutdownzeit darf nicht länger als 8 Sekunden dauern.
+* P3: Start- und Shutdownzeit dürfen nicht länger als 8 Sekunden dauern.
+
 
 === Unterstützbarkeit (Supportability)
 * S1: Das System soll einfach um Änderungsmitteilungen erweiterbar sein.
 * S2: Das System soll einfach um eine Statistikerzeugung zu den Einträgen erweiterbar sein.
-* S3: Die Anwendung wird nicht mit firmeninterner IT korrelieren.
-* S4: Das System soll auf Windows 10 laufen.
+* S3: Das System soll modular genug sein, um zukünftig um noch unbekannte Funktionalitäten erweitert werden zu können.
+
 
 == Zusätzliche Anforderungen
 === Einschränkungen (Constraints)
 * C1: Das System muss Windows-kompatibel sein.
-* C2: Das System wird eine online-Datenbank nutzen.
-* C3: Das Backend wird mit C# programmiert.
-* C4: Das Frontend wird mit HTML/CSS programmiert.
-* C5: Die Anwendung wird über das Webframework Blazor laufen.
+* C2: Das System soll auf Windows 10 laufen.
+* C3: Die Anwendung soll eine lokale ausführbare Datei sein.
+* C4: Das System sollte alle nötigen Komponenten selbst mitbringen und soll sofort einsatzbereit sein, ohne das der Kunde zuvor bestimmte Dinge einrichten muss.
+* C5: Die Daten sollen in einer Excel-Tabelle gespeichert werden.
+* C6: Das System soll alle Daten mit einem Clod-Speicher synchonisieren (die Daten werden in einer internen Cloud gespeichert).
+* C7: Das Backend soll in C#/.NET programmiert.
+* C8: Das Frontend soll mit Blazor (HTML/CSS und C#) programmiert werden und dann via Electron.NET zu einer lokalen App kompiliert werden.
 
-=== Organisatorische Randbedingungen (Interface Requirements)
+
+=== Interface Requirements
 * I1: Die Anwendung muss für verschiedene Bildschirmgrößen nutzbar sein.
 * I2: Filter sollen über ein ausklappbares Akkordeon auswählbar sein.
 * I3: Ein Workflow soll den Nutzer durch eine Hinzufügung navigieren.
-* I4: Das Interface soll sehr clean sein und dem Standard von gewohnten Softwares (z.B. IOS, Windows) entsprechen.
+* I4: Das Interface soll übersichtlich sein und dem Windows-Design-Standart entsprechen (Icons und Bedinungsweise sollen sich an anderen (modernen) Windows-Applikationen orientieren um eine intuitiveres Benutzungsgefühl zu erstellen).
 
-=== Rechtliche Anforderungen (Business Rules)
+
+=== Organisatorische Randbedingungen
 * B1: Bei gewünschter Hinzufügung muss das Sales Department kontaktiert werden, welches die Rechte für Hinzufügungen innehat.
 * B2: Die Anwendung darf nur firmenintern genutzt werden und Daten dürfen nicht weitergegeben werden.

@@ -39,3 +39,6 @@ src/ExcelIOComponentTest/*.xlsx
 src/**/bin/**/*.xlsx
 
 *.zip
+
+# Experimental Config Folder
+src/_config/*.*

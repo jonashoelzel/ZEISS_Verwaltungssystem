@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 
-using Zeiss.PublicationManager.Data.IO.Excel;
+using Zeiss.PublicationManager.Data.Excel.IO;
 using Zeiss.PublicationManager.Data.DataSet;
 
 

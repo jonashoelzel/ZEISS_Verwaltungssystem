@@ -1,11 +1,12 @@
-﻿using Zeiss.PublicationManager.Data.IO.Excel;
-using Zeiss.PublicationManager.Data.DataSet;
+﻿using Zeiss.PublicationManager.Data.DataSet;
 using System;
 using System.IO;
 
-namespace Zeiss.PublicationManager.Business.Logic
+using Zeiss.PublicationManager.Data.DataSet.IO.Write;
+
+namespace Zeiss.PublicationManager.Business.Logic.IO.Write
 {
-    public class DataLogic
+    public class WriteData
     {
         public static void Save(IPublicationDataSet dataSet)
         {
@@ -19,7 +20,7 @@ namespace Zeiss.PublicationManager.Business.Logic
 
 
 
-            WriteDataSet.Insert(filepath, "Publication", dataSet);
+            WriteDataSet.InsertIntelligent(filepath, "Publication", dataSet);
         }
     }
 }
