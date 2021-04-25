@@ -108,13 +108,10 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Write
                     break;
 
                 default:
-                    if (cellEntry is not null)
+                    if (cellEntry is not null && Decimal.TryParse(cellEntry.ToString(), out decimal objdec))
                     {
-                        if (Decimal.TryParse(cellEntry.ToString(), out decimal objdec))
-                        {
-                            newCell.DataType = new EnumValue<CellValues>(CellValues.Number);
-                            newCell.CellValue = new CellValue(objdec.ToString(CultureInfo.InvariantCulture));
-                        }
+                        newCell.DataType = new EnumValue<CellValues>(CellValues.Number);
+                        newCell.CellValue = new CellValue(objdec.ToString(CultureInfo.InvariantCulture));
                     }
                     else
                     {
