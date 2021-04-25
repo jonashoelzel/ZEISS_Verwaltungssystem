@@ -112,25 +112,29 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Read
             //Try to read SharedStringTable if it exists. If not, make sure to do NOT try to read from it
             SharedStringTable sharedStringTable = spreadsheetDocument?.WorkbookPart?.SharedStringTablePart?.SharedStringTable;
 
-            return Reader(sheetData, sharedStringTable, GetColumnLetterIDsOfColumnNames(ref spreadsheetDocument, sheetData, columnNames));
+            return Reader(sheetData, sharedStringTable, GetColumnLetterIDsOfColumnNames(ref spreadsheetDocument, sheetData, columnNames, out int rowIndex), ++rowIndex);
 
         }
 
-        protected static List<List<object>> Reader(SheetData sheetData, SharedStringTable sharedStringTable, List<string> columnLetterIDs)
+        protected static List<List<object>> Reader(SheetData sheetData, SharedStringTable sharedStringTable, List<string> columnLetterIDs, int startRowIndex = 1)
         {
             //Create a List<List<object>> with empty List<object>, so that we can insert cell entries at letter ID in the correct index
+            //Every List<object> represents one column
             List<List<object>> rowsList = new(columnLetterIDs.Select(x => new List<object>()));
-            int count = rowsList.Count;
 
             foreach (Row row in sheetData.Elements<Row>())
             {
-                foreach (Cell cell in row.Elements<Cell>())
+                //Only read rows after index => (could be used) to prevent reading header columns
+                if (row?.RowIndex?.Value >= startRowIndex)
                 {
-                    //Get index of 'letterID' in 'columnLettersIDs' to insert cell into correct list in 'rowsList'
-                    int index = columnLetterIDs.IndexOf(GetLetterIDOfCellReference(cell.CellReference));
-                    if (index >= 0 && index < count)
-                        rowsList[index].Add(ReadCell(cell, sharedStringTable));
-                }
+                    foreach (Cell cell in row.Elements<Cell>())
+                    {
+                        //Get index of 'letterID' in 'columnLettersIDs' to insert cell into correct list in 'rowsList'
+                        int index = columnLetterIDs.IndexOf(GetLetterIDOfCellReference(cell.CellReference));
+                        if (index != -1)
+                            rowsList[index].Add(ReadCell(cell, sharedStringTable));
+                    }
+                }               
             }
 
             return rowsList;

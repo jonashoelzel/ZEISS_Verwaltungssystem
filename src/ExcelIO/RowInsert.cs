@@ -27,7 +27,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Write
         public static void Insert(string filepath, string worksheetName, List<string> columnNames, List<object> columnValues)
         {
             SpreadsheetDocument spreadsheetDocument = OpenSpreadsheetDocument(filepath, worksheetName, out SheetData sheetData);
-            List<string> columnLetterIDs = GetColumnLetterIDsOfColumnNames(ref spreadsheetDocument, sheetData, columnNames);
+            List<string> columnLetterIDs = GetColumnLetterIDsOfColumnNames(ref spreadsheetDocument, sheetData, columnNames, out _);
             InsertRow(ref spreadsheetDocument, sheetData, columnLetterIDs, columnValues);
             SaveSpreadsheetDocument(ref spreadsheetDocument);
         }
