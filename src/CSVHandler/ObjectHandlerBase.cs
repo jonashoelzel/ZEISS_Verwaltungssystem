@@ -1,10 +1,8 @@
 ﻿//********************************************************************************************************************************
 //
-//DotYexLibary Version 12.1.6.6.2020.11.20
-//
-//Please read the ReadMe File and Documentation
-//
-//DotYexLibrary is created by YeGaSoft (YeXtaiZ Games and Software Studio)
+//!!! Please do not make changes to this file !!!
+//!!! This is PRIVATE Code !!!
+//!!! Many parts are comment out for future development !!!
 //
 //********************************************************************************************************************************
 
@@ -78,9 +76,8 @@ namespace Zeiss.PublicationManager.Data.ObjectHandler
                     );
         }
 
-
-        //Experimental Code
-
+        //This Code was created for future development. To save storage it is comment out.
+        /*
         protected static List<object> ConvertToListxObject(object convertObject)
         {
             if (convertObject is object[] coarr)
@@ -111,7 +108,7 @@ namespace Zeiss.PublicationManager.Data.ObjectHandler
             return copyList;
         }
 
-
+        
         protected static List<List<object>> ConvertToListxListxObject(object convertObject)
         {
             if (convertObject is List<List<object>> objcolvallststrlst)
@@ -167,9 +164,11 @@ namespace Zeiss.PublicationManager.Data.ObjectHandler
                             "The entered object is not a date, number, boolean or a string");
             }
         }
-        //Experimental Code END
+        */
         #endregion
 
+        //This Code was created for future development. To save storage it is comment out.
+        /*
         #region Delegates
         public delegate T DelegateFunction<T>(params object[] oArgs);
 
@@ -185,7 +184,10 @@ namespace Zeiss.PublicationManager.Data.ObjectHandler
             function();
         }
         #endregion
+        */
 
+        //This Code was created for future development. To save storage it is comment out.
+        /*
         #region Exceptions
         protected virtual void RethrowInnerException(Exception outerException)
         {
@@ -216,7 +218,10 @@ namespace Zeiss.PublicationManager.Data.ObjectHandler
                 throw new Exception(outerException.Message);
         }
         #endregion
+        */
 
+        //This Code was created for future development. To save storage it is comment out.
+        /*
         #region IO
         //Does check, if the filepath does exist
         protected static bool CheckPathExist(ref string filepath)
@@ -246,7 +251,10 @@ namespace Zeiss.PublicationManager.Data.ObjectHandler
             }
         }
         #endregion
+        */
 
+        //This Code was created for future development. To save storage it is comment out.
+        /*
         #region Sanitizer
         private static List<List<string>> GetMarkupCharacters()
         {
@@ -437,5 +445,6 @@ namespace Zeiss.PublicationManager.Data.ObjectHandler
             return sanitizedString;
         }
         #endregion
+        */
     }
 }

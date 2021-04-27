@@ -1,4 +1,13 @@
-﻿using System;
+﻿//********************************************************************************************************************************
+//
+//!!! Please do not make changes to this file !!!
+//!!! This is PRIVATE Code !!!
+//!!! Many parts are comment out for future development !!!
+//
+//********************************************************************************************************************************
+
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
