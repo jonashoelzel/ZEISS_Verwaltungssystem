@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-
+using Zeiss.PublicationManager.Data;
 
 namespace Zeiss.PublicationManager.Data.DataSet.IO
 {
@@ -83,11 +83,11 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO
             foreach (var author in coAuthors)
             {
                 authorCSVs.Add(
-                    DotYexLibrary.CSVHandler.IO.Write.CSVWriter.
+                    CSVHandler.IO.Write.CSVWriter.
                     WriteCSVLine(new List<string> { author.ID.ToString(), author.Name, author.Surname }, escapeAll: false).Trim('\n'));
             }
 
-            return DotYexLibrary.CSVHandler.IO.Write.CSVWriter.
+            return CSVHandler.IO.Write.CSVWriter.
                     WriteCSVLine(authorCSVs, ';').Trim('\n');
         }
 
@@ -97,10 +97,10 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO
             if (String.IsNullOrEmpty(csv))
                 return coAuthors;
 
-            string[] authorsCSVs = DotYexLibrary.CSVHandler.IO.Read.CSVReader.ReadCSVLine(csv, ';');
+            string[] authorsCSVs = CSVHandler.IO.Read.CSVReader.ReadCSVLine(csv, ';');
             foreach (string coAuthorCSV in authorsCSVs)
             {
-                string[] authorInformation = DotYexLibrary.CSVHandler.IO.Read.CSVReader.ReadCSVLine(coAuthorCSV);
+                string[] authorInformation = CSVHandler.IO.Read.CSVReader.ReadCSVLine(coAuthorCSV);
                 Author coAuthor = new();
                 coAuthor.ID = Convert.ToInt32(authorInformation[0]);
                 coAuthor.Name = authorInformation[1];
@@ -123,7 +123,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO
                 tagCSV.Add(tag.Name);
             }
 
-            return DotYexLibrary.CSVHandler.IO.Write.CSVWriter.
+            return CSVHandler.IO.Write.CSVWriter.
                     WriteCSVLine(tagCSV).Trim('\n');
         }
 
@@ -133,7 +133,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO
             if (String.IsNullOrEmpty(csv))
                 return tags;
 
-            string[] tagNames = DotYexLibrary.CSVHandler.IO.Read.CSVReader.ReadCSVLine(csv, ';');
+            string[] tagNames = CSVHandler.IO.Read.CSVReader.ReadCSVLine(csv, ';');
             foreach (string tagName in tagNames)
             {               
                 Tag tag = new();

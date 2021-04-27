@@ -10,7 +10,6 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Read
 {
     public class ReadDataSet
     {
-
         public static List<IPublicationDataSet> SelectIntelligent(string filepath, string worksheetName, List<string> headerColumns)
         {
             List<List<object>> table = RowSelect.Select(filepath, worksheetName, headerColumns);

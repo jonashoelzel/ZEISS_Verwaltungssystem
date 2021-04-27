@@ -24,16 +24,4 @@
     <ProjectReference Include="..\ExcelIOComponentTest\DataSetlIOComponentTest.csproj" />
     <ProjectReference Include="..\ExcelIO\ExcelIO.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="CSVHandler">
-      <HintPath>..\..\..\..\..\..\..\..\..\..\source\repos_core\DotYexLibrary\CSVHandler\bin\Debug\net5.0\CSVHandler.dll</HintPath>
-      <Private>true</Private>
-    </Reference>
-    <Reference Include="ObjectHandler">
-      <HintPath>..\..\..\..\..\..\..\..\..\..\source\repos_core\DotYexLibrary\CSVHandler\bin\Debug\net5.0\ObjectHandler.dll</HintPath>
-      <Private>true</Private>
-    </Reference>
-  </ItemGroup>
-
 </Project>
