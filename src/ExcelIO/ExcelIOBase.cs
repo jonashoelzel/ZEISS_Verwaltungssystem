@@ -415,6 +415,8 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
         #endregion
 
         #region GetRowInformation
+        //columnConditions can be type of 'List<object>', 'Dictionary<string, object>' or 'KeyValuePair<string, object>'
+        //objects (values) in columnConditions are the conditions and strings (keys) are columnLetterIDs
         protected static Row SearchRow(ref SpreadsheetDocument spreadsheetDocument, SheetData sheetData, object columnConditions)
         {
             //Try to read SharedStringTable if it exists. If not, make sure to do NOT try to read from it
@@ -437,6 +439,9 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
         //{
 
         //}
+
+        //columnConditions can be type of 'List<object>', 'Dictionary<string, object>' or 'KeyValuePair<string, object>'
+        //objects (values) in columnConditions are the conditions and strings (keys) are columnLetterIDs
         protected static bool CompareRows(Row row, SharedStringTable sharedStringTable, object columnConditions)
         {
             if (columnConditions is List<object> lstCon)
