@@ -397,11 +397,25 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
             sheetData = null;
             return false;
         }
+
+        //KeyValuePair<columnHeaderName, guid> -> columnHeaderName is name of column in the header
+        public static bool IsIDOfWorksheet(string filepath, string worksheetName, KeyValuePair<string, Guid> guid)
+        {
+            SpreadsheetDocument spreadsheetDocument = OpenSpreadsheetDocument(filepath, worksheetName, out SheetData sheetData, false, false);
+
+            //For easier usage, we take KeyValuePair<columnHeaderName, guid>, but we need the format KeyValuePair<columnLetterID, guid>
+            KeyValuePair<string, object> id = new(GetColumnLetterIDsOfColumnNames(ref spreadsheetDocument, sheetData, new() { guid.Key }, out _)[0], guid.Value);
+            bool found = (SearchRow(ref spreadsheetDocument, sheetData, id) is not null);
+
+            SaveSpreadsheetDocument(ref spreadsheetDocument);
+
+            return found;
+        }
         #endregion
         #endregion
 
         #region GetRowInformation
-        protected static Row SearchRow(ref SpreadsheetDocument spreadsheetDocument, SheetData sheetData, List<object> columnConditions)
+        protected static Row SearchRow(ref SpreadsheetDocument spreadsheetDocument, SheetData sheetData, object columnConditions)
         {
             //Try to read SharedStringTable if it exists. If not, make sure to do NOT try to read from it
             SharedStringTable sharedStringTable = spreadsheetDocument?.WorkbookPart?.SharedStringTablePart?.SharedStringTable;
@@ -412,7 +426,6 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
                 {
                     return row;
                 }
-                    
             }
 
             //Row not found
@@ -424,6 +437,23 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
         //{
 
         //}
+        protected static bool CompareRows(Row row, SharedStringTable sharedStringTable, object columnConditions)
+        {
+            if (columnConditions is List<object> lstCon)
+                return CompareRows(row, sharedStringTable, lstCon);
+            else if (columnConditions is Dictionary<string, object> dicCon)
+                return CompareRows(row, sharedStringTable, dicCon);
+            else if (columnConditions is KeyValuePair<string, object> kvpCon)
+            {
+                Dictionary<string, object> kvpDic = new();
+                kvpDic.Add(kvpCon.Key, kvpCon.Value);
+                return CompareRows(row, sharedStringTable, kvpDic);
+            }              
+
+            throw new InvalidCastException("Cannot convert 'columnConditions', because type of 'columnCondition' was invalid.\n" +
+                    "Only 'List<string>', 'Dictionary<string, object>' and 'KeyValuePair<string, object>' are accepted");
+        }
+
 
         protected static bool CompareRows(Row row, SharedStringTable sharedStringTable, List<object> columnConditions)
         {
@@ -438,6 +468,29 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
                     if (CompareObjects(entry, condition))
                     {
                         leftConditions.Remove(condition);
+                        break;
+                    }
+                }
+            }
+
+            //If an condition is left that means that not all conditions were matched
+            return !(leftConditions.Any());
+        }
+
+        protected static bool CompareRows(Row row, SharedStringTable sharedStringTable, Dictionary<string, object> columnConditions)
+        {
+            //Create 'copy'
+            //<letterID, condition>
+            Dictionary<string, object> leftConditions = new(columnConditions);
+            foreach (Cell cell in row.Elements<Cell>())
+            {
+                object entry = ReadCell(cell, sharedStringTable);
+
+                foreach (var condition in leftConditions)
+                {
+                    if (condition.Key == GetLetterIDOfCellReference(cell.CellReference) && CompareObjects(entry, condition.Value))
+                    {
+                        leftConditions.Remove(condition.Key);
                         break;
                     }
                 }
@@ -479,7 +532,6 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
 
             return false;
         }
-
         #endregion
     }
 }
