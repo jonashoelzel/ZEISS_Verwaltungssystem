@@ -131,37 +131,56 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
 
         protected static List<string> GetColumnLetterIDsOfColumnNames(ref SpreadsheetDocument spreadsheetDocument, SheetData sheetData, List<string> columnNames, out int rowIndex)
         {
-            //Try to read SharedStringTable if it exists. If not, make sure to do NOT try to read from it
-            SharedStringTable sharedStringTable = spreadsheetDocument?.WorkbookPart?.SharedStringTablePart?.SharedStringTable;
             rowIndex = -1;
-
             List<string> letterIDs = new();
-
             List<object> objectList = new();
             foreach (string strobj in columnNames)
             {
                 objectList.Add(strobj);
             }
 
-            Row columns = SearchRow(ref spreadsheetDocument, sheetData, objectList);
-            if (columns is not null)
+            Row row = SearchRow(ref spreadsheetDocument, sheetData, objectList);
+            if (row is not null)
             {
-                rowIndex = Convert.ToInt32(columns.RowIndex.Value);
                 foreach (string name in columnNames)
                 {
-                    foreach (Cell cell in columns.Elements<Cell>())
-                    {
-                        object entry = ReadCell(cell, sharedStringTable);
-                        if (CompareObjects(name, entry))
-                        {
-                            letterIDs.Add(GetLetterIDOfCellReference(cell.CellReference));
-                            break;
-                        }
-                    }
+                    letterIDs.Add(
+                        GetColumnLetterIDsOfColumnNames(
+                            ref spreadsheetDocument,
+                            row,
+                            name, out rowIndex));
                 }
             }        
 
             return letterIDs;
+        }
+
+        protected static string GetColumnLetterIDsOfColumnNames(ref SpreadsheetDocument spreadsheetDocument, SheetData sheetData, string columnNames, out int rowIndex)
+        {
+            return GetColumnLetterIDsOfColumnNames(
+                ref spreadsheetDocument,
+                SearchRow(ref spreadsheetDocument, sheetData, columnNames),
+                columnNames, out rowIndex);
+        }
+
+        protected static string GetColumnLetterIDsOfColumnNames(ref SpreadsheetDocument spreadsheetDocument, Row row, string columnNames, out int rowIndex)
+        {
+            //Try to read SharedStringTable if it exists. If not, make sure to do NOT try to read from it
+            SharedStringTable sharedStringTable = spreadsheetDocument?.WorkbookPart?.SharedStringTablePart?.SharedStringTable;
+            rowIndex = -1;
+
+            if (row is not null)
+            {
+                rowIndex = Convert.ToInt32(row.RowIndex.Value);
+                foreach (Cell cell in row.Elements<Cell>())
+                {
+                    object entry = ReadCell(cell, sharedStringTable);
+                    if (CompareObjects(columnNames, entry))
+                        return GetLetterIDOfCellReference(cell.CellReference);
+                }
+            }
+
+            return null;
         }
 
         protected static string GetLetterIDOfCellReference(string cellReference)
@@ -404,7 +423,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
             SpreadsheetDocument spreadsheetDocument = OpenSpreadsheetDocument(filepath, worksheetName, out SheetData sheetData, false, false);
 
             //For easier usage, we take KeyValuePair<columnHeaderName, guid>, but we need the format KeyValuePair<columnLetterID, guid>
-            KeyValuePair<string, object> id = new(GetColumnLetterIDsOfColumnNames(ref spreadsheetDocument, sheetData, new() { guid.Key }, out _)[0], guid.Value);
+            KeyValuePair<string, object> id = new(GetColumnLetterIDsOfColumnNames(ref spreadsheetDocument, sheetData, guid.Key, out _), guid.Value);
             bool found = (SearchRow(ref spreadsheetDocument, sheetData, id) is not null);
 
             SaveSpreadsheetDocument(ref spreadsheetDocument);
@@ -440,12 +459,16 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
 
         //}
 
+        //Old Version with if-else instead of switch expression
+        /*
         //columnConditions can be type of 'List<object>', 'Dictionary<string, object>' or 'KeyValuePair<string, object>'
         //objects (values) in columnConditions are the conditions and strings (keys) are columnLetterIDs
         protected static bool CompareRows(Row row, SharedStringTable sharedStringTable, object columnConditions)
         {
             if (columnConditions is List<object> lstCon)
                 return CompareRows(row, sharedStringTable, lstCon);
+            else if (columnConditions is string strCon)
+                return CompareRows(row, sharedStringTable, new List<object> { strCon });
             else if (columnConditions is Dictionary<string, object> dicCon)
                 return CompareRows(row, sharedStringTable, dicCon);
             else if (columnConditions is KeyValuePair<string, object> kvpCon)
@@ -457,6 +480,24 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
 
             throw new InvalidCastException("Cannot convert 'columnConditions', because type of 'columnCondition' was invalid.\n" +
                     "Only 'List<string>', 'Dictionary<string, object>' and 'KeyValuePair<string, object>' are accepted");
+        }
+        */
+
+        //columnConditions can be type of 'List<object>', 'Dictionary<string, object>' or 'KeyValuePair<string, object>'
+        //objects (values) in columnConditions are the conditions and strings (keys) are columnLetterIDs
+        protected static bool CompareRows(Row row, SharedStringTable sharedStringTable, object columnConditions)
+        {
+            return columnConditions switch
+            {
+                List<string> lstCon => CompareRows(row, sharedStringTable, lstCon),
+                string strCon => CompareRows(row, sharedStringTable, new List<object> { strCon }),
+
+                Dictionary<string, object> dicCon => CompareRows(row, sharedStringTable, dicCon),
+                KeyValuePair<string, object> kvpCon => CompareRows(row, sharedStringTable, new Dictionary<string, object> { { kvpCon.Key, kvpCon.Value } }),
+
+                _ => throw new InvalidCastException("Cannot convert 'columnConditions', because type of 'columnCondition' was invalid.\n" +
+                    "Only 'List<string>', 'Dictionary<string, object>' and 'KeyValuePair<string, object>' are accepted"),
+            };
         }
 
 
