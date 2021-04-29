@@ -417,14 +417,14 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
             return false;
         }
 
-        //KeyValuePair<columnHeaderName, guid> -> columnHeaderName is name of column in the header
-        public static bool IsIDOfWorksheet(string filepath, string worksheetName, KeyValuePair<string, Guid> guid)
+        //KeyValuePair<columnHeaderName, id> -> columnHeaderName is name of column in the header
+        public static bool IsIDOfWorksheet(string filepath, string worksheetName, KeyValuePair<string, object> id)
         {
             SpreadsheetDocument spreadsheetDocument = OpenSpreadsheetDocument(filepath, worksheetName, out SheetData sheetData, false, false);
 
             //For easier usage, we take KeyValuePair<columnHeaderName, guid>, but we need the format KeyValuePair<columnLetterID, guid>
-            KeyValuePair<string, object> id = new(GetColumnLetterIDsOfColumnNames(ref spreadsheetDocument, sheetData, guid.Key, out _), guid.Value);
-            bool found = (SearchRow(ref spreadsheetDocument, sheetData, id) is not null);
+            KeyValuePair<string, object> convertedID = new(GetColumnLetterIDsOfColumnNames(ref spreadsheetDocument, sheetData, id.Key, out _), id.Value);
+            bool found = (SearchRow(ref spreadsheetDocument, sheetData, convertedID) is not null);
 
             SaveSpreadsheetDocument(ref spreadsheetDocument);
 
@@ -434,7 +434,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
         #endregion
 
         #region GetRowInformation
-        //columnConditions can be type of 'List<object>', 'Dictionary<string, object>' or 'KeyValuePair<string, object>'
+        //columnConditions can be type of 'List<object>', 'string', 'Dictionary<string, object>' or 'KeyValuePair<string, object>'
         //objects (values) in columnConditions are the conditions and strings (keys) are columnLetterIDs
         protected static Row SearchRow(ref SpreadsheetDocument spreadsheetDocument, SheetData sheetData, object columnConditions)
         {
@@ -444,9 +444,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
             foreach (Row row in sheetData.Elements<Row>())
             {
                 if (CompareRows(row, sharedStringTable, columnConditions))
-                {
                     return row;
-                }
             }
 
             //Row not found
@@ -483,7 +481,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
         }
         */
 
-        //columnConditions can be type of 'List<object>', 'Dictionary<string, object>' or 'KeyValuePair<string, object>'
+        //columnConditions can be type of 'List<object>', 'string', 'Dictionary<string, object>' or 'KeyValuePair<string, object>'
         //objects (values) in columnConditions are the conditions and strings (keys) are columnLetterIDs
         protected static bool CompareRows(Row row, SharedStringTable sharedStringTable, object columnConditions)
         {
