@@ -169,6 +169,10 @@ input[type=text] {
     resize: none;
 }
 
+.form-check.tags {
+    margin: 0 auto;
+}
+
 /*Popup-Fenster "Erfolgreich hinzugefügte Veröffentlichung"*/
 .modal {
     display: block;
@@ -184,7 +188,7 @@ input[type=text] {
 }
 
 .modal-content {
-    background-color: #6c9ef8;
+    background-color: #ffffff;
 }
 
 .modal-header {
@@ -223,7 +227,31 @@ input[type=text] {
         top: 0.5rem;
     }
 
-/*Validierung*/
+/* Validierung */
 .validation-message {
     color: red;
+}
+
+.search-default {
+    margin: 5% 0 5% 0;
+}
+
+
+
+/* search-button filtering*/
+#searching {
+    border: 3px groove rgba(28,110,164,0.55);
+    border-radius: 15px;
+    background-color: #2449a4;
+    color: #ffffff;
+    font-family: Arial;
+    font-size: 100%;
+    font-weight: bold;
+    text-align: center;
+    line-height: 20px;
+}
+
+.table {
+    width: 90%;
+    margin: 0 auto;
 }
