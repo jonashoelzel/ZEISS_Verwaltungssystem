@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataSet", "..\DataSet\DataS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExcelIO", "..\ExcelIO\ExcelIO.csproj", "{8856F983-BA02-450F-8F4E-DBB353004151}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataSetIO", "..\DataSetIO\DataSetIO.csproj", "{B2ECAA65-9AD3-407A-AEC7-4F2B377F6556}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataSetIO", "..\DataSetIO\DataSetIO.csproj", "{B2ECAA65-9AD3-407A-AEC7-4F2B377F6556}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

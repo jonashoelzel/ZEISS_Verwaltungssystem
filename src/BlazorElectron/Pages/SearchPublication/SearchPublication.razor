@@ -10,7 +10,8 @@
 
     <section class="search-default">
         <div class="input-group">
-            <input type="text" class="form-control" placeholder="Titel, Autor, Stichwort, ..." />
+            <input type="text" class="form-control" placeholder="Titel, Autor, Stichwort, ..." 
+                   @bind-value="SearchTerm" @bind-value:event="oninput"/>
             <button type="button" class="btn">
                 <span class="fas fa-search"></span>
             </button>
@@ -32,19 +33,21 @@
             <tbody>
                 @foreach (var item in items)
                 {
-                        <tr>
-                            <td>@item.TitleTest</td>
-                            <td>@item.NameTest, @item.SurnameTest</td>
-                            <td>@item.DateTest</td>
-                            <td>
-                                <button type="button" class="btn-primary">Bearbeiten
-                                    <span class="fas fa-pencil-alt"></span>
-                                </button>
-                                <button type="button" class="btn-primary">Löschen
-                                    <span class="fas fa-trash-alt"></span>
-                                </button>
-                            </td>
-                        </tr>
+                    <tr>
+                        <td>@item.TitleTest</td>
+                        <td>@item.NameTest, @item.SurnameTest</td>
+                        <td>@item.DateTest</td>
+                        <td>
+                            <button type="button" class="btn-primary">
+                                Bearbeiten
+                                <span class="fas fa-pencil-alt"></span>
+                            </button>
+                            <button type="button" class="btn-primary">
+                                Löschen
+                                <span class="fas fa-trash-alt"></span>
+                            </button>
+                        </td>
+                    </tr>
                 }
             </tbody>
         </table> 
@@ -52,6 +55,8 @@
 
 @code 
 {
+    string SearchTerm { get; set; } = "";
+
     public class TableTest
     {
         public string TitleTest { get; set; }
@@ -60,7 +65,7 @@
         public string DateTest { get; set; }
     };
 
-    List<TableTest> items = new List<TableTest>()
+    List<TableTest> Data = new List<TableTest>()
     {
         new TableTest {TitleTest="ABC", NameTest="Mueller", SurnameTest="Hans", DateTest="12.03.2015"},
         new TableTest {TitleTest="XYZ", NameTest="Mustermann", SurnameTest="Max", DateTest="24.12.2017"},
@@ -72,4 +77,9 @@
         new TableTest {TitleTest="SHJF", NameTest="Schmied", SurnameTest="Anna", DateTest="31.12.2040"},
         new TableTest {TitleTest="GEGE", NameTest="Fischer", SurnameTest="Klaus", DateTest="01.01.1999"},
     };
+
+    List<TableTest> items => Data.Where(i => i.TitleTest.ToLower().Contains(SearchTerm.ToLower()) ||
+                                             i.NameTest.ToLower().Contains(SearchTerm.ToLower()) ||
+                                             i.SurnameTest.ToLower().Contains(SearchTerm.ToLower()) ||
+                                             i.DateTest.ToLower().Contains(SearchTerm.ToLower())).ToList();                       
 }
