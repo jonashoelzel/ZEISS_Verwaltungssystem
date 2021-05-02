@@ -255,3 +255,7 @@ input[type=text] {
     width: 90%;
     margin: 0 auto;
 }
+
+.sort-link {
+    cursor: pointer;
+}

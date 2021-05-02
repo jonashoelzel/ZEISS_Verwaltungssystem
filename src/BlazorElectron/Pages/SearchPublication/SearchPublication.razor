@@ -24,9 +24,22 @@
     <table class="table table-striped">
             <thead class="thead-dark">
                 <tr>
-                    <th>Titel</th>
-                    <th>Nachname, Vorname des Autors</th>
-                    <th>Datum der Veröffentlichung</th>
+                    <th>
+                        <span class="sort-link" @onclick="@(() => SortTable("TitleTest"))">Titel</span>
+                        <span class="fa @(GetSortStyle("TitleTest"))"></span>
+                    </th>
+                    <th>
+                        <span class="sort-link" @onclick="@(() => SortTable("NameTest"))">Nachname</span>
+                        <span class="fa @(GetSortStyle("NameTest"))"></span>
+                    </th>
+                    <th>
+                        <span class="sort-link" @onclick="@(() => SortTable("SurnameTest"))">Vorname des Autors</span>
+                        <span class="fa @(GetSortStyle("SurnameTest"))"></span>
+                    </th>
+                    <th>
+                        <span class="sort-link" @onclick="@(() => SortTable("DateTest"))">Datum der Veröffentlichung</span>
+                        <span class="fa @(GetSortStyle("DateTest"))"></span>
+                    </th>
                     <th>Aktion</th>
                 </tr>
             </thead>
@@ -35,7 +48,8 @@
                 {
                     <tr>
                         <td>@item.TitleTest</td>
-                        <td>@item.NameTest, @item.SurnameTest</td>
+                        <td>@item.NameTest</td>
+                        <td>@item.SurnameTest</td>
                         <td>@item.DateTest</td>
                         <td>
                             <button type="button" class="btn-primary">
@@ -55,6 +69,9 @@
 
 @code 
 {
+    private bool IsSortedAscending;
+    private string CurrentSortColumn;
+
     string SearchTerm { get; set; } = "";
 
     public class TableTest
@@ -81,5 +98,54 @@
     List<TableTest> items => Data.Where(i => i.TitleTest.ToLower().Contains(SearchTerm.ToLower()) ||
                                              i.NameTest.ToLower().Contains(SearchTerm.ToLower()) ||
                                              i.SurnameTest.ToLower().Contains(SearchTerm.ToLower()) ||
-                                             i.DateTest.ToLower().Contains(SearchTerm.ToLower())).ToList();                       
+                                             i.DateTest.ToLower().Contains(SearchTerm.ToLower())).ToList();
+
+    private string GetSortStyle(string columnName)
+    {
+        if(CurrentSortColumn != columnName)
+        {
+            return string.Empty;
+        }
+        if(IsSortedAscending)
+        {
+            return "fa-sort-up";
+        }
+        else
+        {
+            return "fa-sort-down";
+        }
+    }
+    private void SortTable(string columnName)
+    {
+        if(columnName != CurrentSortColumn)
+        {
+            Data = Data.OrderBy(x =>
+                                    x.GetType()
+                                     .GetProperty(columnName)
+                                     .GetValue(x, null))
+                         .ToList();
+            CurrentSortColumn = columnName;
+            IsSortedAscending = true;
+        }
+        else
+        {
+            if(IsSortedAscending)
+            {
+                Data = Data.OrderByDescending(x =>
+                                                    x.GetType()
+                                                     .GetProperty(columnName)
+                                                     .GetValue(x, null))
+                              .ToList();
+            }
+            else
+            {
+                Data = Data.OrderBy(x =>
+                                        x.GetType()
+                                         .GetProperty(columnName)
+                                         .GetValue(x, null))
+                             .ToList();
+            }
+            IsSortedAscending = !IsSortedAscending;
+        }
+    }
 }
