@@ -24,5 +24,4 @@
     <ProjectReference Include="..\ExcelIOComponentTest\DataSetlIOComponentTest.csproj" />
     <ProjectReference Include="..\ExcelIO\ExcelIO.csproj" />
   </ItemGroup>
-
 </Project>

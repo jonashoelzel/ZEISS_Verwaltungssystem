@@ -11,16 +11,11 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
 {
     public class WriteDataSet
     {
-        private string _filePath;
-        private string _workSheetName;
-
-        public string FilePath { get => _filePath; set => _filePath = value; }
-        public string WorkSheetName { get => _workSheetName; set => _workSheetName = value; }
-
+        
         public WriteDataSet(string filePaht, string workSheetName)
         {
-            _filePath = filePaht;
-            _workSheetName = workSheetName;
+            DataSetBase.FilePath = filePaht;
+            DataSetBase.WorkSheetName = workSheetName;
         }
 
         public void Insert(IPublicationDataSet dataSet)
@@ -39,13 +34,13 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
         public static void Insert(string filepath, string worksheetName, IPublicationDataSet dataSet)
         {
             InitializeDataSetWorksheet(filepath, worksheetName);
-            RowInsert.Insert(filepath, worksheetName, GetNewRow(dataSet));
+            Excel.IO.Write.Legacy.LegacyRowInsert.Insert(filepath, worksheetName, DataSetBase.GetNewRow(dataSet));
         }
 
         public static void InsertIntelligent(string filepath, string worksheetName, IPublicationDataSet dataSet)
         {
             InitializeDataSetWorksheet(filepath, worksheetName);                
-            RowInsert.Insert(filepath, worksheetName, GetColumnNames().Select(x => x.ToString()).ToList(), GetNewRow(dataSet));
+            Excel.IO.Write.Legacy.LegacyRowInsert.Insert(filepath, worksheetName, DataSetBase.GetColumnNames().Select(x => x.ToString()).ToList(), DataSetBase.GetNewRow(dataSet));
         }
 
 
@@ -84,105 +79,12 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
         }
         */
 
-        private static string ConvertCoAuthorsToCSV(List<IAuthor> coAuthors)
-        {
-            if (coAuthors is null)
-                return string.Empty;
-
-            StringBuilder csv = new();
-
-            foreach (var author in coAuthors)
-            {
-                csv.Append(
-                    author.ID + "," +
-                    author.Name + "," +
-                    author.Surname + ";"
-                    );
-            }
-
-            string csvstr = csv.ToString();
-            return ((!String.IsNullOrEmpty(csvstr)) ? csvstr[..^1] : "");
-        }
-
-        private static string ConvertTagsToCSV(List<ITag> tags)
-        {
-            if (tags is null)
-                return string.Empty;
-
-            StringBuilder csv = new();
-
-            foreach (var tag in tags)
-            {
-                csv.Append(tag.Name + ",");
-            }
-
-            string csvstr = csv.ToString();
-            return ((!String.IsNullOrEmpty(csvstr)) ? csvstr[..^1] : "");
-        }
-
         private static void InitializeDataSetWorksheet(string filepath, string worksheetName)
         {
             if (!WriteExcel.WorksheetExists(ref filepath, worksheetName))
-            {              
-                RowInsert.Insert(filepath, worksheetName, GetColumnNames());
+            {
+                Excel.IO.Write.Legacy.LegacyRowInsert.Insert(filepath, worksheetName, DataSetBase.GetColumnNames());
             }
-        }
-
-        public static List<object> GetColumnNames()
-        {
-            return new List<object>()
-            {
-                "Publikations-ID",
-                "Arbeitstitel",
-                "Veröffentlichungstitel",
-                "Veröffentlichungsmedium",
-
-                "Autor-ID",
-                "Vorname",
-                "Nachname",
-                "Co-Autoren",
-                "Division",
-
-                "Arbeitsbeginn (Startjahr)",
-                "Derzeitiger Arbeitsstatus",
-                "Veröffentlichungsdatum",
-
-                "Publisher-ID",
-                "Publisher",
-
-                "Tags",
-                "Beschreibung (zusätzlich)",
-                "Zusätzliche Informationen",
-            };
-        }
-
-        public static List<object> GetNewRow(IPublicationDataSet dataSet)
-        {
-            return new List<object>()
-            {
-                dataSet.ID,
-                dataSet.WorkingTitle,
-                dataSet.PublicationTitle,
-
-                dataSet.TypeOfPublication.Name,
-
-                dataSet.MainAuthor.ID,
-                dataSet.MainAuthor.Name,
-                dataSet.MainAuthor.Surname,
-                ConvertCoAuthorsToCSV(dataSet.CoAuthors),
-                dataSet.Division,
-
-                dataSet.DateOfStartWorking.Year,
-                dataSet.CurrentState,
-                dataSet.DateOfRelease,
-
-                dataSet.PublishedBy.ID,
-                dataSet.PublishedBy.Name,
-
-                ConvertTagsToCSV(dataSet.Tags),
-                dataSet.Description,
-                dataSet.AdditionalInformation,
-            };
         }
     }
 }

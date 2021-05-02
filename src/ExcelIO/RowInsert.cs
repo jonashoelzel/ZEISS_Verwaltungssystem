@@ -9,6 +9,7 @@ using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
 
 using Zeiss.PublicationManager.Data.DataSet;
+using Zeiss.PublicationManager.Data.Excel;
 
 namespace Zeiss.PublicationManager.Data.Excel.IO.Write
 {
@@ -16,50 +17,32 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Write
     {
         #region Insert
         #region Public_Insert
-        public static void Insert(string filepath, string worksheetName, List<object> columnValues)
+        //columnNamesAndValues <columnName, value>
+        public static void Insert(string filepath, string worksheetName, Dictionary<string, object> columnNamesAndValues)
         {
             SpreadsheetDocument spreadsheetDocument = OpenSpreadsheetDocument(filepath, worksheetName, out SheetData sheetData);
-            List<string> columnLetterIDs = GetCellReferenceLetters(columnValues.Count);
-            InsertRow(ref spreadsheetDocument, sheetData, columnLetterIDs, columnValues);
+            //<letterID, value>
+            Dictionary<string, object> letterIDsAndValues = ConvertColumnNamesAndValuesToLetterIDsAndValues(ref spreadsheetDocument, sheetData, columnNamesAndValues);
+            InsertRow(ref spreadsheetDocument, sheetData, letterIDsAndValues);
             SaveSpreadsheetDocument(ref spreadsheetDocument);
         }
-
-        public static void Insert(string filepath, string worksheetName, List<string> columnNames, List<object> columnValues)
-        {
-            SpreadsheetDocument spreadsheetDocument = OpenSpreadsheetDocument(filepath, worksheetName, out SheetData sheetData);
-            List<string> columnLetterIDs = GetColumnLetterIDsOfColumnNames(ref spreadsheetDocument, sheetData, columnNames, out _);
-            InsertRow(ref spreadsheetDocument, sheetData, columnLetterIDs, columnValues);
-            SaveSpreadsheetDocument(ref spreadsheetDocument);
-        }
-
-        //
-        //public static void Insert(string filepath, string worksheetName, string startColumnID, List<List<object>> columnValues)
-        //{
-        //
-        //}
-
-
-        //public static void Insert(string filepath, string worksheetName, string startColumnID, List<string> columnNames, List<List<object>> columnValues)
-        //{
-
-        //}
-
-
         #endregion
 
         #region Private_Insert
-        private static void InsertRow(ref SpreadsheetDocument spreadsheetDocument, SheetData sheetData, List<string> columnLetterIDs, List<object> columnValues)
+        //letterIDsAndValues: <letterID< value>
+        private static void InsertRow(ref SpreadsheetDocument spreadsheetDocument, SheetData sheetData, Dictionary<string, object> letterIDsAndValues)
         {
             //Create new row
             int rowCount = sheetData.Elements<Row>().Count();
             Row row = new() { RowIndex = UInt32Value.FromUInt32((uint)(++rowCount)) };
             sheetData.Append(row);
 
-            for (int i = 0; i < columnValues.Count; i++)
+            foreach (var letterIDAndValue in letterIDsAndValues)
             {
                 //Format XX00
-                string cellReference = columnLetterIDs[i] + rowCount;
-                CreateCell(ref spreadsheetDocument, columnValues[i], row, cellReference);
+                string cellReference = letterIDAndValue.Key + rowCount;
+                //<cellReference, value>
+                CreateCell(ref spreadsheetDocument, row, new KeyValuePair<string, object>(cellReference, letterIDAndValue.Value));
             }
         }
         #endregion
