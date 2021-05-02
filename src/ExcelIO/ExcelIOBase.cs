@@ -140,11 +140,12 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
             return cellReference;
         }
 
-
+        //return: <letterID, columnName>
         protected static Dictionary<string, string> GetColumnLetterIDsOfColumnNames(ref SpreadsheetDocument spreadsheetDocument, SheetData sheetData, List<string> columnNames, out int rowIndex)
         {
             rowIndex = -1;
-            Dictionary<string, string> letterIDs = new();
+            //<letterID, columnName>
+            Dictionary<string, string> letterIDsAndColumnNames = new();
             List<object> objectList = new();
             foreach (string strobj in columnNames)
             {
@@ -156,15 +157,13 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
             {
                 foreach (string name in columnNames)
                 {
-                    letterIDs.Add(name, 
-                            GetColumnLetterIDsOfColumnNames(
-                            ref spreadsheetDocument,
-                            row,
-                            name, out rowIndex));
+                    letterIDsAndColumnNames.Add(
+                        GetColumnLetterIDsOfColumnNames(ref spreadsheetDocument, row, name, out rowIndex),
+                        name);
                 }
             }
 
-            return letterIDs;
+            return letterIDsAndColumnNames;
         }
 
         protected static string GetColumnLetterIDsOfColumnNames(ref SpreadsheetDocument spreadsheetDocument, SheetData sheetData, string columnNames, out int rowIndex)
@@ -195,9 +194,12 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
             return null;
         }
 
+        //return: <letterID, value>
+        //columnNamesAndValues: <columName, value>
         protected static Dictionary<string, object> ConvertColumnNamesAndValuesToLetterIDsAndValues
             (ref SpreadsheetDocument spreadsheetDocument, SheetData sheetData, Dictionary<string, object> columnNamesAndValues)
         {
+            //<letterID, value>
             Dictionary<string, object> idsAndValues = new();
 
             foreach (var columnAndValue in columnNamesAndValues)
@@ -473,7 +475,8 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
         protected static bool CompareRows(Row row, SharedStringTable sharedStringTable, object columnConditions)
         {
             return columnConditions switch
-            {              
+            {            
+                //<letterID, value>
                 Dictionary<string, object> dicCon => CompareRows(row, sharedStringTable, dicCon),
                 KeyValuePair<string, object> kvpCon => CompareRows(row, sharedStringTable, new Dictionary<string, object> { { kvpCon.Key, kvpCon.Value } }),
 
@@ -508,6 +511,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
             return !(leftConditions.Any());
         }
 
+        //columnConditions: <letterID, value>
         protected static bool CompareRows(Row row, SharedStringTable sharedStringTable, Dictionary<string, object> columnConditions)
         {
             //Create 'copy'
