@@ -15,6 +15,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Read
     //NOTE: When we use with Console, all members have to be static !!!
     public class RowSelect : ExcelIOBase
     {       
+        //return: <columnName, columnENtries>
         public static Dictionary<string, List<object>> Select(string filepath, string worksheetName, List<string> columnNames)
         {
             SpreadsheetDocument spreadsheetDocument = OpenSpreadsheetDocument(filepath, worksheetName, out SheetData sheetData, false, false);
@@ -25,10 +26,12 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Read
             return Reader(sheetData, sharedStringTable, GetColumnLetterIDsOfColumnNames(ref spreadsheetDocument, sheetData, columnNames, out int rowIndex), ++rowIndex);
         }
 
-        //columnLetterIDs: <columnLetterID, columnName>
+        //return: <columnName, columnEntries>
+        //columnLetterIDsAndColumnNames: <columnLetterID, columnName>
         protected static Dictionary<string, List<object>> Reader(SheetData sheetData, SharedStringTable sharedStringTable, 
             Dictionary<string, string> columnLetterIDsAndColumnNames, int startRowIndex = 1)
         {
+            //<columnName, columnEntries>
             Dictionary<string, List<object>> rowsList = new(columnLetterIDsAndColumnNames.Select(x => new KeyValuePair<string, List<object>>(x.Value, new())));
 
             foreach (Row row in sheetData.Elements<Row>())
@@ -38,9 +41,13 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Read
                 {
                     foreach (Cell cell in row.Elements<Cell>())
                     {
-                        string columnName = columnLetterIDsAndColumnNames[GetLetterIDOfCellReference(cell.CellReference)];
-                        if (rowsList.ContainsKey(columnName))
-                            rowsList[columnName].Add(ReadCell(cell, sharedStringTable));
+                        string letterIDOfReference = GetLetterIDOfCellReference(cell.CellReference);
+                        if (columnLetterIDsAndColumnNames.ContainsKey(letterIDOfReference))
+                        {
+                            string columnName = columnLetterIDsAndColumnNames[letterIDOfReference];
+                            if (rowsList.ContainsKey(columnName))
+                                rowsList[columnName].Add(ReadCell(cell, sharedStringTable));
+                        }                   
                     }                       
                 }
             }

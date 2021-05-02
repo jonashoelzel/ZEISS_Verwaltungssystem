@@ -17,9 +17,11 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Write
     {
         #region Insert
         #region Public_Insert
+        //columnNamesAndValues <columnName, value>
         public static void Insert(string filepath, string worksheetName, Dictionary<string, object> columnNamesAndValues)
         {
             SpreadsheetDocument spreadsheetDocument = OpenSpreadsheetDocument(filepath, worksheetName, out SheetData sheetData);
+            //<letterID, value>
             Dictionary<string, object> letterIDsAndValues = ConvertColumnNamesAndValuesToLetterIDsAndValues(ref spreadsheetDocument, sheetData, columnNamesAndValues);
             InsertRow(ref spreadsheetDocument, sheetData, letterIDsAndValues);
             SaveSpreadsheetDocument(ref spreadsheetDocument);
@@ -27,6 +29,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Write
         #endregion
 
         #region Private_Insert
+        //letterIDsAndValues: <letterID< value>
         private static void InsertRow(ref SpreadsheetDocument spreadsheetDocument, SheetData sheetData, Dictionary<string, object> letterIDsAndValues)
         {
             //Create new row
@@ -38,6 +41,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Write
             {
                 //Format XX00
                 string cellReference = letterIDAndValue.Key + rowCount;
+                //<cellReference, value>
                 CreateCell(ref spreadsheetDocument, row, new KeyValuePair<string, object>(cellReference, letterIDAndValue.Value));
             }
         }
