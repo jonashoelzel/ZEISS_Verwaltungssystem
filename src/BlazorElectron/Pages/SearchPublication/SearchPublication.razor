@@ -4,74 +4,148 @@
 @inject NavigationManager NavigationManager
 @inject PublicationDataSetModel Publication
 
-<img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg"
-     class="logo" />
+<img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg" class="logo" />
 
-<section class="search-default">
-    <form>
-        <div>
-            <input type="text" id="searchfield" asp-for="SearchString" placeholder="Titelname, Autor, Verlag, ..." />
-            <input type="submit" value="Suchen" />
+<EditForm Model="@Publication">
+
+    <section class="search-default">
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Titel, Autor, Stichwort, ..." 
+                   @bind-value="SearchTerm" @bind-value:event="oninput"/>
+            <button type="button" class="btn">
+                <span class="fas fa-search"></span>
+            </button>
+            <button type="button" class="btn">
+                <span class="fas fa-filter"></span>
+            </button>
         </div>
-    </form>
-    <div class="search-body">
-        <table class="searchTable">
-            <thead>
+    </section>
+   
+    <table class="table table-striped">
+            <thead class="thead-dark">
                 <tr>
-                    <th style="width: 20%;">Titelname</th>
-                    <th style="width: 10%;">Datum der Veröffentlichung</th>
-                    <th style="width: 20%;">Art der Veröffentlichung</th>
-                    <th style="width: 20%;">Optionen</th>
+                    <th>
+                        <span class="sort-link" @onclick="@(() => SortTable("TitleTest"))">Titel</span>
+                        <span class="fa @(GetSortStyle("TitleTest"))"></span>
+                    </th>
+                    <th>
+                        <span class="sort-link" @onclick="@(() => SortTable("NameTest"))">Nachname</span>
+                        <span class="fa @(GetSortStyle("NameTest"))"></span>
+                    </th>
+                    <th>
+                        <span class="sort-link" @onclick="@(() => SortTable("SurnameTest"))">Vorname des Autors</span>
+                        <span class="fa @(GetSortStyle("SurnameTest"))"></span>
+                    </th>
+                    <th>
+                        <span class="sort-link" @onclick="@(() => SortTable("DateTest"))">Datum der Veröffentlichung</span>
+                        <span class="fa @(GetSortStyle("DateTest"))"></span>
+                    </th>
+                    <th>Aktion</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>ABC</td>
-                    <td>14.06.2020</td>
-                    <td>Artikel</td>
-                    <td>""</td>
-                </tr>
-                <tr>
-                    <td>XYZ</td>
-                    <td>24.12.2020</td>
-                    <td>Blog</td>
-                    <td>""</td>
-                </tr>
-                <tr>
-                    <td>ABC</td>
-                    <td>14.06.2020</td>
-                    <td>Artikel</td>
-                    <td>""</td>
-                </tr>
-                <tr>
-                    <td>ABC</td>
-                    <td>14.06.2020</td>
-                    <td>Artikel</td>
-                    <td>""</td>
-                </tr>
-                <tr>
-                    <td>ABC</td>
-                    <td>14.06.2020</td>
-                    <td>Artikel</td>
-                    <td>""</td>
-                </tr>
-                <tr>
-                    <td>ABC</td>
-                    <td>14.06.2020</td>
-                    <td>Artikel</td>
-                    <td>""</td>
-                </tr>
-                <tr>
-                    <td>DEF</td>
-                    <td>25.01.2021</td>
-                    <td>Video</td>
-                    <td>""</td>
-                </tr>
+                @foreach (var item in items)
+                {
+                    <tr>
+                        <td>@item.TitleTest</td>
+                        <td>@item.NameTest</td>
+                        <td>@item.SurnameTest</td>
+                        <td>@item.DateTest</td>
+                        <td>
+                            <button type="button" class="btn-primary">
+                                Bearbeiten
+                                <span class="fas fa-pencil-alt"></span>
+                            </button>
+                            <button type="button" class="btn-primary">
+                                Löschen
+                                <span class="fas fa-trash-alt"></span>
+                            </button>
+                        </td>
+                    </tr>
+                }
             </tbody>
-        </table>
-    </div>
-</section>
+        </table> 
+</EditForm>
 
-@code {
+@code 
+{
+    private bool IsSortedAscending;
+    private string CurrentSortColumn;
 
+    string SearchTerm { get; set; } = "";
+
+    public class TableTest
+    {
+        public string TitleTest { get; set; }
+        public string NameTest { get; set; }
+        public string SurnameTest { get; set; }
+        public string DateTest { get; set; }
+    };
+
+    List<TableTest> Data = new List<TableTest>()
+    {
+        new TableTest {TitleTest="ABC", NameTest="Mueller", SurnameTest="Hans", DateTest="12.03.2015"},
+        new TableTest {TitleTest="XYZ", NameTest="Mustermann", SurnameTest="Max", DateTest="24.12.2017"},
+        new TableTest {TitleTest="DEF", NameTest="Musterfrau", SurnameTest="Maxi", DateTest="31.12.2019"},
+        new TableTest {TitleTest="MNO", NameTest="Stein", SurnameTest="Ute", DateTest="01.01.2022"},
+
+        new TableTest {TitleTest="GHWE", NameTest="Zufall", SurnameTest="Juergen", DateTest="12.12.2015"},
+        new TableTest {TitleTest="OSJF", NameTest="Wurst", SurnameTest="Willi", DateTest="14.06.2006"},
+        new TableTest {TitleTest="SHJF", NameTest="Schmied", SurnameTest="Anna", DateTest="31.12.2040"},
+        new TableTest {TitleTest="GEGE", NameTest="Fischer", SurnameTest="Klaus", DateTest="01.01.1999"},
+    };
+
+    List<TableTest> items => Data.Where(i => i.TitleTest.ToLower().Contains(SearchTerm.ToLower()) ||
+                                             i.NameTest.ToLower().Contains(SearchTerm.ToLower()) ||
+                                             i.SurnameTest.ToLower().Contains(SearchTerm.ToLower()) ||
+                                             i.DateTest.ToLower().Contains(SearchTerm.ToLower())).ToList();
+
+    private string GetSortStyle(string columnName)
+    {
+        if(CurrentSortColumn != columnName)
+        {
+            return string.Empty;
+        }
+        if(IsSortedAscending)
+        {
+            return "fa-sort-up";
+        }
+        else
+        {
+            return "fa-sort-down";
+        }
+    }
+    private void SortTable(string columnName)
+    {
+        if(columnName != CurrentSortColumn)
+        {
+            Data = Data.OrderBy(x =>
+                                    x.GetType()
+                                     .GetProperty(columnName)
+                                     .GetValue(x, null))
+                         .ToList();
+            CurrentSortColumn = columnName;
+            IsSortedAscending = true;
+        }
+        else
+        {
+            if(IsSortedAscending)
+            {
+                Data = Data.OrderByDescending(x =>
+                                                    x.GetType()
+                                                     .GetProperty(columnName)
+                                                     .GetValue(x, null))
+                              .ToList();
+            }
+            else
+            {
+                Data = Data.OrderBy(x =>
+                                        x.GetType()
+                                         .GetProperty(columnName)
+                                         .GetValue(x, null))
+                             .ToList();
+            }
+            IsSortedAscending = !IsSortedAscending;
+        }
+    }
 }

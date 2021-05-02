@@ -9,14 +9,14 @@
 
 @if (ShowPopup)
 {
-    <div class="modal fade show" aria-modal="true" tabindex="-1" role="dialog">
+    <div class="modal fade" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h3 class="modal-title w-100 text-center">Erfolgreich gespeichert</h3>
                 </div>
                 <div class="modal-body">
-                    <p>Die Veröffentlichung wurde erfolgreich der Liste hinzugefügt.</p>
+                    <p>Die Veröffentlichung wurde der Liste hinzugefügt.</p>
                     <button type="submit" id="backToLandingPage" class="form-control" @onclick="@NavigateToLandingPage">Zurück zur Startseite</button>
                 </div>
             </div>
@@ -24,7 +24,7 @@
     </div>
 }
 
-<EditForm Model="Publication.TypeOfPublication" OnInvalidSubmit="@HandleInvalidSubmit" OnValidSubmit="@SuccessfulSavePublication">
+<EditForm Model="@Publication.TypeOfPublication" OnInvalidSubmit="@HandleInvalidSubmit" OnValidSubmit="@CheckEvent">
 
     <DataAnnotationsValidator />
 
@@ -33,7 +33,7 @@
             <h4 class="panel-title">Art der Veröffentlichung</h4>
         </header>
         <div class="panel-body">
-            <InputSelect DisplayName="division" class="form-control" @bind-Value="Publication.TypeOfPublication.Name">
+            <InputSelect DisplayName="division" class="form-control" @bind-Value="@Publication.TypeOfPublication.Name">
                 <option></option>
                 <option>Artikel</option>
                 <option>Blogbeitrag</option>
@@ -42,18 +42,20 @@
                 <option>Vortrag</option>
                 <option>Workshop</option>
             </InputSelect>
-            <ValidationMessage For="@(()=> Publication.TypeOfPublication.Name)" />
+            <ValidationMessage For="@(()=> @Publication.TypeOfPublication.Name)" />
         </div>
     </section>
 
-    <button class="addPub" type="submit">Veröffentlichung hinzufügen</button>
+    <button class="addPub" type="submit" @onclick="SetNextFalse">Veröffentlichung hinzufügen</button>
     <button class="back" type="button" @onclick="NavigateToPreviousScreen">Zurück</button>
-    @*<button class="continue" type="submit" >Optionale Angaben</button>*@
+    <button class="continue" type="submit" @onclick="SetNextTrue">Optionale Angaben</button>
 
 </EditForm>
 
 @code
 {
+    bool Next = true;
+
     private void NavigateToPreviousScreen()
     {
         NavigationManager.NavigateTo("addDateOfRelease");
@@ -69,11 +71,34 @@
         NavigationManager.NavigateTo("/");
     }
 
+    private void SetNextFalse()
+    {
+        Next = false;
+    }
+
+    private void SetNextTrue()
+    {
+        Next = true;
+    }
+    /* differentiate between the buttons */
+    private void CheckEvent()
+    {
+        if(Next)
+        {
+            NavigateToNextScreen();
+        }
+        else
+        {
+            Save();
+        }
+    }
+
     private void Save()
     {
         WriteData.Save(Publication);
-        SuccessfulSavePublication();
+        PopupSuccessfulSave();
     }
+
     @*
         private void Preview()
         {
@@ -88,7 +113,7 @@
 
     // Dialogfenster zum erfolgreichen Hinzufügen einer Veröffentlichung
     bool ShowPopup = false;
-    private void SuccessfulSavePublication()
+    private void PopupSuccessfulSave()
     {
         ShowPopup = true;
     }

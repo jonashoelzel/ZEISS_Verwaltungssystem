@@ -1,41 +1,52 @@
 ﻿@page "/addDescription"
 @using Zeiss.PublicationManager.Data.DataSet.Model
+@using Zeiss.PublicationManager.Business.Logic.IO.Write
 
 @inject NavigationManager NavigationManager
 @inject PublicationDataSetModel Publication
 
-<img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg"
-     class="logo" />
+<img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg" class="logo" />
 
-<section class="description panel-default">
-    <header class="panel-heading">
-        <h4 class="panel-title">Zusätzliche Information</h4>
-    </header>
-    <div class="description panel-body">
-        <form>
-            <div class="description-default">
-                <label for="titleDescr">Veröffentlichungstitel</label>
-                <input type="text" id="titleDescr" name="titleDescr" @bind="Publication.PublicationTitle" /><br />
+@if (ShowPopup)
+{
+    <div class="modal fade" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title w-100 text-center">Erfolgreich gespeichert</h3>
+                </div>
+                <div class="modal-body">
+                    <p>Die Veröffentlichung wurde der Liste hinzugefügt.</p>
+                    <button type="submit" id="backToLandingPage" class="form-control" @onclick="@NavigateToLandingPage">Zurück zur Startseite</button>
+                </div>
             </div>
-            <div class="description-default">
-                <label for="description">Beschreibung</label>
-                <textarea id="description" name="description" @bind="Publication.Description" /><br />
-            </div>
-        </form>
+        </div>
     </div>
-</section>
+}
 
-<button class="addPub" type="button" @onclick="Preview">
-    Veröffentlichung hinzufügen
-</button>
+<EditForm Model="@Publication">
+    <section class="description panel-default">
+        <header class="panel-heading">
+            <h4 class="panel-title">Zusätzliche Information</h4>
+        </header>
+        <div class="description panel-body">
+            <form>
+                <div class="description-default">
+                    <label for="titleDescr">Veröffentlichungstitel</label>
+                    <InputText id="titleDescr" class="form-control" @bind-Value="@Publication.AdditionalInformation" />
+                </div>
+                <div class="description-default">
+                    <label for="description">Beschreibung</label>
+                    <InputTextArea id="description" class="form-control" @bind-Value="@Publication.Description" rows="5" />
+                </div>
+            </form>
+        </div>
+    </section>
 
-<button class="back" type="button" @onclick="NavigateToPreviousScreen">
-    Wichtige Angaben
-</button>
-
-<button class="continue" type="button" @onclick="NavigateToNextScreen">
-    Weiter
-</button>
+    <button class="addPub" type="button" @onclick="Save">Veröffentlichung hinzufügen</button>
+    <button class="back" type="button" @onclick="NavigateToPreviousScreen">Pflichtangaben</button>
+    <button class="continue" type="button" @onclick="NavigateToNextScreen">Weiter</button>
+</EditForm>
 
 @code
 {
@@ -49,8 +60,28 @@
         NavigationManager.NavigateTo("addPublisher");
     }
 
-    private void Preview()
+    private void NavigateToLandingPage()
     {
-        NavigationManager.NavigateTo("Preview");
+        NavigationManager.NavigateTo("/");
     }
+
+    private void Save()
+    {
+        WriteData.Save(Publication);
+        PopupSuccessfulSave();
+    }
+
+    // Dialogfenster zum erfolgreichen Hinzufügen einer Veröffentlichung
+    bool ShowPopup = false;
+    private void PopupSuccessfulSave()
+    {
+        ShowPopup = true;
+    }
+
+    @*
+        private void Preview()
+        {
+            NavigationManager.NavigateTo("Preview");
+        }
+    *@
 }

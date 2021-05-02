@@ -69,7 +69,7 @@ body {
     right: 7%;
     width: 20%;
     height: 10%;
-    min-width: 130px;
+    min-width: 190px;
     min-height: 50px;
 }
 
@@ -89,7 +89,7 @@ body {
     left: 7%;
     width: 20%;
     height: 10%;
-    min-width: 130px;
+    min-width: 190px;
     min-height: 50px;
 }
 
@@ -162,31 +162,15 @@ input[type=text] {
 
 /*Beschreibung panel*/
 .description-default {
-    padding: 4%;
+    margin: 3%;
 }
 
-/*Beschreibung panel body*/
-.description-panel-body {
-    border: 3px groove rgba(28,110,164,0.55);
-    border-radius: 15px;
-    padding: 10%;
-    width: 110%;
-    height: 350%;
-}
-
-/*Textbox Beschreibung-Titel*/
-#titleDescr {
-    position: absolute;
-    left: 35%;
-    width: 40%;
-}
-
-/*Textbox Beschreibung-Beschreibung*/
 #description {
-    position: absolute;
-    left: 40%;
-    width: 60%;
-    height: 150%;
+    resize: none;
+}
+
+.form-check.tags {
+    margin: 0 auto;
 }
 
 /*Popup-Fenster "Erfolgreich hinzugefügte Veröffentlichung"*/
@@ -204,7 +188,7 @@ input[type=text] {
 }
 
 .modal-content {
-    background-color: #6c9ef8;
+    background-color: #ffffff;
 }
 
 .modal-header {
@@ -243,7 +227,35 @@ input[type=text] {
         top: 0.5rem;
     }
 
-/*Validierung*/
+/* Validierung */
 .validation-message {
     color: red;
+}
+
+.search-default {
+    margin: 5% 0 5% 0;
+}
+
+
+
+/* search-button filtering*/
+#searching {
+    border: 3px groove rgba(28,110,164,0.55);
+    border-radius: 15px;
+    background-color: #2449a4;
+    color: #ffffff;
+    font-family: Arial;
+    font-size: 100%;
+    font-weight: bold;
+    text-align: center;
+    line-height: 20px;
+}
+
+.table {
+    width: 90%;
+    margin: 0 auto;
+}
+
+.sort-link {
+    cursor: pointer;
 }
