@@ -56,24 +56,23 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.ComponentTest.Write
         {
             PublicationDataSet dataSet = new()
             {
-                ID = IDs[Randomizer.Next(IDs.Length)],
+                ID = Guid.NewGuid(),
                 WorkingTitle = Titles[Randomizer.Next(Titles.Length)] + " " + Titles[Randomizer.Next(Titles.Length)],
                 PublicationTitle = Titles[Randomizer.Next(Titles.Length)] + " " + Titles[Randomizer.Next(Titles.Length)] + " " + Titles[Randomizer.Next(Titles.Length)]
             };
 
-            dataSet.TypeOfPublication.Name = PublicationType[Randomizer.Next(PublicationType.Length)];
+            dataSet.TypeOfPublication = GenerateRandomPublicationType();
 
             dataSet.MainAuthor = GenerateRandomAuthor();
             dataSet.CoAuthors = GenerateRandomCoAuthors();
 
-            dataSet.Division = Divisions[Randomizer.Next(Divisions.Length)];
+            dataSet.Division = GenerateRandomDivision();
 
             dataSet.DateOfStartWorking = GetRandomDate();
-            dataSet.CurrentState.Name = CurrentStates[Randomizer.Next(CurrentStates.Length)];
+            dataSet.CurrentState = GenerateRandomState();
             dataSet.DateOfRelease = GetRandomDate();
 
-            dataSet.PublishedBy.ID = IDs[Randomizer.Next(IDs.Length)];
-            dataSet.PublishedBy.Name = Publishers[Randomizer.Next(Publishers.Length)];
+            dataSet.PublishedBy = GenerateRandomPublisher();
 
             dataSet.Tags = GenerateRandomTags();
             dataSet.Description = GenerateRandomText();
@@ -82,11 +81,47 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.ComponentTest.Write
             return dataSet;
         }
 
+        private IPublicationType GenerateRandomPublicationType()
+        {
+            return new PublicationType()
+            {
+                ID = Guid.NewGuid(),
+                Name = PublicationType[Randomizer.Next(PublicationType.Length)],
+            };
+        }
+
+        private IState GenerateRandomState()
+        {
+            return new State()
+            {
+                ID = Guid.NewGuid(),
+                Name = CurrentStates[Randomizer.Next(CurrentStates.Length)],
+            };
+        }
+
+        private IPublisher GenerateRandomPublisher()
+        {
+            return new Publisher()
+            {
+                ID = Guid.NewGuid(),
+                Name = Publishers[Randomizer.Next(Publishers.Length)],
+            };
+        }
+
+        private IDivision GenerateRandomDivision()
+        {
+            return new Division()
+            {
+                ID = Guid.NewGuid(),
+                Name = Divisions[Randomizer.Next(Divisions.Length)],
+            };
+        }
+
         private Author GenerateRandomAuthor()
         {
             Author author = new()
             {
-                ID = IDs[Randomizer.Next(IDs.Length)],
+                ID = Guid.NewGuid(),
                 Name = Names[Randomizer.Next(Names.Length)],
                 Surname = Surnames[Randomizer.Next(Surnames.Length)]
             };

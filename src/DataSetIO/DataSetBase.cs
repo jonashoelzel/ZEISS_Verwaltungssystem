@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -102,7 +102,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO
             {
                 string[] authorInformation = CSVHandler.IO.Read.CSVReader.ReadCSVLine(coAuthorCSV);
                 Author coAuthor = new();
-                coAuthor.ID = Convert.ToInt32(authorInformation[0]);
+                coAuthor.ID = Guid.Parse(authorInformation[0]);
                 coAuthor.Name = authorInformation[1];
                 coAuthor.Surname = authorInformation[2];
 

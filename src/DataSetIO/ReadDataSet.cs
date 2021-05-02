@@ -37,69 +37,34 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Read
             return dataSets;
         }
 
-        //Legacy Code
-        /*
-        private static IPublicationDataSet ConvertToDataSet(List<object> row)
-        {
-            PublicationDataSet dataSet = new();
-
-            dataSet.ID = Convert.ToInt32(row[0]);
-            dataSet.WorkingTitle = row[1].ToString();
-            dataSet.PublicationTitle = row[2].ToString();
-
-
-            //dataSet.TypeOfPublication.ID = Convert.ToInt32(row[3]);
-            dataSet.TypeOfPublication.Name = row[3].ToString();
-
-            dataSet.MainAuthor.ID = Convert.ToInt32(row[4]);
-            dataSet.MainAuthor.Name = row[5].ToString();
-            dataSet.MainAuthor.Surname = row[6].ToString();
-
-            dataSet.CoAuthors = DataSetBase.ConvertCSVToCoAuthors(row[7].ToString());
-
-            dataSet.Division = row[8].ToString();
-
-            dataSet.DateOfStartWorking = Convert.ToDateTime(row[9]);
-            //dataSet.CurrentState.ID = row[10].ToString();
-            dataSet.CurrentState.Name = row[10].ToString();
-            dataSet.DateOfRelease = Convert.ToDateTime(row[11]);
-
-            dataSet.PublishedBy.ID = Convert.ToInt32(row[12]);
-            dataSet.PublishedBy.Name = row[13].ToString();
-
-            dataSet.Tags = DataSetBase.ConvertCSVToTags(row[14].ToString());
-            dataSet.Description = row[15].ToString();
-            dataSet.AdditionalInformation = row[16].ToString();
-
-            return dataSet;
-        }
-        */
-
         private static IPublicationDataSet ConvertToDataSet(Dictionary<string, object> row)
         {
+            throw new NotImplementedException("Not working with new data structure");
+
             PublicationDataSet dataSet = new();
 
-            dataSet.ID =Convert.ToInt32(row["PublicationID"]);
+            dataSet.ID = Guid.Parse(row["PublicationID"].ToString());
             dataSet.WorkingTitle = row["WorkingTitle"].ToString();
             dataSet.PublicationTitle = row["PublictionTitle"].ToString();
 
             //dataSet.TypeOfPublication.ID = Convert.ToInt32(row[3]);
             dataSet.TypeOfPublication.Name = row["TypeOfPublication"].ToString();
 
-            dataSet.MainAuthor.ID = Convert.ToInt32(row["AuthorID"]);
+            dataSet.MainAuthor.ID = Guid.Parse(row["AuthorID"].ToString());
             dataSet.MainAuthor.Name = row["AuthorName"].ToString();
             dataSet.MainAuthor.Surname = row["AuthorSurname"].ToString();
 
             dataSet.CoAuthors = DataSetBase.ConvertCSVToCoAuthors(row["CoAuthors"].ToString());
 
-            dataSet.Division = row["Division"].ToString();
+            dataSet.Division.ID = Guid.Parse(row["Division"].ToString());
+            dataSet.Division.Name = row["Division"].ToString();
 
             dataSet.DateOfStartWorking = Convert.ToDateTime(row["DateOfStartWorking"]);
             //dataSet.CurrentState.ID = row[10].ToString();
             dataSet.CurrentState.Name = row["CurrentState"].ToString();
             dataSet.DateOfRelease = Convert.ToDateTime(row["DateOfRelease"]);
 
-            dataSet.PublishedBy.ID = Convert.ToInt32(row["PublisherID"]);
+            dataSet.PublishedBy.ID = Guid.Parse(row["PublisherID"].ToString());
             dataSet.PublishedBy.Name = row["PublisherName"].ToString();
 
             dataSet.Tags = DataSetBase.ConvertCSVToTags(row["Tags"].ToString());
