@@ -12,25 +12,33 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Read
     {
         public static List<IPublicationDataSet> SelectIntelligent(string filepath, string worksheetName, List<string> headerColumns)
         {
-            List<List<object>> table = RowSelect.Select(filepath, worksheetName, headerColumns);
             List<IPublicationDataSet> dataSets = new();
 
-            int columnsCount = table.Count;
-            int rowsCount = table[0].Count;
-
-            for (int rowIndex = 0; rowIndex < rowsCount; rowIndex++)
+            Dictionary<string, List<object>> table = RowSelect.Select(filepath, worksheetName, headerColumns);
+            if (table.Any())
             {
-                List<object> row = new();
-                for (int columnIndex = 0; columnIndex < columnsCount; columnIndex++)
+                int rowsCount = table[headerColumns[0]].Count;
+
+                for (int rowIndex = 0; rowIndex < rowsCount; rowIndex++)
                 {
-                    row.Add(table[columnIndex][rowIndex]);
+                    Dictionary<string, object> row = new();
+                    for (int i = 0; i < headerColumns.Count; i++)
+                    {
+                        row.Add(headerColumns[i], table[headerColumns[i]][rowIndex]);
+                    }
+                    dataSets.Add(ConvertToDataSet(row));
                 }
-                dataSets.Add(ConvertToDataSet(row));
             }
+
+            
+
+            
 
             return dataSets;
         }
 
+        //Legacy Code
+        /*
         private static IPublicationDataSet ConvertToDataSet(List<object> row)
         {
             PublicationDataSet dataSet = new();
@@ -62,6 +70,41 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Read
             dataSet.Tags = DataSetBase.ConvertCSVToTags(row[14].ToString());
             dataSet.Description = row[15].ToString();
             dataSet.AdditionalInformation = row[16].ToString();
+
+            return dataSet;
+        }
+        */
+
+        private static IPublicationDataSet ConvertToDataSet(Dictionary<string, object> row)
+        {
+            PublicationDataSet dataSet = new();
+
+            dataSet.ID =Convert.ToInt32(row["PublicationID"]);
+            dataSet.WorkingTitle = row["WorkingTitle"].ToString();
+            dataSet.PublicationTitle = row["PublictionTitle"].ToString();
+
+            //dataSet.TypeOfPublication.ID = Convert.ToInt32(row[3]);
+            dataSet.TypeOfPublication.Name = row["TypeOfPublication"].ToString();
+
+            dataSet.MainAuthor.ID = Convert.ToInt32(row["AuthorID"]);
+            dataSet.MainAuthor.Name = row["AuthorName"].ToString();
+            dataSet.MainAuthor.Surname = row["AuthorSurname"].ToString();
+
+            dataSet.CoAuthors = DataSetBase.ConvertCSVToCoAuthors(row["CoAuthors"].ToString());
+
+            dataSet.Division = row["Division"].ToString();
+
+            dataSet.DateOfStartWorking = Convert.ToDateTime(row["DateOfStartWorking"]);
+            //dataSet.CurrentState.ID = row[10].ToString();
+            dataSet.CurrentState.Name = row["CurrentState"].ToString();
+            dataSet.DateOfRelease = Convert.ToDateTime(row["DateOfRelease"]);
+
+            dataSet.PublishedBy.ID = Convert.ToInt32(row["PublisherID"]);
+            dataSet.PublishedBy.Name = row["PublisherName"].ToString();
+
+            dataSet.Tags = DataSetBase.ConvertCSVToTags(row["Tags"].ToString());
+            dataSet.Description = row["Description"].ToString();
+            dataSet.AdditionalInformation = row["AdditionalINformation"].ToString();
 
             return dataSet;
         }

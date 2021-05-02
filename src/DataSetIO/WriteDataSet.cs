@@ -34,13 +34,13 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
         public static void Insert(string filepath, string worksheetName, IPublicationDataSet dataSet)
         {
             InitializeDataSetWorksheet(filepath, worksheetName);
-            RowInsert.Insert(filepath, worksheetName, DataSetBase.GetNewRow(dataSet));
+            Excel.IO.Write.Legacy.LegacyRowInsert.Insert(filepath, worksheetName, DataSetBase.GetNewRow(dataSet));
         }
 
         public static void InsertIntelligent(string filepath, string worksheetName, IPublicationDataSet dataSet)
         {
             InitializeDataSetWorksheet(filepath, worksheetName);                
-            RowInsert.Insert(filepath, worksheetName, DataSetBase.GetColumnNames().Select(x => x.ToString()).ToList(), DataSetBase.GetNewRow(dataSet));
+            Excel.IO.Write.Legacy.LegacyRowInsert.Insert(filepath, worksheetName, DataSetBase.GetColumnNames().Select(x => x.ToString()).ToList(), DataSetBase.GetNewRow(dataSet));
         }
 
 
@@ -82,8 +82,8 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
         private static void InitializeDataSetWorksheet(string filepath, string worksheetName)
         {
             if (!WriteExcel.WorksheetExists(ref filepath, worksheetName))
-            {              
-                RowInsert.Insert(filepath, worksheetName, DataSetBase.GetColumnNames());
+            {
+                Excel.IO.Write.Legacy.LegacyRowInsert.Insert(filepath, worksheetName, DataSetBase.GetColumnNames());
             }
         }
     }
