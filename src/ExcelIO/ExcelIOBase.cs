@@ -102,7 +102,6 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
         }
 
 
-
         protected static Cell GetReferenceCell(Row row, string cellName)
         {
             if (String.IsNullOrEmpty(cellName))
@@ -128,11 +127,24 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
             return columnLetterIDs;
         }
 
+        protected static string GetLetterIDOfCellReference(string cellReference)
+        {
+            for (int i = 0; i < cellReference.Length; i++)
+            {
+                char c = cellReference[i];
+                if (Int32.TryParse(c.ToString(), out _))
+                    return cellReference[0..i];
+            }
 
-        protected static List<string> GetColumnLetterIDsOfColumnNames(ref SpreadsheetDocument spreadsheetDocument, SheetData sheetData, List<string> columnNames, out int rowIndex)
+            //Already letters only
+            return cellReference;
+        }
+
+
+        protected static Dictionary<string, string> GetColumnLetterIDsOfColumnNames(ref SpreadsheetDocument spreadsheetDocument, SheetData sheetData, List<string> columnNames, out int rowIndex)
         {
             rowIndex = -1;
-            List<string> letterIDs = new();
+            Dictionary<string, string> letterIDs = new();
             List<object> objectList = new();
             foreach (string strobj in columnNames)
             {
@@ -144,13 +156,13 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
             {
                 foreach (string name in columnNames)
                 {
-                    letterIDs.Add(
-                        GetColumnLetterIDsOfColumnNames(
+                    letterIDs.Add(name, 
+                            GetColumnLetterIDsOfColumnNames(
                             ref spreadsheetDocument,
                             row,
                             name, out rowIndex));
                 }
-            }        
+            }
 
             return letterIDs;
         }
@@ -183,30 +195,15 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
             return null;
         }
 
-        protected static string GetLetterIDOfCellReference(string cellReference)
+        protected static Dictionary<string, object> ConvertColumnNamesAndValuesToLetterIDsAndValues
+            (ref SpreadsheetDocument spreadsheetDocument, SheetData sheetData, Dictionary<string, object> columnNamesAndValues)
         {
-            for (int i = 0; i < cellReference.Length; i++)
-            {
-                char c = cellReference[i];
-                if (Int32.TryParse(c.ToString(), out _))
-                    return cellReference[0..i];
-            }
+            Dictionary<string, object> idsAndValues = new();
 
-            //Already letters only
-            return cellReference;
-        }
+            foreach (var columnAndValue in columnNamesAndValues)
+                idsAndValues.Add(GetColumnLetterIDsOfColumnNames(ref spreadsheetDocument, sheetData, columnAndValue.Key, out _), columnAndValue.Value);
 
-        protected static int GetRowIDOfCellReference(string cellReference)
-        {
-            for (int i = 0; i < cellReference.Length; i++)
-            {
-                char c = cellReference[i];
-                if (Int32.TryParse(c.ToString(), out _))
-                    return Convert.ToInt32(cellReference[i..]);
-            }
-
-            //Already letters only
-            return Convert.ToInt32(cellReference);
+            return idsAndValues;
         }
         #endregion
 
@@ -390,20 +387,8 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
         #endregion
 
         #region Read
-        private static uint GetUniqueSheetID(ref Sheets sheets)
-        {
-            // Get a unique ID for the new worksheet.
-            uint sheetId = 1;
-            if (sheets?.Elements<Sheet>()?.Count() > 0)
-            {
-                sheetId = sheets.Elements<Sheet>().Select(s => s.SheetId.Value).Max() + 1;
-            }
-
-            return sheetId;
-        }
-
         protected static bool OpenWorksheet(ref SpreadsheetDocument spreadsheetDocument, string worksheetName, out SheetData sheetData)
-        {        
+        {
             if (WorksheetExists(ref spreadsheetDocument, worksheetName, out IEnumerable<Sheet> sheetsIEnum))
             {
                 //Open worksheet
@@ -417,14 +402,26 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
             return false;
         }
 
+        private static uint GetUniqueSheetID(ref Sheets sheets)
+        {
+            // Get a unique ID for the new worksheet.
+            uint sheetId = 1;
+            if (sheets?.Elements<Sheet>()?.Count() > 0)
+            {
+                sheetId = sheets.Elements<Sheet>().Select(s => s.SheetId.Value).Max() + 1;
+            }
+
+            return sheetId;
+        }
+
         //KeyValuePair<columnHeaderName, id> -> columnHeaderName is name of column in the header
         public static bool IsIDOfWorksheet(string filepath, string worksheetName, KeyValuePair<string, object> id)
         {
             SpreadsheetDocument spreadsheetDocument = OpenSpreadsheetDocument(filepath, worksheetName, out SheetData sheetData, false, false);
 
             //For easier usage, we take KeyValuePair<columnHeaderName, guid>, but we need the format KeyValuePair<columnLetterID, guid>
-            KeyValuePair<string, object> convertedID = new(GetColumnLetterIDsOfColumnNames(ref spreadsheetDocument, sheetData, id.Key, out _), id.Value);
-            bool found = (SearchRow(ref spreadsheetDocument, sheetData, convertedID) is not null);
+            KeyValuePair<string, object> letterIDAndSearchID = new(GetColumnLetterIDsOfColumnNames(ref spreadsheetDocument, sheetData, id.Key, out _), id.Value);
+            bool found = (SearchRow(ref spreadsheetDocument, sheetData, letterIDAndSearchID) is not null);
 
             SaveSpreadsheetDocument(ref spreadsheetDocument);
 
@@ -434,6 +431,20 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
         #endregion
 
         #region GetRowInformation
+        protected static int GetRowIDOfCellReference(string cellReference)
+        {
+            for (int i = 0; i < cellReference.Length; i++)
+            {
+                char c = cellReference[i];
+                if (Int32.TryParse(c.ToString(), out _))
+                    return Convert.ToInt32(cellReference[i..]);
+            }
+
+            //Already letters only
+            return Convert.ToInt32(cellReference);
+        }
+
+
         //columnConditions can be type of 'List<object>', 'string', 'Dictionary<string, object>' or 'KeyValuePair<string, object>'
         //objects (values) in columnConditions are the conditions and strings (keys) are columnLetterIDs
         protected static Row SearchRow(ref SpreadsheetDocument spreadsheetDocument, SheetData sheetData, object columnConditions)
@@ -457,41 +468,17 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
 
         //}
 
-        //Old Version with if-else instead of switch expression
-        /*
-        //columnConditions can be type of 'List<object>', 'Dictionary<string, object>' or 'KeyValuePair<string, object>'
-        //objects (values) in columnConditions are the conditions and strings (keys) are columnLetterIDs
-        protected static bool CompareRows(Row row, SharedStringTable sharedStringTable, object columnConditions)
-        {
-            if (columnConditions is List<object> lstCon)
-                return CompareRows(row, sharedStringTable, lstCon);
-            else if (columnConditions is string strCon)
-                return CompareRows(row, sharedStringTable, new List<object> { strCon });
-            else if (columnConditions is Dictionary<string, object> dicCon)
-                return CompareRows(row, sharedStringTable, dicCon);
-            else if (columnConditions is KeyValuePair<string, object> kvpCon)
-            {
-                Dictionary<string, object> kvpDic = new();
-                kvpDic.Add(kvpCon.Key, kvpCon.Value);
-                return CompareRows(row, sharedStringTable, kvpDic);
-            }              
-
-            throw new InvalidCastException("Cannot convert 'columnConditions', because type of 'columnCondition' was invalid.\n" +
-                    "Only 'List<string>', 'Dictionary<string, object>' and 'KeyValuePair<string, object>' are accepted");
-        }
-        */
-
         //columnConditions can be type of 'List<object>', 'string', 'Dictionary<string, object>' or 'KeyValuePair<string, object>'
         //objects (values) in columnConditions are the conditions and strings (keys) are columnLetterIDs
         protected static bool CompareRows(Row row, SharedStringTable sharedStringTable, object columnConditions)
         {
             return columnConditions switch
-            {
-                List<string> lstCon => CompareRows(row, sharedStringTable, lstCon),
-                string strCon => CompareRows(row, sharedStringTable, new List<object> { strCon }),
-
+            {              
                 Dictionary<string, object> dicCon => CompareRows(row, sharedStringTable, dicCon),
                 KeyValuePair<string, object> kvpCon => CompareRows(row, sharedStringTable, new Dictionary<string, object> { { kvpCon.Key, kvpCon.Value } }),
+
+                List<object> lstCon => CompareRows(row, sharedStringTable, lstCon),
+                object strCon => CompareRows(row, sharedStringTable, new List<object> { strCon }),
 
                 _ => throw new InvalidCastException("Cannot convert 'columnConditions', because type of 'columnCondition' was invalid.\n" +
                     "Only 'List<string>', 'Dictionary<string, object>' and 'KeyValuePair<string, object>' are accepted"),

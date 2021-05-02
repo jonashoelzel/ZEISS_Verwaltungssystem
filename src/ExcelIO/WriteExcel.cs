@@ -75,16 +75,16 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Write
         }
         #endregion
 
-        #region CreateCell
-        protected static void CreateCell(ref SpreadsheetDocument spreadsheetDocument, object cellEntry, Row row, string cellReference)
+        #region CreateCell    
+        protected static void CreateCell(ref SpreadsheetDocument spreadsheetDocument, Row row, KeyValuePair<string, object> letterIDAndValue)
         {
             //Get reference cell
-            Cell referenceCell = GetReferenceCell(row, cellReference);
+            Cell referenceCell = GetReferenceCell(row, letterIDAndValue.Key);
             // Add the cell to the cell table at cellReference.
-            Cell newCell = new() { CellReference = cellReference };
+            Cell newCell = new() { CellReference = letterIDAndValue.Key };
             row.InsertBefore(newCell, referenceCell);
 
-            switch (cellEntry)
+            switch (letterIDAndValue.Value)
             {
                 case string objstr:
                     AddSharedString(ref spreadsheetDocument, ref newCell, objstr);
@@ -108,7 +108,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Write
                     break;
 
                 default:
-                    if (cellEntry is not null && Decimal.TryParse(cellEntry.ToString(), out decimal objdec))
+                    if (letterIDAndValue.Value is not null && Decimal.TryParse(letterIDAndValue.Value.ToString(), out decimal objdec))
                     {
                         newCell.DataType = new EnumValue<CellValues>(CellValues.Number);
                         newCell.CellValue = new CellValue(objdec.ToString(CultureInfo.InvariantCulture));
