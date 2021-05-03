@@ -13,18 +13,10 @@ using Zeiss.PublicationManager.Data.Excel;
 
 namespace Zeiss.PublicationManager.Data.Excel.IO.Write.Legacy
 {
-    public class LegacyRowInsert : WriteExcel
+    public class LegacyRowInsert : RowInsert
     {
         #region Insert
         #region Public_Insert
-        public static void Insert(string filepath, string worksheetName, List<object> columnValues)
-        {
-            SpreadsheetDocument spreadsheetDocument = OpenSpreadsheetDocument(filepath, worksheetName, out SheetData sheetData);
-            List<string> columnLetterIDs = GetCellReferenceLetters(columnValues.Count);
-            InsertRow(ref spreadsheetDocument, sheetData, columnLetterIDs, columnValues);
-            SaveSpreadsheetDocument(ref spreadsheetDocument);
-        }
-
         public static void Insert(string filepath, string worksheetName, List<string> columnNames, List<object> columnValues)
         {
             SpreadsheetDocument spreadsheetDocument = OpenSpreadsheetDocument(filepath, worksheetName, out SheetData sheetData);
@@ -45,10 +37,6 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Write.Legacy
 
         //}
 
-
-        #endregion
-
-        #region Private_Insert
         public static void InsertRow(ref SpreadsheetDocument spreadsheetDocument, SheetData sheetData, List<string> columnLetterIDs, List<object> columnValues)
         {
             //Create new row
@@ -63,6 +51,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Write.Legacy
                 IO.Write.Legacy.LegacyWriteExcel.CreateCell(ref spreadsheetDocument, row, cellReference, columnValues[i]);
             }
         }
+
         #endregion
         #endregion
     }

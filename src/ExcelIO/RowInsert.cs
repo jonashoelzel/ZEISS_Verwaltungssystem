@@ -17,6 +17,21 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Write
     {
         #region Insert
         #region Public_Insert
+        //Can be used to create Headers
+        public static void Insert(string filepath, string worksheetName, List<object> columnValues)
+        {
+            SpreadsheetDocument spreadsheetDocument = OpenSpreadsheetDocument(filepath, worksheetName, out SheetData sheetData);
+            List<string> columnLetterIDs = GetCellReferenceLetters(columnValues.Count);
+
+            Dictionary<string, object> letterIDsAndValues = new();
+            for (int i = 0; i < columnLetterIDs.Count; i++)
+                letterIDsAndValues.Add(columnLetterIDs[i], columnValues[i]);
+
+            InsertRow(ref spreadsheetDocument, sheetData, letterIDsAndValues);
+            SaveSpreadsheetDocument(ref spreadsheetDocument);
+        }
+
+
         //columnNamesAndValues <columnName, value>
         public static void Insert(string filepath, string worksheetName, Dictionary<string, object> columnNamesAndValues)
         {
@@ -26,36 +41,10 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Write
             InsertRow(ref spreadsheetDocument, sheetData, letterIDsAndValues);
             SaveSpreadsheetDocument(ref spreadsheetDocument);
         }
-
-        public static void Insert(string filepath, string worksheetName, List<string> columnNames, List<object> columnValues)
-        {
-            SpreadsheetDocument spreadsheetDocument = OpenSpreadsheetDocument(filepath, worksheetName, out SheetData sheetData);
-            List<string> columnLetterIDs = GetColumnLetterIDsOfColumnNames(ref spreadsheetDocument, sheetData, columnNames);
-            InsertRow(ref spreadsheetDocument, sheetData, columnLetterIDs, columnValues);
-            SaveSpreadsheetDocument(ref spreadsheetDocument);
-        }
-
-        public static void Insert(string filepath, string worksheetName, Dictionary<string, object> attributesDict)
-        {
-            var columnNames = new List<string>();
-            var columnValues = new List<object>();
-            foreach (var attribute in attributesDict)
-            {
-                columnNames.Add(attribute.Key);
-                columnValues.Add(attribute.Value);
-            }
-            var spreadsheetDocument = OpenSpreadsheetDocument(filepath, worksheetName, out SheetData sheetData);
-
-            var columnLetterIDs = GetColumnLetterIDsOfColumnNames(ref spreadsheetDocument, sheetData, columnNames);
-
-            
-            InsertRow(ref spreadsheetDocument, sheetData, columnLetterIDs, columnValues);
-            SaveSpreadsheetDocument(ref spreadsheetDocument);
-        }
-
         #endregion
 
         #region Private_Insert
+        
         //letterIDsAndValues: <letterID< value>
         private static void InsertRow(ref SpreadsheetDocument spreadsheetDocument, SheetData sheetData, Dictionary<string, object> letterIDsAndValues)
         {

@@ -28,11 +28,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Read
                     }
                     dataSets.Add(ConvertToDataSet(row));
                 }
-            }
-
-            
-
-            
+            }                   
 
             return dataSets;
         }
@@ -41,6 +37,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Read
         {
             throw new NotImplementedException("Not working with new data structure");
 
+            /*
             PublicationDataSet dataSet = new();
 
             dataSet.ID = Guid.Parse(row["PublicationID"].ToString());
@@ -72,6 +69,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Read
             dataSet.AdditionalInformation = row["AdditionalINformation"].ToString();
 
             return dataSet;
+            */
         }
     }
 }

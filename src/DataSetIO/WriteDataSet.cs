@@ -135,21 +135,23 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
             return csv[..^1];
         }
 
+
         private static void InitializeWorkBook(string filepath)
         {
-            foreach (var worksheet in worksheetsHead())
+            foreach (var worksheet in WorksheetsHead())
             {
                 if (!WriteExcel.WorksheetExists(ref filepath, worksheet.Key))
                 {
                     // TODO: Check if columns exist
                     RowInsert.Insert(filepath, worksheet.Key, worksheet.Value);
+
                 }
             }
         }
 
         private static bool ValidateWorkBook(string filepath)
         {
-            foreach (var worksheet in worksheetsHead())
+            foreach (var worksheet in WorksheetsHead())
             {
                 if (!WriteExcel.WorksheetExists(ref filepath, worksheet.Key))
                 {
@@ -170,7 +172,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
             "Publisher",
         };
 
-        private static Dictionary<string, List<object>> worksheetsHead()
+        private static Dictionary<string, List<object>> WorksheetsHead()
         {
             return new Dictionary<string, List<object>>()
             {
