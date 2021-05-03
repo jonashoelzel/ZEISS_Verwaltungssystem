@@ -464,6 +464,24 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
             return null;
         }
 
+        //columnConditions can be type of 'List<object>', 'string', 'Dictionary<string, object>' or 'KeyValuePair<string, object>'
+        //objects (values) in columnConditions are the conditions and strings (keys) are columnLetterIDs
+        protected static List<Row> SearchRows(ref SpreadsheetDocument spreadsheetDocument, SheetData sheetData, object columnConditions)
+        {
+            List<Row> rows = new();
+
+            //Try to read SharedStringTable if it exists. If not, make sure to do NOT try to read from it
+            SharedStringTable sharedStringTable = spreadsheetDocument?.WorkbookPart?.SharedStringTablePart?.SharedStringTable;
+
+            foreach (Row row in sheetData.Elements<Row>())
+            {
+                if (CompareRows(row, sharedStringTable, columnConditions))
+                    rows.Add(row);
+            }
+
+            return rows;
+        }
+
 
         //protected static Row SearchRow(ref SpreadsheetDocument spreadsheetDocument, List<string> columnIDs, List<object> columnConditions)
         //{

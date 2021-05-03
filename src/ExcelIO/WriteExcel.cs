@@ -75,7 +75,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Write
         }
         #endregion
 
-        #region CreateCell    
+        #region Cell    
         //letterIDAndValue: <cellReference, value>
         protected static void CreateCell(ref SpreadsheetDocument spreadsheetDocument, Row row, KeyValuePair<string, object> cellReferenceIDAndValue)
         {
@@ -85,39 +85,44 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Write
             Cell newCell = new() { CellReference = cellReferenceIDAndValue.Key };
             row.InsertBefore(newCell, referenceCell);
 
-            switch (cellReferenceIDAndValue.Value)
+            UpdateCell(ref spreadsheetDocument, ref newCell, cellReferenceIDAndValue.Value);
+        }
+
+        protected static void UpdateCell(ref SpreadsheetDocument spreadsheetDocument, ref Cell cell, object newValue)
+        {
+            switch (newValue)
             {
                 case string objstr:
-                    AddSharedString(ref spreadsheetDocument, ref newCell, objstr);
+                    AddSharedString(ref spreadsheetDocument, ref cell, objstr);
                     break;
 
                 case DateTime objdate:
                     //Normal way. Does NOT work for xlsx (!)
                     //string strdate = objdate.ToOADate().ToString();
-                    //newCell.DataType = CellValues.Date;
-                    //newCell.CellValue = new CellValue(strdate);
+                    //cell.DataType = CellValues.Date;
+                    //cell.CellValue = new CellValue(strdate);
 
                     //"StyleIndex" is "1", because we added a new stylesheet (index 0 would be default) with "NumberFormatId=14"
                     //is in the 2nd item of 'CellFormats' array.
-                    newCell.DataType = new EnumValue<CellValues>(CellValues.Number);
-                    newCell.StyleIndex = 1;
-                    newCell.CellValue = new CellValue(objdate.ToOADate().ToString(CultureInfo.InvariantCulture));
+                    cell.DataType = new EnumValue<CellValues>(CellValues.Number);
+                    cell.StyleIndex = 1;
+                    cell.CellValue = new CellValue(objdate.ToOADate().ToString(CultureInfo.InvariantCulture));
                     break;
 
                 case bool objbool:
-                    AddSharedString(ref spreadsheetDocument, ref newCell, objbool.ToString());
+                    AddSharedString(ref spreadsheetDocument, ref cell, objbool.ToString());
                     break;
 
                 default:
-                    if (cellReferenceIDAndValue.Value is not null && Decimal.TryParse(cellReferenceIDAndValue.Value.ToString(), out decimal objdec))
+                    if (newValue is not null && Decimal.TryParse(newValue.ToString(), out decimal objdec))
                     {
-                        newCell.DataType = new EnumValue<CellValues>(CellValues.Number);
-                        newCell.CellValue = new CellValue(objdec.ToString(CultureInfo.InvariantCulture));
+                        cell.DataType = new EnumValue<CellValues>(CellValues.Number);
+                        cell.CellValue = new CellValue(objdec.ToString(CultureInfo.InvariantCulture));
                     }
                     else
                     {
                         //Enter an empty cell to make IO easier
-                        AddSharedString(ref spreadsheetDocument, ref newCell, " ");
+                        AddSharedString(ref spreadsheetDocument, ref cell, " ");
                     }
                     break;
             }
