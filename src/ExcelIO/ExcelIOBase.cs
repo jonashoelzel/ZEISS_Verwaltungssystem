@@ -457,6 +457,18 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
         }
 
 
+        public static bool CheckHeaderColumnsExist(string filepath, string worksheetName, List<object> headerColumns)
+        {
+            SpreadsheetDocument spreadsheetDocument = OpenSpreadsheetDocument(filepath, worksheetName, out SheetData sheetData, false, false);
+
+            bool found = (SearchRow(ref spreadsheetDocument, sheetData, headerColumns) is not null);
+
+            SaveSpreadsheetDocument(ref spreadsheetDocument);
+
+            return found;
+        }
+
+
         //columnConditions can be type of 'List<object>', 'string', 'Dictionary<string, object>' or 'KeyValuePair<string, object>'
         //objects (values) in columnConditions are the conditions and strings (keys) are columnLetterIDs
         protected static Row SearchRow(ref SpreadsheetDocument spreadsheetDocument, SheetData sheetData, object columnConditions)
