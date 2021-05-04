@@ -81,6 +81,8 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Write
         {
             //Get reference cell
             Cell referenceCell = GetReferenceCell(row, cellReferenceIDAndValue.Key);
+            if (referenceCell is null)
+                throw new ArgumentException("The Cell-Reference: " + referenceCell + " is invalid.");
             // Add the cell to the cell table at cellReference.
             Cell newCell = new() { CellReference = cellReferenceIDAndValue.Key };
             row.InsertBefore(newCell, referenceCell);

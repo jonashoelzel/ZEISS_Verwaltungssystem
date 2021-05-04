@@ -21,7 +21,12 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Read.Legacy
             //Try to read SharedStringTable if it exists. If not, make sure to do NOT try to read from it
             SharedStringTable sharedStringTable = spreadsheetDocument?.WorkbookPart?.SharedStringTablePart?.SharedStringTable;
 
-            return LegacyRowSelect.Reader(sheetData, sharedStringTable, IO.Legacy.LegacyExcelIOBase.GetColumnLetterIDsOfColumnNames(ref spreadsheetDocument, sheetData, columnNames, out int rowIndex), ++rowIndex);
+            List<string> columnLetterIDs = IO.Legacy.LegacyExcelIOBase.GetColumnLetterIDsOfColumnNames(ref spreadsheetDocument, sheetData, columnNames, out int rowIndex);
+            if (!columnLetterIDs.Any())
+                throw new ArgumentException("Unable to find row that matches all columnNames in columnNames.\n" +
+                    "Some of the entered columnNames (Keys) in columnNames might not exist or are misspelled");
+
+            return LegacyRowSelect.Reader(sheetData, sharedStringTable, columnLetterIDs, ++rowIndex);
         }
 
 
