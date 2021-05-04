@@ -7,14 +7,16 @@ include::../_includes/default-attributes.inc.adoc[]
 * *UC01:* Veröffentlichung hinzufügen
 * *UC02:* Veröffentlichung suchen
 * *UC03:* Veröffentlichung bearbeiten
+* *UC04:* Veröffentlichung löschen
 
 == Use-Cases Priorisierung
 
 |===
 |*UC-ID* |*Use-Case Name* |*Priorität (1-5)*
 |UC01|Veröffentlichung hinzufügen|5
-|UC02|Beitrag suchen|5
-|UC03|Eintrag bearbeiten|5
+|UC02|Veröffentlichung suchen|5
+|UC03|Veröffentlichung bearbeiten|4
+|UC04|Veröffentlichung löschen|4
 |===
 
 == Use-Case Diagramm
@@ -29,4 +31,4 @@ include::use_case_02_inc.adoc[]
 
 include::use_case_03.inc.adoc[]
 
-
+include::use_case_04.inc.adoc[]

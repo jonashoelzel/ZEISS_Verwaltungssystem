@@ -1,0 +1,37 @@
+== Use-Case 04: Veröffentlichung löschen
+
+=== Kurzbeschreibung
+In diesem Use-Case wird das Löschen einer Veröffentlichung durch das Sales Department beschrieben.
+
+===	Kurzbeschreibung der Akteure
+
+*Sales Department*
+
+Das Sales Department will eine Veröffentlichung löschen.
+
+=== Vorbedingungen
+* Die Software ist installiert und geöffnet
+* Liste der Veröffentlichungen ist nicht leer
+* Sales Department ist als solches autorisiert
+
+=== Standardablauf (Basic Flow)
+
+. Der Use-Case beginnt, wenn das Sales Department "Fachbeitrag suchen" auswählt.
+. Das System gibt eine Übersicht von Veröffentlichungen aus.
+. Das Sales Department wählt bei gewünschter Veröffentlichung "Löschen" aus.
+. Das System fordert in einem Dialogfenster eine Bestätigung zum Löschen an.
+. Das Sales Department bestätigt mit "Ja".
+. Das System entfernt die Veröffentlichung aus der Liste.
+. Das System gibt eine Erfolgsmeldung zur Entfernung aus.
+. Der Use-Case ist abgeschlossen.
+
+=== Wesentliche Szenarios
+
+*Beitrag löschen*
+
+* Sc1: Sales Department Mitarbeiterin A sucht Veröffentlichung X aus Übersicht aus. A wählt "Löschen" hinter der jeweiligen Veröffentlichung aus und bestätigt im folgenden Dialogfenster die Entscheidung. Die Veröffentlichung X wurde aus der Liste entfernt.
+
+===	Nachbedingungen
+
+==== Entfernte Veröffentlichung 
+Die Veröffentlichung wurde aus der Liste entfernt.

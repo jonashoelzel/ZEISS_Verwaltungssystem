@@ -8,6 +8,7 @@ rectangle "ZEISS-Verwaltungssoftware" {
     (UC01\nVeröffentlichung hinzufügen) as (UC1)
     (UC02\nVeröffentlichung suchen) as (UC2)
     (UC03\nVeröffentlichung bearbeiten) as (UC3)
+    (UC04\nVeröffentlichung löschen) as (UC4)
 }
 
 a --> (UC1)
@@ -15,5 +16,6 @@ a --> (UC2)
 (UC1) <-- sd
 (UC2) <-- sd
 (UC3) <-- sd
+(UC4) <-- sd
 
 @enduml
