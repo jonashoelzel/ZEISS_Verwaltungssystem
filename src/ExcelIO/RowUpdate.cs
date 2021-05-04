@@ -40,7 +40,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Write
                 for (int j = 0; j < cells.Count; j++)
                 {
                     Cell cell = cells[i];
-                    string letterID = GetLetterIDOfCellReference(cell.CellReference);
+                    string letterID = GetLetterIDOfCellReference(cell.CellReference.Value);
                     //If this cell at letterID should be updated
                     if (letterIDsAndNewValues.ContainsKey(letterID))
                         UpdateCell(ref spreadsheetDocument, ref cell, letterIDsAndNewValues[letterID]);

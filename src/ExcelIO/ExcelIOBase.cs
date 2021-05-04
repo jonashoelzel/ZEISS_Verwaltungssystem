@@ -157,9 +157,9 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
             {
                 foreach (string name in columnNames)
                 {
-                    letterIDsAndColumnNames.Add(
-                        GetColumnLetterIDsOfColumnNames(ref spreadsheetDocument, row, name, out rowIndex),
-                        name);
+                    string letterID = GetColumnLetterIDsOfColumnNames(ref spreadsheetDocument, row, name, out rowIndex);
+                    if (letterID is not null)
+                        letterIDsAndColumnNames.Add(letterID, name);
                 }
             }
 
@@ -168,10 +168,12 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
 
         protected static string GetColumnLetterIDsOfColumnNames(ref SpreadsheetDocument spreadsheetDocument, SheetData sheetData, string columnNames, out int rowIndex)
         {
-            return GetColumnLetterIDsOfColumnNames(
-                ref spreadsheetDocument,
-                SearchRow(ref spreadsheetDocument, sheetData, columnNames),
-                columnNames, out rowIndex);
+            Row row = SearchRow(ref spreadsheetDocument, sheetData, columnNames);
+            if (row is not null)
+                return GetColumnLetterIDsOfColumnNames(ref spreadsheetDocument, row, columnNames, out rowIndex);
+
+            rowIndex = -1;
+            return null;
         }
 
         protected static string GetColumnLetterIDsOfColumnNames(ref SpreadsheetDocument spreadsheetDocument, Row row, string columnNames, out int rowIndex)
@@ -187,7 +189,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
                 {
                     object entry = ReadCell(cell, sharedStringTable);
                     if (CompareObjects(columnNames, entry))
-                        return GetLetterIDOfCellReference(cell.CellReference);
+                        return GetLetterIDOfCellReference(cell.CellReference.Value);
                 }
             }
 
@@ -541,7 +543,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
 
                 foreach (var condition in leftConditions)
                 {
-                    if (condition.Key == GetLetterIDOfCellReference(cell.CellReference) && CompareObjects(entry, condition.Value))
+                    if (condition.Key == GetLetterIDOfCellReference(cell.CellReference.Value) && CompareObjects(entry, condition.Value))
                     {
                         leftConditions.Remove(condition.Key);
                         break;

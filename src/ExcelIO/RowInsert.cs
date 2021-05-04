@@ -45,7 +45,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Write
 
         #region Private_Insert
         
-        //letterIDsAndValues: <letterID< value>
+        //letterIDsAndValues: <letterID, value>
         private static void InsertRow(ref SpreadsheetDocument spreadsheetDocument, SheetData sheetData, Dictionary<string, object> letterIDsAndValues)
         {
             //Create new row

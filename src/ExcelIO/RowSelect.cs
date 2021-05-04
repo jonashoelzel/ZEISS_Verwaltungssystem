@@ -15,7 +15,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Read
     //NOTE: When we use with Console, all members have to be static !!!
     public class RowSelect : ExcelIOBase
     {       
-        //return: <columnName, columnENtries>
+        //return: <columnName, columnEntries>
         public static Dictionary<string, List<object>> Select(string filepath, string worksheetName, List<string> columnNames)
         {
             SpreadsheetDocument spreadsheetDocument = OpenSpreadsheetDocument(filepath, worksheetName, out SheetData sheetData, false, false);
@@ -41,7 +41,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Read
                 {
                     foreach (Cell cell in row.Elements<Cell>())
                     {
-                        string letterIDOfReference = GetLetterIDOfCellReference(cell.CellReference);
+                        string letterIDOfReference = GetLetterIDOfCellReference(cell.CellReference.Value);
                         if (columnLetterIDsAndColumnNames.ContainsKey(letterIDOfReference))
                         {
                             string columnName = columnLetterIDsAndColumnNames[letterIDOfReference];
