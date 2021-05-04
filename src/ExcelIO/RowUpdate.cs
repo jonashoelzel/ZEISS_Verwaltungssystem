@@ -17,9 +17,18 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Write
         public static int Update(string filepath, string worksheetName, Dictionary<string, object> whereColumnNamesAndConditions, Dictionary<string, object> updateColumnAndNewValues)
         {
             SpreadsheetDocument spreadsheetDocument = OpenSpreadsheetDocument(filepath, worksheetName, out SheetData sheetData);
-            //<letterID, value>
+            //<letterID, condition>
             Dictionary<string, object> letterIDsAndConditions = ConvertColumnNamesAndValuesToLetterIDsAndValues(ref spreadsheetDocument, sheetData, whereColumnNamesAndConditions);
+            if (!letterIDsAndConditions.Any())
+                throw new ArgumentException("Unable to find row that matches all names in whereColumnNamesAndConditions.\n" +
+                    "Some of the entered columnNames (Keys) in whereColumnNamesAndConditions might not exist or are misspelled");
+
+            //<letterID, newValue>
             Dictionary<string, object> letterIDsAndNewValue = ConvertColumnNamesAndValuesToLetterIDsAndValues(ref spreadsheetDocument, sheetData, updateColumnAndNewValues);
+            if (!letterIDsAndNewValue.Any())
+                throw new ArgumentException("Unable to find row that matches all names in updateColumnAndNewValues.\n" +
+                    "Some of the entered columnNames (Keys) in updateColumnAndNewValues might not exist or are misspelled");
+
             int rowsChanged = UpdateRow(ref spreadsheetDocument, sheetData, letterIDsAndConditions, letterIDsAndNewValue);
             SaveSpreadsheetDocument(ref spreadsheetDocument);
 

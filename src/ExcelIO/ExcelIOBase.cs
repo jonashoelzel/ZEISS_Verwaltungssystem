@@ -205,8 +205,12 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
             Dictionary<string, object> idsAndValues = new();
 
             foreach (var columnAndValue in columnNamesAndValues)
-                idsAndValues.Add(GetColumnLetterIDsOfColumnNames(ref spreadsheetDocument, sheetData, columnAndValue.Key, out _), columnAndValue.Value);
-
+            {
+                string letterID = GetColumnLetterIDsOfColumnNames(ref spreadsheetDocument, sheetData, columnAndValue.Key, out _);
+                if (letterID is not null)
+                    idsAndValues.Add(letterID, columnAndValue.Value);
+            }
+                
             return idsAndValues;
         }
         #endregion
@@ -422,9 +426,13 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
         public static bool IsIDOfWorksheet(string filepath, string worksheetName, KeyValuePair<string, object> id)
         {
             SpreadsheetDocument spreadsheetDocument = OpenSpreadsheetDocument(filepath, worksheetName, out SheetData sheetData, false, false);
+            
+            string letterID = GetColumnLetterIDsOfColumnNames(ref spreadsheetDocument, sheetData, id.Key, out _);
+            if (letterID is null)
+                throw new ArgumentException("The Header-Column: " + id.Key + " does not exist.");
 
             //For easier usage, we take KeyValuePair<columnHeaderName, guid>, but we need the format KeyValuePair<columnLetterID, guid>
-            KeyValuePair<string, object> letterIDAndSearchID = new(GetColumnLetterIDsOfColumnNames(ref spreadsheetDocument, sheetData, id.Key, out _), id.Value);
+            KeyValuePair<string, object> letterIDAndSearchID = new(letterID, id.Value);
             bool found = (SearchRow(ref spreadsheetDocument, sheetData, letterIDAndSearchID) is not null);
 
             SaveSpreadsheetDocument(ref spreadsheetDocument);

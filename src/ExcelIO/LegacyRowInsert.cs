@@ -20,7 +20,12 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Write.Legacy
         public static void Insert(string filepath, string worksheetName, List<string> columnNames, List<object> columnValues)
         {
             SpreadsheetDocument spreadsheetDocument = OpenSpreadsheetDocument(filepath, worksheetName, out SheetData sheetData);
+
             List<string> columnLetterIDs = IO.Legacy.LegacyExcelIOBase.GetColumnLetterIDsOfColumnNames(ref spreadsheetDocument, sheetData, columnNames, out _);
+            if (!columnLetterIDs.Any())
+                throw new ArgumentException("Unable to find row that matches all columnNames in columnNames.\n" +
+                    "Some of the entered columnNames (Keys) in columnNames might not exist or are misspelled");
+
             InsertRow(ref spreadsheetDocument, sheetData, columnLetterIDs, columnValues);
             SaveSpreadsheetDocument(ref spreadsheetDocument);
         }
