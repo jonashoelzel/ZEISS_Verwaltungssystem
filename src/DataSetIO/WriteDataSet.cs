@@ -85,7 +85,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
             RowInsert.Insert(filepath, worksheets[2], attributes);
         }
 
-        public static void InsertTypeOfPublication(string filepath, IPublicationType publicationType)
+        public static void InsertPublicationType(string filepath, IPublicationType publicationType)
         {
             CheckWorkBook(filepath);
 
