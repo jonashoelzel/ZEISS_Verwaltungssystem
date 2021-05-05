@@ -236,7 +236,19 @@ input[type=text] {
     margin: 5% 0 5% 0;
 }
 
+.dropdownFilter {
+    margin: 0 5% 5% ;
+}
 
+.divisionFilter {
+    margin: 0 5%;
+    width: 30%;
+}
+
+.tagFilter {
+    margin: 0 5%;
+    width: 30%;
+}
 
 /* search-button filtering*/
 #searching {
