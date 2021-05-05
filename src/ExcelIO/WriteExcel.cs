@@ -4,7 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
-
+using System.Text.RegularExpressions;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
@@ -130,6 +130,45 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Write
             }
         }
         #endregion
+
+        protected static void RemoveRow(List<Row> deletingRows)
+        {
+            for (int i = 0; i < deletingRows.Count; i++)
+                deletingRows[i].Remove();
+        }
+
+        protected static void RemoveRowAdvanced(SheetData sheetData, List<Row> deletingRows)
+        {
+            while (deletingRows.Any())
+            {
+                RemoveRowAdvanced(sheetData, deletingRows.FirstOrDefault());
+                deletingRows.RemoveAt(0);
+            }
+        }
+
+        protected static void RemoveRowAdvanced(SheetData sheetData, Row deletingRow)
+        {
+            List<Row> allRows = sheetData.Elements<Row>().ToList();
+            deletingRow.Remove();
+        
+            for (int i = 0; i < allRows.Count; i++)
+            {
+                List<Cell> cells = allRows[i].Elements<Cell>().ToList();
+                if (cells is not null)
+                {
+                    for (int j = 0; j < cells.Count; j++)
+                    {
+                        string oldCellReference = cells[i].CellReference.Value;
+
+                        //Decrement Row index
+                        int rowIndex = Convert.ToInt32(Regex.Replace(oldCellReference, @"[^\d]+", "")) - 1;
+                        string letterIndex = Regex.Replace(oldCellReference, @"[\d-]", "");
+
+                        cells[i].CellReference.Value = $"{letterIndex}{rowIndex}";
+                    }
+                }
+            }
+        }
         #endregion
     }
 }
