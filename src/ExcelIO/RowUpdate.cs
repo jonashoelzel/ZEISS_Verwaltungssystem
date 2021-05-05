@@ -40,6 +40,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Write
         private static int UpdateRow
             (ref SpreadsheetDocument spreadsheetDocument, SheetData sheetData, Dictionary<string, object> letterIDsAndConditions, Dictionary<string, object> letterIDsAndNewValues)
         {
+            //Search for a row that matches the conditions in letterIDsAndConditions.
             List<Row> rows = SearchRows(ref spreadsheetDocument, sheetData, letterIDsAndConditions);
             int countRows = rows.Count;
             //!!! DO NOT USE (!!!) 'foreach', because we need the original references (and 'foreach' creates copy) !!!
