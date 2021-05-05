@@ -55,15 +55,16 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Write
         //letterIDsAndValues: <letterID, value>
         private static void InsertRow(ref SpreadsheetDocument spreadsheetDocument, SheetData sheetData, Dictionary<string, object> letterIDsAndValues)
         {
-            //Create new row
-            int rowCount = sheetData.Elements<Row>().Count();
-            Row row = new() { RowIndex = UInt32Value.FromUInt32((uint)(++rowCount)) };
+            //Create new row after the last low
+            //We use this instead of .Count() in case of rows where deleted
+            uint rowIndex = (sheetData.Elements<Row>().Max(x => x.RowIndex.Value)) + 1;
+            Row row = new() { RowIndex = UInt32Value.FromUInt32((uint)(rowIndex)) };
             sheetData.Append(row);
 
             foreach (var letterIDAndValue in letterIDsAndValues)
             {
                 //Format XX00
-                string cellReference = letterIDAndValue.Key + rowCount;
+                string cellReference = letterIDAndValue.Key + rowIndex;
                 //<cellReference, value>
                 CreateCell(ref spreadsheetDocument, row, new KeyValuePair<string, object>(cellReference, letterIDAndValue.Value));
             }
