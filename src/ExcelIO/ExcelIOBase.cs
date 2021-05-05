@@ -414,7 +414,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
         {
             // Get a unique ID for the new worksheet.
             uint sheetId = 1;
-            if (sheets.Elements<Sheet>().Any())
+            if ((sheets?.Elements<Sheet>()?.Any()) ?? false)
             {
                 sheetId = sheets.Elements<Sheet>().Max(s => s.SheetId.Value) + 1;
             }
