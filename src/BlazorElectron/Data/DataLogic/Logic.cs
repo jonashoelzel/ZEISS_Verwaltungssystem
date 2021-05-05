@@ -16,15 +16,10 @@ namespace Zeiss.PublicationManager.Business.Logic.IO.Write
             string directory = System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + folderPath;
             Directory.CreateDirectory(directory);
             string filepath = directory + fileName;
-            // var excelIO = new WriteDataSet("filePaht", "sheetName");
-            // excelIO.Insert(dataSet);
-
-            // Debug only
-            //if (File.Exists(filepath))
-                // File.Delete(filepath);
-
-            // WriteDataSet.InsertIntelligent(filepath, "Publication", dataSet);
+            
             WriteDataSet.InsertPublication(filepath, dataSet);
+
+            //WriteDataSet.InsertAuthor();
         }
     }
 }

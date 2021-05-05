@@ -41,6 +41,14 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
             Excel.IO.Write.Legacy.LegacyRowInsert.Insert(filepath, worksheetName, DataSetBase.GetColumnNames().Select(x => x.ToString()).ToList(), DataSetBase.GetNewRow(dataSet));
         }
 
+        private static void InitializeDataSetWorksheet(string filepath, string worksheetName)
+        {
+            if (!WriteExcel.WorksheetExists(ref filepath, worksheetName))
+            {
+                Excel.IO.Write.Legacy.LegacyRowInsert.Insert(filepath, worksheetName, DataSetBase.GetColumnNames());
+            }
+        }
+
 
         //New Interface
 
@@ -48,49 +56,65 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
         {
             CheckWorkBook(filepath);
 
-            RowInsert.Insert(filepath, worksheets[0], PublicationToAttributes(dataSet));
+            var attributes = PublicationToAttributes(dataSet);
+
+            var id = new KeyValuePair<string, object>("Publication_ID", attributes["Publication_ID"]);
+
+            if (Excel.IO.ExcelIOBase.IsIDOfWorksheet(filepath, worksheets[0], id))
+            {
+                var idColumn = new Dictionary<string, object>() { { id.Key, id.Value } };
+                RowUpdate.Update(filepath, worksheets[0], idColumn, attributes);
+                return;
+            }
+
+            RowInsert.Insert(filepath, worksheets[0], attributes);
         }
 
         public static void InsertAuthor(string filepath, IAuthor author)
         {
             CheckWorkBook(filepath);
 
-            RowInsert.Insert(filepath, worksheets[1], AuthorToAttributes(author));
+            var attributes = AuthorToAttributes(author);
+            RowInsert.Insert(filepath, worksheets[1], attributes);
         }
 
         public static void InsertDivision(string filepath, IDivision division)
         {
             CheckWorkBook(filepath);
-
-            RowInsert.Insert(filepath, worksheets[2], DivisionToAttributes(division));
+            var attributes = DivisionToAttributes(division);
+            RowInsert.Insert(filepath, worksheets[2], attributes);
         }
 
         public static void InsertTypeOfPublication(string filepath, IPublicationType publicationType)
         {
             CheckWorkBook(filepath);
 
-            RowInsert.Insert(filepath, worksheets[3], PublicationTypeToAttributes(publicationType));
+            var attributes = PublicationTypeToAttributes(publicationType);
+            RowInsert.Insert(filepath, worksheets[3], attributes);
         }
 
         public static void InsertState(string filepath, IState state)
         {
             CheckWorkBook(filepath);
 
-            RowInsert.Insert(filepath, worksheets[4], StateToAttributes(state));
+            var attributes = StateToAttributes(state);
+            RowInsert.Insert(filepath, worksheets[4], attributes);
         }
 
         public static void InsertTag(string filepath, ITag tag)
         {
             CheckWorkBook(filepath);
 
-            RowInsert.Insert(filepath, worksheets[5], TagToAttributes(tag));
+            var attributes = TagToAttributes(tag);
+            RowInsert.Insert(filepath, worksheets[5], attributes);
         }
 
         public static void InsertPublisher(string filepath, IPublisher publisher)
         {
             CheckWorkBook(filepath);
 
-            RowInsert.Insert(filepath, worksheets[6], PublisherToAttributes(publisher));
+            var attributes = PublisherToAttributes(publisher);
+            RowInsert.Insert(filepath, worksheets[6], attributes);
         }
 
 
@@ -143,8 +167,8 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
                 if (!WriteExcel.WorksheetExists(ref filepath, worksheet.Key))
                 {
                     // TODO: Check if columns exist
+                    // Create new Worksheet
                     RowInsert.Insert(filepath, worksheet.Key, worksheet.Value);
-
                 }
             }
         }

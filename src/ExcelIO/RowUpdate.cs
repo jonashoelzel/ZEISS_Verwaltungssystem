@@ -14,6 +14,9 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Write
     {
         //whereColumnNamesAndConditions: <columnName, condition>
         //updateColumnAndNewValue: <columnName, newValue>
+        // whereColumnNamesAndConditions.Add("Publication_ID", "134958345653450");
+        // updateColumnAndNewValues.Add("Author_ID", "2345369838");
+        // updateColumnAndNewValues.Add("Tag_ID", "2345369838");
         public static int Update(string filepath, string worksheetName, Dictionary<string, object> whereColumnNamesAndConditions, Dictionary<string, object> updateColumnAndNewValues)
         {
             SpreadsheetDocument spreadsheetDocument = OpenSpreadsheetDocument(filepath, worksheetName, out SheetData sheetData);

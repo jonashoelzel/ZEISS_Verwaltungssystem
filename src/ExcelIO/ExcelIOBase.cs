@@ -203,7 +203,11 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
             Dictionary<string, object> idsAndValues = new();
 
             foreach (var columnAndValue in columnNamesAndValues)
-                idsAndValues.Add(GetColumnLetterIDsOfColumnNames(ref spreadsheetDocument, sheetData, columnAndValue.Key, out _), columnAndValue.Value);
+            {
+                var key = GetColumnLetterIDsOfColumnNames(ref spreadsheetDocument, sheetData, columnAndValue.Key, out _);
+                var value = columnAndValue.Value ?? string.Empty;
+                idsAndValues.Add(key, value);
+            }
 
             return idsAndValues;
         }
