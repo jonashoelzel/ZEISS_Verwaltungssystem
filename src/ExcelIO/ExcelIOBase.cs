@@ -157,9 +157,9 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
             {
                 foreach (string name in columnNames)
                 {
-                    letterIDsAndColumnNames.Add(
-                        GetColumnLetterIDsOfColumnNames(ref spreadsheetDocument, row, name, out rowIndex),
-                        name);
+                    string letterID = GetColumnLetterIDsOfColumnNames(ref spreadsheetDocument, row, name, out rowIndex);
+                    if (letterID is not null)
+                        letterIDsAndColumnNames.Add(letterID, name);
                 }
             }
 
@@ -168,10 +168,12 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
 
         protected static string GetColumnLetterIDsOfColumnNames(ref SpreadsheetDocument spreadsheetDocument, SheetData sheetData, string columnNames, out int rowIndex)
         {
-            return GetColumnLetterIDsOfColumnNames(
-                ref spreadsheetDocument,
-                SearchRow(ref spreadsheetDocument, sheetData, columnNames),
-                columnNames, out rowIndex);
+            Row row = SearchRow(ref spreadsheetDocument, sheetData, columnNames);
+            if (row is not null)
+                return GetColumnLetterIDsOfColumnNames(ref spreadsheetDocument, row, columnNames, out rowIndex);
+
+            rowIndex = -1;
+            return null;
         }
 
         protected static string GetColumnLetterIDsOfColumnNames(ref SpreadsheetDocument spreadsheetDocument, Row row, string columnNames, out int rowIndex)
@@ -187,7 +189,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
                 {
                     object entry = ReadCell(cell, sharedStringTable);
                     if (CompareObjects(columnNames, entry))
-                        return GetLetterIDOfCellReference(cell.CellReference);
+                        return GetLetterIDOfCellReference(cell.CellReference.Value);
                 }
             }
 
@@ -204,11 +206,11 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
 
             foreach (var columnAndValue in columnNamesAndValues)
             {
-                var key = GetColumnLetterIDsOfColumnNames(ref spreadsheetDocument, sheetData, columnAndValue.Key, out _);
-                var value = columnAndValue.Value ?? string.Empty;
-                idsAndValues.Add(key, value);
+                string letterID = GetColumnLetterIDsOfColumnNames(ref spreadsheetDocument, sheetData, columnAndValue.Key, out _);
+                if (letterID is not null)
+                    idsAndValues.Add(letterID, columnAndValue.Value);
             }
-
+                
             return idsAndValues;
         }
         #endregion
@@ -424,9 +426,13 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
         public static bool IsIDOfWorksheet(string filepath, string worksheetName, KeyValuePair<string, object> id)
         {
             SpreadsheetDocument spreadsheetDocument = OpenSpreadsheetDocument(filepath, worksheetName, out SheetData sheetData, false, false);
+            
+            string letterID = GetColumnLetterIDsOfColumnNames(ref spreadsheetDocument, sheetData, id.Key, out _);
+            if (letterID is null)
+                throw new ArgumentException("The Header-Column: " + id.Key + " does not exist.");
 
             //For easier usage, we take KeyValuePair<columnHeaderName, guid>, but we need the format KeyValuePair<columnLetterID, guid>
-            KeyValuePair<string, object> letterIDAndSearchID = new(GetColumnLetterIDsOfColumnNames(ref spreadsheetDocument, sheetData, id.Key, out _), id.Value);
+            KeyValuePair<string, object> letterIDAndSearchID = new(letterID, id.Value);
             bool found = (SearchRow(ref spreadsheetDocument, sheetData, letterIDAndSearchID) is not null);
 
             SaveSpreadsheetDocument(ref spreadsheetDocument);
@@ -448,6 +454,18 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
 
             //Already letters only
             return Convert.ToInt32(cellReference);
+        }
+
+
+        public static bool CheckHeaderColumnsExist(string filepath, string worksheetName, List<object> headerColumns)
+        {
+            SpreadsheetDocument spreadsheetDocument = OpenSpreadsheetDocument(filepath, worksheetName, out SheetData sheetData, false, false);
+
+            bool found = (SearchRow(ref spreadsheetDocument, sheetData, headerColumns) is not null);
+
+            SaveSpreadsheetDocument(ref spreadsheetDocument);
+
+            return found;
         }
 
 
@@ -545,7 +563,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
 
                 foreach (var condition in leftConditions)
                 {
-                    if (condition.Key == GetLetterIDOfCellReference(cell.CellReference) && CompareObjects(entry, condition.Value))
+                    if (condition.Key == GetLetterIDOfCellReference(cell.CellReference.Value) && CompareObjects(entry, condition.Value))
                     {
                         leftConditions.Remove(condition.Key);
                         break;

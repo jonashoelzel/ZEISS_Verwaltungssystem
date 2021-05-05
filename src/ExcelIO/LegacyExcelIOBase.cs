@@ -29,11 +29,9 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Legacy
             {
                 foreach (string name in columnNames)
                 {
-                    letterIDs.Add(
-                        GetColumnLetterIDsOfColumnNames(
-                            ref spreadsheetDocument,
-                            row,
-                            name, out rowIndex));
+                    string letterID = GetColumnLetterIDsOfColumnNames(ref spreadsheetDocument, row, name, out rowIndex);
+                    if (letterID is not null)
+                        letterIDs.Add(letterID);
                 }
             }        
 

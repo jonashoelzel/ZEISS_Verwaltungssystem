@@ -15,7 +15,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Read
     //NOTE: When we use with Console, all members have to be static !!!
     public class RowSelect : ExcelIOBase
     {       
-        //return: <columnName, columnENtries>
+        //return: <columnName, columnEntries>
         public static Dictionary<string, List<object>> Select(string filepath, string worksheetName, List<string> columnNames)
         {
             SpreadsheetDocument spreadsheetDocument = OpenSpreadsheetDocument(filepath, worksheetName, out SheetData sheetData, false, false);
@@ -23,7 +23,12 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Read
             //Try to read SharedStringTable if it exists. If not, make sure to do NOT try to read from it
             SharedStringTable sharedStringTable = spreadsheetDocument?.WorkbookPart?.SharedStringTablePart?.SharedStringTable;
 
-            return Reader(sheetData, sharedStringTable, GetColumnLetterIDsOfColumnNames(ref spreadsheetDocument, sheetData, columnNames, out int rowIndex), ++rowIndex);
+            Dictionary<string, string> letterIDsAndColumnNames = GetColumnLetterIDsOfColumnNames(ref spreadsheetDocument, sheetData, columnNames, out int rowIndex);
+            if (!letterIDsAndColumnNames.Any())
+                throw new ArgumentException("Unable to find row that matches all ColumnNames in columnNames\n" +
+                    "Some of the entered columnNames (Keys) in columnNamesAndValues might not exist or are misspelled");
+
+            return Reader(sheetData, sharedStringTable, letterIDsAndColumnNames, ++rowIndex);
         }
 
         //return: <columnName, columnEntries>
@@ -41,7 +46,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Read
                 {
                     foreach (Cell cell in row.Elements<Cell>())
                     {
-                        string letterIDOfReference = GetLetterIDOfCellReference(cell.CellReference);
+                        string letterIDOfReference = GetLetterIDOfCellReference(cell.CellReference.Value);
                         if (columnLetterIDsAndColumnNames.ContainsKey(letterIDOfReference))
                         {
                             string columnName = columnLetterIDsAndColumnNames[letterIDOfReference];

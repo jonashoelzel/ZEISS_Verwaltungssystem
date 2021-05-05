@@ -21,7 +21,10 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Write
         public static void Insert(string filepath, string worksheetName, List<object> columnValues)
         {
             SpreadsheetDocument spreadsheetDocument = OpenSpreadsheetDocument(filepath, worksheetName, out SheetData sheetData);
+            
             List<string> columnLetterIDs = GetCellReferenceLetters(columnValues.Count);
+            if (!columnLetterIDs.Any())
+                throw new ArgumentException("Unable to create row with values.");
 
             Dictionary<string, object> letterIDsAndValues = new();
             for (int i = 0; i < columnLetterIDs.Count; i++)
@@ -38,6 +41,10 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Write
             SpreadsheetDocument spreadsheetDocument = OpenSpreadsheetDocument(filepath, worksheetName, out SheetData sheetData);
             //<letterID, value>
             Dictionary<string, object> letterIDsAndValues = ConvertColumnNamesAndValuesToLetterIDsAndValues(ref spreadsheetDocument, sheetData, columnNamesAndValues);
+            if (!letterIDsAndValues.Any())
+                throw new ArgumentException("Unable to find row that matches all columnNames in columnNamesAndValues.\n" +
+                    "Some of the entered columnNames (Keys) in columnNamesAndValues might not exist or are misspelled");
+
             InsertRow(ref spreadsheetDocument, sheetData, letterIDsAndValues);
             SaveSpreadsheetDocument(ref spreadsheetDocument);
         }
@@ -45,7 +52,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Write
 
         #region Private_Insert
         
-        //letterIDsAndValues: <letterID< value>
+        //letterIDsAndValues: <letterID, value>
         private static void InsertRow(ref SpreadsheetDocument spreadsheetDocument, SheetData sheetData, Dictionary<string, object> letterIDsAndValues)
         {
             //Create new row
