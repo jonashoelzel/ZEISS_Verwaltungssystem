@@ -18,8 +18,15 @@ namespace Zeiss.PublicationManager.Business.Logic.IO.Write
             string filepath = directory + fileName;
             
             WriteDataSet.InsertPublication(filepath, dataSet);
-
-            //WriteDataSet.InsertAuthor();
+            WriteDataSet.InsertAuthor(filepath, dataSet.MainAuthor);
+            foreach(var author in dataSet.CoAuthors)
+                WriteDataSet.InsertAuthor(filepath, author);
+            WriteDataSet.InsertDivision(filepath, dataSet.Division);
+            WriteDataSet.InsertPublisher(filepath, dataSet.PublishedBy);
+            WriteDataSet.InsertState(filepath, dataSet.CurrentState);
+            WriteDataSet.InsertPublicationType(filepath, dataSet.TypeOfPublication);
+            foreach(var tag in dataSet.Tags)
+                WriteDataSet.InsertTag(filepath, tag);
         }
     }
 }

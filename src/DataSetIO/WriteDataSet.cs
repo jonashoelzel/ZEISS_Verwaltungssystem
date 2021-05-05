@@ -75,6 +75,16 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
             CheckWorkBook(filepath);
 
             var attributes = AuthorToAttributes(author);
+
+            var id = new KeyValuePair<string, object>("Author_ID", attributes["Author_ID"]);
+
+            if (Excel.IO.ExcelIOBase.IsIDOfWorksheet(filepath, worksheets[1], id))
+            {
+                var idColumn = new Dictionary<string, object>() { { id.Key, id.Value } };
+                RowUpdate.Update(filepath, worksheets[1], idColumn, attributes);
+                return;
+            }
+
             RowInsert.Insert(filepath, worksheets[1], attributes);
         }
 
@@ -82,6 +92,16 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
         {
             CheckWorkBook(filepath);
             var attributes = DivisionToAttributes(division);
+
+            var id = new KeyValuePair<string, object>("Division_ID", attributes["Division_ID"]);
+
+            if (Excel.IO.ExcelIOBase.IsIDOfWorksheet(filepath, worksheets[2], id))
+            {
+                var idColumn = new Dictionary<string, object>() { { id.Key, id.Value } };
+                RowUpdate.Update(filepath, worksheets[2], idColumn, attributes);
+                return;
+            }
+
             RowInsert.Insert(filepath, worksheets[2], attributes);
         }
 
@@ -90,6 +110,16 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
             CheckWorkBook(filepath);
 
             var attributes = PublicationTypeToAttributes(publicationType);
+
+            var id = new KeyValuePair<string, object>("PublicationType_ID", attributes["PublicationType_ID"]);
+
+            if (Excel.IO.ExcelIOBase.IsIDOfWorksheet(filepath, worksheets[3], id))
+            {
+                var idColumn = new Dictionary<string, object>() { { id.Key, id.Value } };
+                RowUpdate.Update(filepath, worksheets[3], idColumn, attributes);
+                return;
+            }
+
             RowInsert.Insert(filepath, worksheets[3], attributes);
         }
 
@@ -98,6 +128,16 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
             CheckWorkBook(filepath);
 
             var attributes = StateToAttributes(state);
+
+            var id = new KeyValuePair<string, object>("State_ID", attributes["State_ID"]);
+
+            if (Excel.IO.ExcelIOBase.IsIDOfWorksheet(filepath, worksheets[4], id))
+            {
+                var idColumn = new Dictionary<string, object>() { { id.Key, id.Value } };
+                RowUpdate.Update(filepath, worksheets[4], idColumn, attributes);
+                return;
+            }
+
             RowInsert.Insert(filepath, worksheets[4], attributes);
         }
 
@@ -106,6 +146,16 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
             CheckWorkBook(filepath);
 
             var attributes = TagToAttributes(tag);
+
+            var id = new KeyValuePair<string, object>("Tag_ID", attributes["Tag_ID"]);
+
+            if (Excel.IO.ExcelIOBase.IsIDOfWorksheet(filepath, worksheets[5], id))
+            {
+                var idColumn = new Dictionary<string, object>() { { id.Key, id.Value } };
+                RowUpdate.Update(filepath, worksheets[5], idColumn, attributes);
+                return;
+            }
+
             RowInsert.Insert(filepath, worksheets[5], attributes);
         }
 
@@ -114,6 +164,16 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
             CheckWorkBook(filepath);
 
             var attributes = PublisherToAttributes(publisher);
+
+            var id = new KeyValuePair<string, object>("Publisher_ID", attributes["Publisher_ID"]);
+
+            if (Excel.IO.ExcelIOBase.IsIDOfWorksheet(filepath, worksheets[6], id))
+            {
+                var idColumn = new Dictionary<string, object>() { { id.Key, id.Value } };
+                RowUpdate.Update(filepath, worksheets[6], idColumn, attributes);
+                return;
+            }
+
             RowInsert.Insert(filepath, worksheets[6], attributes);
         }
 
@@ -190,7 +250,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
             "Publication",
             "Author",
             "Division",
-            "TypeOfPublication",
+            "PublicationType",
             "State",
             "Tag",
             "Publisher",
@@ -203,7 +263,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
                 { "Publication", Publication },
                 { "Author", Author },
                 { "Division", Division },
-                { "TypeOfPublication", TypeOfPublication },
+                { "PublicationType", TypeOfPublication },
                 { "State", State },
                 { "Tag", Tag },
                 { "Publisher", Publisher },
@@ -223,7 +283,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
             "Author_ID",
             "Division_ID",
             "CoAuthor_IDs",
-            "TypeOfPublication_ID",
+            "PublicationType_ID",
             "State_ID",
             "Tag_ID",
             "Publisher_ID",
@@ -245,7 +305,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
 
         private static readonly List<object> TypeOfPublication = new()
         {
-            "TypeOfPublication_ID",
+            "PublicationType_ID",
             "Name",
         };
 
@@ -282,7 +342,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
                 { "Division_ID", dataSet.Division.ID.ToString() },
                 { "Author_ID", dataSet.MainAuthor.ID.ToString() },
                 { "CoAuthor_IDs", AuthorsToCsvIDs(dataSet.CoAuthors) },
-                { "TypeOfPublication_ID", dataSet.TypeOfPublication.ID.ToString() },
+                { "PublicationType_ID", dataSet.TypeOfPublication.ID.ToString() },
                 { "State_ID", dataSet.CurrentState.ID.ToString() },
                 { "Tag_ID", TagsToCsvIDs(dataSet.Tags) },
                 { "Publisher_ID", dataSet.PublishedBy.ID.ToString() },
@@ -312,7 +372,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
         {
             return new Dictionary<string, object>()
             {
-                { "TypeOfPublication_ID", publicationType.ID.ToString() },
+                { "PublicationType_ID", publicationType.ID.ToString() },
                 { "Name", publicationType.Name },
             };
         }
