@@ -19,14 +19,14 @@ namespace Zeiss.PublicationManager.Business.Logic.IO.Write
             
             WriteDataSet.InsertPublication(ref filepath, dataSet);
             WriteDataSet.InsertAuthor(ref filepath, dataSet.MainAuthor);
-            foreach(var author in dataSet.CoAuthors)
-                WriteDataSet.InsertAuthor(ref filepath, author);
-            WriteDataSet.InsertDivision(ref filepath, dataSet.Division);
-            WriteDataSet.InsertPublisher(ref filepath, dataSet.PublishedBy);
-            WriteDataSet.InsertState(ref filepath, dataSet.CurrentState);
-            WriteDataSet.InsertPublicationType(ref filepath, dataSet.TypeOfPublication);
-            foreach(var tag in dataSet.Tags)
-                WriteDataSet.InsertTag(ref filepath, tag);
+            //foreach(var author in dataSet.CoAuthors)
+            //    WriteDataSet.InsertAuthor(ref filepath, author);
+            //WriteDataSet.InsertDivision(ref filepath, dataSet.Division);
+            //WriteDataSet.InsertPublisher(ref filepath, dataSet.PublishedBy);
+            //WriteDataSet.InsertState(ref filepath, dataSet.CurrentState);
+            //WriteDataSet.InsertPublicationType(ref filepath, dataSet.TypeOfPublication);
+            //foreach(var tag in dataSet.Tags)
+            //    WriteDataSet.InsertTag(ref filepath, tag);
         }
     }
 }
