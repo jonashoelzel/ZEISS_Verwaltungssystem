@@ -10,65 +10,110 @@
 
     <section class="search-default">
         <div class="input-group">
-            <input type="text" class="form-control" placeholder="Titel, Autor, Stichwort, ..." 
-                   @bind-value="SearchTerm" @bind-value:event="oninput"/>
-            <button type="button" class="btn">
+            <input type="text" class="form-control" placeholder="Titel, Autor, Stichwort, ..."
+                   @bind-value="SearchTerm" @bind-value:event="oninput" />
+            <!--<button type="button" class="btn">
                 <span class="fas fa-search"></span>
-            </button>
-            <button type="button" class="btn">
-                <span class="fas fa-filter"></span>
+            </button> -->
+            <button type="button" class="btn" @onclick="@ChangeFilterVisibility" id="openFilter">
+                <span class="fas fa-filter fa-2x"></span>
             </button>
         </div>
     </section>
-   
+
+    <section class="dropdownFilter" hidden=@HideFilter>
+        <div class="input-group" >
+            <label >Filtern nach:</label>
+            <div class="divisionFilter">
+                <InputSelect class="form-control" @bind-Value="@Publication.Division" >
+                    <option></option>
+                    <option>DAC</option>
+                    <option>DQA</option>
+                    <option>DQA I</option>
+                    <option>DQA II</option>
+                    <option>DQA, TAD III</option>
+                    <option>MSD</option>
+                    <option>QA</option>
+                    <option>SAP</option>
+                    <option>SBD</option>
+                    <option>SEV</option>
+                    <option>TAD</option>
+                    <option>TAD I</option>
+                    <option>TAD II</option>
+                    <option>TAD III</option>
+                    <option>Vorstand</option>
+                    <option>Vorstand, TAD I</option>
+                </InputSelect>
+            </div>
+            <div class="tagFilter">
+                <InputSelect class="form-control" @bind-Value="@Publication.Tags">
+                    <option></option>
+                    <option>Frontend</option>
+                    <option>Backend</option>
+                    <option>Development</option>
+                    <option>.NET 5.0</option>
+                    <option>.NET Core</option>
+                    <option>.NET Framework</option>
+                </InputSelect>
+            </div>
+        </div>
+    </section>
+
     <table class="table table-striped">
-            <thead class="thead-dark">
+        <thead class="thead-dark">
+            <tr>
+                <th>
+                    <span class="sort-link" @onclick="@(() => SortTable("TitleTest"))">Titel</span>
+                    <span class="fa @(GetSortStyle("TitleTest"))"></span>
+                </th>
+                <th>
+                    <span class="sort-link" @onclick="@(() => SortTable("NameTest"))">Nachname</span>
+                    <span class="fa @(GetSortStyle("NameTest"))"></span>
+                </th>
+                <th>
+                    <span class="sort-link" @onclick="@(() => SortTable("SurnameTest"))">Vorname des Autors</span>
+                    <span class="fa @(GetSortStyle("SurnameTest"))"></span>
+                </th>
+                <th>
+                    <span class="sort-link" @onclick="@(() => SortTable("DateTest"))">Datum der Veröffentlichung</span>
+                    <span class="fa @(GetSortStyle("DateTest"))"></span>
+                </th>
+                <th>Aktion</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in items)
+            {
                 <tr>
-                    <th>
-                        <span class="sort-link" @onclick="@(() => SortTable("TitleTest"))">Titel</span>
-                        <span class="fa @(GetSortStyle("TitleTest"))"></span>
-                    </th>
-                    <th>
-                        <span class="sort-link" @onclick="@(() => SortTable("NameTest"))">Nachname</span>
-                        <span class="fa @(GetSortStyle("NameTest"))"></span>
-                    </th>
-                    <th>
-                        <span class="sort-link" @onclick="@(() => SortTable("SurnameTest"))">Vorname des Autors</span>
-                        <span class="fa @(GetSortStyle("SurnameTest"))"></span>
-                    </th>
-                    <th>
-                        <span class="sort-link" @onclick="@(() => SortTable("DateTest"))">Datum der Veröffentlichung</span>
-                        <span class="fa @(GetSortStyle("DateTest"))"></span>
-                    </th>
-                    <th>Aktion</th>
+                    <td>@item.TitleTest</td>
+                    <td>@item.NameTest</td>
+                    <td>@item.SurnameTest</td>
+                    <td>@item.DateTest.ToShortDateString()</td>
+                    <td>
+                        <button type="button" class="btn-primary">
+                            Bearbeiten
+                            <span class="fas fa-pencil-alt"></span>
+                        </button>
+                        <button type="button" class="btn-primary">
+                            Löschen
+                            <span class="fas fa-trash-alt"></span>
+                        </button>
+                    </td>
                 </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in items)
-                {
-                    <tr>
-                        <td>@item.TitleTest</td>
-                        <td>@item.NameTest</td>
-                        <td>@item.SurnameTest</td>
-                        <td>@item.DateTest</td>
-                        <td>
-                            <button type="button" class="btn-primary">
-                                Bearbeiten
-                                <span class="fas fa-pencil-alt"></span>
-                            </button>
-                            <button type="button" class="btn-primary">
-                                Löschen
-                                <span class="fas fa-trash-alt"></span>
-                            </button>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table> 
+            }
+        </tbody>
+    </table>
 </EditForm>
 
 @code 
 {
+    private bool HideFilter = true;
+
+    private void ChangeFilterVisibility()
+    {
+        HideFilter = !HideFilter;
+    }
+
     private bool IsSortedAscending;
     private string CurrentSortColumn;
 
@@ -79,26 +124,25 @@
         public string TitleTest { get; set; }
         public string NameTest { get; set; }
         public string SurnameTest { get; set; }
-        public string DateTest { get; set; }
+        public DateTime DateTest { get; set; }
     };
 
     List<TableTest> Data = new List<TableTest>()
     {
-        new TableTest {TitleTest="ABC", NameTest="Mueller", SurnameTest="Hans", DateTest="12.03.2015"},
-        new TableTest {TitleTest="XYZ", NameTest="Mustermann", SurnameTest="Max", DateTest="24.12.2017"},
-        new TableTest {TitleTest="DEF", NameTest="Musterfrau", SurnameTest="Maxi", DateTest="31.12.2019"},
-        new TableTest {TitleTest="MNO", NameTest="Stein", SurnameTest="Ute", DateTest="01.01.2022"},
+        new TableTest {TitleTest="ABC", NameTest="Mueller", SurnameTest="Hans", DateTest= new DateTime(2015, 03, 12)},
+        new TableTest {TitleTest="XYZ", NameTest="Mustermann", SurnameTest="Max", DateTest=new DateTime(2017, 12, 24)},
+        new TableTest {TitleTest="DEF", NameTest="Musterfrau", SurnameTest="Maxi", DateTest=new DateTime(2019, 12, 31)},
+        new TableTest {TitleTest="MNO", NameTest="Stein", SurnameTest="Ute", DateTest=new DateTime(2022, 01, 01)},
 
-        new TableTest {TitleTest="GHWE", NameTest="Zufall", SurnameTest="Juergen", DateTest="12.12.2015"},
-        new TableTest {TitleTest="OSJF", NameTest="Wurst", SurnameTest="Willi", DateTest="14.06.2006"},
-        new TableTest {TitleTest="SHJF", NameTest="Schmied", SurnameTest="Anna", DateTest="31.12.2040"},
-        new TableTest {TitleTest="GEGE", NameTest="Fischer", SurnameTest="Klaus", DateTest="01.01.1999"},
+        new TableTest {TitleTest="GHWE", NameTest="Zufall", SurnameTest="Juergen", DateTest=new DateTime(2015, 12, 12)},
+        new TableTest {TitleTest="OSJF", NameTest="Wurst", SurnameTest="Willi", DateTest=new DateTime(2006, 06, 14)},
+        new TableTest {TitleTest="SHJF", NameTest="Schmied", SurnameTest="Anna", DateTest=new DateTime(2040, 12, 31)},
+        new TableTest {TitleTest="GEGE", NameTest="Fischer", SurnameTest="Klaus", DateTest=new DateTime(1999, 01, 01)},
     };
 
     List<TableTest> items => Data.Where(i => i.TitleTest.ToLower().Contains(SearchTerm.ToLower()) ||
                                              i.NameTest.ToLower().Contains(SearchTerm.ToLower()) ||
-                                             i.SurnameTest.ToLower().Contains(SearchTerm.ToLower()) ||
-                                             i.DateTest.ToLower().Contains(SearchTerm.ToLower())).ToList();
+                                             i.SurnameTest.ToLower().Contains(SearchTerm.ToLower())).ToList();
 
     private string GetSortStyle(string columnName)
     {
