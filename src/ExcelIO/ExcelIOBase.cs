@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Globalization;
 
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
@@ -85,10 +86,10 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
                         //Number formats that can be interpreted as a number
                         || styleIndex >= 1 && styleIndex <= 5)
                     {
-                        if (double.TryParse(cell.CellValue.Text, out double dateTimeDouble))
+                        //Make sure that the double is converted into the correct format (with '.' instead of ','
+                        if (double.TryParse(cell.CellValue.Text, NumberStyles.Float, CultureInfo.InvariantCulture, out double dateTimeDouble))
                         {
-                            //Return Date
-                            return (DateTime.FromOADate(dateTimeDouble));
+                            return DateTime.FromOADate(dateTimeDouble);
                         }
                     }
                 }
@@ -109,7 +110,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
 
             foreach (Cell cell in row.Elements<Cell>())
             {
-                if (string.Compare(cell.CellReference.Value, cellName, true) > 0)
+                if (string.Compare(cell.CellReference, cellName, true) > 0)
                 {
                     return cell;
                 }
@@ -414,9 +415,9 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
         {
             // Get a unique ID for the new worksheet.
             uint sheetId = 1;
-            if (sheets?.Elements<Sheet>()?.Count() > 0)
+            if ((sheets?.Elements<Sheet>()?.Any()) ?? false)
             {
-                sheetId = sheets.Elements<Sheet>().Select(s => s.SheetId.Value).Max() + 1;
+                sheetId = sheets.Elements<Sheet>().Max(s => s.SheetId.Value) + 1;
             }
 
             return sheetId;

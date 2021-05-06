@@ -30,7 +30,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Write
             for (int i = 0; i < columnLetterIDs.Count; i++)
                 letterIDsAndValues.Add(columnLetterIDs[i], columnValues[i]);
 
-            InsertRow(ref spreadsheetDocument, sheetData, letterIDsAndValues);
+            InsertRow(ref spreadsheetDocument, ref sheetData, letterIDsAndValues);
             SaveSpreadsheetDocument(ref spreadsheetDocument);
         }
 
@@ -45,7 +45,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Write
                 throw new ArgumentException("Unable to find row that matches all columnNames in columnNamesAndValues.\n" +
                     "Some of the entered columnNames (Keys) in columnNamesAndValues might not exist or are misspelled");
 
-            InsertRow(ref spreadsheetDocument, sheetData, letterIDsAndValues);
+            InsertRow(ref spreadsheetDocument, ref sheetData, letterIDsAndValues);
             SaveSpreadsheetDocument(ref spreadsheetDocument);
         }
         #endregion
@@ -53,19 +53,23 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Write
         #region Private_Insert
         
         //letterIDsAndValues: <letterID, value>
-        private static void InsertRow(ref SpreadsheetDocument spreadsheetDocument, SheetData sheetData, Dictionary<string, object> letterIDsAndValues)
+        private static void InsertRow(ref SpreadsheetDocument spreadsheetDocument, ref SheetData sheetData, Dictionary<string, object> letterIDsAndValues)
         {
-            //Create new row
-            int rowCount = sheetData.Elements<Row>().Count();
-            Row row = new() { RowIndex = UInt32Value.FromUInt32((uint)(++rowCount)) };
+            //Create new row after the last low
+            //We use this instead of .Count() in case of rows where deleted
+            uint rowIndex = 1;
+            if (sheetData.Elements<Row>()?.Any() ?? false)
+                rowIndex = sheetData.Elements<Row>().Max(x => x.RowIndex.Value) + 1;
+
+            Row row = new() { RowIndex = UInt32Value.FromUInt32((rowIndex)) };
             sheetData.Append(row);
 
             foreach (var letterIDAndValue in letterIDsAndValues)
             {
                 //Format XX00
-                string cellReference = letterIDAndValue.Key + rowCount;
+                string cellReference = letterIDAndValue.Key + rowIndex;
                 //<cellReference, value>
-                CreateCell(ref spreadsheetDocument, row, new KeyValuePair<string, object>(cellReference, letterIDAndValue.Value));
+                CreateCell(ref spreadsheetDocument, ref row, new KeyValuePair<string, object>(cellReference, letterIDAndValue.Value));
             }
         }
         #endregion

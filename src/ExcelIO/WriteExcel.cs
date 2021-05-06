@@ -77,13 +77,11 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Write
 
         #region Cell    
         //letterIDAndValue: <cellReference, value>
-        protected static void CreateCell(ref SpreadsheetDocument spreadsheetDocument, Row row, KeyValuePair<string, object> cellReferenceIDAndValue)
+        protected static void CreateCell(ref SpreadsheetDocument spreadsheetDocument, ref Row row, KeyValuePair<string, object> cellReferenceIDAndValue)
         {
             //Get reference cell
+            //The referenceCell is the Cell in the previous row with the same letterIndex
             Cell referenceCell = GetReferenceCell(row, cellReferenceIDAndValue.Key);
-            if (referenceCell is null)
-                throw new ArgumentException("The Cell-Reference: " + referenceCell + " is invalid.");
-            // Add the cell to the cell table at cellReference.
             Cell newCell = new() { CellReference = cellReferenceIDAndValue.Key };
             row.InsertBefore(newCell, referenceCell);
 
@@ -149,24 +147,29 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Write
         protected static void RemoveRowAdvanced(SheetData sheetData, Row deletingRow)
         {
             List<Row> allRows = sheetData.Elements<Row>().ToList();
+            uint deletedRowIndex = deletingRow.RowIndex.Value;
             deletingRow.Remove();
         
             for (int i = 0; i < allRows.Count; i++)
             {
-                List<Cell> cells = allRows[i].Elements<Cell>().ToList();
-                if (cells is not null)
+                //Only change the indexes of the rows and cells after the deleted row
+                if (allRows[i].RowIndex.Value > deletedRowIndex)
                 {
-                    for (int j = 0; j < cells.Count; j++)
+                    List<Cell> cells = allRows[i].Elements<Cell>().ToList();
+                    if (cells is not null)
                     {
-                        string oldCellReference = cells[i].CellReference.Value;
+                        for (int j = 0; j < cells.Count; j++)
+                        {
+                            string oldCellReference = cells[i].CellReference.Value;
 
-                        //Decrement Row index
-                        int rowIndex = Convert.ToInt32(Regex.Replace(oldCellReference, @"[^\d]+", "")) - 1;
-                        string letterIndex = Regex.Replace(oldCellReference, @"[\d-]", "");
+                            //Decrement Row index
+                            int rowIndex = Convert.ToInt32(Regex.Replace(oldCellReference, @"[^\d]+", "")) - 1;
+                            string letterIndex = Regex.Replace(oldCellReference, @"[\d-]", "");
 
-                        cells[i].CellReference.Value = $"{letterIndex}{rowIndex}";
+                            cells[i].CellReference.Value = $"{letterIndex}{rowIndex}";
+                        }
                     }
-                }
+                }            
             }
         }
         #endregion

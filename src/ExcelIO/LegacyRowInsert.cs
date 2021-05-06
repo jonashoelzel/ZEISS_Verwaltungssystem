@@ -44,15 +44,16 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Write.Legacy
 
         public static void InsertRow(ref SpreadsheetDocument spreadsheetDocument, SheetData sheetData, List<string> columnLetterIDs, List<object> columnValues)
         {
-            //Create new row
-            int rowCount = sheetData.Elements<Row>().Count();
-            Row row = new() { RowIndex = UInt32Value.FromUInt32((uint)(++rowCount)) };
+            //Create new row after the last low
+            //We use this instead of .Count() in case of rows where deleted
+            uint rowIndex = (sheetData.Elements<Row>().Max(x => x.RowIndex.Value)) + 1;
+            Row row = new() { RowIndex = UInt32Value.FromUInt32((uint)(rowIndex)) };
             sheetData.Append(row);
 
             for (int i = 0; i < columnValues.Count; i++)
             {
                 //Format XX00
-                string cellReference = columnLetterIDs[i] + rowCount;
+                string cellReference = columnLetterIDs[i] + rowIndex;
                 IO.Write.Legacy.LegacyWriteExcel.CreateCell(ref spreadsheetDocument, row, cellReference, columnValues[i]);
             }
         }
