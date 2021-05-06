@@ -77,7 +77,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Write
 
         #region Cell    
         //letterIDAndValue: <cellReference, value>
-        protected static void CreateCell(ref SpreadsheetDocument spreadsheetDocument, Row row, KeyValuePair<string, object> cellReferenceIDAndValue)
+        protected static void CreateCell(ref SpreadsheetDocument spreadsheetDocument, ref Row row, KeyValuePair<string, object> cellReferenceIDAndValue)
         {
             //Get reference cell
             Cell referenceCell = GetReferenceCell(row, cellReferenceIDAndValue.Key);

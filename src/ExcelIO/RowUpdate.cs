@@ -32,7 +32,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Write
                 throw new ArgumentException("Unable to find row that matches all names in updateColumnAndNewValues.\n" +
                     "Some of the entered columnNames (Keys) in updateColumnAndNewValues might not exist or are misspelled");
 
-            int rowsChanged = UpdateRow(ref spreadsheetDocument, sheetData, letterIDsAndConditions, letterIDsAndNewValue);
+            int rowsChanged = UpdateRow(ref spreadsheetDocument, ref sheetData, letterIDsAndConditions, letterIDsAndNewValue);
             SaveSpreadsheetDocument(ref spreadsheetDocument);
 
             return rowsChanged;
@@ -41,7 +41,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Write
         //letterIDsAndValues: <letterID, condition>
         //updateColumnAndNewValue: <columnName, newValue>
         private static int UpdateRow
-            (ref SpreadsheetDocument spreadsheetDocument, SheetData sheetData, Dictionary<string, object> letterIDsAndConditions, Dictionary<string, object> letterIDsAndNewValues)
+            (ref SpreadsheetDocument spreadsheetDocument, ref SheetData sheetData, Dictionary<string, object> letterIDsAndConditions, Dictionary<string, object> letterIDsAndNewValues)
         {
             //Search for a row that matches the conditions in letterIDsAndConditions.
             List<Row> rows = SearchRows(ref spreadsheetDocument, sheetData, letterIDsAndConditions);
