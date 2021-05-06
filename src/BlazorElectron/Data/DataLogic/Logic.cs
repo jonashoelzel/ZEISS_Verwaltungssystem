@@ -17,16 +17,16 @@ namespace Zeiss.PublicationManager.Business.Logic.IO.Write
             Directory.CreateDirectory(directory);
             string filepath = directory + fileName;
             
-            WriteDataSet.InsertPublication(filepath, dataSet);
-            WriteDataSet.InsertAuthor(filepath, dataSet.MainAuthor);
+            WriteDataSet.InsertPublication(ref filepath, dataSet);
+            WriteDataSet.InsertAuthor(ref filepath, dataSet.MainAuthor);
             foreach(var author in dataSet.CoAuthors)
-                WriteDataSet.InsertAuthor(filepath, author);
-            WriteDataSet.InsertDivision(filepath, dataSet.Division);
-            WriteDataSet.InsertPublisher(filepath, dataSet.PublishedBy);
-            WriteDataSet.InsertState(filepath, dataSet.CurrentState);
-            WriteDataSet.InsertPublicationType(filepath, dataSet.TypeOfPublication);
+                WriteDataSet.InsertAuthor(ref filepath, author);
+            WriteDataSet.InsertDivision(ref filepath, dataSet.Division);
+            WriteDataSet.InsertPublisher(ref filepath, dataSet.PublishedBy);
+            WriteDataSet.InsertState(ref filepath, dataSet.CurrentState);
+            WriteDataSet.InsertPublicationType(ref filepath, dataSet.TypeOfPublication);
             foreach(var tag in dataSet.Tags)
-                WriteDataSet.InsertTag(filepath, tag);
+                WriteDataSet.InsertTag(ref filepath, tag);
         }
     }
 }

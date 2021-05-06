@@ -52,9 +52,9 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
 
         //New Interface
 
-        public static void InsertPublication(string filepath, IPublicationDataSet dataSet)
+        public static void InsertPublication(ref string filepath, IPublicationDataSet dataSet)
         {
-            CheckWorkBook(filepath);
+            CheckWorkBook(ref filepath);
 
             var attributes = PublicationToAttributes(dataSet);
 
@@ -70,9 +70,9 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
             RowInsert.Insert(filepath, worksheets[0], attributes);
         }
 
-        public static void InsertAuthor(string filepath, IAuthor author)
+        public static void InsertAuthor(ref string filepath, IAuthor author)
         {
-            CheckWorkBook(filepath);
+            CheckWorkBook(ref filepath);
 
             var attributes = AuthorToAttributes(author);
 
@@ -88,9 +88,9 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
             RowInsert.Insert(filepath, worksheets[1], attributes);
         }
 
-        public static void InsertDivision(string filepath, IDivision division)
+        public static void InsertDivision(ref string filepath, IDivision division)
         {
-            CheckWorkBook(filepath);
+            CheckWorkBook(ref filepath);
             var attributes = DivisionToAttributes(division);
 
             var id = new KeyValuePair<string, object>("Division_ID", attributes["Division_ID"]);
@@ -105,9 +105,9 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
             RowInsert.Insert(filepath, worksheets[2], attributes);
         }
 
-        public static void InsertPublicationType(string filepath, IPublicationType publicationType)
+        public static void InsertPublicationType(ref string filepath, IPublicationType publicationType)
         {
-            CheckWorkBook(filepath);
+            CheckWorkBook(ref filepath);
 
             var attributes = PublicationTypeToAttributes(publicationType);
 
@@ -123,9 +123,9 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
             RowInsert.Insert(filepath, worksheets[3], attributes);
         }
 
-        public static void InsertState(string filepath, IState state)
+        public static void InsertState(ref string filepath, IState state)
         {
-            CheckWorkBook(filepath);
+            CheckWorkBook(ref filepath);
 
             var attributes = StateToAttributes(state);
 
@@ -141,9 +141,9 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
             RowInsert.Insert(filepath, worksheets[4], attributes);
         }
 
-        public static void InsertTag(string filepath, ITag tag)
+        public static void InsertTag(ref string filepath, ITag tag)
         {
-            CheckWorkBook(filepath);
+            CheckWorkBook(ref filepath);
 
             var attributes = TagToAttributes(tag);
 
@@ -159,9 +159,9 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
             RowInsert.Insert(filepath, worksheets[5], attributes);
         }
 
-        public static void InsertPublisher(string filepath, IPublisher publisher)
+        public static void InsertPublisher(ref string filepath, IPublisher publisher)
         {
-            CheckWorkBook(filepath);
+            CheckWorkBook(ref filepath);
 
             var attributes = PublisherToAttributes(publisher);
 
@@ -179,9 +179,9 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
 
 
 
-        private static void CheckWorkBook(string filepath)
+        private static void CheckWorkBook(ref string filepath)
         {
-            if (!ValidateWorkBook(filepath))
+            if (!ValidateWorkBook(ref filepath))
                 InitializeWorkBook(filepath);
         }
 
@@ -233,14 +233,16 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
             }
         }
 
-        private static bool ValidateWorkBook(string filepath)
+        private static bool ValidateWorkBook(ref string filepath)
         {
             foreach (var worksheet in WorksheetsHead())
             {
                 if (!WriteExcel.WorksheetExists(ref filepath, worksheet.Key))
-                {
                     return false;
-                }
+
+                if (!Excel.IO.ExcelIOBase.CheckHeaderColumnsExist(filepath, worksheet.Key, worksheet.Value))
+                    return false;
+
             }
             return true;
         }
