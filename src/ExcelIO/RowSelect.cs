@@ -12,7 +12,6 @@ using DocumentFormat.OpenXml.Spreadsheet;
 
 namespace Zeiss.PublicationManager.Data.Excel.IO.Read
 {
-    //NOTE: When we use with Console, all members have to be static !!!
     public class RowSelect : ExcelIOBase
     {       
         //return: <columnName, columnEntries>
@@ -27,8 +26,11 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Read
             if (!letterIDsAndColumnNames.Any())
                 throw new ArgumentException("Unable to find row that matches all ColumnNames in columnNames\n" +
                     "Some of the entered columnNames (Keys) in columnNamesAndValues might not exist or are misspelled");
+          
+            Dictionary<string, List<object>> result = Reader(sheetData, sharedStringTable, letterIDsAndColumnNames, ++rowIndex);
+            SaveSpreadsheetDocument(ref spreadsheetDocument);
 
-            return Reader(sheetData, sharedStringTable, letterIDsAndColumnNames, ++rowIndex);
+            return result;
         }
 
         //return: <columnName, columnEntries>
