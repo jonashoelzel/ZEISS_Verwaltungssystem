@@ -47,7 +47,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Write.Legacy
             //Create new row after the last low
             //We use this instead of .Count() in case of rows where deleted
             uint rowIndex = (sheetData.Elements<Row>().Max(x => x.RowIndex.Value)) + 1;
-            Row row = new() { RowIndex = UInt32Value.FromUInt32((uint)(++rowIndex)) };
+            Row row = new() { RowIndex = UInt32Value.FromUInt32((uint)(rowIndex)) };
             sheetData.Append(row);
 
             for (int i = 0; i < columnValues.Count; i++)
