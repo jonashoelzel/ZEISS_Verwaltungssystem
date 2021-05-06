@@ -23,7 +23,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Write
                 throw new ArgumentException("Unable to find row that matches all names in whereColumnNamesAndConditions.\n" +
                     "Some of the entered columnNames (Keys) in whereColumnNamesAndConditions might not exist or are misspelled");
 
-            int rowsChanged = DeleteRow(ref spreadsheetDocument, sheetData, letterIDsAndConditions);
+            int rowsChanged = DeleteRow(ref spreadsheetDocument, ref sheetData, letterIDsAndConditions);
             SaveSpreadsheetDocument(ref spreadsheetDocument);
 
             return rowsChanged;
@@ -31,7 +31,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Write
 
         //letterIDsAndValues: <letterID, condition>
         private static int DeleteRow
-            (ref SpreadsheetDocument spreadsheetDocument, SheetData sheetData, Dictionary<string, object> letterIDsAndConditions)
+            (ref SpreadsheetDocument spreadsheetDocument, ref SheetData sheetData, Dictionary<string, object> letterIDsAndConditions)
         {
             //Search for a row that matches the conditions in letterIDsAndConditions.
             List<Row> rows = SearchRows(ref spreadsheetDocument, sheetData, letterIDsAndConditions);
@@ -55,7 +55,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Write
                 throw new ArgumentException("Unable to find row that matches all names in whereColumnNamesAndConditions.\n" +
                     "Some of the entered columnNames (Keys) in whereColumnNamesAndConditions might not exist or are misspelled");
 
-            int rowsChanged = DeleteRowAdvanced(ref spreadsheetDocument, sheetData, letterIDsAndConditions);
+            int rowsChanged = DeleteRowAdvanced(ref spreadsheetDocument, ref sheetData, letterIDsAndConditions);
             SaveSpreadsheetDocument(ref spreadsheetDocument);
 
             return rowsChanged;
@@ -64,7 +64,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Write
 
         //letterIDsAndValues: <letterID, condition>
         private static int DeleteRowAdvanced
-            (ref SpreadsheetDocument spreadsheetDocument, SheetData sheetData, Dictionary<string, object> letterIDsAndConditions)
+            (ref SpreadsheetDocument spreadsheetDocument, ref SheetData sheetData, Dictionary<string, object> letterIDsAndConditions)
         {
             //Search for a row that matches the conditions in letterIDsAndConditions.
             List<Row> rows = SearchRows(ref spreadsheetDocument, sheetData, letterIDsAndConditions);

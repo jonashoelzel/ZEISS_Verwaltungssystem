@@ -77,13 +77,11 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Write
 
         #region Cell    
         //letterIDAndValue: <cellReference, value>
-        protected static void CreateCell(ref SpreadsheetDocument spreadsheetDocument, Row row, KeyValuePair<string, object> cellReferenceIDAndValue)
+        protected static void CreateCell(ref SpreadsheetDocument spreadsheetDocument, ref Row row, KeyValuePair<string, object> cellReferenceIDAndValue)
         {
             //Get reference cell
+            //The referenceCell is the Cell in the previous row with the same letterIndex
             Cell referenceCell = GetReferenceCell(row, cellReferenceIDAndValue.Key);
-            if (referenceCell is null)
-                throw new ArgumentException("The Cell-Reference: " + referenceCell + " is invalid.");
-            // Add the cell to the cell table at cellReference.
             Cell newCell = new() { CellReference = cellReferenceIDAndValue.Key };
             row.InsertBefore(newCell, referenceCell);
 

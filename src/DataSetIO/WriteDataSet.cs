@@ -41,63 +41,147 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
             Excel.IO.Write.Legacy.LegacyRowInsert.Insert(filepath, worksheetName, DataSetBase.GetColumnNames().Select(x => x.ToString()).ToList(), DataSetBase.GetNewRow(dataSet));
         }
 
+        private static void InitializeDataSetWorksheet(string filepath, string worksheetName)
+        {
+            if (!WriteExcel.WorksheetExists(ref filepath, worksheetName))
+            {
+                Excel.IO.Write.Legacy.LegacyRowInsert.Insert(filepath, worksheetName, DataSetBase.GetColumnNames());
+            }
+        }
+
 
         //New Interface
 
-        public static void InsertPublication(string filepath, IPublicationDataSet dataSet)
+        public static void InsertPublication(ref string filepath, IPublicationDataSet dataSet)
         {
-            CheckWorkBook(filepath);
+            CheckWorkBook(ref filepath);
 
-            RowInsert.Insert(filepath, worksheets[0], PublicationToAttributes(dataSet));
+            var attributes = PublicationToAttributes(dataSet);
+
+            var id = new KeyValuePair<string, object>("Publication_ID", attributes["Publication_ID"]);
+
+            if (Excel.IO.ExcelIOBase.IsIDOfWorksheet(filepath, worksheets[0], id))
+            {
+                var idColumn = new Dictionary<string, object>() { { id.Key, id.Value } };
+                RowUpdate.Update(filepath, worksheets[0], idColumn, attributes);
+                return;
+            }
+
+            RowInsert.Insert(filepath, worksheets[0], attributes);
         }
 
-        public static void InsertAuthor(string filepath, IAuthor author)
+        public static void InsertAuthor(ref string filepath, IAuthor author)
         {
-            CheckWorkBook(filepath);
+            CheckWorkBook(ref filepath);
 
-            RowInsert.Insert(filepath, worksheets[1], AuthorToAttributes(author));
+            var attributes = AuthorToAttributes(author);
+
+            var id = new KeyValuePair<string, object>("Author_ID", attributes["Author_ID"]);
+
+            if (Excel.IO.ExcelIOBase.IsIDOfWorksheet(filepath, worksheets[1], id))
+            {
+                var idColumn = new Dictionary<string, object>() { { id.Key, id.Value } };
+                RowUpdate.Update(filepath, worksheets[1], idColumn, attributes);
+                return;
+            }
+
+            RowInsert.Insert(filepath, worksheets[1], attributes);
         }
 
-        public static void InsertDivision(string filepath, IDivision division)
+        public static void InsertDivision(ref string filepath, IDivision division)
         {
-            CheckWorkBook(filepath);
+            CheckWorkBook(ref filepath);
+            var attributes = DivisionToAttributes(division);
 
-            RowInsert.Insert(filepath, worksheets[2], DivisionToAttributes(division));
+            var id = new KeyValuePair<string, object>("Division_ID", attributes["Division_ID"]);
+
+            if (Excel.IO.ExcelIOBase.IsIDOfWorksheet(filepath, worksheets[2], id))
+            {
+                var idColumn = new Dictionary<string, object>() { { id.Key, id.Value } };
+                RowUpdate.Update(filepath, worksheets[2], idColumn, attributes);
+                return;
+            }
+
+            RowInsert.Insert(filepath, worksheets[2], attributes);
         }
 
-        public static void InsertTypeOfPublication(string filepath, IPublicationType publicationType)
+        public static void InsertPublicationType(ref string filepath, IPublicationType publicationType)
         {
-            CheckWorkBook(filepath);
+            CheckWorkBook(ref filepath);
 
-            RowInsert.Insert(filepath, worksheets[3], PublicationTypeToAttributes(publicationType));
+            var attributes = PublicationTypeToAttributes(publicationType);
+
+            var id = new KeyValuePair<string, object>("PublicationType_ID", attributes["PublicationType_ID"]);
+
+            if (Excel.IO.ExcelIOBase.IsIDOfWorksheet(filepath, worksheets[3], id))
+            {
+                var idColumn = new Dictionary<string, object>() { { id.Key, id.Value } };
+                RowUpdate.Update(filepath, worksheets[3], idColumn, attributes);
+                return;
+            }
+
+            RowInsert.Insert(filepath, worksheets[3], attributes);
         }
 
-        public static void InsertState(string filepath, IState state)
+        public static void InsertState(ref string filepath, IState state)
         {
-            CheckWorkBook(filepath);
+            CheckWorkBook(ref filepath);
 
-            RowInsert.Insert(filepath, worksheets[4], StateToAttributes(state));
+            var attributes = StateToAttributes(state);
+
+            var id = new KeyValuePair<string, object>("State_ID", attributes["State_ID"]);
+
+            if (Excel.IO.ExcelIOBase.IsIDOfWorksheet(filepath, worksheets[4], id))
+            {
+                var idColumn = new Dictionary<string, object>() { { id.Key, id.Value } };
+                RowUpdate.Update(filepath, worksheets[4], idColumn, attributes);
+                return;
+            }
+
+            RowInsert.Insert(filepath, worksheets[4], attributes);
         }
 
-        public static void InsertTag(string filepath, ITag tag)
+        public static void InsertTag(ref string filepath, ITag tag)
         {
-            CheckWorkBook(filepath);
+            CheckWorkBook(ref filepath);
 
-            RowInsert.Insert(filepath, worksheets[5], TagToAttributes(tag));
+            var attributes = TagToAttributes(tag);
+
+            var id = new KeyValuePair<string, object>("Tag_ID", attributes["Tag_ID"]);
+
+            if (Excel.IO.ExcelIOBase.IsIDOfWorksheet(filepath, worksheets[5], id))
+            {
+                var idColumn = new Dictionary<string, object>() { { id.Key, id.Value } };
+                RowUpdate.Update(filepath, worksheets[5], idColumn, attributes);
+                return;
+            }
+
+            RowInsert.Insert(filepath, worksheets[5], attributes);
         }
 
-        public static void InsertPublisher(string filepath, IPublisher publisher)
+        public static void InsertPublisher(ref string filepath, IPublisher publisher)
         {
-            CheckWorkBook(filepath);
+            CheckWorkBook(ref filepath);
 
-            RowInsert.Insert(filepath, worksheets[6], PublisherToAttributes(publisher));
+            var attributes = PublisherToAttributes(publisher);
+
+            var id = new KeyValuePair<string, object>("Publisher_ID", attributes["Publisher_ID"]);
+
+            if (Excel.IO.ExcelIOBase.IsIDOfWorksheet(filepath, worksheets[6], id))
+            {
+                var idColumn = new Dictionary<string, object>() { { id.Key, id.Value } };
+                RowUpdate.Update(filepath, worksheets[6], idColumn, attributes);
+                return;
+            }
+
+            RowInsert.Insert(filepath, worksheets[6], attributes);
         }
 
 
 
-        private static void CheckWorkBook(string filepath)
+        private static void CheckWorkBook(ref string filepath)
         {
-            if (!ValidateWorkBook(filepath))
+            if (!ValidateWorkBook(ref filepath))
                 InitializeWorkBook(filepath);
         }
 
@@ -143,20 +227,22 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
                 if (!WriteExcel.WorksheetExists(ref filepath, worksheet.Key))
                 {
                     // TODO: Check if columns exist
+                    // Create new Worksheet
                     RowInsert.Insert(filepath, worksheet.Key, worksheet.Value);
-
                 }
             }
         }
 
-        private static bool ValidateWorkBook(string filepath)
+        private static bool ValidateWorkBook(ref string filepath)
         {
             foreach (var worksheet in WorksheetsHead())
             {
                 if (!WriteExcel.WorksheetExists(ref filepath, worksheet.Key))
-                {
                     return false;
-                }
+
+                if (!Excel.IO.ExcelIOBase.CheckHeaderColumnsExist(filepath, worksheet.Key, worksheet.Value))
+                    return false;
+
             }
             return true;
         }
@@ -166,7 +252,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
             "Publication",
             "Author",
             "Division",
-            "TypeOfPublication",
+            "PublicationType",
             "State",
             "Tag",
             "Publisher",
@@ -179,7 +265,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
                 { "Publication", Publication },
                 { "Author", Author },
                 { "Division", Division },
-                { "TypeOfPublication", TypeOfPublication },
+                { "PublicationType", TypeOfPublication },
                 { "State", State },
                 { "Tag", Tag },
                 { "Publisher", Publisher },
@@ -199,7 +285,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
             "Author_ID",
             "Division_ID",
             "CoAuthor_IDs",
-            "TypeOfPublication_ID",
+            "PublicationType_ID",
             "State_ID",
             "Tag_ID",
             "Publisher_ID",
@@ -221,7 +307,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
 
         private static readonly List<object> TypeOfPublication = new()
         {
-            "TypeOfPublication_ID",
+            "PublicationType_ID",
             "Name",
         };
 
@@ -258,7 +344,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
                 { "Division_ID", dataSet.Division.ID.ToString() },
                 { "Author_ID", dataSet.MainAuthor.ID.ToString() },
                 { "CoAuthor_IDs", AuthorsToCsvIDs(dataSet.CoAuthors) },
-                { "TypeOfPublication_ID", dataSet.TypeOfPublication.ID.ToString() },
+                { "PublicationType_ID", dataSet.TypeOfPublication.ID.ToString() },
                 { "State_ID", dataSet.CurrentState.ID.ToString() },
                 { "Tag_ID", TagsToCsvIDs(dataSet.Tags) },
                 { "Publisher_ID", dataSet.PublishedBy.ID.ToString() },
@@ -288,7 +374,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
         {
             return new Dictionary<string, object>()
             {
-                { "TypeOfPublication_ID", publicationType.ID.ToString() },
+                { "PublicationType_ID", publicationType.ID.ToString() },
                 { "Name", publicationType.Name },
             };
         }

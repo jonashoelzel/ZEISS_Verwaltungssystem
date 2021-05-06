@@ -16,15 +16,17 @@ namespace Zeiss.PublicationManager.Business.Logic.IO.Write
             string directory = System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + folderPath;
             Directory.CreateDirectory(directory);
             string filepath = directory + fileName;
-            // var excelIO = new WriteDataSet("filePaht", "sheetName");
-            // excelIO.Insert(dataSet);
-
-            // Debug only
-            //if (File.Exists(filepath))
-                // File.Delete(filepath);
-
-            // WriteDataSet.InsertIntelligent(filepath, "Publication", dataSet);
-            WriteDataSet.InsertPublication(filepath, dataSet);
+            
+            WriteDataSet.InsertPublication(ref filepath, dataSet);
+            WriteDataSet.InsertAuthor(ref filepath, dataSet.MainAuthor);
+            //foreach(var author in dataSet.CoAuthors)
+            //    WriteDataSet.InsertAuthor(ref filepath, author);
+            //WriteDataSet.InsertDivision(ref filepath, dataSet.Division);
+            //WriteDataSet.InsertPublisher(ref filepath, dataSet.PublishedBy);
+            //WriteDataSet.InsertState(ref filepath, dataSet.CurrentState);
+            //WriteDataSet.InsertPublicationType(ref filepath, dataSet.TypeOfPublication);
+            //foreach(var tag in dataSet.Tags)
+            //    WriteDataSet.InsertTag(ref filepath, tag);
         }
     }
 }

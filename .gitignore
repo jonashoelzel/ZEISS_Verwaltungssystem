@@ -42,3 +42,5 @@ src/**/bin/**/*.xlsx
 
 # Experimental Config Folder
 src/_config/*.*
+
+src/BlazorElectron/BlazorElectron.csproj.user
