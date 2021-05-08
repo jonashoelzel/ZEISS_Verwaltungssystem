@@ -73,6 +73,11 @@ namespace Zeiss.PublicationManager.Data.DataSet.Model
 
     public class DivisionModel : DataObject, IDivision
     {
+        public DivisionModel()
+        {
+            ID = Guid.NewGuid();
+        }
+
         [Required(ErrorMessage = "Name ist ein Pflichtfeld")]
         [MaxLength(100, ErrorMessage = "Name ist zu lang")]
         [MinLength(1, ErrorMessage = "Bitte Name eingeben")]
