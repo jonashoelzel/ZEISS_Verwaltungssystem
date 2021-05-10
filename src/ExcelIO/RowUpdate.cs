@@ -52,7 +52,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Write
                 List<Cell> cells = rows[i].Elements<Cell>().ToList();
                 for (int j = 0; j < cells.Count; j++)
                 {
-                    Cell cell = cells[i];
+                    Cell cell = cells[j];
                     string letterID = GetLetterIDOfCellReference(cell.CellReference.Value);
                     //If this cell at letterID should be updated
                     if (letterIDsAndNewValues.ContainsKey(letterID))
