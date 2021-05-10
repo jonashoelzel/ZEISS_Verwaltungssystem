@@ -7,15 +7,16 @@ using Zeiss.PublicationManager.Data.Excel.IO.Write;
 
 namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
 {
-    public class WriteDataSet
+    public class WriteDataSet : DataSetBase
     {
         
         public WriteDataSet(string filePaht, string workSheetName)
         {
-            DataSetBase.FilePath = filePaht;
-            DataSetBase.WorkSheetName = workSheetName;
+            FilePath = filePaht;
+            WorkSheetName = workSheetName;
         }
-        
+
+        /*
         public void Insert(IPublicationDataSet dataSet)
         {
             throw new NotImplementedException();
@@ -48,7 +49,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
                 Excel.IO.Write.Legacy.LegacyRowInsert.Insert(filepath, worksheetName, DataSetBase.GetColumnNames());
             }
         }
-
+        */
 
         //New Interface
 
@@ -179,12 +180,8 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
 
 
 
-        private static void CheckWorkBook(ref string filepath)
-        {
-            if (!ValidateWorkBook(ref filepath))
-                InitializeWorkBook(filepath);
-        }
-
+        
+        /*
         private static string AuthorsToCsvIDs(List<IAuthor> authors)
         {
             string csv = string.Empty;
@@ -218,116 +215,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
             }
             return csv[..^1];
         }
-
-
-        private static void InitializeWorkBook(string filepath)
-        {
-            foreach (var worksheet in WorksheetsHead())
-            {
-                if (!WriteExcel.WorksheetExists(ref filepath, worksheet.Key))
-                {
-                    // TODO: Check if columns exist
-                    // Create new Worksheet
-                    RowInsert.Insert(filepath, worksheet.Key, worksheet.Value);
-                }
-            }
-        }
-
-        private static bool ValidateWorkBook(ref string filepath)
-        {
-            foreach (var worksheet in WorksheetsHead())
-            {
-                if (!WriteExcel.WorksheetExists(ref filepath, worksheet.Key))
-                    return false;
-
-                if (!Excel.IO.ExcelIOBase.CheckHeaderColumnsExist(filepath, worksheet.Key, worksheet.Value))
-                    return false;
-
-            }
-            return true;
-        }
-
-        private static readonly List<string> worksheets = new()
-        {
-            "Publication",
-            "Author",
-            "Division",
-            "PublicationType",
-            "State",
-            "Tag",
-            "Publisher",
-        };
-
-        private static Dictionary<string, List<object>> WorksheetsHead()
-        {
-            return new Dictionary<string, List<object>>()
-            {
-                { "Publication", Publication },
-                { "Author", Author },
-                { "Division", Division },
-                { "PublicationType", TypeOfPublication },
-                { "State", State },
-                { "Tag", Tag },
-                { "Publisher", Publisher },
-            };
-        }
-
-
-        private static readonly List<object> Publication = new()
-        {
-            "Publication_ID",
-            "WorkingTitle",
-            "PublicationTitle",
-            "DateOfStartWorking",
-            "DateOfRelease",
-            "Description",
-            "AdditionalInformation",
-            "Author_ID",
-            "Division_ID",
-            "CoAuthor_IDs",
-            "PublicationType_ID",
-            "State_ID",
-            "Tag_ID",
-            "Publisher_ID",
-        };
-
-
-        private static readonly List<object> Author = new()
-        {
-            "Author_ID",
-            "Name",
-            "Surname",
-        };
-
-        private static readonly List<object> Division = new()
-        {
-            "Division_ID",
-            "Name",
-        };
-
-        private static readonly List<object> TypeOfPublication = new()
-        {
-            "PublicationType_ID",
-            "Name",
-        };
-
-        private static readonly List<object> State = new()
-        {
-            "State_ID",
-            "Name",
-        };
-
-        private static readonly List<object> Tag = new()
-        {
-            "Tag_ID",
-            "Name",
-        };
-
-        private static readonly List<object> Publisher = new()
-        {
-            "Publisher_ID",
-            "Name",
-        };
+        */
 
 
         public static Dictionary<string, object> PublicationToAttributes(IPublicationDataSet dataSet)
@@ -343,10 +231,10 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
                 { "AdditionalInformation", dataSet.AdditionalInformation },
                 { "Division_ID", dataSet.Division.ID.ToString() },
                 { "Author_ID", dataSet.MainAuthor.ID.ToString() },
-                { "CoAuthor_IDs", AuthorsToCsvIDs(dataSet.CoAuthors) },
+                { "CoAuthor_IDs", ConvertAuthorsToCSV(dataSet.CoAuthors) },
                 { "PublicationType_ID", dataSet.TypeOfPublication.ID.ToString() },
                 { "State_ID", dataSet.CurrentState.ID.ToString() },
-                { "Tag_ID", TagsToCsvIDs(dataSet.Tags) },
+                { "Tag_ID", ConvertTagsToCSV(dataSet.Tags) },
                 { "Publisher_ID", dataSet.PublishedBy.ID.ToString() },
             };
         }
