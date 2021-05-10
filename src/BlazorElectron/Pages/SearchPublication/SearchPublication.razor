@@ -1,5 +1,8 @@
 ﻿@page "/searchPub"
 @using Zeiss.PublicationManager.Data.DataSet.Model
+@using Zeiss.PublicationManager.Data.DataSet
+@using Zeiss.PublicationManager.Data.DataSet.IO.Read
+@using System.IO
 
 @inject NavigationManager NavigationManager
 @inject PublicationDataSetModel Publication
@@ -26,9 +29,9 @@
             <label>Filtern nach:</label>
             <div class="divisionFilter">
                 <select class="form-control" @onchange="@DivisionFilter">
-                    @foreach (var div in Divisions)
+                    @foreach (var div in divisions)
                     {
-                        <option value="@div">@div</option>
+                        <option value="@div.Name">@div.Name</option>
                     }
                 </select>
             </div>
@@ -49,32 +52,32 @@
         <thead class="thead-dark">
             <tr>
                 <th>
-                    <span class="sort-link" @onclick="@(() => SortTable("TitleTest"))">Titel</span>
+                    <span class="sort-link" @onclick="@(() => SortTable("WorkingTitle"))">Titel</span>
                     <span class="fa @(GetSortStyle("TitleTest"))"></span>
                 </th>
                 <th>
-                    <span class="sort-link" @onclick="@(() => SortTable("NameTest"))">Nachname</span>
+                    <span class="sort-link" @onclick="@(() => SortTable("MainAuthor.Name"))">Nachname</span>
                     <span class="fa @(GetSortStyle("NameTest"))"></span>
                 </th>
                 <th>
-                    <span class="sort-link" @onclick="@(() => SortTable("SurnameTest"))">Vorname des Autors</span>
+                    <span class="sort-link" @onclick="@(() => SortTable("MainAuthor.Surname"))">Vorname des Autors</span>
                     <span class="fa @(GetSortStyle("SurnameTest"))"></span>
                 </th>
                 <th>
-                    <span class="sort-link" @onclick="@(() => SortTable("DateTest"))">Datum der Veröffentlichung</span>
-                    <span class="fa @(GetSortStyle("DateTest"))"></span>
+                    <span class="sort-link" @onclick="@(() => SortTable("DateOfRelease"))">Datum der Veröffentlichung</span>
+                    <span class="fa @(GetSortStyle("SurnameTest"))"></span>
                 </th>
                 <th>Aktion</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in items)
+            @foreach (var publication in items)
             {
                 <tr>
-                    <td>@item.TitleTest</td>
-                    <td>@item.NameTest</td>
-                    <td>@item.SurnameTest</td>
-                    <td>@item.DateTest.ToShortDateString()</td>
+                    <td>@publication.WorkingTitle</td>
+                    <td>@publication.MainAuthor.Name</td>
+                    <td>@publication.MainAuthor.Surname</td>
+                    <td>@publication.DateOfRelease.ToString("dd.MM.yyyy")</td>
                     <td>
                         <button type="button" class="btn-primary">
                             Bearbeiten
@@ -93,9 +96,32 @@
 
 @code
 {
+    private List<PublicationDataSet> data;
+    private List<Division> divisions;
+
+    void fetchData()
+    {
+        if (data is not null && divisions is not null)
+            return;
+
+        string folderPath = @"\TestFiles";
+        string fileName = @"\ExcelDataBase.xlsx";
+        string directory = System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + folderPath;
+        Directory.CreateDirectory(directory);
+        string filepath = directory + fileName;
+
+        var reader = new ReadDataSet(filepath, string.Empty);
+
+        data = reader.ReadPublicationDataSet();
+        divisions = reader.ReadDivisions();
+        divisions.Insert(0, new Division() { Name=string.Empty });
+    }
+
+
+
     private bool HideFilter = true;
 
-    private bool IsSortedAscending;
+    private bool IsSortedAscending = false;
     private string CurrentSortColumn;
 
     string SearchTerm { get; set; } = "";
@@ -122,23 +148,11 @@
         public string Division { get; set; }
     };
 
-    List<TableTest> Data = new List<TableTest>()
-    {
-        new TableTest {TitleTest="ABC", NameTest="Mueller", SurnameTest="Hans", DateTest= new DateTime(2015, 03, 12), Division="DAC"},
-        new TableTest {TitleTest="XYZ", NameTest="Mustermann", SurnameTest="Max", DateTest=new DateTime(2017, 12, 24), Division="DQA II"},
-        new TableTest {TitleTest="DEF", NameTest="Musterfrau", SurnameTest="Maxi", DateTest=new DateTime(2019, 12, 31), Division="SBD"},
-        new TableTest {TitleTest="MNO", NameTest="Stein", SurnameTest="Ute", DateTest=new DateTime(2022, 01, 01), Division="DQA, TAD III"},
-
-        new TableTest {TitleTest="GHWE", NameTest="Zufall", SurnameTest="Juergen", DateTest=new DateTime(2015, 12, 12), Division="DAC"},
-        new TableTest {TitleTest="OSJF", NameTest="Wurst", SurnameTest="Willi", DateTest=new DateTime(2006, 06, 14), Division="SAP"},
-        new TableTest {TitleTest="SHJF", NameTest="Schmied", SurnameTest="Anna", DateTest=new DateTime(2040, 12, 31), Division="SAP"},
-        new TableTest {TitleTest="GEGE", NameTest="Fischer", SurnameTest="Klaus", DateTest=new DateTime(1999, 01, 01), Division="DAC"},
-    };
 
     // search term input
-    List<TableTest> items => Data.Where(i => i.TitleTest.ToLower().Contains(SearchTerm.ToLower()) ||
-                                             i.NameTest.ToLower().Contains(SearchTerm.ToLower()) ||
-                                             i.SurnameTest.ToLower().Contains(SearchTerm.ToLower())).ToList();
+    List<PublicationDataSet> items => data?.Where(i => i.WorkingTitle.ToLower().Contains(SearchTerm.ToLower()) ||
+                                             i.MainAuthor.Name.ToLower().Contains(SearchTerm.ToLower()) ||
+                                             i.MainAuthor.Surname.ToLower().Contains(SearchTerm.ToLower())).ToList();
 
     // hide or show dropdown-filter
     private void ChangeFilterVisibility()
@@ -168,7 +182,11 @@
     {
         if (columnName != CurrentSortColumn)
         {
-            Data = Data.OrderBy(x => x.GetType().GetProperty(columnName).GetValue(x, null)).ToList();
+            var split = columnName.Split('.');
+            if (split.Length < 2)
+                data = data.OrderBy(x => x.GetType().GetProperty(columnName).GetValue(x, null)).ToList();
+            else if (split[0].Equals("MainAuthor"))
+                data = data.OrderBy(x => x.MainAuthor.Name).ToList();
             CurrentSortColumn = columnName;
             IsSortedAscending = true;
         }
@@ -176,34 +194,39 @@
         {
             if (IsSortedAscending)
             {
-                Data = Data.OrderByDescending(x => x.GetType().GetProperty(columnName).GetValue(x, null)).ToList();
+                var split = columnName.Split('.');
+                if (split.Length < 2)
+                    data = data.OrderByDescending(x => x.GetType().GetProperty(columnName).GetValue(x, null)).ToList();
+                else if (split[0].Equals("MainAuthor"))
+                    data = data.OrderByDescending(x => x.MainAuthor.Name).ToList();
             }
             else
             {
-                Data = Data.OrderBy(x => x.GetType().GetProperty(columnName).GetValue(x, null)).ToList();
+                data = data.OrderBy(x => x.GetType().GetProperty(columnName).GetValue(x, null)).ToList();
             }
             IsSortedAscending = !IsSortedAscending;
         }
     }
 
-    private List<TableTest> helpData;
+    private List<PublicationDataSet> helpData;
 
     protected override void OnInitialized()
     {
-        helpData = Data;
+        fetchData();
+        helpData = data;
     }
 
     // filter list when changing value of division-filter
     public void DivisionFilter(ChangeEventArgs e)
     {
         SelectedDivsion = e.Value.ToString();
-        if (SelectedDivsion.Equals(""))
+        if (string.IsNullOrEmpty(SelectedDivsion))
         {
-            Data = helpData;
+            data = helpData;
         }
         else
         {
-            Data = helpData.Where(f => f.Division.Equals(SelectedDivsion)).ToList();
+            data = helpData.Where(f => f.Division.Name.Equals(SelectedDivsion)).ToList();
         }
     }
 }
