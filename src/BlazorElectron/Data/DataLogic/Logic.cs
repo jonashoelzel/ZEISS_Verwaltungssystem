@@ -32,5 +32,16 @@ namespace Zeiss.PublicationManager.Business.Logic.IO.Write
                 foreach(var tag in dataSet.Tags)
                     WriteDataSet.InsertTag(ref filepath, tag);
         }
+
+        public static void SaveAuthor(IAuthor author)
+        {
+            string folderPath = @"\TestFiles";
+            string fileName = @"\ExcelDataBase.xlsx";
+            string directory = System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + folderPath;
+            Directory.CreateDirectory(directory);
+            string filepath = directory + fileName;
+
+            WriteDataSet.InsertAuthor(ref filepath, author);
+        }
     }
 }

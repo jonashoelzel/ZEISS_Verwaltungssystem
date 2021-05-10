@@ -1,40 +1,73 @@
 ﻿@page "/addAuthor"
 @using Zeiss.PublicationManager.Data.DataSet.Model
+@using Zeiss.PublicationManager.Data.DataSet
+@using Zeiss.PublicationManager.Data.DataSet.IO.Read
+@using Zeiss.PublicationManager.Business.Logic.IO.Write
+@using System.IO
 
 @inject NavigationManager NavigationManager
 @inject PublicationDataSetModel Publication
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg" class="logo" />
 
-<EditForm Model="@Publication.MainAuthor" OnInvalidSubmit="@HandleInvalidSubmit" OnValidSubmit="@NavigateToNextScreen">
-
-    <DataAnnotationsValidator />
-
-    <section class="author panel-default">
-        <header class="panel-heading">
-            <h4 class="panel-title">Autor</h4>
-        </header>
-        <div class="author panel-body">
-            <div class="author-default">
-                <label for="firstname">Vorname</label>
-                <InputText class="form-control" id="firstname" @bind-Value="Publication.MainAuthor.Name" /><br />
-                <ValidationMessage For="@(()=> Publication.MainAuthor.Name)" />
-            </div>
-            <div class="author-default">
-                <label for="surname">Nachname</label>
-                <InputText class="form-control" id="surname" @bind-Value="Publication.MainAuthor.Surname" /><br />
-                <ValidationMessage For="@(()=> Publication.MainAuthor.Surname)" />
+@if (ShowPopup)
+{
+    <EditForm Model="@Publication.MainAuthor" OnInvalidSubmit="@HandleInvalidSubmit" OnValidSubmit="@NavigateToNextScreen">
+        <DataAnnotationsValidator />
+        <div class="modal fade show" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title w-100 text-center">Erfolgreich gespeichert</h3>
+                    </div>
+                    <div class="author-default">
+                        <label for="firstname">Vorname</label>
+                        <InputText class="form-control" id="firstname" @bind-Value="NewAuthor.Name" /><br />
+                        <ValidationMessage For="@(() => NewAuthor.Name)" />
+                    </div>
+                    <div class="author-default">
+                        <label for="surname">Nachname</label>
+                        <InputText class="form-control" id="surname" @bind-Value="NewAuthor.Surname" /><br />
+                        <ValidationMessage For="@(() => NewAuthor.Surname)" />
+                    </div>
+                    <div class="modal-body">
+                        <button type="submit" id="backToLandingPage" class="form-control" @onclick="@AddNewAuthor">Neuen Autor hinzufügen</button>
+                    </div>
+                </div>
             </div>
         </div>
-    </section>
+    </EditForm>
+}
 
-    <button class="back" type="button" @onclick="NavigateToPreviousScreen">Zurück</button>
-    <button class="continue" type="submit">Weiter</button>
 
-</EditForm>
+<section class="author panel-default">
+    <header class="panel-heading">
+        <h4 class="panel-title">Autor</h4>
+    </header>
+    <div class="author panel-body">
+        <div class="author-default">
+            <label for="firstname">Author aus Liste</label>
+            <select class="form-control" @onchange="SetAuthor">
+                @foreach (var author in authors)
+                {
+                    <option value="@author.ID">@string.Concat(author.Name, " ", author.Surname)</option>
+                }
+            </select>
+            
+        </div>
+        <button class="AddNewAuthor" @onclick="@OpenPopup">Neuen Autor hinzufügen</button>
+    </div>
+</section>
+
+<button class="back" type="button" @onclick="NavigateToPreviousScreen">Zurück</button>
+<button class="continue" type="button" @onclick="@NavigateToNextScreen">Weiter</button>
 
 @code
 {
+    AuthorModel NewAuthor = new();
+    List<IAuthor> authors;
+    Guid? selectedAuthorID;
+
     private void NavigateToPreviousScreen()
     {
         NavigationManager.NavigateTo("addTitle");
@@ -48,5 +81,73 @@
     private void HandleInvalidSubmit()
     {
 
+    }
+
+    bool ShowPopup = false;
+
+    void OpenPopup()
+    {
+        ShowPopup = true;
+    }
+
+    void AddNewAuthor()
+    {
+        ShowPopup = false;
+        //authors = new List<IAuthor>();
+        authors.Insert(0, NewAuthor);
+
+        WriteData.SaveAuthor(NewAuthor);
+
+        Publication.MainAuthor = NewAuthor;
+
+        selectedAuthorID = NewAuthor.ID;
+    }
+
+    void SetAuthor(ChangeEventArgs author)
+    {
+        selectedAuthorID = Guid.Parse(author.Value.ToString());
+        Publication.MainAuthor = authors.First(a => a.ID.Equals(selectedAuthorID));
+    }
+
+    void fetchData()
+    {
+        if (authors is not null)
+            return;
+
+        string folderPath = @"\TestFiles";
+        string fileName = @"\ExcelDataBase.xlsx";
+        string directory = System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + folderPath;
+        Directory.CreateDirectory(directory);
+        string filepath = directory + fileName;
+
+        var reader = new ReadDataSet(filepath, string.Empty);
+
+        authors = new List<IAuthor>();
+        var readAuthors = reader.ReadAuthors();
+        foreach (var author in readAuthors)
+        {
+            authors.Add(author);
+        }
+    }
+
+    protected override void OnInitialized()
+    {
+        fetchData();
+        if (selectedAuthorID is not null)
+        {
+            var selected = authors.First(a => a.ID.Equals(selectedAuthorID));
+            authors.Remove(selected);
+            authors.Insert(0, selected);
+            Publication.MainAuthor = selected;
+        }
+        else
+        {
+            var selected = authors.Where(a => a.ID.Equals(Publication.MainAuthor.ID))?.FirstOrDefault();
+            if (selected is not null)
+            {
+                authors.Remove(selected);
+                authors.Insert(0, selected);
+            }
+        }
     }
 }

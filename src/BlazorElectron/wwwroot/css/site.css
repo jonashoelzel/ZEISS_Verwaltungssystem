@@ -271,3 +271,19 @@ input[type=text] {
 .sort-link {
     cursor: pointer;
 }
+
+.AddNewAuthor {
+    margin: auto;
+    border: 3px groove rgba(28,110,164,0.55);
+    border-radius: 15px;
+    background-color: #2449a4;
+    color: #ffffff;
+    font-family: Arial;
+    font-weight: bold;
+    text-align: center;
+    line-height: 20px;
+    width: 10%;
+    height: 20%;
+    min-width: 170px;
+    min-height: 25px;
+}
