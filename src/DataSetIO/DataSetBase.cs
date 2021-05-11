@@ -126,58 +126,36 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO
                     WriteCSVLine(authorCSVs, ';').Trim('\n');
         }
 
-        protected internal static List<IAuthor> ConvertCSVToAuthors(string csv)
+        protected internal static List<Guid> ConvertCSVToGuids(string csv)
         {
-            List<IAuthor> coAuthors = new();
-            if (String.IsNullOrEmpty(csv))
-                return coAuthors;
+            List<Guid> ids = new();
+            if (string.IsNullOrEmpty(csv))
+                return ids;
 
-            string[] authorsCSVs = CSVHandler.IO.Read.CSVReader.ReadCSVLine(csv, ';');
-            foreach (string coAuthorCSV in authorsCSVs)
+            string[] readIds = CSVHandler.IO.Read.CSVReader.ReadCSVLine(csv, ';');
+            foreach (string readId in readIds)
             {
-                string[] authorInformation = CSVHandler.IO.Read.CSVReader.ReadCSVLine(coAuthorCSV);
-                Author coAuthor = new();
-                coAuthor.ID = Guid.Parse(authorInformation[0]);
-                coAuthor.Name = authorInformation[1];
-                coAuthor.Surname = authorInformation[2];
-
-                coAuthors.Add(coAuthor);
+                ids.Add(Guid.Parse(readId));
             }
 
-            return coAuthors;
+            return ids;
         }
 
         protected internal static string ConvertTagsToCSV(List<ITag> tags)
         {
             if (tags is null)
-                return String.Empty;
+                return string.Empty;
 
             List<string> tagCSV = new();
             foreach (var tag in tags)
             {
-                tagCSV.Add(tag.Name);
+                tagCSV.Add(tag.ID.ToString());
             }
 
             return CSVHandler.IO.Write.CSVWriter.
                     WriteCSVLine(tagCSV).Trim('\n');
         }
 
-        protected internal static List<Tag> ConvertCSVToTags(string csv)
-        {
-            List<Tag> tags = new();
-            if (String.IsNullOrEmpty(csv))
-                return tags;
-
-            string[] tagNames = CSVHandler.IO.Read.CSVReader.ReadCSVLine(csv, ';');
-            foreach (string tagName in tagNames)
-            {               
-                Tag tag = new();
-                tag.Name = tagName;
-                tags.Add(tag);
-            }
-
-            return tags;
-        }
 
 
         protected internal static void CheckWorkBook(ref string filepath)

@@ -95,7 +95,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Read
             var authorID = Guid.Parse(attributes["Author_ID"].ToString());
             publication.MainAuthor = ReadAuthors().First(e => e.ID.Equals(authorID));
 
-            var coAuthorIDs = ConvertCSVToAuthors(attributes["CoAuthor_IDs"].ToString());
+            var coAuthorIDs = ConvertCSVToGuids(attributes["CoAuthor_IDs"].ToString());
             var allAuthors = ReadAuthors();
             foreach (var coAuthorID in coAuthorIDs)
                 publication.CoAuthors.Add(allAuthors.First(e => e.ID.Equals(coAuthorID)));
@@ -109,7 +109,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Read
             var stateID = Guid.Parse(attributes["State_ID"].ToString());
             publication.CurrentState = ReadStates().First(e => e.ID.Equals(stateID));
 
-            var tagIDs = ConvertCSVToTags(attributes["Tag_ID"].ToString());
+            var tagIDs = ConvertCSVToGuids(attributes["Tag_ID"].ToString());
             var allTags = ReadTags();
             foreach (var tagID in tagIDs)
                 publication.Tags.Add(allTags.First(e => e.ID.Equals(tagID)));
