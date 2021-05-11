@@ -53,19 +53,19 @@
             <tr>
                 <th>
                     <span class="sort-link" @onclick="@(() => SortTable("WorkingTitle"))">Titel</span>
-                    <span class="fa @(GetSortStyle("TitleTest"))"></span>
+                    <span class="fa @(GetSortStyle("WorkingTitle"))"></span>
                 </th>
                 <th>
                     <span class="sort-link" @onclick="@(() => SortTable("MainAuthor.Name"))">Nachname</span>
-                    <span class="fa @(GetSortStyle("NameTest"))"></span>
+                    <span class="fa @(GetSortStyle("MainAuthor.Name"))"></span>
                 </th>
                 <th>
                     <span class="sort-link" @onclick="@(() => SortTable("MainAuthor.Surname"))">Vorname des Autors</span>
-                    <span class="fa @(GetSortStyle("SurnameTest"))"></span>
+                    <span class="fa @(GetSortStyle("MainAuthor.Surname"))"></span>
                 </th>
                 <th>
                     <span class="sort-link" @onclick="@(() => SortTable("DateOfRelease"))">Datum der Veröffentlichung</span>
-                    <span class="fa @(GetSortStyle("SurnameTest"))"></span>
+                    <span class="fa @(GetSortStyle("DateOfRelease"))"></span>
                 </th>
                 <th>Aktion</th>
             </tr>
