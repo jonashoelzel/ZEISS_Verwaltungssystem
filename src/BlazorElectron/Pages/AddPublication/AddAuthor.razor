@@ -12,13 +12,13 @@
 
 @if (ShowPopup)
 {
-    <EditForm Model="@Publication.MainAuthor" OnInvalidSubmit="@HandleInvalidSubmit" OnValidSubmit="@NavigateToNextScreen">
+    <EditForm Model="@Publication.MainAuthor" OnInvalidSubmit="@HandleInvalidSubmit">
         <DataAnnotationsValidator />
         <div class="modal fade show" role="dialog">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h3 class="modal-title w-100 text-center">Erfolgreich gespeichert</h3>
+                        <h3 class="modal-title w-100 text-center">Autor hinzufügen</h3>
                     </div>
                     <div class="author-default">
                         <label for="firstname">Vorname</label>
@@ -46,7 +46,6 @@
     </header>
     <div class="author panel-body">
         <div class="author-default">
-            <label for="firstname">Author aus Liste</label>
             <select class="form-control" @onchange="SetAuthor">
                 @foreach (var author in authors)
                 {
@@ -55,7 +54,9 @@
             </select>
             
         </div>
-        <button class="AddNewAuthor" @onclick="@OpenPopup">Neuen Autor hinzufügen</button>
+        <div class="CenteredButton">
+            <button class="AddNewAuthor" @onclick="@OpenPopup">Neuen Autor hinzufügen</button>
+        </div>
     </div>
 </section>
 
@@ -66,7 +67,7 @@
 {
     AuthorModel NewAuthor = new();
     List<IAuthor> authors;
-    Guid? selectedAuthorID;
+    bool ShowPopup = false;
 
     private void NavigateToPreviousScreen()
     {
@@ -78,12 +79,8 @@
         NavigationManager.NavigateTo("addDivision");
     }
 
-    private void HandleInvalidSubmit()
-    {
+    private void HandleInvalidSubmit() {}
 
-    }
-
-    bool ShowPopup = false;
 
     void OpenPopup()
     {
@@ -93,19 +90,16 @@
     void AddNewAuthor()
     {
         ShowPopup = false;
-        //authors = new List<IAuthor>();
         authors.Insert(0, NewAuthor);
 
         WriteData.SaveAuthor(NewAuthor);
 
         Publication.MainAuthor = NewAuthor;
-
-        selectedAuthorID = NewAuthor.ID;
     }
 
     void SetAuthor(ChangeEventArgs author)
     {
-        selectedAuthorID = Guid.Parse(author.Value.ToString());
+        var selectedAuthorID = Guid.Parse(author.Value.ToString());
         Publication.MainAuthor = authors.First(a => a.ID.Equals(selectedAuthorID));
     }
 
@@ -133,21 +127,12 @@
     protected override void OnInitialized()
     {
         fetchData();
-        if (selectedAuthorID is not null)
+
+        var selected = authors.Where(a => a.ID.Equals(Publication.MainAuthor.ID))?.FirstOrDefault();
+        if (selected is not null)
         {
-            var selected = authors.First(a => a.ID.Equals(selectedAuthorID));
             authors.Remove(selected);
             authors.Insert(0, selected);
-            Publication.MainAuthor = selected;
-        }
-        else
-        {
-            var selected = authors.Where(a => a.ID.Equals(Publication.MainAuthor.ID))?.FirstOrDefault();
-            if (selected is not null)
-            {
-                authors.Remove(selected);
-                authors.Insert(0, selected);
-            }
         }
     }
 }
