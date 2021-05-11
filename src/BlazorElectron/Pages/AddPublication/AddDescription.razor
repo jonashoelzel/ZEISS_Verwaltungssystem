@@ -32,12 +32,12 @@
         <div class="description panel-body">
             <form>
                 <div class="description-default">
-                    <label for="titleDescr">Veröffentlichungstitel</label>
-                    <InputText id="titleDescr" class="form-control" @bind-Value="@Publication.AdditionalInformation" />
+                    <label for="titleDescr">Beschreibung</label>
+                    <InputText id="titleDescr" class="form-control" @bind-Value="@Publication.Description" />
                 </div>
                 <div class="description-default">
-                    <label for="description">Beschreibung</label>
-                    <InputTextArea id="description" class="form-control" @bind-Value="@Publication.Description" rows="5" />
+                    <label for="description">Beschreibungstext</label>
+                    <InputTextArea id="description" class="form-control" @bind-Value="@Publication.AdditionalInformation" rows="5" />
                 </div>
             </form>
         </div>
