@@ -9,13 +9,17 @@ namespace Zeiss.PublicationManager.Business.Logic.IO.Write
 {
     public class WriteData
     {
-        public static void Save(IPublicationDataSet dataSet)
+        public static string GetPath()
         {
             string folderPath = @"\TestFiles";
             string fileName = @"\ExcelDataBase.xlsx";
             string directory = System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + folderPath;
             Directory.CreateDirectory(directory);
-            string filepath = directory + fileName;
+            return directory + fileName;
+        }
+        public static void Save(IPublicationDataSet dataSet)
+        {
+            string filepath = GetPath();
             
             WriteDataSet.InsertPublication(ref filepath, dataSet);
             WriteDataSet.InsertAuthor(ref filepath, dataSet.MainAuthor);
@@ -35,13 +39,30 @@ namespace Zeiss.PublicationManager.Business.Logic.IO.Write
 
         public static void SaveAuthor(IAuthor author)
         {
-            string folderPath = @"\TestFiles";
-            string fileName = @"\ExcelDataBase.xlsx";
-            string directory = System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + folderPath;
-            Directory.CreateDirectory(directory);
-            string filepath = directory + fileName;
+            string filepath = GetPath();
 
             WriteDataSet.InsertAuthor(ref filepath, author);
+        }
+
+        public static void SaveDivision(IDivision division)
+        {
+            string filepath = GetPath();
+
+            WriteDataSet.InsertDivision(ref filepath, division);
+        }
+
+        public static void SavePublicationType(IPublicationType publicationType)
+        {
+            string filepath = GetPath();
+
+            WriteDataSet.InsertPublicationType(ref filepath, publicationType);
+        }
+
+        public static void SavePublisher(IPublisher publisher)
+        {
+            string filepath = GetPath();
+
+            WriteDataSet.InsertPublisher(ref filepath, publisher);
         }
     }
 }

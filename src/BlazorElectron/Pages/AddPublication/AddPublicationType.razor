@@ -1,5 +1,7 @@
 ﻿@page "/addPublicationType"
 @using Zeiss.PublicationManager.Data.DataSet.Model
+@using Zeiss.PublicationManager.Data.DataSet
+@using Zeiss.PublicationManager.Data.DataSet.IO.Read
 @using Zeiss.PublicationManager.Business.Logic.IO.Write
 
 @inject NavigationManager NavigationManager
@@ -7,7 +9,7 @@
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg" class="logo" />
 
-@if (ShowPopup)
+@if (ShowSavePopup)
 {
     <div class="modal fade show" role="dialog">
         <div class="modal-dialog" role="document">
@@ -24,37 +26,61 @@
     </div>
 }
 
-<EditForm Model="@Publication.TypeOfPublication" OnInvalidSubmit="@HandleInvalidSubmit" OnValidSubmit="@CheckEvent">
-
-    <DataAnnotationsValidator />
-
-    <section class="publicationType panel-default">
-        <header class="panel-heading">
-            <h4 class="panel-title">Art der Veröffentlichung</h4>
-        </header>
-        <div class="panel-body">
-            <InputSelect DisplayName="division" class="form-control" @bind-Value="@Publication.TypeOfPublication.Name">
-                <option></option>
-                <option>Artikel</option>
-                <option>Blogbeitrag</option>
-                <option>Buch</option>
-                <option>Videotraining</option>
-                <option>Vortrag</option>
-                <option>Workshop</option>
-            </InputSelect>
-            <ValidationMessage For="@(()=> @Publication.TypeOfPublication.Name)" />
+@if (ShowAddPopup)
+{
+    <EditForm Model="@Publication.MainAuthor" OnInvalidSubmit="@HandleInvalidSubmit">
+        <DataAnnotationsValidator />
+        <div class="modal fade show" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title w-100 text-center">Neuen Veröffentlichungsart hinzufügen</h3>
+                    </div>
+                    <div class="author-default">
+                        <label for="publicationTypeName">Art der Veröffentlichung</label>
+                        <InputText class="form-control" id="publicationTypeName" @bind-Value="NewPublicationType.Name" /><br />
+                        <ValidationMessage For="@(() => NewPublicationType.Name)" />
+                    </div>
+                    <div class="modal-body">
+                        <button type="submit" id="backToLandingPage" class="form-control" @onclick="@AddNewPublicationType">Neuen Veröffentlichungsart hinzufügen</button>
+                    </div>
+                </div>
+            </div>
         </div>
-    </section>
+    </EditForm>
+}
 
-    <button class="addPub" type="submit" @onclick="SetNextFalse">Veröffentlichung hinzufügen</button>
-    <button class="back" type="button" @onclick="NavigateToPreviousScreen">Zurück</button>
-    <button class="continue" type="submit" @onclick="SetNextTrue">Optionale Angaben</button>
+<section class="publicationType panel-default">
+    <header class="panel-heading">
+        <h4 class="panel-title">Art der Veröffentlichung</h4>
+    </header>
+    <div class="panel-body">
+        <div class="author-default">
+            <select class="form-control" @onchange="SetPublicationType">
+                @foreach (var publicationType in publicationTypes)
+                {
+                    <option value="@publicationType.ID">@publicationType.Name</option>
+                }
+            </select>
+        </div>
 
-</EditForm>
+        <div class="CenteredButton">
+            <button class="AddNewAuthor" @onclick="@OpenAddPopup">Neue Veröffentlichungsart hinzufügen</button>
+        </div>
+    </div>
+</section>
+
+<button class="addPub" type="submit" @onclick="@Save">Veröffentlichung hinzufügen</button>
+<button class="back" type="button" @onclick="NavigateToPreviousScreen">Zurück</button>
+<button class="continue" type="submit" @onclick="@NavigateToNextScreen">Optionale Angaben</button>
 
 @code
 {
+    PublicationTypeModel NewPublicationType = new();
+    List<IPublicationType> publicationTypes;
     bool Next = true;
+    bool ShowAddPopup = false;
+    bool ShowSavePopup = false;
 
     private void NavigateToPreviousScreen()
     {
@@ -71,50 +97,58 @@
         NavigationManager.NavigateTo("/");
     }
 
-    private void SetNextFalse()
-    {
-        Next = false;
-    }
-
-    private void SetNextTrue()
-    {
-        Next = true;
-    }
-    /* differentiate between the buttons */
-    private void CheckEvent()
-    {
-        if(Next)
-        {
-            NavigateToNextScreen();
-        }
-        else
-        {
-            Save();
-        }
-    }
+    void OpenAddPopup() => ShowAddPopup = true;
 
     private void Save()
     {
         WriteData.Save(Publication);
-        PopupSuccessfulSave();
+        ShowSavePopup = true;
     }
 
-    @*
-        private void Preview()
+    private void HandleInvalidSubmit() { }
+
+    void AddNewPublicationType()
+    {
+        ShowAddPopup = false;
+        publicationTypes.Insert(0, NewPublicationType);
+
+        WriteData.SavePublicationType(NewPublicationType);
+
+        Publication.TypeOfPublication = NewPublicationType;
+    }
+
+    void SetPublicationType(ChangeEventArgs publicationType)
+    {
+        var selectedPublicationTypeID = Guid.Parse(publicationType.Value.ToString());
+        Publication.TypeOfPublication = publicationTypes.First(a => a.ID.Equals(selectedPublicationTypeID));
+    }
+
+    void fetchData()
+    {
+        if (publicationTypes is not null)
+            return;
+
+        string filepath = WriteData.GetPath();
+
+        var reader = new ReadDataSet(filepath, string.Empty);
+
+        publicationTypes = new List<IPublicationType>();
+        var readPublicationTypes = reader.ReadPublicationTypes();
+        foreach (var division in readPublicationTypes)
         {
-            NavigationManager.NavigateTo("Preview");
+            publicationTypes.Add(division);
         }
-    *@
-
-    private void HandleInvalidSubmit()
-    {
-
     }
 
-    // Dialogfenster zum erfolgreichen Hinzufügen einer Veröffentlichung
-    bool ShowPopup = false;
-    private void PopupSuccessfulSave()
+    protected override void OnInitialized()
     {
-        ShowPopup = true;
+        fetchData();
+
+        var selected = publicationTypes.Where(a => a.ID.Equals(Publication.TypeOfPublication.ID))?.FirstOrDefault();
+        if (selected is not null)
+        {
+            publicationTypes.Remove(selected);
+            publicationTypes.Insert(0, selected);
+        }
     }
 }
