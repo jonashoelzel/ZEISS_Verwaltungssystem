@@ -220,24 +220,49 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
 
         public static Dictionary<string, object> PublicationToAttributes(IPublicationDataSet dataSet)
         {
-            return new Dictionary<string, object>()
-            {
-                { "Publication_ID", dataSet.ID.ToString() },
-                { "WorkingTitle", dataSet.WorkingTitle },
-                { "PublicationTitle", dataSet.PublicationTitle },
-                { "DateOfStartWorking", dataSet.DateOfStartWorking },
-                { "DateOfRelease", dataSet.DateOfRelease },
-                { "Description", dataSet.Description },
-                { "AdditionalInformation", dataSet.AdditionalInformation },
-                { "Division_ID", dataSet.Division.ID.ToString() },
-                { "Author_ID", dataSet.MainAuthor.ID.ToString() },
-                { "CoAuthor_IDs", ConvertAuthorsToCSV(dataSet.CoAuthors) },
-                { "PublicationType_ID", dataSet.TypeOfPublication.ID.ToString() },
-                { "State_ID", dataSet.CurrentState.ID.ToString() },
-                { "Tag_ID", ConvertTagsToCSV(dataSet.Tags) },
-                { "Publisher_ID", dataSet.PublishedBy.ID.ToString() },
-            };
+            var publication = new Dictionary<string, object>();
+
+            publication.Add("Publication_ID", dataSet.ID.ToString());
+            publication.Add("WorkingTitle", dataSet.WorkingTitle);
+            publication.Add("PublicationTitle", dataSet.PublicationTitle);
+            publication.Add("DateOfStartWorking", dataSet.DateOfStartWorking);
+            publication.Add("DateOfRelease", dataSet.DateOfRelease);
+            publication.Add("Description", dataSet.Description);
+            publication.Add("AdditionalInformation", dataSet.AdditionalInformation);
+            
+            string divisionID = string.Empty;
+            if (!string.IsNullOrEmpty(dataSet.Division.Name))
+                divisionID = dataSet.Division.ID.ToString();
+            publication.Add("Division_ID", divisionID);
+
+            string authorID = string.Empty;
+            if (!string.IsNullOrEmpty(dataSet.MainAuthor.Name))
+                authorID = dataSet.MainAuthor.ID.ToString();
+            publication.Add("Author_ID", authorID);
+
+
+            publication.Add("CoAuthor_IDs", ConvertAuthorsToCSV(dataSet.CoAuthors));
+
+            string pubTypeID = string.Empty;
+            if (!string.IsNullOrEmpty(dataSet.TypeOfPublication.Name))
+                pubTypeID = dataSet.TypeOfPublication.ID.ToString();
+            publication.Add("PublicationType_ID", pubTypeID);
+
+            string stateID = string.Empty;
+            if (!string.IsNullOrEmpty(dataSet.CurrentState.Name))
+                stateID = dataSet.CurrentState.ID.ToString();
+            publication.Add("State_ID", stateID);
+
+            publication.Add("Tag_ID", ConvertTagsToCSV(dataSet.Tags));
+
+            string publisherID = string.Empty;
+            if (!string.IsNullOrEmpty(dataSet.PublishedBy.Name))
+                publisherID = dataSet.PublishedBy.ID.ToString();
+            publication.Add("Publisher_ID", publisherID);
+
+            return publication;
         }
+
 
         private static Dictionary<string, object> AuthorToAttributes(IAuthor author)
         {
