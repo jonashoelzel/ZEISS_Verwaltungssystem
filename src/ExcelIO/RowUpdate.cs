@@ -38,7 +38,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Write
             return rowsChanged;
         }
 
-        //letterIDsAndValues: <letterID, condition>
+        //letterIDsAndConditions: <letterID, condition>
         //updateColumnAndNewValue: <columnName, newValue>
         private static int UpdateRow
             (ref SpreadsheetDocument spreadsheetDocument, ref SheetData sheetData, Dictionary<string, object> letterIDsAndConditions, Dictionary<string, object> letterIDsAndNewValues)

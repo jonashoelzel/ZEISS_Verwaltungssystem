@@ -189,7 +189,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.ComponentTest.Write
             for (int i = 1; i <= count; i++)
             {
                 //WriteDataSet.Insert(filepath, worksheetNames[Randomizer.Next(worksheetNames.Length)], GenerateDataSet());
-                WriteDataSet.InsertIntelligent(filepath, SheetInfo.WorksheetNames[Randomizer.Next(SheetInfo.WorksheetNames.Length)], GenerateRandomDataSet());
+                //WriteDataSet.InsertIntelligent(filepath, SheetInfo.WorksheetNames[Randomizer.Next(SheetInfo.WorksheetNames.Length)], GenerateRandomDataSet());
 
                 //System.Threading.Thread.Sleep(500);
 
