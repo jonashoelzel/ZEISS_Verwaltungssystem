@@ -53,20 +53,14 @@
 {
     private string[] Tags = new string[] { "Frontend", "Backend", "Development", ".NET 5.0", ".NET Core", ".NET Framework" };
 
-    private void NavigateToPreviousScreen()
-    {
-        NavigationManager.NavigateTo("addPublisher");
-    }
+    private void NavigateToPreviousScreen() => NavigationManager.NavigateTo("addPublisher");
+
+    private void NavigateToLandingPage() => NavigationManager.NavigateTo("/");
 
     private void Save()
     {
         WriteData.Save(Publication);
         PopupSuccessfulSave();
-    }
-
-    private void NavigateToLandingPage()
-    {
-        NavigationManager.NavigateTo("/");
     }
 
     // Dialogfenster zum erfolgreichen Hinzufügen einer Veröffentlichung

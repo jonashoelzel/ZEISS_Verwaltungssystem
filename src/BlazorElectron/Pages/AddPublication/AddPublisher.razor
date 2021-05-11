@@ -35,6 +35,9 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h3 class="modal-title w-100 text-center"> Verlag hinzufügen</h3>
+                        <button type="button" id="cancelButton" @onclick="@Cancel">
+                            <span class="far fa-window-close fa-2x"></span>
+                        </button>
                     </div>
                     <div class="author-default">
                         <label for="publicationTypeName">Name des Verlags</label>
@@ -42,14 +45,13 @@
                         <ValidationMessage For="@(() => newPublisher.Name)" />
                     </div>
                     <div class="modal-body">
-                        <button type="submit" id="backToLandingPage" class="form-control" @onclick="@AddNewPublisher">Neuen Verlag hinzufüge</button>
+                        <button type="submit" id="ButtonInPopup" class="form-control" @onclick="@AddNewPublisher">Neuen Verlag hinzufügen</button>
                     </div>
                 </div>
             </div>
         </div>
     </EditForm>
 }
-
 
     <section class="publisher panel-default">
         <header class="panel-heading">
@@ -74,7 +76,6 @@
     <button class="back" type="button" @onclick="NavigateToPreviousScreen">Zurück</button>
     <button class="continue" type="button" @onclick="NavigateToNextScreen">Weiter</button>
 
-
 @code
 {
     PublisherModel newPublisher = new();
@@ -82,20 +83,13 @@
     bool ShowAddPopup = false;
     bool ShowSavePopup = false;
 
-    private void NavigateToPreviousScreen()
-    {
-        NavigationManager.NavigateTo("addDescription");
-    }
+    private void NavigateToPreviousScreen() => NavigationManager.NavigateTo("addDescription");
 
-    private void NavigateToNextScreen()
-    {
-        NavigationManager.NavigateTo("addTags");
-    }
+    private void NavigateToNextScreen() => NavigationManager.NavigateTo("addTags");
 
-    private void NavigateToLandingPage()
-    {
-        NavigationManager.NavigateTo("/");
-    }
+    private void NavigateToLandingPage() => NavigationManager.NavigateTo("/");
+
+    void Cancel() => ShowAddPopup = false;
 
     void OpenAddPopup() => ShowAddPopup = true;
 

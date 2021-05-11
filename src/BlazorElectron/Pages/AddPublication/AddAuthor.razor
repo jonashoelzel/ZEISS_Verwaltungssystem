@@ -10,7 +10,7 @@
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg" class="logo" />
 
-@if (ShowPopup)
+@if (ShowAddPopup)
 {
     <EditForm Model="@Publication.MainAuthor" OnInvalidSubmit="@HandleInvalidSubmit">
         <DataAnnotationsValidator />
@@ -19,6 +19,9 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h3 class="modal-title w-100 text-center">Autor hinzufügen</h3>
+                        <button type="button" id="cancelButton" @onclick="@Cancel">
+                            <span class="far fa-window-close fa-2x"></span>
+                        </button>
                     </div>
                     <div class="author-default">
                         <label for="firstname">Vorname</label>
@@ -31,14 +34,13 @@
                         <ValidationMessage For="@(() => NewAuthor.Surname)" />
                     </div>
                     <div class="modal-body">
-                        <button type="submit" id="backToLandingPage" class="form-control" @onclick="@AddNewAuthor">Neuen Autor hinzufügen</button>
+                        <button type="submit" id="ButtonInPopup" class="form-control" @onclick="@AddNewAuthor">Neuen Autor hinzufügen</button>
                     </div>
                 </div>
             </div>
         </div>
     </EditForm>
 }
-
 
 <section class="author panel-default">
     <header class="panel-heading">
@@ -55,7 +57,7 @@
             
         </div>
         <div class="CenteredButton">
-            <button class="AddNewAuthor" @onclick="@OpenPopup">Neuen Autor hinzufügen</button>
+            <button class="AddNewAuthor" @onclick="@OpenAddPopup">Neuen Autor hinzufügen</button>
         </div>
     </div>
 </section>
@@ -67,29 +69,21 @@
 {
     AuthorModel NewAuthor = new();
     List<IAuthor> authors;
-    bool ShowPopup = false;
+    bool ShowAddPopup = false;
 
-    private void NavigateToPreviousScreen()
-    {
-        NavigationManager.NavigateTo("addTitle");
-    }
+    private void NavigateToPreviousScreen() => NavigationManager.NavigateTo("addTitle");
 
-    private void NavigateToNextScreen()
-    {
-        NavigationManager.NavigateTo("addDivision");
-    }
+    private void NavigateToNextScreen() => NavigationManager.NavigateTo("addDivision");
 
     private void HandleInvalidSubmit() {}
 
+    void Cancel() => ShowAddPopup = false;
 
-    void OpenPopup()
-    {
-        ShowPopup = true;
-    }
+    void OpenAddPopup() => ShowAddPopup = true;
 
     void AddNewAuthor()
     {
-        ShowPopup = false;
+        ShowAddPopup = false;
         authors.Insert(0, NewAuthor);
 
         WriteData.SaveAuthor(NewAuthor);

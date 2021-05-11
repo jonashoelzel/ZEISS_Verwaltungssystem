@@ -274,3 +274,24 @@ input[type=text] {
     min-width: 170px;
     padding: 2%;
 }
+
+#cancelButton {
+    position: absolute;
+    top: 1px;
+    right: 1px;
+    color: #ffffff;
+    background-color: cornflowerblue;
+}
+
+#ButtonInPopup {
+    border: 3px groove rgba(28,110,164,0.55);
+    border-radius: 20px;
+    background-color: #2449a4;
+    color: #ffffff;
+    font-family: Arial;
+    font-size: 120%;
+    font-weight: bold;
+    text-align: center;
+    line-height: 20px;
+    min-height: 50px;
+} 

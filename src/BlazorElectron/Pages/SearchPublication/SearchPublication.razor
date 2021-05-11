@@ -117,8 +117,6 @@
         divisions.Insert(0, new Division() { Name=string.Empty });
     }
 
-
-
     private bool HideFilter = true;
 
     private bool IsSortedAscending = false;
@@ -148,17 +146,13 @@
         public string Division { get; set; }
     };
 
-
     // search term input
     List<PublicationDataSet> items => data?.Where(i => i.WorkingTitle.ToLower().Contains(SearchTerm.ToLower()) ||
                                              i.MainAuthor.Name.ToLower().Contains(SearchTerm.ToLower()) ||
                                              i.MainAuthor.Surname.ToLower().Contains(SearchTerm.ToLower())).ToList();
 
     // hide or show dropdown-filter
-    private void ChangeFilterVisibility()
-    {
-        HideFilter = !HideFilter;
-    }
+    private void ChangeFilterVisibility() => HideFilter = !HideFilter;
 
     // get column to sort and set corresponding icon
     private string GetSortStyle(string columnName)

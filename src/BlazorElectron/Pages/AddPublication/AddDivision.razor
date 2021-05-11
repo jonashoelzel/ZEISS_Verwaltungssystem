@@ -10,7 +10,7 @@
 <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg"
      class="logo" />
 
-@if (ShowPopup)
+@if (ShowAddPopup)
 {
     <EditForm Model="@Publication.MainAuthor" OnInvalidSubmit="@HandleInvalidSubmit">
         <DataAnnotationsValidator />
@@ -19,6 +19,9 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h3 class="modal-title w-100 text-center"> Geschäftsbereich hinzufügen</h3>
+                        <button type="button" id="cancelButton" @onclick="@Cancel">
+                            <span class="far fa-window-close fa-2x"></span>
+                        </button>
                     </div>
                     <div class="author-default">
                         <label for="divisionName">Geschäftsbereich</label>
@@ -26,7 +29,7 @@
                         <ValidationMessage For="@(() => NewDivision.Name)" />
                     </div>
                     <div class="modal-body">
-                        <button type="submit" id="backToLandingPage" class="form-control" @onclick="@AddNewDivision">Neuen Geschäftsbereich hinzufügen</button>
+                        <button type="submit" id="ButtonInPopup" class="form-control" @onclick="@AddNewDivision">Neuen Geschäftsbereich hinzufügen</button>
                     </div>
                 </div>
             </div>
@@ -50,42 +53,31 @@
         <div class="CenteredButton">
             <button class="AddNewAuthor" @onclick="@OpenPopup">Neuen Geschäftsbereich hinzufügen</button>
         </div>
-
-
     </div>
 </section>
 
 <button class="back" type="button" @onclick="NavigateToPreviousScreen">Zurück</button>
 <button class="continue" type="submit" @onclick="@NavigateToNextScreen">Weiter</button>
 
-
 @code
 {
     DivisionModel NewDivision = new();
     List<IDivision> divisions;
-    bool ShowPopup = false;
+    bool ShowAddPopup = false;
 
+    private void NavigateToPreviousScreen() => NavigationManager.NavigateTo("AddAuthor");
 
-    private void NavigateToPreviousScreen()
-    {
-        NavigationManager.NavigateTo("AddAuthor");
-    }
-
-    private void NavigateToNextScreen()
-    {
-        NavigationManager.NavigateTo("addDateOfRelease");
-    }
+    private void NavigateToNextScreen() => NavigationManager.NavigateTo("addDateOfRelease");
 
     private void HandleInvalidSubmit() { }
 
-    void OpenPopup()
-    {
-        ShowPopup = true;
-    }
+    void Cancel() => ShowAddPopup = false;
+
+    void OpenPopup() => ShowAddPopup = true;
 
     void AddNewDivision()
     {
-        ShowPopup = false;
+        ShowAddPopup = false;
         divisions.Insert(0, NewDivision);
 
         WriteData.SaveDivision(NewDivision);

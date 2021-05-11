@@ -28,18 +28,9 @@
 
 @code
 {
-    private void NavigateToPreviousScreen()
-    {
-        NavigationManager.NavigateTo("/");
-    }
+    private void NavigateToPreviousScreen() => NavigationManager.NavigateTo("/");
 
-    private void NavigateToNextScreen()
-    {
-        NavigationManager.NavigateTo("addAuthor");
-    }
+    private void NavigateToNextScreen() => NavigationManager.NavigateTo("addAuthor");
 
-    private void HandleInvalidSubmit()
-    {
-        NavigateToNextScreen();
-    }
+    private void HandleInvalidSubmit()=> NavigateToNextScreen();
 }

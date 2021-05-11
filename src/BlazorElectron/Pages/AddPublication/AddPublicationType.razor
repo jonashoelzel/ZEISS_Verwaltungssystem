@@ -16,6 +16,9 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h3 class="modal-title w-100 text-center">Erfolgreich gespeichert</h3>
+                    <button type="button" id="cancelButton" @onclick="@Cancel">
+                        <span class="far fa-window-close fa-2x"></span>
+                    </button>
                 </div>
                 <div class="modal-body">
                     <p>Die Veröffentlichung wurde der Liste hinzugefügt.</p>
@@ -34,7 +37,10 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h3 class="modal-title w-100 text-center">Neuen Veröffentlichungsart hinzufügen</h3>
+                        <h3 class="modal-title w-100 text-center">Veröffentlichungsart hinzufügen</h3>
+                        <button type="button" id="cancelButton" @onclick="@Cancel">
+                            <span class="far fa-times-circle fa-2x"></span>
+                        </button>
                     </div>
                     <div class="author-default">
                         <label for="publicationTypeName">Art der Veröffentlichung</label>
@@ -42,7 +48,7 @@
                         <ValidationMessage For="@(() => NewPublicationType.Name)" />
                     </div>
                     <div class="modal-body">
-                        <button type="submit" id="backToLandingPage" class="form-control" @onclick="@AddNewPublicationType">Neuen Veröffentlichungsart hinzufügen</button>
+                        <button type="submit" id="ButtonInPopup" class="form-control" @onclick="@AddNewPublicationType">Neue Veröffentlichungsart hinzufügen</button>
                     </div>
                 </div>
             </div>
@@ -63,7 +69,6 @@
                 }
             </select>
         </div>
-
         <div class="CenteredButton">
             <button class="AddNewAuthor" @onclick="@OpenAddPopup">Neue Veröffentlichungsart hinzufügen</button>
         </div>
@@ -82,20 +87,13 @@
     bool ShowAddPopup = false;
     bool ShowSavePopup = false;
 
-    private void NavigateToPreviousScreen()
-    {
-        NavigationManager.NavigateTo("addDateOfRelease");
-    }
+    private void NavigateToPreviousScreen() => NavigationManager.NavigateTo("addDateOfRelease");
 
-    private void NavigateToNextScreen()
-    {
-        NavigationManager.NavigateTo("addDescription");
-    }
+    private void NavigateToNextScreen() => NavigationManager.NavigateTo("addDescription");
 
-    private void NavigateToLandingPage()
-    {
-        NavigationManager.NavigateTo("/");
-    }
+    private void NavigateToLandingPage() => NavigationManager.NavigateTo("/");
+
+    void Cancel() => ShowAddPopup = false;
 
     void OpenAddPopup() => ShowAddPopup = true;
 
