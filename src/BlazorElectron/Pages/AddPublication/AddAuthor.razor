@@ -134,5 +134,7 @@
             authors.Remove(selected);
             authors.Insert(0, selected);
         }
+        else
+            Publication.MainAuthor = authors[0];
     }
 }

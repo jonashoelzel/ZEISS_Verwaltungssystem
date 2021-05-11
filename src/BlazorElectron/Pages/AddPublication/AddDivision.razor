@@ -126,5 +126,7 @@
             divisions.Remove(selected);
             divisions.Insert(0, selected);
         }
+        else
+            Publication.Division = divisions[0];
     }
 }

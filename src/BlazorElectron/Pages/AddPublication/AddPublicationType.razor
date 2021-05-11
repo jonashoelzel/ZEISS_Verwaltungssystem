@@ -150,5 +150,7 @@
             publicationTypes.Remove(selected);
             publicationTypes.Insert(0, selected);
         }
+        else
+            Publication.TypeOfPublication = publicationTypes[0];
     }
 }

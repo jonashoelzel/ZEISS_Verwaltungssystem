@@ -144,11 +144,13 @@
     {
         fetchData();
 
-        var selected = publishers.Where(a => a.ID.Equals(Publication.TypeOfPublication.ID))?.FirstOrDefault();
+        var selected = publishers.Where(a => a.ID.Equals(Publication.PublishedBy.ID))?.FirstOrDefault();
         if (selected is not null)
         {
             publishers.Remove(selected);
             publishers.Insert(0, selected);
         }
+        else
+            Publication.PublishedBy = publishers[0];
     }
 }
