@@ -3,7 +3,7 @@ using Zeiss.PublicationManager.Data.DataSet;
 using Zeiss.PublicationManager.Data.DataSet.IO.Read;
 using Zeiss.PublicationManager.Data.DataSet.IO.Write;
 
-namespace Zeiss.PublicationManager.Business.Logic.IO.Write
+namespace Zeiss.PublicationManager.Business.Logic.IO
 {
     public class DataHandler
     {

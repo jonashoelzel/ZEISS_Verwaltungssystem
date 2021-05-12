@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 using Zeiss.PublicationManager.Data.Excel.IO;
 using Zeiss.PublicationManager.Data.DataSet;
 using Zeiss.PublicationManager.Data.DataSet.Model;
-using Zeiss.PublicationManager.Business.Logic.IO.Write;
+using Zeiss.PublicationManager.Business.Logic.IO;
 
 namespace Zeiss.PublicationManager.UI
 {
