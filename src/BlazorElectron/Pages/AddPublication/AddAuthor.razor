@@ -7,6 +7,7 @@
 
 @inject NavigationManager NavigationManager
 @inject PublicationDataSetModel Publication
+@inject DataHandler dataHandler
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg" class="logo" />
 
@@ -25,7 +26,7 @@
                     </div>
                     <div class="author-default">
                         <label for="firstname">Vorname</label>
-                        <InputText class="form-control" id="firstname" @bind-Value="NewAuthor.Name"/><br />
+                        <InputText class="form-control" id="firstname" @bind-Value="NewAuthor.Name" /><br />
                         <ValidationMessage For="@(() => NewAuthor.Name)" />
                     </div>
                     <div class="author-default">
@@ -54,7 +55,7 @@
                     <option value="@author.ID">@string.Concat(author.Name, " ", author.Surname)</option>
                 }
             </select>
-            
+
         </div>
         <div class="CenteredButton">
             <button class="AddNewAuthor" @onclick="@OpenAddPopup">Neuen Autor hinzufügen</button>
@@ -67,61 +68,53 @@
 
 @code
 {
-        AuthorModel NewAuthor = new();
-        List<IAuthor> authors;
-        bool ShowAddPopup = false;
+    AuthorModel NewAuthor = new();
+    List<IAuthor> authors;
+    bool ShowAddPopup = false;
 
-        private void NavigateToPreviousScreen() => NavigationManager.NavigateTo("addTitle");
+    private void NavigateToPreviousScreen() => NavigationManager.NavigateTo("addTitle");
 
-        private void NavigateToNextScreen() => NavigationManager.NavigateTo("addDivision");
+    private void NavigateToNextScreen() => NavigationManager.NavigateTo("addDivision");
 
-        private void HandleInvalidSubmit() {}
+    private void HandleInvalidSubmit() { }
 
-        void Cancel()
+    void Cancel()
+    {
+        NewAuthor.Name = string.Empty;
+        NewAuthor.Surname = string.Empty;
+        ShowAddPopup = false;
+    }
+
+    void OpenAddPopup() => ShowAddPopup = true;
+
+    void AddNewAuthor()
+    {
+        ShowAddPopup = false;
+        authors.Insert(0, NewAuthor);
+
+        dataHandler.SaveAuthor(NewAuthor);
+
+        Publication.MainAuthor = NewAuthor;
+    }
+
+    void SetAuthor(ChangeEventArgs author)
+    {
+        var selectedAuthorID = Guid.Parse(author.Value.ToString());
+        Publication.MainAuthor = authors.First(a => a.ID.Equals(selectedAuthorID));
+    }
+
+    void fetchData()
+    {
+        if (authors is not null)
+            return;
+
+        authors = new List<IAuthor>();
+        var readAuthors = dataHandler.ExcelReader.ReadAuthors();
+        foreach (var author in readAuthors)
         {
-            NewAuthor.Name = string.Empty;
-            NewAuthor.Surname = string.Empty;
-            ShowAddPopup = false;
+            authors.Add(author);
         }
-
-        void OpenAddPopup() => ShowAddPopup = true;
-
-        void AddNewAuthor()
-        {
-            ShowAddPopup = false;
-            authors.Insert(0, NewAuthor);
-
-            WriteData.SaveAuthor(NewAuthor);
-
-            Publication.MainAuthor = NewAuthor;
-        }
-
-        void SetAuthor(ChangeEventArgs author)
-        {
-            var selectedAuthorID = Guid.Parse(author.Value.ToString());
-            Publication.MainAuthor = authors.First(a => a.ID.Equals(selectedAuthorID));
-        }
-
-        void fetchData()
-        {
-            if (authors is not null)
-                return;
-
-            string folderPath = @"\TestFiles";
-            string fileName = @"\ExcelDataBase.xlsx";
-            string directory = System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + folderPath;
-            Directory.CreateDirectory(directory);
-            string filepath = directory + fileName;
-
-            var reader = new ReadDataSet(filepath, string.Empty);
-
-            authors = new List<IAuthor>();
-            var readAuthors = reader.ReadAuthors();
-            foreach (var author in readAuthors)
-            {
-                authors.Add(author);
-            }
-        }
+    }
 
     protected override void OnInitialized()
     {

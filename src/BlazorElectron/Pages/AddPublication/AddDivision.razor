@@ -6,6 +6,7 @@
 
 @inject NavigationManager NavigationManager
 @inject PublicationDataSetModel Publication
+@inject DataHandler dataHandler
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg"
      class="logo" />
@@ -84,7 +85,7 @@
         ShowAddPopup = false;
         divisions.Insert(0, NewDivision);
 
-        WriteData.SaveDivision(NewDivision);
+        dataHandler.SaveDivision(NewDivision);
 
         Publication.Division = NewDivision;
     }
@@ -100,12 +101,8 @@
         if (divisions is not null)
             return;
 
-        string filepath = WriteData.GetPath();
-
-        var reader = new ReadDataSet(filepath, string.Empty);
-
         divisions = new List<IDivision>();
-        var readDivisions = reader.ReadDivisions();
+        var readDivisions = dataHandler.ExcelReader.ReadDivisions();
         foreach (var division in readDivisions)
         {
             divisions.Add(division);

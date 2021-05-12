@@ -6,6 +6,7 @@
 
 @inject NavigationManager NavigationManager
 @inject PublicationDataSetModel Publication
+@inject DataHandler dataHandler
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg" class="logo" />
 
@@ -100,7 +101,7 @@
 
     private void Save()
     {
-        WriteData.Save(Publication);
+        dataHandler.Save(Publication);
         ShowSavePopup = true;
     }
 
@@ -111,7 +112,7 @@
         ShowAddPopup = false;
         publicationTypes.Insert(0, NewPublicationType);
 
-        WriteData.SavePublicationType(NewPublicationType);
+        dataHandler.SavePublicationType(NewPublicationType);
 
         Publication.TypeOfPublication = NewPublicationType;
     }
@@ -127,12 +128,8 @@
         if (publicationTypes is not null)
             return;
 
-        string filepath = WriteData.GetPath();
-
-        var reader = new ReadDataSet(filepath, string.Empty);
-
         publicationTypes = new List<IPublicationType>();
-        var readPublicationTypes = reader.ReadPublicationTypes();
+        var readPublicationTypes = dataHandler.ExcelReader.ReadPublicationTypes();
         foreach (var division in readPublicationTypes)
         {
             publicationTypes.Add(division);

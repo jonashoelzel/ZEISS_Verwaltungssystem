@@ -6,6 +6,7 @@
 
 @inject NavigationManager NavigationManager
 @inject PublicationDataSetModel Publication
+@inject DataHandler dataHandler
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg" class="logo" />
 
@@ -53,28 +54,28 @@
     </EditForm>
 }
 
-    <section class="publisher panel-default">
-        <header class="panel-heading">
-            <h4 class="panel-title">Verlag des Mediums</h4>
-        </header>
-        <div class="panel-body">
-            <div class="author-default">
-                <select class="form-control" @onchange="SetPublisher">
-                    @foreach (var publisher in publishers)
-                    {
-                        <option value="@publisher.ID">@publisher.Name</option>
-                    }
-                </select>
-            </div>
-            <div class="CenteredButton">
-                <button class="AddNewAuthor" @onclick="@OpenAddPopup">Neuen Verlag hinzufügen</button>
-            </div>
+<section class="publisher panel-default">
+    <header class="panel-heading">
+        <h4 class="panel-title">Verlag des Mediums</h4>
+    </header>
+    <div class="panel-body">
+        <div class="author-default">
+            <select class="form-control" @onchange="SetPublisher">
+                @foreach (var publisher in publishers)
+                {
+                    <option value="@publisher.ID">@publisher.Name</option>
+                }
+            </select>
         </div>
-    </section>
+        <div class="CenteredButton">
+            <button class="AddNewAuthor" @onclick="@OpenAddPopup">Neuen Verlag hinzufügen</button>
+        </div>
+    </div>
+</section>
 
-    <button class="addPub" type="button" @onclick="Save">Veröffentlichung hinzufügen</button>
-    <button class="back" type="button" @onclick="NavigateToPreviousScreen">Zurück</button>
-    <button class="continue" type="button" @onclick="NavigateToNextScreen">Weiter</button>
+<button class="addPub" type="button" @onclick="Save">Veröffentlichung hinzufügen</button>
+<button class="back" type="button" @onclick="NavigateToPreviousScreen">Zurück</button>
+<button class="continue" type="button" @onclick="NavigateToNextScreen">Weiter</button>
 
 @code
 {
@@ -99,7 +100,7 @@
 
     private void Save()
     {
-        WriteData.Save(Publication);
+        dataHandler.Save(Publication);
         ShowSavePopup = true;
     }
 
@@ -110,7 +111,7 @@
         ShowAddPopup = false;
         publishers.Insert(0, newPublisher);
 
-        WriteData.SavePublisher(newPublisher);
+        dataHandler.SavePublisher(newPublisher);
 
         Publication.PublishedBy = newPublisher;
     }
@@ -126,12 +127,8 @@
         if (publishers is not null)
             return;
 
-        string filepath = WriteData.GetPath();
-
-        var reader = new ReadDataSet(filepath, string.Empty);
-
         publishers = new List<IPublisher>();
-        var readPublishers = reader.ReadPublishers();
+        var readPublishers = dataHandler.ExcelReader.ReadPublishers();
         foreach (var publisher in readPublishers)
         {
             publishers.Add(publisher);

@@ -4,6 +4,7 @@
 
 @inject NavigationManager NavigationManager
 @inject PublicationDataSetModel Publication
+@inject DataHandler dataHandler
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg" class="logo" />
 
@@ -35,10 +36,10 @@
             {
                 foreach (var tag in Tags)
                 {
-                    <div class="form-check tags" >
+                    <div class="form-check tags">
                         <input class="form-check-input" type="checkbox" id="@tag" />
                         <label class="form-check-label" for="@tag">@tag</label>
-                    </div> 
+                    </div>
                 }
             }
         </div>
@@ -59,7 +60,7 @@
 
     private void Save()
     {
-        WriteData.Save(Publication);
+        dataHandler.Save(Publication);
         PopupSuccessfulSave();
     }
 
