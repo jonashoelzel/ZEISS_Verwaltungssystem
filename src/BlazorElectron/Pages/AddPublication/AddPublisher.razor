@@ -35,7 +35,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h3 class="modal-title w-100 text-center"> Verlag hinzufügen</h3>
-                        <button type="button" id="cancelButton" @onclick="@Cancel">
+                        <button type="reset" id="cancelButton" @onclick="@Cancel">
                             <span class="far fa-window-close fa-2x"></span>
                         </button>
                     </div>
@@ -89,7 +89,11 @@
 
     private void NavigateToLandingPage() => NavigationManager.NavigateTo("/");
 
-    void Cancel() => ShowAddPopup = false;
+    void Cancel()
+    {
+        newPublisher.Name = string.Empty;
+        ShowAddPopup = false;
+    }
 
     void OpenAddPopup() => ShowAddPopup = true;
 

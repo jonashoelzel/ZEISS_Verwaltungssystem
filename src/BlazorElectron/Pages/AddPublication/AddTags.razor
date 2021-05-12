@@ -7,7 +7,7 @@
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg" class="logo" />
 
-@if (ShowPopup)
+@if (ShowSavePopup)
 {
     <div class="modal fade show" role="dialog">
         <div class="modal-dialog" role="document">
@@ -64,9 +64,9 @@
     }
 
     // Dialogfenster zum erfolgreichen Hinzufügen einer Veröffentlichung
-    bool ShowPopup = false;
+    bool ShowSavePopup = false;
     private void PopupSuccessfulSave()
     {
-        ShowPopup = true;
+        ShowSavePopup = true;
     }
 }
