@@ -87,8 +87,15 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Read
 
             publication.PublicationTitle = attributes["PublicationTitle"].ToString();
             publication.WorkingTitle = attributes["WorkingTitle"].ToString();
-            publication.DateOfStartWorking = (DateTime)attributes["DateOfStartWorking"];
-            publication.DateOfRelease = (DateTime)attributes["DateOfRelease"];
+
+            if (attributes["DateOfStartWorking"].GetType() == typeof(DateTime))
+                publication.DateOfStartWorking = (DateTime)attributes["DateOfStartWorking"];
+            else throw new Exception("type is not excepted");
+
+            if (attributes["DateOfRelease"].GetType() == typeof(DateTime))
+                publication.DateOfRelease = (DateTime)attributes["DateOfRelease"];
+            else throw new Exception("type is not excepted");
+
             publication.Description = attributes["Description"].ToString();
             publication.AdditionalInformation = attributes["AdditionalInformation"].ToString();
 
@@ -100,28 +107,45 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Read
             foreach (var coAuthorID in coAuthorIDs)
                 publication.CoAuthors.Add(allAuthors.First(e => e.ID.Equals(coAuthorID)));
 
-            var divisionID = Guid.Parse(attributes["Division_ID"].ToString());
-            publication.Division = ReadDivisions().First(e => e.ID.Equals(divisionID));
+            if (!string.IsNullOrWhiteSpace(attributes["Division_ID"].ToString()))
+            {
+                if (Guid.TryParse(attributes["Division_ID"].ToString(), out Guid divisionID))
+                    publication.Division = ReadDivisions().First(e => e.ID.Equals(divisionID));
+                else throw new Exception("File Corrupt");
+            }
 
-            var publicationTypeID = Guid.Parse(attributes["PublicationType_ID"].ToString());
-            publication.TypeOfPublication = ReadPublicationTypes().First(e => e.ID.Equals(publicationTypeID));
+            if (!string.IsNullOrWhiteSpace(attributes["PublicationType_ID"].ToString()))
+            {
+                if (Guid.TryParse(attributes["PublicationType_ID"].ToString(), out Guid publicationTypeID))
+                    publication.TypeOfPublication = ReadPublicationTypes().First(e => e.ID.Equals(publicationTypeID));
+                else throw new Exception("File Corrupt");
+            }
 
-            var stateID = Guid.Parse(attributes["State_ID"].ToString());
-            publication.CurrentState = ReadStates().First(e => e.ID.Equals(stateID));
+            if (!string.IsNullOrWhiteSpace(attributes["State_ID"].ToString()))
+            {
+                if (Guid.TryParse(attributes["State_ID"].ToString(), out Guid stateID))
+                    publication.CurrentState = ReadStates().First(e => e.ID.Equals(stateID));
+                else throw new Exception("File Corrupt");
+            }
 
             var tagIDs = ConvertCSVToGuids(attributes["Tag_ID"].ToString());
             var allTags = ReadTags();
             foreach (var tagID in tagIDs)
                 publication.Tags.Add(allTags.First(e => e.ID.Equals(tagID)));
 
-            var publisherID = Guid.Parse(attributes["Publisher_ID"].ToString());
-            publication.PublishedBy = ReadPublishers().First(e => e.ID.Equals(publisherID));
+            if (!string.IsNullOrWhiteSpace(attributes["Publisher_ID"].ToString()))
+            {
+                if (Guid.TryParse(attributes["Publisher_ID"].ToString(), out Guid publisherID))
+                    publication.PublishedBy = ReadPublishers().First(e => e.ID.Equals(publisherID));
+                else throw new Exception("File Corrupt");
+            }
 
-
-            if (Guid.TryParse(attributes["Publisher_ID"].ToString(), out Guid id))
-                publication.ID = id;
-            else
-                throw new Exception("File corrupt");
+            if (!string.IsNullOrWhiteSpace(attributes["Publisher_ID"].ToString()))
+            {
+                if (Guid.TryParse(attributes["Publisher_ID"].ToString(), out Guid id))
+                    publication.ID = id;
+                else throw new Exception("File Corrupt");
+            }
 
             return publication;
         }
