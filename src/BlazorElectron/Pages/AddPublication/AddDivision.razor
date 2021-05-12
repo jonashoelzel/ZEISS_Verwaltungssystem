@@ -12,7 +12,7 @@
 
 @if (ShowAddPopup)
 {
-    <EditForm Model="@Publication.MainAuthor" OnInvalidSubmit="@HandleInvalidSubmit">
+    <EditForm Model="@NewDivision" OnInvalidSubmit="@HandleInvalidSubmit" OnValidSubmit="@AddNewDivision">
         <DataAnnotationsValidator />
         <div class="modal fade show" role="dialog">
             <div class="modal-dialog" role="document">
@@ -29,7 +29,7 @@
                         <ValidationMessage For="@(() => NewDivision.Name)" />
                     </div>
                     <div class="modal-body">
-                        <button type="submit" id="ButtonInPopup" class="form-control" @onclick="@AddNewDivision">Neuen Geschäftsbereich hinzufügen</button>
+                        <button type="submit" id="ButtonInPopup" class="form-control">Neuen Geschäftsbereich hinzufügen</button>
                     </div>
                 </div>
             </div>

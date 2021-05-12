@@ -12,7 +12,7 @@
 
 @if (ShowAddPopup)
 {
-    <EditForm Model="@Publication.MainAuthor" OnInvalidSubmit="@HandleInvalidSubmit">
+    <EditForm Model="@NewAuthor" OnInvalidSubmit="@HandleInvalidSubmit" OnValidSubmit="@AddNewAuthor">
         <DataAnnotationsValidator />
         <div class="modal fade show" role="dialog">
             <div class="modal-dialog" role="document">
@@ -34,7 +34,7 @@
                         <ValidationMessage For="@(() => NewAuthor.Surname)" />
                     </div>
                     <div class="modal-body">
-                        <button type="submit" id="ButtonInPopup" class="form-control" @onclick="@AddNewAuthor">Neuen Autor hinzufügen</button>
+                        <button type="submit" id="ButtonInPopup" class="form-control">Neuen Autor hinzufügen</button>
                     </div>
                 </div>
             </div>
