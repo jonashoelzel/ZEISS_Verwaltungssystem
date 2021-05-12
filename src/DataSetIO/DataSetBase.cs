@@ -151,7 +151,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO
 
 
 
-        protected void CheckWorkBook()
+        public void CheckWorkBook()
         {
             if (!ValidateWorkBook())
                 InitializeWorkBook();

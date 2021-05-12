@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Zeiss.PublicationManager.Data.DataSet;
 using Zeiss.PublicationManager.Data.DataSet.IO.Read;
 using Zeiss.PublicationManager.Data.DataSet.IO.Write;
@@ -20,6 +20,7 @@ namespace Zeiss.PublicationManager.Business.Logic.IO.Write
         {
             excelReader = new ReadDataSet(filePath);
             excelWriter = new WriteDataSet(filePath);
+            excelReader.CheckWorkBook();
         }
 
         public DataHandler(string filePath) : this()
@@ -30,6 +31,9 @@ namespace Zeiss.PublicationManager.Business.Logic.IO.Write
         public void SetFilePath(string filePath)
         {
             this.filePath = filePath;
+            excelReader = new ReadDataSet(filePath);
+            excelWriter = new WriteDataSet(filePath);
+            excelReader.CheckWorkBook();
         }
 
         public void Save(IPublicationDataSet dataSet)
