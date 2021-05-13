@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CSVHandler\CSVHandler.csproj" />
     <ProjectReference Include="..\DataSet\DataSet.csproj" />
     <ProjectReference Include="..\ExcelIO\ExcelIO.csproj" />
   </ItemGroup>
-
 </Project>

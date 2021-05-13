@@ -7,7 +7,7 @@
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg" class="logo" />
 
-@if (ShowPopup)
+@if (ShowSavePopup)
 {
     <div class="modal fade show" role="dialog">
         <div class="modal-dialog" role="document">
@@ -53,10 +53,9 @@
 {
     private string[] Tags = new string[] { "Frontend", "Backend", "Development", ".NET 5.0", ".NET Core", ".NET Framework" };
 
-    private void NavigateToPreviousScreen()
-    {
-        NavigationManager.NavigateTo("addPublisher");
-    }
+    private void NavigateToPreviousScreen() => NavigationManager.NavigateTo("addPublisher");
+
+    private void NavigateToLandingPage() => NavigationManager.NavigateTo("/");
 
     private void Save()
     {
@@ -64,15 +63,10 @@
         PopupSuccessfulSave();
     }
 
-    private void NavigateToLandingPage()
-    {
-        NavigationManager.NavigateTo("/");
-    }
-
     // Dialogfenster zum erfolgreichen Hinzufügen einer Veröffentlichung
-    bool ShowPopup = false;
+    bool ShowSavePopup = false;
     private void PopupSuccessfulSave()
     {
-        ShowPopup = true;
+        ShowSavePopup = true;
     }
 }

@@ -4,7 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
-
+using System.Text.RegularExpressions;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
@@ -75,56 +75,103 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Write
         }
         #endregion
 
-        #region CreateCell
-        protected static void CreateCell(ref SpreadsheetDocument spreadsheetDocument, object cellEntry, Row row, string cellReference)
+        #region Cell    
+        //letterIDAndValue: <cellReference, value>
+        protected static void CreateCell(ref SpreadsheetDocument spreadsheetDocument, ref Row row, KeyValuePair<string, object> cellReferenceIDAndValue)
         {
             //Get reference cell
-            Cell referenceCell = GetReferenceCell(row, cellReference);
-            // Add the cell to the cell table at cellReference.
-            Cell newCell = new() { CellReference = cellReference };
+            //The referenceCell is the Cell in the previous row with the same letterIndex
+            Cell referenceCell = GetReferenceCell(row, cellReferenceIDAndValue.Key);
+            Cell newCell = new() { CellReference = cellReferenceIDAndValue.Key };
             row.InsertBefore(newCell, referenceCell);
 
-            switch (cellEntry)
+            UpdateCell(ref spreadsheetDocument, ref newCell, cellReferenceIDAndValue.Value);
+        }
+
+        protected static void UpdateCell(ref SpreadsheetDocument spreadsheetDocument, ref Cell cell, object newValue)
+        {
+            switch (newValue)
             {
                 case string objstr:
-                    AddSharedString(ref spreadsheetDocument, ref newCell, objstr);
+                    AddSharedString(ref spreadsheetDocument, ref cell, objstr);
                     break;
 
                 case DateTime objdate:
                     //Normal way. Does NOT work for xlsx (!)
                     //string strdate = objdate.ToOADate().ToString();
-                    //newCell.DataType = CellValues.Date;
-                    //newCell.CellValue = new CellValue(strdate);
+                    //cell.DataType = CellValues.Date;
+                    //cell.CellValue = new CellValue(strdate);
 
                     //"StyleIndex" is "1", because we added a new stylesheet (index 0 would be default) with "NumberFormatId=14"
                     //is in the 2nd item of 'CellFormats' array.
-                    newCell.DataType = new EnumValue<CellValues>(CellValues.Number);
-                    newCell.StyleIndex = 1;
-                    newCell.CellValue = new CellValue(objdate.ToOADate().ToString(CultureInfo.InvariantCulture));
+                    cell.DataType = new EnumValue<CellValues>(CellValues.Number);
+                    cell.StyleIndex = 1;
+                    cell.CellValue = new CellValue(objdate.ToOADate().ToString(CultureInfo.InvariantCulture));
                     break;
 
                 case bool objbool:
-                    AddSharedString(ref spreadsheetDocument, ref newCell, objbool.ToString());
+                    AddSharedString(ref spreadsheetDocument, ref cell, objbool.ToString());
                     break;
 
                 default:
-                    if (cellEntry is not null)
+                    if (newValue is not null && Decimal.TryParse(newValue.ToString(), out decimal objdec))
                     {
-                        if (Decimal.TryParse(cellEntry.ToString(), out decimal objdec))
-                        {
-                            newCell.DataType = new EnumValue<CellValues>(CellValues.Number);
-                            newCell.CellValue = new CellValue(objdec.ToString(CultureInfo.InvariantCulture));
-                        }
+                        cell.DataType = new EnumValue<CellValues>(CellValues.Number);
+                        cell.CellValue = new CellValue(objdec.ToString(CultureInfo.InvariantCulture));
                     }
                     else
                     {
                         //Enter an empty cell to make IO easier
-                        AddSharedString(ref spreadsheetDocument, ref newCell, " ");
+                        AddSharedString(ref spreadsheetDocument, ref cell, " ");
                     }
                     break;
             }
         }
         #endregion
+
+        protected static void RemoveRow(List<Row> deletingRows)
+        {
+            for (int i = 0; i < deletingRows.Count; i++)
+                deletingRows[i].Remove();
+        }
+
+        protected static void RemoveRowAdvanced(SheetData sheetData, List<Row> deletingRows)
+        {
+            while (deletingRows.Any())
+            {
+                RemoveRowAdvanced(sheetData, deletingRows.FirstOrDefault());
+                deletingRows.RemoveAt(0);
+            }
+        }
+
+        protected static void RemoveRowAdvanced(SheetData sheetData, Row deletingRow)
+        {
+            List<Row> allRows = sheetData.Elements<Row>().ToList();
+            uint deletedRowIndex = deletingRow.RowIndex.Value;
+            deletingRow.Remove();
+        
+            for (int i = 0; i < allRows.Count; i++)
+            {
+                //Only change the indexes of the rows and cells after the deleted row
+                if (allRows[i].RowIndex.Value > deletedRowIndex)
+                {
+                    List<Cell> cells = allRows[i].Elements<Cell>().ToList();
+                    if (cells is not null)
+                    {
+                        for (int j = 0; j < cells.Count; j++)
+                        {
+                            string oldCellReference = cells[i].CellReference.Value;
+
+                            //Decrement Row index
+                            int rowIndex = Convert.ToInt32(Regex.Replace(oldCellReference, @"[^\d]+", "")) - 1;
+                            string letterIndex = Regex.Replace(oldCellReference, @"[\d-]", "");
+
+                            cells[i].CellReference.Value = $"{letterIndex}{rowIndex}";
+                        }
+                    }
+                }            
+            }
+        }
         #endregion
     }
 }

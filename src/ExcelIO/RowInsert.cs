@@ -9,6 +9,7 @@ using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
 
 using Zeiss.PublicationManager.Data.DataSet;
+using Zeiss.PublicationManager.Data.Excel;
 
 namespace Zeiss.PublicationManager.Data.Excel.IO.Write
 {
@@ -16,50 +17,59 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Write
     {
         #region Insert
         #region Public_Insert
+        //Can be used to create Headers
         public static void Insert(string filepath, string worksheetName, List<object> columnValues)
         {
             SpreadsheetDocument spreadsheetDocument = OpenSpreadsheetDocument(filepath, worksheetName, out SheetData sheetData);
+            
             List<string> columnLetterIDs = GetCellReferenceLetters(columnValues.Count);
-            InsertRow(ref spreadsheetDocument, sheetData, columnLetterIDs, columnValues);
+            if (!columnLetterIDs.Any())
+                throw new ArgumentException("Unable to create row with values.");
+
+            Dictionary<string, object> letterIDsAndValues = new();
+            for (int i = 0; i < columnLetterIDs.Count; i++)
+                letterIDsAndValues.Add(columnLetterIDs[i], columnValues[i]);
+
+            InsertRow(ref spreadsheetDocument, ref sheetData, letterIDsAndValues);
             SaveSpreadsheetDocument(ref spreadsheetDocument);
         }
 
-        public static void Insert(string filepath, string worksheetName, List<string> columnNames, List<object> columnValues)
+
+        //columnNamesAndValues <columnName, value>
+        public static void Insert(string filepath, string worksheetName, Dictionary<string, object> columnNamesAndValues)
         {
             SpreadsheetDocument spreadsheetDocument = OpenSpreadsheetDocument(filepath, worksheetName, out SheetData sheetData);
-            List<string> columnLetterIDs = GetColumnLetterIDsOfColumnNames(ref spreadsheetDocument, sheetData, columnNames);
-            InsertRow(ref spreadsheetDocument, sheetData, columnLetterIDs, columnValues);
+            //<letterID, value>
+            Dictionary<string, object> letterIDsAndValues = ConvertColumnNamesAndValuesToLetterIDsAndValues(ref spreadsheetDocument, sheetData, columnNamesAndValues);
+            if (!letterIDsAndValues.Any())
+                throw new ArgumentException("Unable to find row that matches all columnNames in columnNamesAndValues.\n" +
+                    "Some of the entered columnNames (Keys) in columnNamesAndValues might not exist or are misspelled");
+
+            InsertRow(ref spreadsheetDocument, ref sheetData, letterIDsAndValues);
             SaveSpreadsheetDocument(ref spreadsheetDocument);
         }
-
-        //
-        //public static void Insert(string filepath, string worksheetName, string startColumnID, List<List<object>> columnValues)
-        //{
-        //
-        //}
-
-
-        //public static void Insert(string filepath, string worksheetName, string startColumnID, List<string> columnNames, List<List<object>> columnValues)
-        //{
-
-        //}
-
-
         #endregion
 
         #region Private_Insert
-        private static void InsertRow(ref SpreadsheetDocument spreadsheetDocument, SheetData sheetData, List<string> columnLetterIDs, List<object> columnValues)
+        
+        //letterIDsAndValues: <letterID, value>
+        private static void InsertRow(ref SpreadsheetDocument spreadsheetDocument, ref SheetData sheetData, Dictionary<string, object> letterIDsAndValues)
         {
-            //Create new row
-            int rowCount = sheetData.Elements<Row>().Count();
-            Row row = new() { RowIndex = UInt32Value.FromUInt32((uint)(++rowCount)) };
+            //Create new row after the last low
+            //We use this instead of .Count() in case of rows where deleted
+            uint rowIndex = 1;
+            if (sheetData.Elements<Row>()?.Any() ?? false)
+                rowIndex = sheetData.Elements<Row>().Max(x => x.RowIndex.Value) + 1;
+
+            Row row = new() { RowIndex = UInt32Value.FromUInt32((rowIndex)) };
             sheetData.Append(row);
 
-            for (int i = 0; i < columnValues.Count; i++)
+            foreach (var letterIDAndValue in letterIDsAndValues)
             {
                 //Format XX00
-                string cellReference = columnLetterIDs[i] + rowCount;
-                CreateCell(ref spreadsheetDocument, columnValues[i], row, cellReference);
+                string cellReference = letterIDAndValue.Key + rowIndex;
+                //<cellReference, value>
+                CreateCell(ref spreadsheetDocument, ref row, new KeyValuePair<string, object>(cellReference, letterIDAndValue.Value));
             }
         }
         #endregion

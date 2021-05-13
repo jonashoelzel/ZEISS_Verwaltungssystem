@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "DataSetlIOComponentTest": {
+      "commandName": "Project",
+      "commandLineArgs": "0 25"
+    }
+  }
+}

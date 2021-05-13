@@ -13,7 +13,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.Model
     {
         public PublicationDataSetModel()
         {
-            ID = Randomizer.GetRandomID();
+            ID = Guid.NewGuid();
         }
 
         // Publication Information
@@ -44,8 +44,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.Model
         public string Description { get; set; }
         public string AdditionalInformation { get; set; }
 
-        [Required(ErrorMessage = "Geschäftsbereich ist ein Pflichtfeld")]
-        public string Division { get; set; }
+        public IDivision Division { get; set; } = new DivisionModel();
 
 
 

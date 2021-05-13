@@ -143,22 +143,6 @@ input[type=text] {
     margin: 3%;
 }
 
-/*Geschäftsbereich Panel*/
-.division-select {
-    width: 50%;
-    position: absolute;
-    left: 25%;
-    top: 80%;
-}
-
-/*Neuer Geschäftsbereich Button*/
-.addDivision {
-    position: relative;
-    top: 80%;
-    left: 25%;
-    margin-top: 10%;
-    padding: 8px;
-}
 
 /*Beschreibung panel*/
 .description-default {
@@ -271,3 +255,43 @@ input[type=text] {
 .sort-link {
     cursor: pointer;
 }
+
+.CenteredButton {
+    text-align: center;
+}
+
+.AddNewAuthor {
+    border: 3px groove rgba(28,110,164,0.55);
+    border-radius: 15px;
+    background-color: #2449a4;
+    color: #ffffff;
+    font-family: Arial;
+    font-weight: bold;
+    text-align: center;
+    line-height: 20px;
+    width: 40%;
+    height: 120%;
+    min-width: 170px;
+    padding: 2%;
+}
+
+#cancelButton {
+    position: absolute;
+    top: 1px;
+    right: 1px;
+    color: #ffffff;
+    background-color: cornflowerblue;
+}
+
+#ButtonInPopup {
+    border: 3px groove rgba(28,110,164,0.55);
+    border-radius: 20px;
+    background-color: #2449a4;
+    color: #ffffff;
+    font-family: Arial;
+    font-size: 120%;
+    font-weight: bold;
+    text-align: center;
+    line-height: 20px;
+    min-height: 50px;
+} 

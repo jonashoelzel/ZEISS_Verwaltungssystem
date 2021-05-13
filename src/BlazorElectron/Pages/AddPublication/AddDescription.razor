@@ -7,7 +7,7 @@
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg" class="logo" />
 
-@if (ShowPopup)
+@if (ShowSavePopup)
 {
     <div class="modal fade show" role="dialog">
         <div class="modal-dialog" role="document">
@@ -32,12 +32,12 @@
         <div class="description panel-body">
             <form>
                 <div class="description-default">
-                    <label for="titleDescr">Veröffentlichungstitel</label>
-                    <InputText id="titleDescr" class="form-control" @bind-Value="@Publication.AdditionalInformation" />
+                    <label for="titleDescr">Beschreibung</label>
+                    <InputText id="titleDescr" class="form-control" @bind-Value="@Publication.Description" />
                 </div>
                 <div class="description-default">
-                    <label for="description">Beschreibung</label>
-                    <InputTextArea id="description" class="form-control" @bind-Value="@Publication.Description" rows="5" />
+                    <label for="description">Beschreibungstext</label>
+                    <InputTextArea id="description" class="form-control" @bind-Value="@Publication.AdditionalInformation" rows="5" />
                 </div>
             </form>
         </div>
@@ -50,20 +50,11 @@
 
 @code
 {
-    private void NavigateToPreviousScreen()
-    {
-        NavigationManager.NavigateTo("addPublicationType");
-    }
+    private void NavigateToPreviousScreen() => NavigationManager.NavigateTo("addPublicationType");
 
-    private void NavigateToNextScreen()
-    {
-        NavigationManager.NavigateTo("addPublisher");
-    }
+    private void NavigateToNextScreen() => NavigationManager.NavigateTo("addPublisher");
 
-    private void NavigateToLandingPage()
-    {
-        NavigationManager.NavigateTo("/");
-    }
+    private void NavigateToLandingPage() => NavigationManager.NavigateTo("/");
 
     private void Save()
     {
@@ -72,10 +63,10 @@
     }
 
     // Dialogfenster zum erfolgreichen Hinzufügen einer Veröffentlichung
-    bool ShowPopup = false;
+    bool ShowSavePopup = false;
     private void PopupSuccessfulSave()
     {
-        ShowPopup = true;
+        ShowSavePopup = true;
     }
 
     @*

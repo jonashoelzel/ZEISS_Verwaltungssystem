@@ -25,4 +25,9 @@
     {
         string Name { get; set; }
     }
+
+    public interface  IDivision : IDataObject
+    {
+        string Name { get; set; }
+    }
 }

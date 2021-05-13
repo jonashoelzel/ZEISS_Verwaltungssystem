@@ -12,121 +12,94 @@ using DocumentFormat.OpenXml.Spreadsheet;
 
 namespace Zeiss.PublicationManager.Data.Excel.IO.Read
 {
-    //NOTE: When we use with Console, all members have to be static !!!
     public class RowSelect : ExcelIOBase
-    {
-        //We using DOM instead of SAX for easier reading management
-        //public static List<List<string>> OpenExcelDOM(string filepath)
-        //{
-        //    // Open the document for editing.
-        //    using (SpreadsheetDocument spreadsheetDocument =
-        //        SpreadsheetDocument.Open(filepath, true))
-        //    {
-        //        //Open Excel
-        //        WorkbookPart workbookPart = spreadsheetDocument.WorkbookPart;
-        //        WorksheetPart worksheetPart = workbookPart.WorksheetParts.First();
-        //        SheetData sheetData = worksheetPart.Worksheet.Elements<SheetData>().First();
-
-        //        //Try to read SharedStringTable if it exists. If not, make sure to do NOT try to read from it
-        //        SharedStringTable sharedStringTable = spreadsheetDocument?.WorkbookPart?.SharedStringTablePart?.SharedStringTable;
-
-        //        List<List<string>> entries = new List<List<string>>();
-
-        //        foreach (Row row in sheetData.Elements<Row>())
-        //        {
-        //            List<string> entry = new List<string>();
-
-        //            foreach (Cell cell in row.Elements<Cell>())
-        //            {
-        //                //Make sure that the Excel has a SharedStringTable, the Cell has a DataType and is a String
-        //                if (cell.DataType is not null && sharedStringTable is not null && cell.DataType == CellValues.SharedString)
-        //                {
-        //                    var cellValue = cell.InnerText;
-        //                    entry.Add(sharedStringTable.ElementAt(Int32.Parse(cellValue)).InnerText);
-        //                }
-        //                //DataType is null
-        //                else
-        //                {
-        //                    //Check if StyleIndex is a Date Format
-        //                    int styleIndex = -1;
-        //                    if (Int32.TryParse(cell.StyleIndex?.InnerText, out styleIndex))
-        //                    {
-        //                        //Standard date format
-        //                        if (styleIndex >= 12 && styleIndex <= 22 
-        //                            //Formatted date format
-        //                            || styleIndex >= 165 && styleIndex <= 180
-        //                            //Number formats that can be interpreted as a number
-        //                            || styleIndex >= 1 && styleIndex <= 5)
-        //                        {
-        //                            double dateTimeDouble;
-        //                            if (double.TryParse(cell.CellValue.Text, out dateTimeDouble))
-        //                            {
-        //                                entry.Add(DateTime.FromOADate(dateTimeDouble).ToString("dd/MM/yyyy"));
-        //                            }
-        //                        }
-        //                    }
-        //                    //Default is number (if StyleIndex is null or any other StyleIndex
-        //                    else
-        //                        entry.Add(cell.CellValue.Text);
-        //                }                                            
-        //            }
-
-        //            entries.Add(entry);
-        //        }
-
-        //        return entries;
-        //    }
-        //}
-
-        public static List<List<object>> ReadSpreadsheet(string filepath, string worksheetName)
+    {       
+        //return: <columnName, columnEntries>
+        public static Dictionary<string, List<object>> Select(string filepath, string worksheetName, List<string> columnNames)
         {
             SpreadsheetDocument spreadsheetDocument = OpenSpreadsheetDocument(filepath, worksheetName, out SheetData sheetData, false, false);
 
             //Try to read SharedStringTable if it exists. If not, make sure to do NOT try to read from it
             SharedStringTable sharedStringTable = spreadsheetDocument?.WorkbookPart?.SharedStringTablePart?.SharedStringTable;
 
-            List<List<object>> rowsList = new();
-
-            foreach (Row row in sheetData.Elements<Row>())
-            {
-                List<object> rowList = new();
-
-                foreach (Cell cell in row.Elements<Cell>())
-                {
-                    rowList.Add(ReadCell(cell, sharedStringTable));
-                }
-
-                rowsList.Add(rowList);
-            }
-
-            //This will only close the document to release resources
+            Dictionary<string, string> letterIDsAndColumnNames = GetColumnLetterIDsOfColumnNames(ref spreadsheetDocument, sheetData, columnNames, out int rowIndex);
+            if (!letterIDsAndColumnNames.Any())
+                throw new ArgumentException("Unable to find row that matches all ColumnNames in columnNames\n" +
+                    "Some of the entered columnNames (Keys) in columnNamesAndValues might not exist or are misspelled");
+          
+            Dictionary<string, List<object>> result = SelectRow(sheetData, sharedStringTable, letterIDsAndColumnNames, ++rowIndex);
             SaveSpreadsheetDocument(ref spreadsheetDocument);
 
-            return rowsList;
-        }      
-        
-        public static List<List<object>> Select(string filepath, string worksheetName, List<string> columnNames)
+            return result;
+        }
+
+        //return: <columnName, columnEntries>
+        //whereColumnNamesAndConditions: <columnName, condition>
+        public static Dictionary<string, List<object>> Select(string filepath, string worksheetName, List<string> columnNames, Dictionary<string, object> whereColumnNamesAndConditions)
         {
             SpreadsheetDocument spreadsheetDocument = OpenSpreadsheetDocument(filepath, worksheetName, out SheetData sheetData, false, false);
-
+            
             //Try to read SharedStringTable if it exists. If not, make sure to do NOT try to read from it
             SharedStringTable sharedStringTable = spreadsheetDocument?.WorkbookPart?.SharedStringTablePart?.SharedStringTable;
 
-            return Reader(sheetData, sharedStringTable, GetColumnLetterIDsOfColumnNames(ref spreadsheetDocument, sheetData, columnNames));
+            //<letterID, condition>
+            Dictionary<string, object> letterIDsAndConditions = ConvertColumnNamesAndValuesToLetterIDsAndValues(ref spreadsheetDocument, sheetData, whereColumnNamesAndConditions);
+            if (!letterIDsAndConditions.Any())
+                throw new ArgumentException("Unable to find row that matches all names in whereColumnNamesAndConditions.\n" +
+                    "Some of the entered columnNames (Keys) in whereColumnNamesAndConditions might not exist or are misspelled");
 
+            Dictionary<string, string> letterIDsAndColumnNames = GetColumnLetterIDsOfColumnNames(ref spreadsheetDocument, sheetData, columnNames, out _);
+            if (!letterIDsAndColumnNames.Any())
+                throw new ArgumentException("Unable to find row that matches all ColumnNames in columnNames\n" +
+                    "Some of the entered columnNames (Keys) in columnNamesAndValues might not exist or are misspelled");
+
+            Dictionary<string, List<object>> result = SelectRow(sheetData, sharedStringTable, letterIDsAndColumnNames, letterIDsAndConditions);
+            SaveSpreadsheetDocument(ref spreadsheetDocument);
+
+            return result;
         }
 
-        protected static List<List<object>> Reader(SheetData sheetData, SharedStringTable sharedStringTable, List<string> columnLetterIDs)
+        //return: <columnName, columnEntries>
+        //columnLetterIDsAndColumnNames: <columnLetterID, columnName>
+        protected static Dictionary<string, List<object>> SelectRow(SheetData sheetData, SharedStringTable sharedStringTable, 
+            Dictionary<string, string> columnLetterIDsAndColumnNames, int startRowIndex = 1)
         {
-            //Create a List<List<object>> with empty List<object>, so that we can insert cell entries at letter ID in the correct index
-            List<List<object>> rowsList = new(columnLetterIDs.Select(x => new List<object>()));
+            List<Row> rows = sheetData.Elements<Row>().ToList();
+            return SelectRow(sharedStringTable, rows, columnLetterIDsAndColumnNames, startRowIndex);
+        }
 
-            foreach (Row row in sheetData.Elements<Row>())
+        //return: <columnName, columnEntries>
+        //columnLetterIDsAndColumnNames: <columnLetterID, columnName>
+        //letterIDsAndConditions: <letterID, condition>
+        protected static Dictionary<string, List<object>> SelectRow(SheetData sheetData, SharedStringTable sharedStringTable,
+            Dictionary<string, string> columnLetterIDsAndColumnNames, Dictionary<string, object> letterIDsAndConditions)
+        {
+            List<Row> rows = SearchRows(sharedStringTable, sheetData, letterIDsAndConditions);
+            return SelectRow(sharedStringTable, rows, columnLetterIDsAndColumnNames);
+        }
+
+        //return: <columnName, columnEntries>
+        //columnLetterIDsAndColumnNames: <columnLetterID, columnName>
+        protected static Dictionary<string, List<object>> SelectRow(SharedStringTable sharedStringTable, List<Row> rows, Dictionary<string, string> columnLetterIDsAndColumnNames, int startRowIndex = 1)
+        {
+            //<columnName, columnEntries>
+            Dictionary<string, List<object>> rowsList = new(columnLetterIDsAndColumnNames.Select(x => new KeyValuePair<string, List<object>>(x.Value, new())));
+
+            foreach (Row row in rows)
             {
-                foreach (Cell cell in row.Elements<Cell>())
+                //Only read rows after index => (could be used) to prevent reading header columns
+                if (row?.RowIndex?.Value >= startRowIndex)
                 {
-                    //Get index of 'letterID' in 'columnLettersIDs' to insert cell into correct list in 'rowsList'
-                    rowsList[columnLetterIDs.IndexOf(GetLetterIDOfCellReference(cell.CellReference))].Add(ReadCell(cell, sharedStringTable));
+                    foreach (Cell cell in row.Elements<Cell>())
+                    {
+                        string letterIDOfReference = GetLetterIDOfCellReference(cell.CellReference.Value);
+                        if (columnLetterIDsAndColumnNames.ContainsKey(letterIDOfReference))
+                        {
+                            string columnName = columnLetterIDsAndColumnNames[letterIDOfReference];
+                            if (rowsList.ContainsKey(columnName))
+                                rowsList[columnName].Add(ReadCell(cell, sharedStringTable));
+                        }
+                    }
                 }
             }
 
