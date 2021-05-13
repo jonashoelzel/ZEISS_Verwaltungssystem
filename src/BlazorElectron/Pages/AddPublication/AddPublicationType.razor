@@ -37,7 +37,7 @@
                     <div class="modal-header">
                         <h3 class="modal-title w-100 text-center">Veröffentlichungsart hinzufügen</h3>
                         <button type="reset" id="cancelButton" @onclick="@Cancel">
-                            <span class="far fa-times-circle fa-2x"></span>
+                            <span class="fas fa-times fa-2x"></span>
                         </button>
                     </div>
                     <div class="author-default">
@@ -146,6 +146,6 @@
             publicationTypes.Insert(0, selected);
         }
         else
-            Publication.TypeOfPublication = publicationTypes[0];
+            Publication.TypeOfPublication = publicationTypes.FirstOrDefault();
     }
 }
