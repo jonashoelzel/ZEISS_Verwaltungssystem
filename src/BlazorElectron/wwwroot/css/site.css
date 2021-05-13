@@ -177,6 +177,7 @@ input[type=text] {
 
 .modal-header {
     padding: 2%;
+    margin: 0 5%;
 }
 
 #backToLandingPage {
@@ -276,11 +277,13 @@ input[type=text] {
 }
 
 #cancelButton {
+    color: #343a40;
+    border: none;
+    background: none;
+    padding: 0;
     position: absolute;
-    top: 1px;
-    right: 1px;
-    color: #ffffff;
-    background-color: cornflowerblue;
+    top: 0px;
+    right: 1px; 
 }
 
 #ButtonInPopup {

@@ -36,8 +36,8 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h3 class="modal-title w-100 text-center">Veröffentlichungsart hinzufügen</h3>
-                        <button type="reset" id="cancelButton" @onclick="@Cancel">
-                            <span class="far fa-times-circle fa-2x"></span>
+                        <button type="reset" id="cancelButton" @onclick="@CancelAddPopup">
+                            <span class="fas fa-times fa-2x"></span>
                         </button>
                     </div>
                     <div class="author-default">
@@ -52,6 +52,25 @@
             </div>
         </div>
     </EditForm>
+}
+
+@if (ShowPflichtfeldPopup)
+{
+    <div class="modal fade show" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title w-100 text-center">Veröffentlichungsart ist ein Pflichtfeld.<br /> Bitte fügen sie eine neue Veröffentlichungsart hinzu!</h3>
+                    <button type="reset" id="cancelButton" @onclick="@CancelPflichtfeldPopup">
+                        <span class="fas fa-times fa-2x"></span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <button type="submit" id="ButtonInPopup" class="form-control" @onclick="@OpenAddPopup">Neue Veröffentlichungsart hinzufügen</button>
+                </div>
+            </div>
+        </div>
+    </div>
 }
 
 <section class="publicationType panel-default">
@@ -82,26 +101,42 @@
     PublicationTypeModel NewPublicationType = new();
     List<IPublicationType> publicationTypes;
     bool ShowAddPopup = false;
+    bool ShowPflichtfeldPopup = false;
     bool ShowSavePopup = false;
 
     private void NavigateToPreviousScreen() => NavigationManager.NavigateTo("addDateOfRelease");
 
-    private void NavigateToNextScreen() => NavigationManager.NavigateTo("addDescription");
+    private void NavigateToNextScreen()
+    {
+        if (Publication.TypeOfPublication is not null)
+            NavigationManager.NavigateTo("addDescription");
+        ShowPflichtfeldPopup = true;
+    }
 
     private void NavigateToLandingPage() => NavigationManager.NavigateTo("/");
 
-    void Cancel()
+    void CancelAddPopup()
     {
         NewPublicationType.Name = string.Empty;
         ShowAddPopup = false;
     }
 
-    void OpenAddPopup() => ShowAddPopup = true;
+    void CancelPflichtfeldPopup() => ShowPflichtfeldPopup = false;
+
+    void OpenAddPopup()
+    {
+        ShowPflichtfeldPopup = false;
+        ShowAddPopup = true;
+    }
 
     private void Save()
     {
-        dataHandler.Save(Publication);
-        ShowSavePopup = true;
+        if (Publication.TypeOfPublication is not null)
+        {
+            dataHandler.Save(Publication);
+            ShowSavePopup = true;
+        }else
+            ShowPflichtfeldPopup = true;
     }
 
     private void HandleInvalidSubmit() { }
@@ -146,6 +181,6 @@
             publicationTypes.Insert(0, selected);
         }
         else
-            Publication.TypeOfPublication = publicationTypes[0];
+            Publication.TypeOfPublication = publicationTypes.FirstOrDefault();
     }
 }
