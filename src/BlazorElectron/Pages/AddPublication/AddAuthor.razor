@@ -127,6 +127,7 @@
         dataHandler.SaveAuthor(NewAuthor);
 
         Publication.MainAuthor = NewAuthor;
+        NewAuthor = new();
     }
 
     void SetAuthor(ChangeEventArgs author)

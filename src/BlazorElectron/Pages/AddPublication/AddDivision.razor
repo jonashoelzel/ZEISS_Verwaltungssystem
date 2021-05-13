@@ -119,6 +119,7 @@
         dataHandler.SaveDivision(NewDivision);
 
         Publication.Division = NewDivision;
+        NewDivision = new();
     }
 
     void SetDivision(ChangeEventArgs division)

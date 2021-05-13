@@ -114,6 +114,7 @@
         dataHandler.SavePublisher(newPublisher);
 
         Publication.PublishedBy = newPublisher;
+        newPublisher = new();
     }
 
     void SetPublisher(ChangeEventArgs publicationType)

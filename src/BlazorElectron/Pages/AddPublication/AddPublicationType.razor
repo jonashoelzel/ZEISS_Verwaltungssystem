@@ -149,6 +149,7 @@
         dataHandler.SavePublicationType(NewPublicationType);
 
         Publication.TypeOfPublication = NewPublicationType;
+        NewPublicationType = new();
     }
 
     void SetPublicationType(ChangeEventArgs publicationType)
