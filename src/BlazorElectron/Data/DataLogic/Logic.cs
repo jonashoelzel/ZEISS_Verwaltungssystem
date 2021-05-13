@@ -1,78 +1,88 @@
-﻿using Zeiss.PublicationManager.Data.DataSet;
-using System;
-using System.IO;
-
+﻿using System;
+using Zeiss.PublicationManager.Data.DataSet;
+using Zeiss.PublicationManager.Data.DataSet.IO.Read;
 using Zeiss.PublicationManager.Data.DataSet.IO.Write;
 
-
-namespace Zeiss.PublicationManager.Business.Logic.IO.Write
+namespace Zeiss.PublicationManager.Business.Logic.IO
 {
-    public class WriteData
+    public class DataHandler
     {
-        public static string GetPath()
+        private static string fileName = @"\ExcelDataBase.xlsx";
+        private string filePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\TestFiles" + fileName;
+
+        private WriteDataSet excelWriter;
+        private ReadDataSet excelReader;
+
+        public WriteDataSet ExcelWriter { get => excelWriter; private set { } }
+        public ReadDataSet ExcelReader { get => excelReader; private set { } }
+
+        public DataHandler()
         {
-            string folderPath = @"\TestFiles";
-            string fileName = @"\ExcelDataBase.xlsx";
-            string directory = System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + folderPath;
-            Directory.CreateDirectory(directory);
-            return directory + fileName;
+            excelReader = new ReadDataSet(filePath);
+            excelWriter = new WriteDataSet(filePath);
+            excelReader.CheckWorkBook();
         }
-        public static void Save(IPublicationDataSet dataSet)
+
+        public DataHandler(string filePath) : this()
         {
-            string filepath = GetPath();
-            
-            WriteDataSet.InsertPublication(ref filepath, dataSet);
-            
+            this.filePath = filePath;
+        }
+
+        public void SetFilePath(string filePath)
+        {
+            this.filePath = filePath;
+            excelReader = new ReadDataSet(filePath);
+            excelWriter = new WriteDataSet(filePath);
+            excelReader.CheckWorkBook();
+        }
+
+        public void Save(IPublicationDataSet dataSet)
+        {
+
+            excelWriter.InsertPublication(dataSet);
+
             if (!string.IsNullOrEmpty(dataSet.MainAuthor.Name))
-                WriteDataSet.InsertAuthor(ref filepath, dataSet.MainAuthor);
+                excelWriter.InsertAuthor(dataSet.MainAuthor);
 
             if (dataSet.CoAuthors is not null)
-                foreach(var author in dataSet.CoAuthors)
-                    WriteDataSet.InsertAuthor(ref filepath, author);
+                foreach (var author in dataSet.CoAuthors)
+                    excelWriter.InsertAuthor(author);
 
             if (!string.IsNullOrEmpty(dataSet.Division.Name))
-                WriteDataSet.InsertDivision(ref filepath, dataSet.Division);
+                excelWriter.InsertDivision(dataSet.Division);
 
             if (!string.IsNullOrEmpty(dataSet.PublishedBy.Name))
-                WriteDataSet.InsertPublisher(ref filepath, dataSet.PublishedBy);
+                excelWriter.InsertPublisher(dataSet.PublishedBy);
 
             if (!string.IsNullOrEmpty(dataSet.CurrentState.Name))
-                WriteDataSet.InsertState(ref filepath, dataSet.CurrentState);
+                excelWriter.InsertState(dataSet.CurrentState);
 
             if (!string.IsNullOrEmpty(dataSet.TypeOfPublication.Name))
-                WriteDataSet.InsertPublicationType(ref filepath, dataSet.TypeOfPublication);
-            
+                excelWriter.InsertPublicationType(dataSet.TypeOfPublication);
+
             if (dataSet.Tags is not null)
-                foreach(var tag in dataSet.Tags)
-                    WriteDataSet.InsertTag(ref filepath, tag);
+                foreach (var tag in dataSet.Tags)
+                    excelWriter.InsertTag(tag);
         }
 
-        public static void SaveAuthor(IAuthor author)
+        public void SaveAuthor(IAuthor author)
         {
-            string filepath = GetPath();
-
-            WriteDataSet.InsertAuthor(ref filepath, author);
+            excelWriter.InsertAuthor(author);
         }
 
-        public static void SaveDivision(IDivision division)
+        public void SaveDivision(IDivision division)
         {
-            string filepath = GetPath();
-
-            WriteDataSet.InsertDivision(ref filepath, division);
+            excelWriter.InsertDivision(division);
         }
 
-        public static void SavePublicationType(IPublicationType publicationType)
+        public void SavePublicationType(IPublicationType publicationType)
         {
-            string filepath = GetPath();
-
-            WriteDataSet.InsertPublicationType(ref filepath, publicationType);
+            excelWriter.InsertPublicationType(publicationType);
         }
 
-        public static void SavePublisher(IPublisher publisher)
+        public void SavePublisher(IPublisher publisher)
         {
-            string filepath = GetPath();
-
-            WriteDataSet.InsertPublisher(ref filepath, publisher);
+            excelWriter.InsertPublisher(publisher);
         }
     }
 }

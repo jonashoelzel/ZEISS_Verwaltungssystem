@@ -1,12 +1,14 @@
-﻿@page "/"
+@page "/"
 @using Zeiss.PublicationManager.Data.DataSet.Model
 @using Zeiss.PublicationManager.Data.DataSet
 @using Zeiss.PublicationManager.Data.DataSet.IO.Read
 @using Zeiss.PublicationManager.UI
+@using Zeiss.PublicationManager.Business.Logic.IO
 @using System.IO
 
 @inject NavigationManager NavigationManager
 @inject PublicationDataSetModel Publication
+@inject DataHandler dataHandler
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg" class="logo" />
 
@@ -106,17 +108,9 @@
     {
         if (data is not null && divisions is not null)
             return;
-
-        string folderPath = @"\TestFiles";
-        string fileName = @"\ExcelDataBase.xlsx";
-        string directory = System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + folderPath;
-        Directory.CreateDirectory(directory);
-        string filepath = directory + fileName;
-
-        var reader = new ReadDataSet(filepath, string.Empty);
-
-        data = reader.ReadPublicationDataSet();
-        divisions = reader.ReadDivisions();
+      
+        data = dataHandler.ExcelReader.ReadPublicationDataSet();
+        divisions = dataHandler.ExcelReader.ReadDivisions();
         divisions.Insert(0, new Division() { Name = string.Empty });
     }
 

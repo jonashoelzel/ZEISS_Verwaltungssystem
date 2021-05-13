@@ -2,10 +2,11 @@
 @using Zeiss.PublicationManager.Data.DataSet.Model
 @using Zeiss.PublicationManager.Data.DataSet
 @using Zeiss.PublicationManager.Data.DataSet.IO.Read
-@using Zeiss.PublicationManager.Business.Logic.IO.Write
+@using Zeiss.PublicationManager.Business.Logic.IO
 
 @inject NavigationManager NavigationManager
 @inject PublicationDataSetModel Publication
+@inject DataHandler dataHandler
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg"
      class="logo" />
@@ -19,8 +20,8 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h3 class="modal-title w-100 text-center"> Geschäftsbereich hinzufügen</h3>
-                        <button type="reset" id="cancelButton" @onclick="@Cancel">
-                            <span class="far fa-window-close fa-2x"></span>
+                        <button type="reset" id="cancelButton" @onclick="@CancelAddPopup">
+                            <span class="fas fa-times fa-2x"></span>
                         </button>
                     </div>
                     <div class="author-default">
@@ -37,6 +38,25 @@
     </EditForm>
 }
 
+@if (ShowPflichtfeldPopup)
+{
+    <div class="modal fade show" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title w-100 text-center">Geschäftsbereich ist ein Pflichtfeld.<br /> Bitte fügen sie einen neuen Geschäftsbereich hinzu!</h3>
+                    <button type="reset" id="cancelButton" @onclick="@CancelPflichtfeldPopup">
+                        <span class="fas fa-times fa-2x"></span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <button type="submit" id="ButtonInPopup" class="form-control" @onclick="@OpenAddPopup">Neuen Geschäftsbereich hinzufügen</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
 <section class="division panel-default">
     <header class="panel-heading">
         <h4 class="panel-title">Geschäftsbereich</h4>
@@ -51,7 +71,7 @@
             </select>
         </div>
         <div class="CenteredButton">
-            <button class="AddNewAuthor" @onclick="@OpenPopup">Neuen Geschäftsbereich hinzufügen</button>
+            <button class="AddNewAuthor" @onclick="@OpenAddPopup">Neuen Geschäftsbereich hinzufügen</button>
         </div>
     </div>
 </section>
@@ -64,29 +84,42 @@
     DivisionModel NewDivision = new();
     List<IDivision> divisions;
     bool ShowAddPopup = false;
+    bool ShowPflichtfeldPopup = false;
 
     private void NavigateToPreviousScreen() => NavigationManager.NavigateTo("AddAuthor");
 
-    private void NavigateToNextScreen() => NavigationManager.NavigateTo("addDateOfRelease");
+    private void NavigateToNextScreen()
+    {
+        if (Publication.Division is not null)
+            NavigationManager.NavigateTo("addDateOfRelease");
+        ShowPflichtfeldPopup = true;
+    }
 
     private void HandleInvalidSubmit() { }
 
-    void Cancel()
+    void CancelAddPopup()
     {
         NewDivision.Name = string.Empty;
         ShowAddPopup = false;
     }
 
-    void OpenPopup() => ShowAddPopup = true;
+    void CancelPflichtfeldPopup() => ShowPflichtfeldPopup = false;
+
+    void OpenAddPopup()
+    {
+        ShowPflichtfeldPopup = false;
+        ShowAddPopup = true;
+    }
 
     void AddNewDivision()
     {
         ShowAddPopup = false;
         divisions.Insert(0, NewDivision);
 
-        WriteData.SaveDivision(NewDivision);
+        dataHandler.SaveDivision(NewDivision);
 
         Publication.Division = NewDivision;
+        NewDivision = new();
     }
 
     void SetDivision(ChangeEventArgs division)
@@ -100,12 +133,8 @@
         if (divisions is not null)
             return;
 
-        string filepath = WriteData.GetPath();
-
-        var reader = new ReadDataSet(filepath, string.Empty);
-
         divisions = new List<IDivision>();
-        var readDivisions = reader.ReadDivisions();
+        var readDivisions = dataHandler.ExcelReader.ReadDivisions();
         foreach (var division in readDivisions)
         {
             divisions.Add(division);
@@ -123,6 +152,6 @@
             divisions.Insert(0, selected);
         }
         else
-            Publication.Division = divisions[0];
+            Publication.Division = divisions.FirstOrDefault();
     }
 }
