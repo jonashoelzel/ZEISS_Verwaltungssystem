@@ -2,11 +2,12 @@
 @using Zeiss.PublicationManager.Data.DataSet.Model
 @using Zeiss.PublicationManager.Data.DataSet
 @using Zeiss.PublicationManager.Data.DataSet.IO.Read
-@using Zeiss.PublicationManager.Business.Logic.IO.Write
+@using Zeiss.PublicationManager.Business.Logic.IO
 @using System.IO
 
 @inject NavigationManager NavigationManager
 @inject PublicationDataSetModel Publication
+@inject DataHandler dataHandler
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg" class="logo" />
 
@@ -19,13 +20,13 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h3 class="modal-title w-100 text-center">Autor hinzufügen</h3>
-                        <button type="reset" id="cancelButton" @onclick="@Cancel">
-                            <span class="far fa-window-close fa-2x"></span>
+                        <button type="reset" id="cancelButton" @onclick="@CancelAddPopup">
+                            <span class="fas fa-times fa-2x"></span>
                         </button>
                     </div>
                     <div class="author-default">
                         <label for="firstname">Vorname</label>
-                        <InputText class="form-control" id="firstname" @bind-Value="NewAuthor.Name"/><br />
+                        <InputText class="form-control" id="firstname" @bind-Value="NewAuthor.Name" /><br />
                         <ValidationMessage For="@(() => NewAuthor.Name)" />
                     </div>
                     <div class="author-default">
@@ -42,6 +43,25 @@
     </EditForm>
 }
 
+@if (ShowPflichtfeldPopup)
+{
+    <div class="modal fade show" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title w-100 text-center">Autor ist ein Pflichtfeld.<br /> Bitte fügen sie einen neuen Autor hinzu!</h3>
+                    <button type="reset" id="cancelButton" @onclick="@CancelPflichtfeldPopup">
+                        <span class="fas fa-times fa-2x"></span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <button type="submit" id="ButtonInPopup" class="form-control" @onclick="@OpenAddPopup">Neuen Autor hinzufügen</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
 <section class="author panel-default">
     <header class="panel-heading">
         <h4 class="panel-title">Autor</h4>
@@ -54,7 +74,7 @@
                     <option value="@author.ID">@string.Concat(author.Name, " ", author.Surname)</option>
                 }
             </select>
-            
+
         </div>
         <div class="CenteredButton">
             <button class="AddNewAuthor" @onclick="@OpenAddPopup">Neuen Autor hinzufügen</button>
@@ -67,61 +87,66 @@
 
 @code
 {
-        AuthorModel NewAuthor = new();
-        List<IAuthor> authors;
-        bool ShowAddPopup = false;
+    AuthorModel NewAuthor = new();
+    List<IAuthor> authors;
+    bool ShowAddPopup = false;
+    bool ShowPflichtfeldPopup = false;
 
-        private void NavigateToPreviousScreen() => NavigationManager.NavigateTo("addTitle");
+    private void NavigateToPreviousScreen() => NavigationManager.NavigateTo("addTitle");
 
-        private void NavigateToNextScreen() => NavigationManager.NavigateTo("addDivision");
+    private void NavigateToNextScreen()
+    {
+        if (Publication.MainAuthor is not null)
+            NavigationManager.NavigateTo("addDivision");
 
-        private void HandleInvalidSubmit() {}
+        ShowPflichtfeldPopup = true;
+    }
 
-        void Cancel()
+    private void HandleInvalidSubmit() { }
+
+    void CancelAddPopup()
+    {
+        NewAuthor.Name = string.Empty;
+        NewAuthor.Surname = string.Empty;
+        ShowAddPopup = false;
+    }
+
+    void CancelPflichtfeldPopup() => ShowPflichtfeldPopup = false;
+
+    void OpenAddPopup()
+    {
+        ShowPflichtfeldPopup = false;
+        ShowAddPopup = true;
+    }
+
+    void AddNewAuthor()
+    {
+        ShowAddPopup = false;
+        authors.Insert(0, NewAuthor);
+
+        dataHandler.SaveAuthor(NewAuthor);
+
+        Publication.MainAuthor = NewAuthor;
+    }
+
+    void SetAuthor(ChangeEventArgs author)
+    {
+        var selectedAuthorID = Guid.Parse(author.Value.ToString());
+        Publication.MainAuthor = authors.First(a => a.ID.Equals(selectedAuthorID));
+    }
+
+    void fetchData()
+    {
+        if (authors is not null)
+            return;
+
+        authors = new List<IAuthor>();
+        var readAuthors = dataHandler.ExcelReader.ReadAuthors();
+        foreach (var author in readAuthors)
         {
-            NewAuthor.Name = string.Empty;
-            NewAuthor.Surname = string.Empty;
-            ShowAddPopup = false;
+            authors.Add(author);
         }
-
-        void OpenAddPopup() => ShowAddPopup = true;
-
-        void AddNewAuthor()
-        {
-            ShowAddPopup = false;
-            authors.Insert(0, NewAuthor);
-
-            WriteData.SaveAuthor(NewAuthor);
-
-            Publication.MainAuthor = NewAuthor;
-        }
-
-        void SetAuthor(ChangeEventArgs author)
-        {
-            var selectedAuthorID = Guid.Parse(author.Value.ToString());
-            Publication.MainAuthor = authors.First(a => a.ID.Equals(selectedAuthorID));
-        }
-
-        void fetchData()
-        {
-            if (authors is not null)
-                return;
-
-            string folderPath = @"\TestFiles";
-            string fileName = @"\ExcelDataBase.xlsx";
-            string directory = System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + folderPath;
-            Directory.CreateDirectory(directory);
-            string filepath = directory + fileName;
-
-            var reader = new ReadDataSet(filepath, string.Empty);
-
-            authors = new List<IAuthor>();
-            var readAuthors = reader.ReadAuthors();
-            foreach (var author in readAuthors)
-            {
-                authors.Add(author);
-            }
-        }
+    }
 
     protected override void OnInitialized()
     {
@@ -134,6 +159,6 @@
             authors.Insert(0, selected);
         }
         else
-            Publication.MainAuthor = authors[0];
+            Publication.MainAuthor = authors.FirstOrDefault();
     }
 }

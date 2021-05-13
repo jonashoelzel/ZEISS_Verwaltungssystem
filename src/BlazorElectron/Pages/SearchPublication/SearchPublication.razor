@@ -2,10 +2,12 @@
 @using Zeiss.PublicationManager.Data.DataSet.Model
 @using Zeiss.PublicationManager.Data.DataSet
 @using Zeiss.PublicationManager.Data.DataSet.IO.Read
+@using Zeiss.PublicationManager.Business.Logic.IO
 @using System.IO
 
 @inject NavigationManager NavigationManager
 @inject PublicationDataSetModel Publication
+@inject DataHandler dataHandler
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg" class="logo" />
 
@@ -104,17 +106,9 @@
         if (data is not null && divisions is not null)
             return;
 
-        string folderPath = @"\TestFiles";
-        string fileName = @"\ExcelDataBase.xlsx";
-        string directory = System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + folderPath;
-        Directory.CreateDirectory(directory);
-        string filepath = directory + fileName;
-
-        var reader = new ReadDataSet(filepath, string.Empty);
-
-        data = reader.ReadPublicationDataSet();
-        divisions = reader.ReadDivisions();
-        divisions.Insert(0, new Division() { Name=string.Empty });
+        data = dataHandler.ExcelReader.ReadPublicationDataSet();
+        divisions = dataHandler.ExcelReader.ReadDivisions();
+        divisions.Insert(0, new Division() { Name = string.Empty });
     }
 
     private bool HideFilter = true;
@@ -127,12 +121,12 @@
     string SelectedDivsion { get; set; } = "";
 
     List<string> Divisions = new List<string>()
-    {
+{
         "", "DAC", "DQA", "DQA I", "DQA II", "DQA, TAD III", "MSD", "QA", "SAP", "SBD", "SEV", "TAD", "TAD I", "TAD II", "TAD III", "Vorstand", "Vorstand, TAD I"
     };
 
     List<string> Tags = new List<string>()
-    {
+{
         "Backend", "Frontend", "Development", ".NET 5.0", ".NET Core", ".NET Framework"
     };
 
