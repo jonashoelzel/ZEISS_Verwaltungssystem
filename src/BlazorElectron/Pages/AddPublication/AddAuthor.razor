@@ -20,7 +20,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h3 class="modal-title w-100 text-center">Autor hinzufügen</h3>
-                        <button type="reset" id="cancelButton" @onclick="@Cancel">
+                        <button type="reset" id="cancelButton" @onclick="@CancelAddPopup">
                             <span class="far fa-window-close fa-2x"></span>
                         </button>
                     </div>
@@ -41,6 +41,25 @@
             </div>
         </div>
     </EditForm>
+}
+
+@if (ShowPflichtfeldPopup)
+{
+    <div class="modal fade show" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title w-100 text-center">Author ist ein Pflichtfeld. Bitte fügen sie einen neuen Author hinzu!</h3>
+                    <button type="reset" id="cancelButton" @onclick="@CancelPflichtfeldPopup">
+                        <span class="far fa-window-close fa-2x"></span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <button type="submit" id="ButtonInPopup" class="form-control" @onclick="@OpenAddPopup">Neuen Autor hinzufügen</button>
+                </div>
+            </div>
+        </div>
+    </div>
 }
 
 <section class="author panel-default">
@@ -71,21 +90,34 @@
     AuthorModel NewAuthor = new();
     List<IAuthor> authors;
     bool ShowAddPopup = false;
+    bool ShowPflichtfeldPopup = false;
 
     private void NavigateToPreviousScreen() => NavigationManager.NavigateTo("addTitle");
 
-    private void NavigateToNextScreen() => NavigationManager.NavigateTo("addDivision");
+    private void NavigateToNextScreen()
+    {
+        if (Publication.MainAuthor is not null)
+            NavigationManager.NavigateTo("addDivision");
+
+        ShowPflichtfeldPopup = true;
+    }
 
     private void HandleInvalidSubmit() { }
 
-    void Cancel()
+    void CancelAddPopup()
     {
         NewAuthor.Name = string.Empty;
         NewAuthor.Surname = string.Empty;
         ShowAddPopup = false;
     }
 
-    void OpenAddPopup() => ShowAddPopup = true;
+    void CancelPflichtfeldPopup() => ShowPflichtfeldPopup = false;
+
+    void OpenAddPopup()
+    {
+        ShowPflichtfeldPopup = false;
+        ShowAddPopup = true;
+    }
 
     void AddNewAuthor()
     {
@@ -127,6 +159,6 @@
             authors.Insert(0, selected);
         }
         else
-            Publication.MainAuthor = authors[0];
+            Publication.MainAuthor = authors.FirstOrDefault();
     }
 }
