@@ -177,6 +177,7 @@ input[type=text] {
 
 .modal-header {
     padding: 2%;
+    margin: 0 5%;
 }
 
 #backToLandingPage {
