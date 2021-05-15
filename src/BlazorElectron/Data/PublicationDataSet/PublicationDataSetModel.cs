@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -50,5 +50,23 @@ namespace Zeiss.PublicationManager.Data.DataSet.Model
 
         // Publisher Information
         public IPublisher PublishedBy { get; set; } = new PublisherModel();
+
+        public void Reset()
+        {
+            ID = Guid.NewGuid();
+            WorkingTitle = "";
+            PublicationTitle = "";
+            TypeOfPublication = new PublicationTypeModel();
+            MainAuthor = new AuthorModel();
+            CoAuthors = new List<IAuthor>();
+            CurrentState = new StateModel();
+            DateOfStartWorking = DateTime.Now;
+            DateOfRelease = DateTime.Now;
+            Tags = new List<ITag>();
+            Description = "";
+            AdditionalInformation = "";
+            Division = new DivisionModel();
+            PublishedBy = new PublisherModel();
+        }
     }
 }
