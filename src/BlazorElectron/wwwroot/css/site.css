@@ -9,8 +9,8 @@ body {
     display: block;
     margin-left: auto;
     margin-right: auto;
-    height: 45%;
-    width: 15%;
+    width: 11%;
+    height: auto;
 }
 /*Button Veröffentlichung hinzufügen(Landing Page)*/
 .add_publication {
@@ -218,11 +218,11 @@ input[type=text] {
 }
 
 .search-default {
-    margin: 0 auto;
+    margin-top: 0.5%;
 }
 
 .filterSection {
-    margin: 2% 5% 2%;
+    margin: 0 5% 0.5%;
 }
 
 .dropdownFilter {
@@ -283,4 +283,27 @@ input[type=text] {
 
 .blueIcon {
     color: #2449a4;
+}
+
+.landingPageAddPublication {
+    position:absolute;
+    right: 5%;
+}
+
+/* scrollable table */
+tbody {
+    display: block;
+    height: 450px;
+    overflow-y: auto;
+    width: 100%;
+}
+
+thead, tbody tr {
+        display: table;
+        width: 100%;
+        table-layout: fixed;
+}
+
+thead {
+    width: calc( 100% - 1em)
 }

@@ -15,9 +15,6 @@
 <EditForm Model="@Publication">
 
     <section class="search-default">
-        <button type="button" class="btn blueIcon" @onclick="NavigateToAddTitleComp">
-            <span class="fas fa-plus-circle fa-3x"></span>
-        </button>
         <div class="input-group">
             <input type="text" class="form-control" placeholder="Titel, Autor, Stichwort, ..."
                    @bind-value="SearchTerm" @bind-value:event="oninput" />
@@ -96,7 +93,11 @@
             }
         </tbody>
     </table>
-
+    <div class="landingPageAddPublication">
+        <button type="button" class="btn blueIcon" @onclick="NavigateToAddTitleComp">
+            <span class="fas fa-plus-circle fa-5x"></span>
+        </button>
+    </div>
 </EditForm>
 
 @code
@@ -108,7 +109,7 @@
     {
         if (data is not null && divisions is not null)
             return;
-      
+
         data = dataHandler.ExcelReader.ReadPublicationDataSet();
         divisions = dataHandler.ExcelReader.ReadDivisions();
         divisions.Insert(0, new Division() { Name = string.Empty });
