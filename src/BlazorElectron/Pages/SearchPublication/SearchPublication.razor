@@ -1,7 +1,8 @@
-﻿@page "/searchPub"
+@page "/"
 @using Zeiss.PublicationManager.Data.DataSet.Model
 @using Zeiss.PublicationManager.Data.DataSet
 @using Zeiss.PublicationManager.Data.DataSet.IO.Read
+@using Zeiss.PublicationManager.UI
 @using Zeiss.PublicationManager.Business.Logic.IO
 @using System.IO
 
@@ -14,22 +15,22 @@
 <EditForm Model="@Publication">
 
     <section class="search-default">
+        <button type="button" class="btn blueIcon" @onclick="NavigateToAddTitleComp">
+            <span class="fas fa-plus-circle fa-3x"></span>
+        </button>
         <div class="input-group">
             <input type="text" class="form-control" placeholder="Titel, Autor, Stichwort, ..."
                    @bind-value="SearchTerm" @bind-value:event="oninput" />
-            <!--<button type="button" class="btn">
-                <span class="fas fa-search"></span>
-            </button> -->
             <button type="button" class="btn" @onclick="@ChangeFilterVisibility" id="openFilter">
                 <span class="fas fa-filter fa-2x"></span>
             </button>
         </div>
     </section>
 
-    <section class="dropdownFilter" hidden=@HideFilter>
+    <section class="filterSection" hidden=@HideFilter>
         <div class="input-group">
             <label>Filtern nach:</label>
-            <div class="divisionFilter">
+            <div class="dropdownFilter">
                 <select class="form-control" @onchange="@DivisionFilter">
                     @foreach (var div in divisions)
                     {
@@ -38,7 +39,7 @@
                 </select>
             </div>
             <!--
-            <div class="tagFilter">
+            <div class="dropdownFilter">
                 <InputSelect class="form-control" @bind-Value="@Publication.Tags">
                     <option></option>
                     @foreach (var tag in Tags)
@@ -72,6 +73,7 @@
                 <th>Aktion</th>
             </tr>
         </thead>
+
         <tbody>
             @foreach (var publication in items)
             {
@@ -94,6 +96,7 @@
             }
         </tbody>
     </table>
+
 </EditForm>
 
 @code
@@ -105,10 +108,16 @@
     {
         if (data is not null && divisions is not null)
             return;
-
+      
         data = dataHandler.ExcelReader.ReadPublicationDataSet();
         divisions = dataHandler.ExcelReader.ReadDivisions();
         divisions.Insert(0, new Division() { Name = string.Empty });
+    }
+
+    private void NavigateToAddTitleComp()
+    {
+        Publication = new PublicationDataSetModel();
+        NavigationManager.NavigateTo("addTitle");
     }
 
     private bool HideFilter = true;
