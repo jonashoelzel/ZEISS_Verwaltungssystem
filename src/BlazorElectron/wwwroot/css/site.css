@@ -15,7 +15,7 @@ body {
 
 /*Weiter-Button*/
 .continue {
-    border: 3px groove #191919;
+    border: 3px groove #565656;
     border-radius: 15px;
     background-color: #2f2e2e;
     color: #ffffff;
@@ -35,7 +35,7 @@ body {
 
 /*Zurück-Button*/
 .back {
-    border: 3px groove #191919;
+    border: 3px groove #565656;
     border-radius: 15px;
     background-color: #2f2e2e;
     color: #ffffff;
@@ -55,7 +55,7 @@ body {
 
 /*Veröffentlichung hinzufügen-Button(Speichern)*/
 .addPub {
-    border: 3px groove #191919;
+    border: 3px groove #565656;
     border-radius: 15px;
     background-color: #2f2e2e;
     color: #ffffff;
@@ -74,7 +74,7 @@ body {
 }
 
 #backToLandingPage {
-    border: 3px groove #191919;
+    border: 3px groove #565656;
     border-radius: 20px;
     background-color: #2f2e2e;
     color: #ffffff;
@@ -184,7 +184,7 @@ input[type=text] {
 }
 
 .AddNewAuthor {
-    border: 3px groove #191919;
+    border: 3px groove #565656;
     border-radius: 15px;
     background-color: #2f2e2e;
     color: #ffffff;
@@ -209,7 +209,7 @@ input[type=text] {
 }
 
 #ButtonInPopup {
-    border: 3px groove #191919;
+    border: 3px groove #565656;
     border-radius: 20px;
     background-color: #2f2e2e;
     color: #ffffff;
