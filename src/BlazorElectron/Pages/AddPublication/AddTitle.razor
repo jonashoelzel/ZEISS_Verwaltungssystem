@@ -7,7 +7,7 @@
 <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg"
      class="logo" />
 
-<EditForm Model="@Publication" OnInvalidSubmit="@HandleInvalidSubmit" OnValidSubmit="@NavigateToNextScreen">
+<EditForm Model="@NewTitel" OnInvalidSubmit="@HandleInvalidSubmit" OnValidSubmit="@NavigateToNextScreen">
 
     <DataAnnotationsValidator />
 
@@ -17,7 +17,8 @@
         </header>
         <div class="panel-body">
             <label for="workingtitle">Titelname</label>
-            <InputText id="workingtitle" class="form-control" @bind-Value="@Publication.WorkingTitle" /><br />
+            <InputText id="workingtitle" class="form-control" @bind-Value="@NewTitel.Name"/><br />
+            <ValidationMessage For="@(() => NewTitel.Name)" />
         </div>
     </section>
 
@@ -28,9 +29,21 @@
 
 @code
 {
+    TitleModel NewTitel = new();
+
     private void NavigateToPreviousScreen() => NavigationManager.NavigateTo("/");
 
-    private void NavigateToNextScreen() => NavigationManager.NavigateTo("addAuthor");
+    private void NavigateToNextScreen()
+    {
+        Publication.WorkingTitle = NewTitel.Name;
+        NavigationManager.NavigateTo("addAuthor");
+    }
 
-    private void HandleInvalidSubmit()=> NavigateToNextScreen();
+    private void HandleInvalidSubmit() { }
+
+    protected override void OnInitialized()
+    {
+        NewTitel.Name = Publication.WorkingTitle;
+        base.OnInitialized();
+    }
 }
