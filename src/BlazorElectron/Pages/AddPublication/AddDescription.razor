@@ -25,7 +25,8 @@
     </div>
 }
 
-<EditForm Model="@Publication">
+<EditForm Model="@NewDescription" OnValidSubmit="@ValidSubmit">
+    <DataAnnotationsValidator />
     <section class="description panel-default">
         <header class="panel-heading">
             <h4 class="panel-title">Zusätzliche Information</h4>
@@ -34,31 +35,45 @@
             <form>
                 <div class="description-default">
                     <label for="titleDescr">Beschreibung</label>
-                    <InputText id="titleDescr" class="form-control" @bind-Value="@Publication.Description" />
+                    <InputText id="titleDescr" class="form-control" @bind-Value="@NewDescription.Description" />
+                    <ValidationMessage For="@(() => NewDescription.Description)" />
                 </div>
                 <div class="description-default">
                     <label for="description">Beschreibungstext</label>
-                    <InputTextArea id="description" class="form-control" @bind-Value="@Publication.AdditionalInformation" rows="5" />
+                    <InputTextArea id="description" class="form-control" @bind-Value="@NewDescription.AdditionalInformation" rows="5" />
+                    <ValidationMessage For="@(() => NewDescription.AdditionalInformation)" />
                 </div>
             </form>
         </div>
     </section>
 
-    <button class="addPub" type="button" @onclick="Save">Veröffentlichung hinzufügen</button>
+    <button class="addPub" type="submit" @onclick="() => buttonType = ButtonType.save">Veröffentlichung hinzufügen</button>
     <button class="back" type="button" @onclick="NavigateToPreviousScreen">Pflichtangaben</button>
-    <button class="continue" type="button" @onclick="NavigateToNextScreen">Weiter</button>
+    <button class="continue" type="submit" @onclick="() => buttonType = ButtonType.next">Weiter</button>
 </EditForm>
 
 @code
 {
-    private void NavigateToPreviousScreen() => NavigationManager.NavigateTo("addPublicationType");
+    DescriptionModel NewDescription = new();
+    ButtonType buttonType;
 
-    private void NavigateToNextScreen() => NavigationManager.NavigateTo("addPublisher");
+    private void NavigateToPreviousScreen()
+    {
+        updatePublication();
+        NavigationManager.NavigateTo("addPublicationType");
+    }
+
+    private void NavigateToNextScreen()
+    {
+        updatePublication();
+
+    }
 
     private void NavigateToLandingPage() => NavigationManager.NavigateTo("/");
 
     private void Save()
     {
+        updatePublication();
         dataHandler.Save(Publication);
         PopupSuccessfulSave();
     }
@@ -70,4 +85,32 @@
         ShowSavePopup = true;
     }
 
+    private void updatePublication()
+    {
+        Publication.Description = NewDescription.Description;
+        Publication.AdditionalInformation = NewDescription.AdditionalInformation;
+    }
+
+    protected override void OnInitialized()
+    {
+        NewDescription.Description = Publication.Description;
+        NewDescription.AdditionalInformation = Publication.AdditionalInformation;
+        base.OnInitialized();
+    }
+
+    void ValidSubmit()
+    {
+        updatePublication();
+
+        if (buttonType == ButtonType.next)
+            NavigationManager.NavigateTo("addPublisher");
+        else
+        {
+            dataHandler.Save(Publication);
+            PopupSuccessfulSave();
+        }
+
+    }
+
+    enum ButtonType { next, save}
 }
