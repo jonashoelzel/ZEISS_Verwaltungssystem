@@ -18,6 +18,19 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Write
         #region Insert
         #region Public_Insert
         //Can be used to create Headers
+
+        /// <summary>
+        /// Inserts all values of (parameter) 'columnValues' into a new row.
+        /// </summary>
+        /// <param name="filepath">
+        /// Relative/absolute filepath to a *.xlsx file where the new row should be inserted.
+        /// </param>
+        /// <param name="worksheetName">
+        /// Name of the worksheet in the *.xlsx file where the new row should be inserted.
+        /// </param>
+        /// <param name="columnValues">
+        /// Every value of (parameter) 'columnValues' is the value of a new cell in the new row.
+        /// </param>
         public static void Insert(string filepath, string worksheetName, List<object> columnValues)
         {
             SpreadsheetDocument spreadsheetDocument = OpenSpreadsheetDocument(filepath, worksheetName, out SheetData sheetData);
@@ -34,8 +47,19 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Write
             SaveSpreadsheetDocument(ref spreadsheetDocument);
         }
 
-
-        //columnNamesAndValues <columnName, value>
+        /// <summary>
+        /// Inserts all values of (parameter) 'columnNamesAndValues' into a new row.
+        /// </summary>
+        /// <param name="filepath">
+        /// Relative/absolute filepath to a *.xlsx file where the new row should be inserted.
+        /// </param>
+        /// <param name="worksheetName">
+        /// Name of the worksheet in the *.xlsx file where the new row should be inserted.
+        /// </param>
+        /// <param name="columnNamesAndValues">
+        /// Every KeyValuePair represents one cell with value, where the key is the (so called) 'header-column' where the cell should be inserted below this (so called) 'header-column'
+        /// and the value is the value of the cell.
+        /// </param>
         public static void Insert(string filepath, string worksheetName, Dictionary<string, object> columnNamesAndValues)
         {
             SpreadsheetDocument spreadsheetDocument = OpenSpreadsheetDocument(filepath, worksheetName, out SheetData sheetData);
