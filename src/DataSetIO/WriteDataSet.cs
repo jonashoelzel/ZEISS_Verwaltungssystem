@@ -215,7 +215,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
             publication.Add("Tag_ID", ConvertTagsToCSV(dataSet.Tags));
 
             string publisherID = string.Empty;
-            if (!string.IsNullOrEmpty(dataSet.PublishedBy.Name))
+            if (!string.IsNullOrEmpty(dataSet.PublishedBy?.Name))
                 publisherID = dataSet.PublishedBy.ID.ToString();
             publication.Add("Publisher_ID", publisherID);
 

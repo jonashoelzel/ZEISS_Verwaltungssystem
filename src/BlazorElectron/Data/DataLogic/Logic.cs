@@ -51,7 +51,7 @@ namespace Zeiss.PublicationManager.Business.Logic.IO
             if (!string.IsNullOrEmpty(dataSet.Division.Name))
                 excelWriter.InsertDivision(dataSet.Division);
 
-            if (!string.IsNullOrEmpty(dataSet.PublishedBy.Name))
+            if (!string.IsNullOrEmpty(dataSet.PublishedBy?.Name))
                 excelWriter.InsertPublisher(dataSet.PublishedBy);
 
             if (!string.IsNullOrEmpty(dataSet.CurrentState.Name))
