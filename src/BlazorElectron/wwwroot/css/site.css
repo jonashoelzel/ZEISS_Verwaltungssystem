@@ -1,7 +1,7 @@
 @import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
 body {
-    background-color: #d4f8ff;
+    background-color: #e5e5e5;
 }
 
 /*Bild ZEISS Schriftzug*/
@@ -12,53 +12,12 @@ body {
     width: 11%;
     height: auto;
 }
-/*Button Veröffentlichung hinzufügen(Landing Page)*/
-.add_publication {
-    border: 3px groove rgba(28,110,164,0.55);
-    border-radius: 15px;
-    background-color: #2449a4;
-    color: #ffffff;
-    font-family: Arial;
-    font-size: 150%;
-    font-weight: bold;
-    text-align: center;
-    line-height: 20px;
-    position: absolute;
-    top: 50%;
-    left: 20%;
-    width: 23%;
-    height: 20%;
-    min-width: 210px;
-    min-height: 50px;
-}
-
-/*Button Fachbeitrag suchen(Landing Page)*/
-.search_publication {
-    border: 3px groove rgba(28,110,164,0.55);
-    border-radius: 15px;
-    background-color: #2449a4;
-    color: #ffffff;
-    font-family: Arial;
-    font-size: 150%;
-    font-weight: bold;
-    text-align: center;
-    line-height: 20px;
-    position: absolute;
-    top: 50%;
-    right: 20%;
-    width: 23%;
-    height: 20%;
-    min-width: 210px;
-    min-height: 50px;
-}
-
-
 
 /*Weiter-Button*/
 .continue {
-    border: 3px groove rgba(28,110,164,0.55);
+    border: 3px groove #191919;
     border-radius: 15px;
-    background-color: #2449a4;
+    background-color: #2f2e2e;
     color: #ffffff;
     font-family: Arial;
     font-size: 150%;
@@ -76,9 +35,9 @@ body {
 
 /*Zurück-Button*/
 .back {
-    border: 3px groove rgba(28,110,164,0.55);
+    border: 3px groove #191919;
     border-radius: 15px;
-    background-color: #2449a4;
+    background-color: #2f2e2e;
     color: #ffffff;
     font-family: Arial;
     font-size: 150%;
@@ -96,9 +55,9 @@ body {
 
 /*Veröffentlichung hinzufügen-Button(Speichern)*/
 .addPub {
-    border: 3px groove rgba(28,110,164,0.55);
+    border: 3px groove #191919;
     border-radius: 15px;
-    background-color: #2449a4;
+    background-color: #2f2e2e;
     color: #ffffff;
     font-family: Consolas;
     font-size: 150%;
@@ -114,6 +73,18 @@ body {
     min-height: 50px;
 }
 
+#backToLandingPage {
+    border: 3px groove #191919;
+    border-radius: 20px;
+    background-color: #2f2e2e;
+    color: #ffffff;
+    font-family: Arial;
+    font-size: 150%;
+    font-weight: bold;
+    text-align: center;
+    line-height: 20px;
+} 
+
 .panel-title {
     font-size: 150%;
     font-weight: bold;
@@ -128,11 +99,11 @@ body {
     font-weight: bold;
 }
 
- .panel-body {
-    border: 3px groove rgba(28,110,164,0.55);
+.panel-body {
+    border: 3px groove #565656;
     border-radius: 15px;
     padding: 4%;
- }
+}
 
 input[type=text] {
     width: 75%;
@@ -165,14 +136,14 @@ input[type=text] {
 }
 
 .modal-dialog {
-    border: 3px groove rgb(8 4 120);
+    border: 3px groove #2f2e2e;
     border-radius: 10px;
     position: center;
     top: 30%;
 }
 
 .modal-content {
-    background-color: #ffffff;
+    background-color: #e5e5e5;
 }
 
 .modal-header {
@@ -180,41 +151,10 @@ input[type=text] {
     margin: 0 5%;
 }
 
-#backToLandingPage {
-    border: 3px groove rgba(28,110,164,0.55);
-    border-radius: 20px;
-    background-color: #2449a4;
-    color: #ffffff;
-    font-family: Arial;
-    font-size: 150%;
-    font-weight: bold;
-    text-align: center;
-    line-height: 20px;
-} 
-
-/*drin lassen*/
-#blazor-error-ui {
-    background: lightyellow;
-    bottom: 0;
-    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
-    display: none;
-    left: 0;
-    padding: 0.6rem 1.25rem 0.7rem 1.25rem;
-    position: fixed;
-    width: 100%;
-    z-index: 1000;
-}
-
-    #blazor-error-ui .dismiss {
-        cursor: pointer;
-        position: absolute;
-        right: 0.75rem;
-        top: 0.5rem;
-    }
-
 /* Validierung */
 .validation-message {
     color: red;
+    font-weight: bold;
 }
 
 .search-default {
@@ -244,9 +184,9 @@ input[type=text] {
 }
 
 .AddNewAuthor {
-    border: 3px groove rgba(28,110,164,0.55);
+    border: 3px groove #191919;
     border-radius: 15px;
-    background-color: #2449a4;
+    background-color: #2f2e2e;
     color: #ffffff;
     font-family: Arial;
     font-weight: bold;
@@ -269,9 +209,9 @@ input[type=text] {
 }
 
 #ButtonInPopup {
-    border: 3px groove rgba(28,110,164,0.55);
+    border: 3px groove #191919;
     border-radius: 20px;
-    background-color: #2449a4;
+    background-color: #2f2e2e;
     color: #ffffff;
     font-family: Arial;
     font-size: 120%;
@@ -279,10 +219,6 @@ input[type=text] {
     text-align: center;
     line-height: 20px;
     min-height: 50px;
-}
-
-.blueIcon {
-    color: #2449a4;
 }
 
 .landingPageAddPublication {
@@ -307,3 +243,23 @@ thead, tbody tr {
 thead {
     width: calc( 100% - 1em)
 }
+
+/*drin lassen*/
+#blazor-error-ui {
+    background: lightyellow;
+    bottom: 0;
+    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+    display: none;
+    left: 0;
+    padding: 0.6rem 1.25rem 0.7rem 1.25rem;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+}
+
+    #blazor-error-ui .dismiss {
+        cursor: pointer;
+        position: absolute;
+        right: 0.75rem;
+        top: 0.5rem;
+    }
