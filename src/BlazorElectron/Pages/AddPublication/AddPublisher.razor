@@ -74,8 +74,12 @@
 </section>
 
 <button class="addPub" type="button" @onclick="Save">Veröffentlichung hinzufügen</button>
-<button class="back" type="button" @onclick="NavigateToPreviousScreen">Zurück</button>
-<button class="continue" type="button" @onclick="NavigateToNextScreen">Weiter</button>
+<button class="back" type="button" @onclick="NavigateToPreviousScreen">
+    <span class="fas fa-arrow-circle-left fa-3x"></span>
+</button>
+<button class="continue" type="button" @onclick="NavigateToNextScreen">
+    <span class="fas fa-arrow-circle-right fa-3x"></span>
+</button>
 
 @code
 {
