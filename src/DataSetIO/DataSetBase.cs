@@ -159,6 +159,10 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO
 
         private void InitializeWorkBook()
         {
+            var dirPath = _filePath.Remove(_filePath.LastIndexOf('\\'));
+            if (!System.IO.File.Exists(dirPath))
+                System.IO.Directory.CreateDirectory(dirPath);
+
             foreach (var worksheet in WorksheetsHeader())
             {
                 if (!WriteExcel.WorksheetExists(ref _filePath, worksheet.Key))
