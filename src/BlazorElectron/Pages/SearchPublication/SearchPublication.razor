@@ -183,8 +183,10 @@
             var split = columnName.Split('.');
             if (split.Length < 2)
                 data = data.OrderBy(x => x.GetType().GetProperty(columnName).GetValue(x, null)).ToList();
-            else if (split[0].Equals("MainAuthor"))
+            else if (split[0].Equals("MainAuthor") && split[1].Equals("Name"))
                 data = data.OrderBy(x => x.MainAuthor.Name).ToList();
+            else if (split[0].Equals("MainAuthor") && split[1].Equals("Surname"))
+                data = data.OrderBy(x => x.MainAuthor.Surname).ToList();
             CurrentSortColumn = columnName;
             IsSortedAscending = true;
         }
