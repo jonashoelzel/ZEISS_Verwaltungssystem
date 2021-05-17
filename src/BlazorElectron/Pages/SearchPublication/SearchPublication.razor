@@ -48,7 +48,7 @@
         </div>
     </section>
 
-    <table class="table table-striped">
+    <table class="table table-striped table-hover">
         <thead class="thead-dark">
             <tr>
                 <th>
@@ -80,11 +80,11 @@
                     <td>@publication.MainAuthor.Surname</td>
                     <td>@publication.DateOfRelease.ToString("dd.MM.yyyy")</td>
                     <td>
-                        <button type="button" class="btn-primary">
+                        <button type="button" class="btn-primary" disabled>
                             Bearbeiten
                             <span class="fas fa-pencil-alt"></span>
                         </button>
-                        <button type="button" class="btn-primary">
+                        <button type="button" class="btn-primary" disabled>
                             Löschen
                             <span class="fas fa-trash-alt"></span>
                         </button>
@@ -167,11 +167,11 @@
         }
         if (IsSortedAscending)
         {
-            return "fa-sort-up";
+            return "fas fa-sort-amount-up";
         }
         else
         {
-            return "fa-sort-down";
+            return "fas fa-sort-amount-down";
         }
     }
 

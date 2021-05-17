@@ -49,7 +49,9 @@
 
     <button class="addPub" type="submit" @onclick="() => buttonType = ButtonType.save">Veröffentlichung hinzufügen</button>
     <button class="back" type="button" @onclick="NavigateToPreviousScreen">Pflichtangaben</button>
-    <button class="continue" type="submit" @onclick="() => buttonType = ButtonType.next">Weiter</button>
+    <button class="continue" type="submit" @onclick="() => buttonType = ButtonType.next">
+        <span class="fas fa-arrow-circle-right fa-3x"></span>
+    </button>
 </EditForm>
 
 @code
