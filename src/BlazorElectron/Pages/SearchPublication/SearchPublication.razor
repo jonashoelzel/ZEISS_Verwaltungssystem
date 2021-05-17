@@ -178,32 +178,27 @@
     // sort the column which was choosen
     private void SortTable(string columnName)
     {
-        if (columnName != CurrentSortColumn)
+        //1 = ASC. -1 = DESC
+        int sortInt = IsSortedAscending ? 1 : -1;
+
+        switch (columnName)
         {
-            var split = columnName.Split('.');
-            if (split.Length < 2)
-                data = data.OrderBy(x => x.GetType().GetProperty(columnName).GetValue(x, null)).ToList();
-            else if (split[0].Equals("MainAuthor"))
-                data = data.OrderBy(x => x.MainAuthor.Name).ToList();
-            CurrentSortColumn = columnName;
-            IsSortedAscending = true;
+            case "WorkingTitle":
+                data.Sort(delegate (PublicationDataSet x, PublicationDataSet y) { return String.Compare(x.WorkingTitle, y.WorkingTitle) * sortInt; });
+                break;
+            case "MainAuthor.Name":
+                data.Sort(delegate (PublicationDataSet x, PublicationDataSet y) { return String.Compare(x.MainAuthor.Name, y.MainAuthor.Name) * sortInt; });
+                break;
+            case "MainAuthor.Surname":
+                data.Sort(delegate (PublicationDataSet x, PublicationDataSet y) { return String.Compare(x.MainAuthor.Surname, y.MainAuthor.Surname) * sortInt; });
+                break;
+            case "DateOfRelease":
+                data.Sort(delegate (PublicationDataSet x, PublicationDataSet y) { return DateTime.Compare(x.DateOfRelease, y.DateOfRelease) * sortInt; });
+                break;
+
         }
-        else
-        {
-            if (IsSortedAscending)
-            {
-                var split = columnName.Split('.');
-                if (split.Length < 2)
-                    data = data.OrderByDescending(x => x.GetType().GetProperty(columnName).GetValue(x, null)).ToList();
-                else if (split[0].Equals("MainAuthor"))
-                    data = data.OrderByDescending(x => x.MainAuthor.Name).ToList();
-            }
-            else
-            {
-                data = data.OrderBy(x => x.GetType().GetProperty(columnName).GetValue(x, null)).ToList();
-            }
-            IsSortedAscending = !IsSortedAscending;
-        }
+
+        IsSortedAscending = !IsSortedAscending;
     }
 
     private List<PublicationDataSet> helpData;
