@@ -1,15 +1,15 @@
 {
-  "executable": "BlazorElectron",
+  "executable": "Publication Manager",
   "splashscreen": {
     "imageFile": ""
   },
-  "name": "BlazorElectron",
+  "name": "Publication Manager",
   "author": "",
   "singleInstance": false,
   "environment": "Production",
   "build": {
-    "appId": "com.BlazorElectron.app",
-    "productName": "BlazorElectron",
+    "appId": "com.PublicationManager.app",
+    "productName": "Publication Manager",
     "copyright": "Copyright © 2020",
     "buildVersion": "1.0.0",
     "compression": "maximum",
