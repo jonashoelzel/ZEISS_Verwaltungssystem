@@ -31,6 +31,13 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Write
         /// <returns>
         /// Number of deleted rows.
         /// </returns>
+        /// <exception cref="FileNotFoundException">Thrown if File was not found</exception>
+        /// <exception cref="UnauthorizedAccessException">Thrown when misssing permission to access File</exception>
+        /// <exception cref="PathTooLongException">Thrown when File-path is too long and path cannot be conveted</exception>
+        /// <exception cref="ArgumentNullException">Thrown when an Argument was or became Null</exception>
+        /// <exception cref="ArgumentException">Thrown when an entred argument was or became invalid</exception>
+        /// <exception cref="InvalidCastException">Thrown when an entered value had an unexpected data-type</exception>
+        /// <exception cref="OpenXmlPackageException">Thrown when exception occurred in the OpenXML-Package</exception>
         public static int Delete(string filepath, string worksheetName, Dictionary<string, object> whereColumnNamesAndConditions)
         {
             SpreadsheetDocument spreadsheetDocument = OpenSpreadsheetDocument(filepath, worksheetName, out SheetData sheetData);
