@@ -1,0 +1,116 @@
+= ExcelIO Developer Documentation
+
+
+== OpenXML/Excel - Technical Background
+
+It is important to note that Microsoft Excel (xlsx) is not fully compatible with the OpenXML specification.
+But the customer requested to work with a Microsoft Excel file.
+That's why we needed to find some workarounds, so that the OpenXML Spreadsheet acts as an reugular Excel File.
+
+=== Examples of Differences
+
+==== Write/Read Dates
+
+===== Writing Dates
+
+OpenXML:
+[source]
+--
+//Normal way. Does NOT work for xlsx (!)
+string strdate = objdate.ToOADate().ToString();
+cell.DataType = CellValues.Date;
+cell.CellValue = new CellValue(strdate);
+--
+
+Normally we would use the cell.DataType to mark the cell as date, but MS Excel does not support this DataType of OpenXML.
+Also note, because OpenXML is Open Source it uses the UNIX DateTime-Format, that's why we use OADate.
+
+MS Excel:
+[source]
+--
+//"StyleIndex" is "1", because we added a new stylesheet (index 0 would be default) with "NumberFormatId=14"
+//is in the 2nd item of 'CellFormats' array.
+
+cell.DataType = new EnumValue<CellValues>(CellValues.Number);
+cell.StyleIndex = 1;
+cell.CellValue = new CellValue(objdate.ToOADate().ToString(CultureInfo.InvariantCulture));
+--
+
+In MS Excel we need to create a Stylesheet that contains a cell formatting that MS Excel does interpret as DateTime-Format.
+Excel uses the NumberFormatID=14 for regular DateTime-Formats.
+Because we created one Stylesheet, this Stylesheet is at StyleIndex=1.
+
+[source]
+--
+// Add minimal Stylesheet
+var stylesPart = spreadsheetDocument.WorkbookPart.AddNewPart<WorkbookStylesPart>();
+stylesPart.Stylesheet = new Stylesheet
+{
+    Fonts = new Fonts(new Font()),
+    Fills = new Fills(new Fill()),
+    Borders = new Borders(new Border()),
+    CellStyleFormats = new CellStyleFormats(new CellFormat()),
+    CellFormats =
+        new CellFormats(
+            new CellFormat(),
+            //This Style is for dates in xlsx (Excel) files
+            //To use it call StyleIndex=1
+            new CellFormat
+            {
+                NumberFormatId = 14,
+                ApplyNumberFormat = true
+            })
+};
+--
+
+Because we need a Stylesheet with NumberFormatID that MS Excel uses to interpret formats we create a minimal Stylesheet with no style (design).
+Excel uses the NumberFormatID=14 for regular DateTime-Formats.
+
+
+==== Reading Dates
+
+OpenXML:
+[source]
+--
+//Normal way in OpenXML. Does NOT work for xlsx (!)
+if (cell.DataType is not null && cell.DataType == CellValues.Date)
+{
+    if (!String.IsNullOrEmpty(cell?.CellValue?.Text))
+    {
+        //Make sure that the double is converted into the correct format (with '.' instead of ',')
+        if (double.TryParse(cell.CellValue.Text, NumberStyles.Float, CultureInfo.InvariantCulture, out double dateTimeDouble))
+        {
+            return DateTime.FromOADate(dateTimeDouble);
+        }
+    }
+}
+--
+
+In OpenXML, you would only check the cell.DataType and then convert the value from an OADate to the normal DateTime.
+But Excel cannot read the CellValues.Date and the entry wouldn't be shown in the Excel as Date (it'll only show a huge number (because Excel does not format to date)).
+
+MS Excel:
+[source]
+--
+//Check if StyleIndex is a Date Format
+if (Int32.TryParse(cell.StyleIndex?.InnerText, out int styleIndex))
+{
+    //Standard date format
+    if (styleIndex >= 12 && styleIndex <= 22
+        //Formatted date format
+        || styleIndex >= 165 && styleIndex <= 180
+        //Number formats that can be interpreted as a number
+        || styleIndex >= 1 && styleIndex <= 5)
+    {
+        //Make sure that the double is converted into the correct format (with '.' instead of ',')
+        if (double.TryParse(cell.CellValue.Text, NumberStyles.Float, CultureInfo.InvariantCulture, out double dateTimeDouble))
+        {
+            return DateTime.FromOADate(dateTimeDouble);
+        }
+    }
+}
+--
+
+In MS Excel, we read the Stylesheet and interpret it as date, because other DataTypes have no Stylesheet (StyleIndex=0).
+After that, we convert again the OADate into DateTime.
+With the Stylesheet, Excel is able to interpret the cell value as Date and you can see the Date in the Excel as Date.
