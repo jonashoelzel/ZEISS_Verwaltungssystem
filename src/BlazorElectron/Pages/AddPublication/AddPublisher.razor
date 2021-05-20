@@ -20,7 +20,7 @@
                 </div>
                 <div class="modal-body">
                     <p>Die Veröffentlichung wurde der Liste hinzugefügt.</p>
-                    <button type="submit" id="backToLandingPage" class="form-control" @onclick="@NavigateToLandingPage">Zurück zur Startseite</button>
+                    <button type="submit" id="backToLandingPage" class="form-control primaryButton" @onclick="@NavigateToLandingPage">Zurück zur Startseite</button>
                 </div>
             </div>
         </div>
@@ -36,17 +36,17 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h3 class="modal-title w-100 text-center"> Verlag hinzufügen</h3>
-                        <button type="reset" id="cancelButton" @onclick="@Cancel">
+                        <button type="reset" class="cancelButton" @onclick="@Cancel">
                             <span class="fas fa-times fa-2x"></span>
                         </button>
                     </div>
-                    <div class="author-default">
+                    <div class="modal-object">
                         <label for="publicationTypeName">Name des Verlags</label>
                         <InputText class="form-control" id="publicationTypeName" @bind-Value="newPublisher.Name" /><br />
                         <ValidationMessage For="@(() => newPublisher.Name)" />
                     </div>
                     <div class="modal-body">
-                        <button type="submit" id="ButtonInPopup" class="form-control">Neuen Verlag hinzufügen</button>
+                        <button type="submit" id="addButtonInPopup" class="form-control">Hinzufügen</button>
                     </div>
                 </div>
             </div>
@@ -54,12 +54,12 @@
     </EditForm>
 }
 
-<section class="publisher panel-default">
+<section class="panel-default">
     <header class="panel-heading">
         <h4 class="panel-title">Verlag des Mediums</h4>
     </header>
     <div class="panel-body">
-        <div class="author-default">
+        <div class="panel-object">
             <select class="form-control" @onchange="SetPublisher">
                 @foreach (var publisher in publishers)
                 {
@@ -67,17 +67,17 @@
                 }
             </select>
         </div>
-        <div class="CenteredButton">
-            <button class="AddNewAuthor" @onclick="@OpenAddPopup">Neuen Verlag hinzufügen</button>
+        <div class="centeredButton">
+            <button class="primaryButton addNewField" @onclick="@OpenAddPopup">Neuen Verlag hinzufügen</button>
         </div>
     </div>
 </section>
 
-<button class="addPub" type="button" @onclick="Save">Veröffentlichung hinzufügen</button>
-<button class="back" type="button" @onclick="NavigateToPreviousScreen">
+<button class="primaryButton addPub" type="button" @onclick="Save">Veröffentlichung hinzufügen</button>
+<button class="primaryButton back" type="button" @onclick="NavigateToPreviousScreen">
     <span class="fas fa-arrow-circle-left fa-3x"></span>
 </button>
-<button class="continue" type="button" @onclick="NavigateToNextScreen">
+<button class="primaryButton continue" type="button" @onclick="NavigateToNextScreen">
     <span class="fas fa-arrow-circle-right fa-3x"></span>
 </button>
 

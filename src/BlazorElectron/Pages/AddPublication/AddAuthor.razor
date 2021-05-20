@@ -20,22 +20,22 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h3 class="modal-title w-100 text-center">Autor hinzufügen</h3>
-                        <button type="reset" id="cancelButton" @onclick="@CancelAddPopup">
+                        <button type="reset" class="cancelButton" @onclick="@CancelAddPopup">
                             <span class="fas fa-times fa-2x"></span>
                         </button>
                     </div>
-                    <div class="author-default">
+                    <div class="modal-object">
                         <label for="firstname">Vorname</label>
                         <InputText class="form-control" id="firstname" @bind-Value="NewAuthor.Name" /><br />
                         <ValidationMessage For="@(() => NewAuthor.Name)" />
                     </div>
-                    <div class="author-default">
+                    <div class="modal-object">
                         <label for="surname">Nachname</label>
                         <InputText class="form-control" id="surname" @bind-Value="NewAuthor.Surname" /><br />
                         <ValidationMessage For="@(() => NewAuthor.Surname)" />
                     </div>
                     <div class="modal-body">
-                        <button type="submit" id="ButtonInPopup" class="form-control">Neuen Autor hinzufügen</button>
+                        <button type="submit" id="addButtonInPopup" class="form-control">Hinzufügen</button>
                     </div>
                 </div>
             </div>
@@ -55,37 +55,36 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <button type="submit" id="ButtonInPopup" class="form-control" @onclick="@OpenAddPopup">Neuen Autor hinzufügen</button>
+                    <button type="submit" id="addButtonInPopup" class="form-control" @onclick="@OpenAddPopup">Neuen Autor hinzufügen</button>
                 </div>
             </div>
         </div>
     </div>
 }
 
-<section class="author panel-default">
+<section class="panel-default">
     <header class="panel-heading">
         <h4 class="panel-title">Autor</h4>
     </header>
-    <div class="author panel-body">
-        <div class="author-default">
+    <div class="panel-body">
+        <div class="panel-object">
             <select class="form-control" @onchange="SetAuthor">
                 @foreach (var author in authors)
                 {
                     <option value="@author.ID">@string.Concat(author.Name, " ", author.Surname)</option>
                 }
             </select>
-
         </div>
-        <div class="CenteredButton">
-            <button class="AddNewAuthor" @onclick="@OpenAddPopup">Neuen Autor hinzufügen</button>
+        <div class="centeredButton">
+            <button class="primaryButton addNewField" @onclick="@OpenAddPopup">Neuen Autor hinzufügen</button>
         </div>
     </div>
 </section>
 
-<button class="back" type="button" @onclick="NavigateToPreviousScreen">
+<button class="primaryButton back" type="button" @onclick="NavigateToPreviousScreen">
     <span class="fas fa-arrow-circle-left fa-3x"></span>
 </button>
-<button class="continue" type="button" @onclick="@NavigateToNextScreen">
+<button class="primaryButton continue" type="button" @onclick="@NavigateToNextScreen">
     <span class="fas fa-arrow-circle-right fa-3x"></span>
 </button>
 

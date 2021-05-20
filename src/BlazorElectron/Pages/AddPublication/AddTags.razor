@@ -18,7 +18,7 @@
                 </div>
                 <div class="modal-body">
                     <p>Die Veröffentlichung wurde der Liste hinzugefügt.</p>
-                    <button type="submit" id="backToLandingPage" class="form-control" @onclick="@NavigateToLandingPage">Zurück zur Startseite</button>
+                    <button type="submit" id="backToLandingPage" class="form-control primaryButton" @onclick="@NavigateToLandingPage">Zurück zur Startseite</button>
                 </div>
             </div>
         </div>
@@ -27,11 +27,11 @@
 
 <EditForm Model="@Publication">
 
-    <section class="tags panel-default">
+    <section class="panel-default">
         <header class="panel-heading">
             <h4 class="panel-title">Tags</h4>
         </header>
-        <div class="tags panel-body">
+        <div class="panel-body">
             @if (Tags != null)
             {
                 foreach (var tag in Tags)
@@ -45,8 +45,8 @@
         </div>
     </section>
 
-    <button class="addPub" type="submit" @onclick="Save">Veröffentlichung hinzufügen</button>
-    <button class="back" type="button" @onclick="NavigateToPreviousScreen">
+    <button class="primaryButton addPub" type="submit" @onclick="Save">Veröffentlichung hinzufügen</button>
+    <button class="primaryButton back" type="button" @onclick="NavigateToPreviousScreen">
         <span class="fas fa-arrow-circle-left fa-3x"></span>
     </button>
 

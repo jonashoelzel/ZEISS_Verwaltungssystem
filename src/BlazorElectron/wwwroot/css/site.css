@@ -1,10 +1,11 @@
 @import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
+/* Hintergrund*/
 body {
     background-color: #e5e5e5;
 }
 
-/*Bild ZEISS Schriftzug*/
+/* ZEISS Logo */
 .logo {             
     display: block;
     margin-left: auto;
@@ -13,8 +14,7 @@ body {
     height: auto;
 }
 
-/*Weiter-Button*/
-.continue {
+.primaryButton {
     border: 3px groove #565656;
     border-radius: 15px;
     background-color: #2f2e2e;
@@ -25,6 +25,10 @@ body {
     text-align: center;
     line-height: 20px;
     position: absolute;
+}
+
+/* Weiter-Button */
+.continue {
     bottom: 7%;
     right: 7%;
     width: 20%;
@@ -33,18 +37,8 @@ body {
     min-height: 50px;
 }
 
-/*Zurück-Button*/
+/* Zurück-Button */
 .back {
-    border: 3px groove #565656;
-    border-radius: 15px;
-    background-color: #2f2e2e;
-    color: #ffffff;
-    font-family: Arial;
-    font-size: 150%;
-    font-weight: bold;
-    text-align: center;
-    line-height: 20px;
-    position: absolute;
     bottom: 7%;
     left: 7%;
     width: 20%;
@@ -53,18 +47,8 @@ body {
     min-height: 50px;
 }
 
-/*Veröffentlichung hinzufügen-Button(Speichern)*/
+/* Veröffentlichung hinzufügen-Button */
 .addPub {
-    border: 3px groove #565656;
-    border-radius: 15px;
-    background-color: #2f2e2e;
-    color: #ffffff;
-    font-family: Consolas;
-    font-size: 150%;
-    font-weight: bold;
-    text-align: center;
-    line-height: 20px;
-    position: absolute;
     top: 26%;
     right: 3%;
     width: 30%;
@@ -73,18 +57,58 @@ body {
     min-height: 50px;
 }
 
+/* Zurück zur Startseite-Button */
 #backToLandingPage {
+    position: static;
+}
+
+/* Zentrierter Button */
+.centeredButton {
+    text-align: center;
+}
+
+/* Neuen ... hinzufügen-Button*/
+.addNewField {
+    position: static;
+    font-size: 100%;
+    font-weight: normal;
+    width: 40%;
+    height: 120%;
+    min-width: 170px;
+    padding: 2%;
+}
+
+/* Abbrechen-Button */
+.cancelButton {
+    border: none;
+    color: #343a40;
+    background: none;
+    position: absolute;
+    padding: 0;
+    top: 0px;
+    right: 1px;
+}
+
+/* Hinzufügen-Button*/
+#addButtonInPopup {
     border: 3px groove #565656;
-    border-radius: 20px;
+    border-radius: 15px;
     background-color: #2f2e2e;
     color: #ffffff;
     font-family: Arial;
-    font-size: 150%;
+    font-size: 120%;
     font-weight: bold;
     text-align: center;
     line-height: 20px;
-} 
+    min-height: 50px;
+}
 
+/* "+"-Button */
+.landingPageAddPublication {
+    position: absolute;
+    right: 5%;
+}
+/* Panel */
 .panel-title {
     font-size: 150%;
     font-weight: bold;
@@ -105,30 +129,11 @@ body {
     padding: 4%;
 }
 
-input[type=text] {
-    width: 75%;
-    margin-left: 5%;
-}
-
-/*Autor Panel*/
-.author-default {
+.panel-object, .modal-object {
     margin: 3%;
 }
 
-/*Beschreibung panel*/
-.description-default {
-    margin: 3%;
-}
-
-#description {
-    resize: none;
-}
-
-.form-check.tags {
-    margin: 0 auto;
-}
-
-/*Popup-Fenster "Erfolgreich hinzugefügte Veröffentlichung"*/
+/* Popup-Fenster */
 .modal {
     display: block;
     font-family: Arial;
@@ -151,14 +156,9 @@ input[type=text] {
     margin: 0 5%;
 }
 
-/* Validierung */
-.validation-message {
-    color: red;
-    font-weight: bold;
-}
-
+/* Suchtext Leiste */
 .search-default {
-    margin-top: 0.5%;
+    margin: 0.5% 5%;
 }
 
 .filterSection {
@@ -170,60 +170,13 @@ input[type=text] {
     width: 30%;
 }
 
-.table {
-    width: 90%;
-    margin: 0 auto;
-}
-
 .sort-link {
     cursor: pointer;
 }
 
-.CenteredButton {
-    text-align: center;
-}
-
-.AddNewAuthor {
-    border: 3px groove #565656;
-    border-radius: 15px;
-    background-color: #2f2e2e;
-    color: #ffffff;
-    font-family: Arial;
-    font-weight: bold;
-    text-align: center;
-    line-height: 20px;
-    width: 40%;
-    height: 120%;
-    min-width: 170px;
-    padding: 2%;
-}
-
-#cancelButton {
-    color: #343a40;
-    border: none;
-    background: none;
-    padding: 0;
-    position: absolute;
-    top: 0px;
-    right: 1px; 
-}
-
-#ButtonInPopup {
-    border: 3px groove #565656;
-    border-radius: 20px;
-    background-color: #2f2e2e;
-    color: #ffffff;
-    font-family: Arial;
-    font-size: 120%;
-    font-weight: bold;
-    text-align: center;
-    line-height: 20px;
-    min-height: 50px;
-}
-
-.landingPageAddPublication {
-    position:absolute;
-    right: 5%;
+.table {
+    width: 90%;
+    margin: 0 auto;
 }
 
 /* scrollable table */
@@ -235,16 +188,31 @@ tbody {
 }
 
 thead, tbody tr {
-        display: table;
-        width: 100%;
-        table-layout: fixed;
+    display: table;
+    width: 100%;
+    table-layout: fixed;
 }
 
 thead {
     width: calc( 100% - 1em)
 }
 
-/*drin lassen*/
+.form-check.tags {
+    margin: 0 auto;
+}
+
+/* Textbox fixierte Größe*/
+#textBox {
+    resize: none;
+}
+
+/* Validierung */
+.validation-message {
+    color: red;
+    font-weight: bold;
+}
+
+/* error message */
 #blazor-error-ui {
     background: lightyellow;
     bottom: 0;

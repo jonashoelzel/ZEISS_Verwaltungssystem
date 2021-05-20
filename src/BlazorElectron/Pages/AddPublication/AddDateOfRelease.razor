@@ -4,14 +4,13 @@
 @inject NavigationManager NavigationManager
 @inject PublicationDataSetModel Publication
 
-<img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg"
-     class="logo" />
+<img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg" class="logo" />
 
 <EditForm Model="@Publication" OnInvalidSubmit="@NavigateToNextScreen" OnValidSubmit="@NavigateToNextScreen">
     
     <DataAnnotationsValidator />
 
-    <section class="DateOfRelease panel-default">
+    <section class="panel-default">
         <header class="panel-heading">
             <h4 class="panel-title">Datum der Veröffentlichung</h4>
         </header>
@@ -20,10 +19,10 @@
         </div>
     </section>
 
-    <button class="back" type="button" @onclick="NavigateToPreviousScreen">
+    <button class="primaryButton back" type="button" @onclick="NavigateToPreviousScreen">
         <span class="fas fa-arrow-circle-left fa-3x"></span>
     </button>
-    <button class="continue" type="submit">
+    <button class="primaryButton continue" type="submit">
         <span class="fas fa-arrow-circle-right fa-3x"></span>
     </button>
 
