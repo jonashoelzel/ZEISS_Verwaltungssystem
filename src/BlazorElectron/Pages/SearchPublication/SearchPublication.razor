@@ -80,12 +80,10 @@
                     <td>@publication.MainAuthor.Surname</td>
                     <td>@publication.DateOfRelease.ToString("dd.MM.yyyy")</td>
                     <td>
-                        <button type="button" class="btn-primary" disabled>
-                            Bearbeiten
+                        <button type="button" class="btn" disabled>
                             <span class="fas fa-pencil-alt"></span>
                         </button>
-                        <button type="button" class="btn-primary" disabled>
-                            Löschen
+                        <button type="button" class="btn" @onclick="@(() => Delete(publication.ID))">
                             <span class="fas fa-trash-alt"></span>
                         </button>
                     </td>
@@ -94,7 +92,7 @@
         </tbody>
     </table>
     <div class="landingPageAddPublication">
-        <button type="button" class="btn blueIcon" @onclick="NavigateToAddTitleComp">
+        <button type="button" class="btn" @onclick="NavigateToAddTitleComp">
             <span class="fas fa-plus-circle fa-5x"></span>
         </button>
     </div>
@@ -221,5 +219,10 @@
         {
             data = helpData.Where(f => f.Division.Name.Equals(SelectedDivsion)).ToList();
         }
+    }
+
+    private void Delete(Guid? PubID)
+    {
+        data.Remove(data.Where(Publication => Publication.ID == PubID).First());
     }
 }

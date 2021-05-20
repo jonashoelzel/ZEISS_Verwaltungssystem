@@ -24,11 +24,11 @@ body {
     font-weight: bold;
     text-align: center;
     line-height: 20px;
-    position: absolute;
 }
 
 /* Weiter-Button */
 .continue {
+    position: absolute;
     bottom: 7%;
     right: 7%;
     width: 20%;
@@ -39,6 +39,7 @@ body {
 
 /* Zurück-Button */
 .back {
+    position: absolute;
     bottom: 7%;
     left: 7%;
     width: 20%;
@@ -49,17 +50,13 @@ body {
 
 /* Veröffentlichung hinzufügen-Button */
 .addPub {
+    position: absolute;
     top: 26%;
     right: 3%;
     width: 30%;
     height: 8%;
     min-width: 225px;
     min-height: 50px;
-}
-
-/* Zurück zur Startseite-Button */
-#backToLandingPage {
-    position: static;
 }
 
 /* Zentrierter Button */
@@ -187,11 +184,11 @@ tbody {
     width: 100%;
 }
 
-thead, tbody tr {
-    display: table;
-    width: 100%;
-    table-layout: fixed;
-}
+    thead, tbody tr {
+        display: table;
+        width: 100%;
+        table-layout: fixed;
+    }
 
 thead {
     width: calc( 100% - 1em)
