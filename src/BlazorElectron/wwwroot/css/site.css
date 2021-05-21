@@ -58,10 +58,10 @@ body {
     min-height: 50px;
 }
 
-/* Veröffentlichung hinzufügen-Button */
+/* Veröffentlichung hinzufügen/speichern-Button */
 .addPub {
     position: absolute;
-    top: 26%;
+    top: 24%;
     right: 3%;
     width: 30%;
     height: 8%;
@@ -110,11 +110,18 @@ body {
     min-height: 50px;
 }
 
+/* Excel-Liste Eingabe*/
+.landingPageFileInput {
+    margin: 1% 5%;
+}
+
 /* "+"-Button */
 .landingPageAddPublication {
     position: absolute;
     right: 5%;
+    margin-top: 2%;
 }
+
 /* Panel */
 .panel-title {
     font-size: 150%;

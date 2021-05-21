@@ -91,10 +91,16 @@
             }
         </tbody>
     </table>
-    <div class="landingPageAddPublication">
-        <button type="button" class="btn" @onclick="NavigateToAddTitleComp">
-            <span class="fas fa-plus-circle fa-5x"></span>
-        </button>
+    <div class="form-inline">
+        <div class="landingPageFileInput">
+           <InputFile OnChange="@FilePath"></InputFile>
+       </div>
+
+        <div class="landingPageAddPublication">
+            <button type="button" class="btn" @onclick="NavigateToAddTitleComp">
+                <span class="fas fa-plus-circle fa-5x"></span>
+            </button>
+        </div>
     </div>
 </EditForm>
 
@@ -102,6 +108,8 @@
 {
     private List<PublicationDataSet> data;
     private List<Division> divisions;
+
+    private void FilePath() { }
 
     void fetchData()
     {
