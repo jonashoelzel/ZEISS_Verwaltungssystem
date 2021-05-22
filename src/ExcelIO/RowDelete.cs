@@ -14,6 +14,30 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Write
     {
         //whereColumnNamesAndConditions: <columnName, condition>
         //updateColumnAndNewValue: <columnName, newValue>
+
+        /// <summary>
+        /// Deletes all rows that do match all the conditions in (parameter) 'whereColumnNamesAndValues'.
+        /// </summary>
+        /// <param name="filepath">
+        /// Relative/absolute filepath to a *.xlsx file where the rows should be deleted.
+        /// </param>
+        /// <param name="worksheetName">
+        /// Name of the worksheet in the *.xlsx file where the rows should be deleted.
+        /// </param>
+        /// <param name="whereColumnNamesAndConditions">
+        /// Every KeyValuePair represents one condition, where the key is the (so called) 'header-column' 
+        /// and the value is the condition a cell should match (the cell should match data-type and value) and that is below the (so called) 'header-column' in the key.
+        /// </param>
+        /// <returns>
+        /// Number of deleted rows.
+        /// </returns>
+        /// <exception cref="FileNotFoundException">Thrown if File was not found</exception>
+        /// <exception cref="UnauthorizedAccessException">Thrown when misssing permission to access File</exception>
+        /// <exception cref="PathTooLongException">Thrown when File-path is too long and path cannot be conveted</exception>
+        /// <exception cref="ArgumentNullException">Thrown when an Argument was or became Null</exception>
+        /// <exception cref="ArgumentException">Thrown when an entred argument was or became invalid</exception>
+        /// <exception cref="InvalidCastException">Thrown when an entered value had an unexpected data-type</exception>
+        /// <exception cref="OpenXmlPackageException">Thrown when exception occurred in the OpenXML-Package</exception>
         public static int Delete(string filepath, string worksheetName, Dictionary<string, object> whereColumnNamesAndConditions)
         {
             SpreadsheetDocument spreadsheetDocument = OpenSpreadsheetDocument(filepath, worksheetName, out SheetData sheetData);

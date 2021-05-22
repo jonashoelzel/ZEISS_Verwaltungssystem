@@ -231,6 +231,21 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
         #endregion
 
         #region CheckExists
+        /// <summary>
+        /// Check if a worksheet does exist in a spreadsheet and optional it returns the sheet(s) in (parameter) 'sheetsIEnum'.
+        /// </summary>
+        /// <param name="spreadsheetDocument">
+        /// Spreadsheet where to search for the worksheet.
+        /// </param>
+        /// <param name="worksheetName">
+        /// Name of the worksheet that should be searched.
+        /// </param>
+        /// <param name="sheetsIEnum">
+        /// This returns the sheet(s) that do have the name of (parameter) 'worksheetName'.
+        /// </param>
+        /// <returns>
+        /// True, if worksheet with (parameter) 'worksheetName' does exist, otherwise False.
+        /// </returns>
         public static bool WorksheetExists(ref SpreadsheetDocument spreadsheetDocument, string worksheetName, out IEnumerable<Sheet> sheetsIEnum)
         {
             //Search for specific sheet
@@ -239,6 +254,25 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
             return sheetsIEnum.Any();
         }
 
+        /// <summary>
+        /// Check if a worksheet does exist in a spreadsheet.
+        /// </summary>
+        /// <param name="filepath">
+        /// Relative/absolute filepath to a *.xlsx file that should be opened.
+        /// </param>
+        /// <param name="worksheetName">
+        /// Name of the worksheet that should be searched.
+        /// </param>
+        /// <returns>
+        /// True, if worksheet with (parameter) 'worksheetName' does exist, otherwise False.
+        /// </returns>
+        /// <exception cref="FileNotFoundException">Thrown if File was not found</exception>
+        /// <exception cref="UnauthorizedAccessException">Thrown when misssing permission to access File</exception>
+        /// <exception cref="PathTooLongException">Thrown when File-path is too long and path cannot be conveted</exception>
+        /// <exception cref="ArgumentNullException">Thrown when an Argument was or became Null</exception>
+        /// <exception cref="ArgumentException">Thrown when an entred argument was or became invalid</exception>
+        /// <exception cref="InvalidCastException">Thrown when an entered value had an unexpected data-type</exception>
+        /// <exception cref="OpenXmlPackageException">Thrown when exception occurred in the OpenXML-Package</exception>
         public static bool WorksheetExists(ref string filepath, string worksheetName)
         {
             if (!CheckPathExist(ref filepath))
@@ -258,7 +292,18 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
         #endregion
 
         #region CheckPaths
-        //Does check, if the filepath does exist
+        /// <summary>
+        /// Check if a path at the specified (parameter) 'filepath' does exist. 
+        /// If the filepath is too long it'll try to access directly to the OS-File-System.
+        /// </summary>
+        /// <param name="filepath">
+        /// The path to the file that should be searched.
+        /// If the filepath is too long it'll try to access directly to the OS-File-System to search for the file.
+        /// </param>
+        /// <returns>
+        /// True, if the file exists, otherwise false.
+        /// </returns>
+        /// <exception cref="PathTooLongException">Thrown when File-path is too long and path cannot be conveted</exception>
         public static bool CheckPathExist(ref string filepath)
         {
             CheckAndConvertLongFilePath(ref filepath);
@@ -437,7 +482,29 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
             return sheetId;
         }
 
-        //KeyValuePair<columnHeaderName, id> -> columnHeaderName is name of column in the header
+        /// <summary>
+        /// Checks if a specified ID does exist in a worksheet of the spreadsheet.
+        /// </summary>
+        /// <param name="filepath">
+        /// Relative/absolute filepath to a *.xlsx file that should be opened.
+        /// </param>
+        /// <param name="worksheetName">
+        /// Name of the worksheet that should be opened.
+        /// </param>
+        /// <param name="id">
+        /// The key is the (so called) 'header-column' 
+        /// and the value is the condition a cell should match (the cell should match data-type and value) and that is below the (so called) 'header-column' in the key.
+        /// </param>
+        /// <returns>
+        /// True, if the value in (parameter) 'id' was found below the (so called) 'header-column' below the key of (parameter) 'id'.
+        /// </returns>
+        /// <exception cref="FileNotFoundException">Thrown if File was not found</exception>
+        /// <exception cref="UnauthorizedAccessException">Thrown when misssing permission to access File</exception>
+        /// <exception cref="PathTooLongException">Thrown when File-path is too long and path cannot be conveted</exception>
+        /// <exception cref="ArgumentNullException">Thrown when an Argument was or became Null</exception>
+        /// <exception cref="ArgumentException">Thrown when an entred argument was or became invalid</exception>
+        /// <exception cref="InvalidCastException">Thrown when an entered value had an unexpected data-type</exception>
+        /// <exception cref="OpenXmlPackageException">Thrown when exception occurred in the OpenXML-Package</exception>
         public static bool IsIDOfWorksheet(string filepath, string worksheetName, KeyValuePair<string, object> id)
         {
             SpreadsheetDocument spreadsheetDocument = OpenSpreadsheetDocument(filepath, worksheetName, out SheetData sheetData, false, false);
@@ -472,6 +539,28 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
         }
 
 
+        /// <summary>
+        /// Check if a row with all of the entered (so called) 'header-columns' do exist in the worksheet.
+        /// </summary>
+        /// <param name="filepath">
+        /// Relative/absolute filepath to a *.xlsx file that should be opened.
+        /// </param>
+        /// <param name="worksheetName">
+        /// Name of the worksheet that should be opened.
+        /// </param>
+        /// <param name="headerColumns">
+        /// Every entry represents one (so called) 'header-column' that should be searched.
+        /// </param>
+        /// <returns>
+        /// True, if all (so called) 'header-columns' where found in the same row, otherwise false.
+        /// </returns>
+        /// <exception cref="FileNotFoundException">Thrown if File was not found</exception>
+        /// <exception cref="UnauthorizedAccessException">Thrown when misssing permission to access File</exception>
+        /// <exception cref="PathTooLongException">Thrown when File-path is too long and path cannot be conveted</exception>
+        /// <exception cref="ArgumentNullException">Thrown when an Argument was or became Null</exception>
+        /// <exception cref="ArgumentException">Thrown when an entred argument was or became invalid</exception>
+        /// <exception cref="InvalidCastException">Thrown when an entered value had an unexpected data-type</exception>
+        /// <exception cref="OpenXmlPackageException">Thrown when exception occurred in the OpenXML-Package</exception>
         public static bool CheckHeaderColumnsExist(string filepath, string worksheetName, List<object> headerColumns)
         {
             SpreadsheetDocument spreadsheetDocument = OpenSpreadsheetDocument(filepath, worksheetName, out SheetData sheetData, false, false);
