@@ -12,12 +12,34 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Write
 {
     public class RowUpdate : WriteExcel
     {
-        //whereColumnNamesAndConditions: <columnName, condition>
-        //updateColumnAndNewValue: <columnName, newValue>
-        // whereColumnNamesAndConditions.Add("Publication_ID", "134958345653450");
-        // updateColumnAndNewValues.Add("Author_ID", "2345369838");
-        // updateColumnAndNewValues.Add("Tag_ID", "2345369838");
-        public static int Update(string filepath, string worksheetName, Dictionary<string, object> whereColumnNamesAndConditions, Dictionary<string, object> updateColumnAndNewValues)
+        /// <summary>
+        /// Updates all rows with the entered values in (parameter) 'updateColumnsAndNewValues' that do match all the conditions in (parameter) 'whereColumnNamesAndConditions).
+        /// </summary>
+        /// <param name="filepath">
+        /// Relative/absolute filepath to a *.xlsx file where the rows should be updated.
+        /// </param>
+        /// <param name="worksheetName">
+        /// Name of the worksheet in the *.xlsx file where the rows should be updated.
+        /// </param>
+        /// <param name="whereColumnNamesAndConditions">
+        /// Every KeyValuePair represents one condition, where the key is the (so called) 'header-column' 
+        /// and the value is the condition a cell should match (the cell should match data-type and value) and that is below the (so called) 'header-column' in the key.
+        /// </param>
+        /// <param name="updateColumnsAndNewValues">
+        /// Every KeyValuePair represents one cell with value, where the key is the (so called) 'header-column' where the cells that should be updated are below those (so called) 'header-columns'
+        /// and the value is the new value of the cell.
+        /// </param>
+        /// <returns>
+        /// Number of updated rows.
+        /// </returns>
+        /// <exception cref="FileNotFoundException">Thrown if File was not found</exception>
+        /// <exception cref="UnauthorizedAccessException">Thrown when misssing permission to access File</exception>
+        /// <exception cref="PathTooLongException">Thrown when File-path is too long and path cannot be conveted</exception>
+        /// <exception cref="ArgumentNullException">Thrown when an Argument was or became Null</exception>
+        /// <exception cref="ArgumentException">Thrown when an entred argument was or became invalid</exception>
+        /// <exception cref="InvalidCastException">Thrown when an entered value had an unexpected data-type</exception>
+        /// <exception cref="OpenXmlPackageException">Thrown when exception occurred in the OpenXML-Package</exception>
+        public static int Update(string filepath, string worksheetName, Dictionary<string, object> whereColumnNamesAndConditions, Dictionary<string, object> updateColumnsAndNewValues)
         {
             SpreadsheetDocument spreadsheetDocument = OpenSpreadsheetDocument(filepath, worksheetName, out SheetData sheetData);
             //<letterID, condition>
@@ -27,7 +49,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Write
                     "Some of the entered columnNames (Keys) in whereColumnNamesAndConditions might not exist or are misspelled");
 
             //<letterID, newValue>
-            Dictionary<string, object> letterIDsAndNewValue = ConvertColumnNamesAndValuesToLetterIDsAndValues(ref spreadsheetDocument, sheetData, updateColumnAndNewValues);
+            Dictionary<string, object> letterIDsAndNewValue = ConvertColumnNamesAndValuesToLetterIDsAndValues(ref spreadsheetDocument, sheetData, updateColumnsAndNewValues);
             if (!letterIDsAndNewValue.Any())
                 throw new ArgumentException("Unable to find row that matches all names in updateColumnAndNewValues.\n" +
                     "Some of the entered columnNames (Keys) in updateColumnAndNewValues might not exist or are misspelled");
