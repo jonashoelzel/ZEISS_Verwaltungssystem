@@ -1,17 +1,37 @@
 = ExcelIO Developer Documentation
 
+== 0.0.0.0 Table of Contents
 
-== OpenXML/Excel - Technical Background
+* 0.0.0.0 Table of Contents
 
-It is important to note that Microsoft Excel (xlsx) is not fully compatible with the OpenXML specification.
-But the customer requested to work with a Microsoft Excel file.
-That's why we needed to find some workarounds, so that the OpenXML Spreadsheet acts as an reugular Excel File.
+* 1.0.0.0 OpenXML/Excel - Technical Background
+** 1.1.0.0 Examples of Differences
+*** 1.1.1.0 Write/Read Dates
+**** 1.1.1.1 Writing Dates
+**** 1.1.1.2 Reading Dates
 
-=== Examples of Differences
+** 1.2.0.0 Glossary
+*** 1.2.1.0 OpenXML Classes
+*** 1.2.2.0  Used Terms and Definitions
+**** 1.2.2.1 Empty Table Design
+**** 1.2.2.2 Used Table Design
 
-==== Write/Read Dates
+* 2.0.0.0 Code Documentation
+** 2.1.0.0 Public APIs
 
-===== Writing Dates
+
+== 1.0.0.0 OpenXML/Excel - Technical Background
+
+It is important to note that Microsoft Excel (xlsx) is not fully compatible with the OpenXML specification. +
+But the customer requested to work with a Microsoft Excel file. +
+That's why we needed to find some workarounds, so that the OpenXML Spreadsheet acts as an reugular Excel File. +
+
+
+=== 1.1.0.0 Examples of Differences
+
+==== 1.1.1.0 Write/Read Dates
+
+===== 1.1.1.1 Writing Dates
 
 OpenXML:
 [source]
@@ -22,8 +42,8 @@ cell.DataType = CellValues.Date;
 cell.CellValue = new CellValue(strdate);
 --
 
-Normally we would use the cell.DataType to mark the cell as date, but MS Excel does not support this DataType of OpenXML.
-Also note, because OpenXML is Open Source it uses the UNIX DateTime-Format, that's why we use OADate.
+Normally we would use the cell.DataType to mark the cell as date, but MS Excel does not support this DataType of OpenXML. +
+Also note, because OpenXML is Open Source it uses the UNIX DateTime-Format, that's why we use OADate. +
 
 MS Excel:
 [source]
@@ -36,9 +56,9 @@ cell.StyleIndex = 1;
 cell.CellValue = new CellValue(objdate.ToOADate().ToString(CultureInfo.InvariantCulture));
 --
 
-In MS Excel we need to create a Stylesheet that contains a cell formatting that MS Excel does interpret as DateTime-Format.
-Excel uses the NumberFormatID=14 for regular DateTime-Formats.
-Because we created one Stylesheet, this Stylesheet is at StyleIndex=1.
+In MS Excel we need to create a Stylesheet that contains a cell formatting that MS Excel does interpret as DateTime-Format. +
+Excel uses the NumberFormatID=14 for regular DateTime-Formats. +
+Because we created one Stylesheet, this Stylesheet is at StyleIndex=1. +
 
 [source]
 --
@@ -63,11 +83,11 @@ stylesPart.Stylesheet = new Stylesheet
 };
 --
 
-Because we need a Stylesheet with NumberFormatID that MS Excel uses to interpret formats we create a minimal Stylesheet with no style (design).
-Excel uses the NumberFormatID=14 for regular DateTime-Formats.
+Because we need a Stylesheet with NumberFormatID that MS Excel uses to interpret formats we create a minimal Stylesheet with no style (design). +
+Excel uses the NumberFormatID=14 for regular DateTime-Formats. +
 
 
-==== Reading Dates
+==== 1.1.1.2 Reading Dates
 
 OpenXML:
 [source]
@@ -86,8 +106,8 @@ if (cell.DataType is not null && cell.DataType == CellValues.Date)
 }
 --
 
-In OpenXML, you would only check the cell.DataType and then convert the value from an OADate to the normal DateTime.
-But Excel cannot read the CellValues.Date and the entry wouldn't be shown in the Excel as Date (it'll only show a huge number (because Excel does not format to date)).
+In OpenXML, you would only check the cell.DataType and then convert the value from an OADate to the normal DateTime. +
+But Excel cannot read the CellValues.Date and the entry wouldn't be shown in the Excel as Date (it'll only show a huge number (because Excel does not format to date)). +
 
 MS Excel:
 [source]
@@ -111,6 +131,106 @@ if (Int32.TryParse(cell.StyleIndex?.InnerText, out int styleIndex))
 }
 --
 
-In MS Excel, we read the Stylesheet and interpret it as date, because other DataTypes have no Stylesheet (StyleIndex=0).
-After that, we convert again the OADate into DateTime.
-With the Stylesheet, Excel is able to interpret the cell value as Date and you can see the Date in the Excel as Date.
+In MS Excel, we read the Stylesheet and interpret it as date, because other DataTypes have no Stylesheet (StyleIndex=0). +
+After that, we convert again the OADate into DateTime. +
+With the Stylesheet, Excel is able to interpret the cell value as Date and you can see the Date in the Excel as Date. +
+
+
+=== 1.2.0.0 Glossary
+
+==== 1.2.1.0 OpenXML Classes
+
+|===
+|       Class           |       Alternative Term            |     Definition
+
+| OpenXML               |                                   | Open Source File Format to create spreadsheets, textdocuments, presentations and more.
+
+| SpreadsheetDocument   | Excel File                        | This is a spreadsheet, a file that is mostly used for tables
+
+| WorkBook              |                                   | A WorkBook contains and groups multiple worksheets.
+
+| WorkSheet             | Excel Table                       | This is the document that does contain a table.
+
+| SheetData             | Table (Meta) Data                 | This contains the (meta) data of the worksheets and is used to read and write worksheets.
+
+| SharedStringTable     |                                   | Spreadsheets do use a 'SharedStringTable', where all strings are saved. In the cells are only the references to this table. This is used to reduce storage, because strings with the same content are stored only once.
+
+| StyleSheet            | Theme Templet                     | With this it is possible to create various styles and formats for cells.
+|===
+
+
+==== 1.2.2.0  Used Terms and Definitions
+
+===== 1.2.2.1 Empty Table Design
+
+Before we define and explain some terms, we need to explain some basics how a table is designed. +
+
+|===
+|       |   A   |   B   |   C   |   D   |   E   |   F
+|   1   |       |       |       |       |       |
+|   2   |       |       |       |       |       |
+|   3   |       |       |       |       |       |
+|   4   |       |       |       |       |       |
+|   5   |       |       |       |       |       |
+|   6   |       |       |       |       |       |
+|===
+
+('LetterID') ('LetterIndex')+
+At the top row, there a letters that fo from A to Z and from AZ zo ZZ and so on. +
+We call the the letterIDs (sometimes letterIndex), because these letters are used to identify the columns. +
+
+('RowIndex') + 
+In the first column, there are numbers from 1 to infinity. +
+This is the RowIndex that is used to identify the rows where the cells are. +
+
+('CellReference') +
+Every cell has an CellReference that consists of a letterID and a RowIndex. +
+Examples of Cellrefernences are: +
+"A1", "B2", "C3", "D4", "E5", "F6".
+
+('RefereceCell') +
+Cells can have a 'ReferenceCell', which is the cell above that cell. +
+For example: +
+A cell with CellReference 'C3' has the ReferenceCell 'C2' and the cell with Cellreference 'C2' has the ReferenceCell 'C1'. +
+The cell with CellReference 'C1' has no (null) ReferenceCell. +
+Also cells where the cell above have no values have no (null) ReferenceCell. +
+
+
+===== 1.2.2.2 Used Table Design
+
+Because we need to identify where we want to insert new entries in a specific place or want to read specific entries, we need to use identifier. +
+
+|===
+|       |   A   |   B   |   C   |   D   |   E   |   F
+|   1   |Header1|Header2|Header3|Header4|Header5|Header6
+|   2   |       |       |       |       |       |
+|   3   |       |       |       |       |       |
+|   4   |       |       |       |       |       |
+|   5   |       |       |       |       |       |
+|   6   |       |       |       |       |       |
+|===
+
+('header-columns') ('headers') (Column-names) +
+We use 'headers' or 'header-columns' (sometimes called 'column-names') to identify the places where specific entries are entered. +
+These 'headers' are basically regular cells containing a string we use to group and identify values in the column (like the 'column-name' in a database). +
+When we want to read only specific entries of specific headers, we first seach for the header and get the 'letterID'. +
+
+For example: +
+"Header1" has 'letterID' A, +
+"Header2" has 'letterID' B, +
+"Header3" has 'letterID' C, [...]. +
+
+Then, we can read all rows below and we can read only the cells that do have the 'letterIDs' from the wished headers. +
+
+For example when we want to read from: +
+"Header1" we get all below cells where the CellReference does contain the 'letterID' A, +
+"Header2" we get all below cells where the CellReference does contain the 'letterID' B, +
+"Header3" we get all below cells where the CellReference does contain the 'letterID' C, [...]. +
+
+
+== 2.0.0.0 Code Documentation
+
+=== 2.1.0.0 Public APIs
+
+==== 2.1.1.0 RowInsert Class
+
