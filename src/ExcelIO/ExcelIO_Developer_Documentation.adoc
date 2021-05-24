@@ -1,8 +1,14 @@
 = ExcelIO Developer Documentation
 
+{nbsp} +
+
 == 0.0.0.0 Table of Contents
 
+{nbsp} +
+
 * 0.0.0.0 Table of Contents
+
+{nbsp} +
 
 * 1.0.0.0 OpenXML/Excel - Technical Background
 ** 1.1.0.0 Examples of Differences
@@ -16,22 +22,49 @@
 **** 1.2.2.1 Empty Table Design
 **** 1.2.2.2 Used Table Design
 
+{nbsp} +
+
 * 2.0.0.0 Code Documentation
 ** 2.1.0.0 Public APIs
 
+*** 2.1.1.0 RowInsert Class
+**** 2.1.1.1 Insert with List
+**** 2.1.1.1 Insert with Dictionary
+
+*** 2.1.2.0 RowSelect Class
+**** 2.1.2.1 Select with List
+**** 2.1.2.2 Select with List and Where Condition
+
+*** 2.1.3.0 RowUpdate Class
+**** 2.1.3.1 Update with Where Condition
+
+*** 2.1.4.0 RowDelete Class
+**** 2.1.4.1 Delete with Where Condition
+**** 2.1.4.2 Delete Advanced with Where Condition
+
+{nbsp} +
 
 == 1.0.0.0 OpenXML/Excel - Technical Background
+
+{nbsp} +
 
 It is important to note that Microsoft Excel (xlsx) is not fully compatible with the OpenXML specification. +
 But the customer requested to work with a Microsoft Excel file. +
 That's why we needed to find some workarounds, so that the OpenXML Spreadsheet acts as an reugular Excel File. +
 
+{nbsp} +
 
 === 1.1.0.0 Examples of Differences
 
+{nbsp} +
+
 ==== 1.1.1.0 Write/Read Dates
 
+{nbsp} +
+
 ===== 1.1.1.1 Writing Dates
+
+{nbsp} +
 
 OpenXML:
 [source]
@@ -86,8 +119,11 @@ stylesPart.Stylesheet = new Stylesheet
 Because we need a Stylesheet with NumberFormatID that MS Excel uses to interpret formats we create a minimal Stylesheet with no style (design). +
 Excel uses the NumberFormatID=14 for regular DateTime-Formats. +
 
+{nbsp} +
 
 ==== 1.1.1.2 Reading Dates
+
+{nbsp} +
 
 OpenXML:
 [source]
@@ -135,10 +171,15 @@ In MS Excel, we read the Stylesheet and interpret it as date, because other Data
 After that, we convert again the OADate into DateTime. +
 With the Stylesheet, Excel is able to interpret the cell value as Date and you can see the Date in the Excel as Date. +
 
+{nbsp} +
 
 === 1.2.0.0 Glossary
 
+{nbsp} +
+
 ==== 1.2.1.0 OpenXML Classes
+
+{nbsp} +
 
 |===
 |       Class           |       Alternative Term            |     Definition
@@ -158,10 +199,15 @@ With the Stylesheet, Excel is able to interpret the cell value as Date and you c
 | StyleSheet            | Theme Templet                     | With this it is possible to create various styles and formats for cells.
 |===
 
+{nbsp} +
 
 ==== 1.2.2.0  Used Terms and Definitions
 
+{nbsp} +
+
 ===== 1.2.2.1 Empty Table Design
+
+{nbsp} +
 
 Before we define and explain some terms, we need to explain some basics how a table is designed. +
 
@@ -195,8 +241,11 @@ A cell with CellReference 'C3' has the ReferenceCell 'C2' and the cell with Cell
 The cell with CellReference 'C1' has no (null) ReferenceCell. +
 Also cells where the cell above have no values have no (null) ReferenceCell. +
 
+{nbsp} +
 
 ===== 1.2.2.2 Used Table Design
+
+{nbsp} +
 
 Because we need to identify where we want to insert new entries in a specific place or want to read specific entries, we need to use identifier. +
 
@@ -227,10 +276,483 @@ For example when we want to read from: +
 "Header2" we get all below cells where the CellReference does contain the 'letterID' B, +
 "Header3" we get all below cells where the CellReference does contain the 'letterID' C, [...]. +
 
+{nbsp} +
 
 == 2.0.0.0 Code Documentation
 
+{nbsp} +
+
 === 2.1.0.0 Public APIs
+
+{nbsp} +
 
 ==== 2.1.1.0 RowInsert Class
 
+{nbsp} +
+
+===== 2.1.1.1 Insert with List
+
+{nbsp} +
+
+[source]
+--
+/// <summary>
+/// Inserts all values of (parameter) 'columnValues' into a new row.
+/// </summary>
+/// <param name="filepath">
+/// Relative/absolute filepath to a *.xlsx file where the new row should be inserted.
+/// </param>
+/// <param name="worksheetName">
+/// Name of the worksheet in the *.xlsx file where the new row should be inserted.
+/// </param>
+/// <param name="columnValues">
+/// Every value of (parameter) 'columnValues' is the value of a new cell in the new row.
+/// </param>
+
+public static void Insert(string filepath, string worksheetName, List<object> columnValues)
+--
+
+The parameter 'columnValues' is a List of Objects. +
+Every object represents a new cell entry. +
+This function will insert all list-entries in the same order into the table as the order is in the entered list. +
+
+Example: +
+'columnValues' = new() { "Hello World", 0, 1.0, true, 22.05.2021 } +
+will create into an empty table: +
+
+|===
+|       |   A       |   B       |   C       |   D       |   E       |   F
+|   1   |Hello World| 0         | 1.0       | true      |22.02.2021 |
+|   2   |           |           |           |           |           |
+|   3   |           |           |           |           |           |
+|   4   |           |           |           |           |           |
+|   5   |           |           |           |           |           |
+|   6   |           |           |           |           |           |
+|===
+
+The data-types in the table are same as the data-type of the entered values. +
+
+{nbsp} +
+
+===== 2.1.1.1 Insert with Dictionary
+
+{nbsp} +
+
+[source]
+--
+/// <summary>
+/// Inserts all values of (parameter) 'columnNamesAndValues' into a new row.
+/// </summary>
+/// <param name="filepath">
+/// Relative/absolute filepath to a *.xlsx file where the new row should be inserted.
+/// </param>
+/// <param name="worksheetName">
+/// Name of the worksheet in the *.xlsx file where the new row should be inserted.
+/// </param>
+/// <param name="columnNamesAndValues">
+/// Every KeyValuePair represents one cell with value, where the key is the (so called) 'header-column' where the cell should be inserted below this (so called) 'header-column'
+/// and the value is the value of the cell.
+/// </param>
+
+public static void Insert(string filepath, string worksheetName, Dictionary<string, object> columnNamesAndValues)
+--
+
+The parameter 'columnNamesAndValues' is a dictionary where every KeyValuePair represents one entry. +
+The Key is the 'column-name' or the 'header' we alrteady explained in chapter '1.2.2.2 Used Table Design'. +
+That means this function requires that the table does contains these 'header-columns'. +
+The values of the KeyValuePair are the entries that should be inserted into an empty row and into a cell with the same 'letterID' as the 'header-column' from the key has. +
+
+Example: +
+We have the table: +
+
+|===
+|       |   A   |   B   |   C   |   D   |   E   |   F
+|   1   |Header1|Header2|Header3|Header4|Header5|Header6
+|   2   |       |       |       |       |       |
+|   3   |       |       |       |       |       |
+|   4   |       |       |       |       |       |
+|   5   |       |       |       |       |       |
+|   6   |       |       |       |       |       |
+|===
+
+In the first row are all of our 'header-columns'. +
+When we do want to insert values using the Dictionary, it would look like this: +
+'columnNamsAndValues' = new() { { "Header1", "Hello World" }, { "Header3", 1.0 }, { "Header5", 22.05.2021 }, { "Header2", 0 }, { "Header4", true } } +
+
+Even if the order of the 'headers' are different, the values will be inserted below the correct header in the key and the table would look like this: +
+
+|===
+|       |   A       |   B       |   C       |   D       |   E       |   F
+|   1   | Header1   | Header2   | Header3   | Header4   | Header5   |Header6
+|   2   |Hello World| 0         | 1.0       | true      |22.02.2021 |
+|   3   |           |           |           |           |           |
+|   4   |           |           |           |           |           |
+|   5   |           |           |           |           |           |
+|   6   |           |           |           |           |           |
+|===
+
+This is what we call an intelligent insertion, because before the values will be inserted into a new row we search for the 'header-column' that is used in the key and get the 'letterID', so that the cell has the same 'letterID' in the 'CellReference' as the 'column' in the key. +
+Again, the cell value and data-type do match the entered value in the value of the KeyValuePair. +
+
+{nbsp} +
+
+==== 2.1.2.0 RowSelect Class
+
+{nbsp} +
+
+===== 2.1.2.1 Select with List
+
+{nbsp} +
+
+[source]
+--
+/// <summary>
+/// Reads and returns all values below of entered (so-called) 'header-columns' in (parameter) 'columnNames'.
+/// </summary>
+/// <param name="filepath">
+/// Relative/absolute filepath to a *.xlsx file that should be opened.
+/// </param>
+/// <param name="worksheetName">
+/// Name of the worksheet in the *.xlsx file that should be read.
+/// </param>
+/// <param name="columnNames">
+/// Names of all columns that should be used to identify the header, so that it'll only read values that are below those headers.
+/// </param>
+/// <returns>
+/// Returns a Dictionary, where the keys are the entered (parameter) 'columnNames' and the values of those keys are all read values that are below of those (so called) 'header-column'.
+/// </returns>
+
+public static Dictionary<string, List<object>> Select(string filepath, string worksheetName, List<string> columnNames)
+--
+
+The parameter 'columnNames' are the 'header-columns' where the values below should be selected. +
+The returning Dictionary contains multiple KeyValuePairs. +
+There are the same number KeyValuePairs in the Dictionary as entries in 'columnNames'. +
+Every entry of 'columnNames' becomes a Key of a KeyValuePair. +
+The Value are all values that are below the 'header-column' with the same name as the entry in 'columnNames'. +
+
+Example: +
+We have the table: +
+
+|===
+|       |   A       |   B       |   C       |   D       |   E       |   F
+|   1   | Header1   | Header2   | Header3   | Header4   | Header5   |Header6
+|   2   |Hello World| 0         | 1.0       | true      |22.02.2021 |
+|   3   |Foo Bar    | 10        | 2.2       | false     |23.02.2021 |
+|   4   |Spreadsheet| 42        | 3.14      | true      |24.02.2021 |
+|   5   |           |           |           |           |           |
+|   6   |           |           |           |           |           |
+|===
+
+We use the entries in the first row as 'header-column'. +
+When we select entries, it would look like this: +
+'columnNames' = new() { "Header1", "Header5", "Header3" } +
+
+We get a dictionary  that would look like this: +
+Dictionary = new() +
+{ +
+{ "Header1", new() { "Hello World", "Foo Bar", "Spreadsheet" } } +
+{ "Header5", new() { 22.02.2021, 23.02.2021, 24.02.2021 } } +
+{ "Header3", new() { 1.0, 2.2, 3.14 } } +
+} +
+
+As we see, we don't return a row where the entries have the same order as the input, we return the columns. +
+That makes us more flexible, because we can select specific columns and search only in there or we can combine the columns to new entries. +
+
+When we want to recreate rows, we must remeber that all entries in the lists at the same index do belong to the same row. +
+
+Example: +
+
+Row row = new() { Dictonary["Header1"][0], Dictonary["Header3"][0], Dictonary["Header5"][0] } +
+
+Then we would have the row: +
+{ "Hello World", 1.0, 22.02.2021 } +
+
+Same in: +
+
+Row row = new() { Dictonary["Header1"][2], Dictonary["Header3"][2], Dictonary["Header5"][2] } +
+
+Then we would have the row: +
+{ "Spreadsheet", 3.14, 24.02.2021 } +
+
+As we see, all those entries where in the same row in the table. +
+So all Lists in the values in the KeyValuePairs can be used this way. +
+When we access them with the same index value we get one row. +
+Note that all lists have the same lenght. +
+
+That makes it possible to recreate the rows this way: +
+
+[source]
+--
+public static List<T> GetAllFromTable<T>(string filepath, string worksheetName, List<string> headerColumns, Func<Dictionary<string, object>, T> convertAttributesFunction)
+{
+    List<T> dataSets = new();
+
+    Dictionary<string, List<object>> table = RowSelect.Select(filepath, worksheetName, headerColumns);
+    if (table.Any())
+    {
+        int rowsCount = table[headerColumns[0]].Count;
+
+        for (int rowIndex = 0; rowIndex < rowsCount; rowIndex++)
+        {
+            Dictionary<string, object> row = new();
+            for (int i = 0; i < headerColumns.Count; i++)
+            {
+                row.Add(headerColumns[i], table[headerColumns[i]][rowIndex]);
+            }
+            dataSets.Add(convertAttributesFunction(row));
+        }
+    }
+
+    return dataSets;
+}
+--
+
+First, we get the lenght of the first list (remember all lists have the same lenght). +
+Then, we iterate throu all KeyValuePairs. +
+We access the Dictionary List entries with the key and the current row index: +
+table[header/column][rowIndex] +
+When we add those results into a row/list, we can recreate the rows in the table. +
+
+{nbsp} +
+
+===== 2.1.2.2 Select with List and Where Condition
+
+{nbsp} +
+
+P +
+L +
+A +
+C +
+E +
+H +
+O +
+L +
+D +
+E +
+R +
+
+{nbsp} +
+
+==== 2.1.3.0 RowUpdate Class
+
+{nbsp} +
+
+===== 2.1.3.1 Update with Where Condition
+
+{nbsp} +
+
+[source]
+--
+/// <summary>
+/// Updates all rows with the entered values in (parameter) 'updateColumnsAndNewValues' that do match all the conditions in (parameter) 'whereColumnNamesAndConditions).
+/// </summary>
+/// <param name="filepath">
+/// Relative/absolute filepath to a *.xlsx file where the rows should be updated.
+/// </param>
+/// <param name="worksheetName">
+/// Name of the worksheet in the *.xlsx file where the rows should be updated.
+/// </param>
+/// <param name="whereColumnNamesAndConditions">
+/// Every KeyValuePair represents one condition, where the key is the (so called) 'header-column' 
+/// and the value is the condition a cell should match (the cell should match data-type and value) and that is below the (so called) 'header-column' in the key.
+/// </param>
+/// <param name="updateColumnsAndNewValues">
+/// Every KeyValuePair represents one cell with value, where the key is the (so called) 'header-column' where the cells that should be updated are below those (so called) 'header-columns'
+/// and the value is the new value of the cell.
+/// </param>
+/// <returns>
+/// Number of updated rows.
+/// </returns>
+
+public static int Update(string filepath, string worksheetName, Dictionary<string, object> whereColumnNamesAndConditions, Dictionary<string, object> updateColumnsAndNewValues)
+--
+
+The parameter 'whereColumnNamesAndCoditions' contains multiple KeyValuePairs, where the Keys are the 'header-columns' and the Value is the condition a cell below this 'header-colummns' (a cell with the same 'letterID' as the 'header-column') must match (data-type and value). +
+The conditions are combined with AND (that means a row in the table must match ALL conditions in 'whereColumnNamesAndConditions'). +
+
+The parameter 'updateColumnsAndNewValues' contains multiple KeyValuePairs, where the Keys are the 'header-column' and the Value is the new value for the cell. +
+The cell that will be updated must be below the 'header-column' in the key (the cell must have the same 'letterID' as the 'header-column'). +
+
+This function will update ALL rows in the table that do match (all) the conditions in 'whereColumnNamesAndConditions' with the values in 'updateColumnsAndNewValues' and will return the number of updated rows. +
+
+Example: +
+We have the table: +
+
+|===
+|       |   A       |   B       |   C       |   D       |   E       |   F
+|   1   | Header1   | Header2   | Header3   | Header4   | Header5   |Header6
+|   2   |Hello World| 0         | 1.0       | true      |22.02.2021 |
+|   3   |Foo Bar    | 10        | 2.2       | false     |23.02.2021 |
+|   4   |Spreadsheet| 42        | 3.14      | true      |24.02.2021 |
+|   5   |Worksheet  | 20        | 0.11      | false     |24.05.2021 |
+|   6   |OOP        | 2         | 9.81      | true      |24.05.2021 |
+|===
+
+When we use: +
+'whereColumnNamesAndConditions' = new() { { "Header4", true }, { "Header5", 24.05.2021 } } +
+'updateColumnsAndNewValues' = new() { { "Header2", 0 }, { "Header3", 0.0 }, { "Header5", 25.05.2021} } +
+
+When we run the function, the table will look like this after that: +
+
+
+|===
+|       |   A       |   B       |   C       |   D       |   E       |   F
+|   1   | Header1   | Header2   | Header3   | Header4   | Header5   |Header6
+|   2   |Hello World| 0         | 1.0       | true      |22.02.2021 |
+|   3   |Foo Bar    | 10        | 2.2       | false     |23.02.2021 |
+|   4   |Spreadsheet| 0         | 0.0       | true      |25.02.2021 |
+|   5   |Worksheet  | 20        | 0.11      | false     |24.05.2021 |
+|   6   |OOP        | 0         | 0.0       | true      |25.05.2021 |
+|===
+
+And the function returns the number 2 (because 2 rows where updated). +
+As we see, all rows that match all conditions where updated with all new values. +
+All other rows stay unaffected. +
+
+{nbsp} +
+
+==== 2.1.4.0 RowDelete Class
+
+{nbsp} +
+
+===== 2.1.4.1 Delete with Where Condition
+
+{nbsp} +
+
+[source]
+--
+/// <summary>
+/// Deletes all rows that do match all the conditions in (parameter) 'whereColumnNamesAndValues'.
+/// </summary>
+/// <param name="filepath">
+/// Relative/absolute filepath to a *.xlsx file where the rows should be deleted.
+/// </param>
+/// <param name="worksheetName">
+/// Name of the worksheet in the *.xlsx file where the rows should be deleted.
+/// </param>
+/// <param name="whereColumnNamesAndConditions">
+/// Every KeyValuePair represents one condition, where the key is the (so called) 'header-column' 
+/// and the value is the condition a cell should match (the cell should match data-type and value) and that is below the (so called) 'header-column' in the key.
+/// </param>
+/// <returns>
+/// Number of deleted rows.
+/// </returns>
+
+public static int Delete(string filepath, string worksheetName, Dictionary<string, object> whereColumnNamesAndConditions)
+--
+
+The parameter 'whereColumnNamesAndCoditions' contains multiple KeyValuePairs, where the Keys are the 'header-columns' and the Value is the condition a cell below this 'header-colummns' (a cell with the same 'letterID' as the 'header-column') must match (data-type and value). +
+The conditions are combined with AND (that means a row in the table must match ALL conditions in 'whereColumnNamesAndConditions'). +
+
+This function will delete ALL rows in the table that do match (all) the conditions in 'whereColumnNamesAndConditions' and returns the number of deleted rows. +
+
+Example: +
+We have the table: +
+
+|===
+|       |   A       |   B       |   C       |   D       |   E       |   F
+|   1   | Header1   | Header2   | Header3   | Header4   | Header5   |Header6
+|   2   |Hello World| 0         | 1.0       | true      |22.02.2021 |
+|   3   |Foo Bar    | 10        | 2.2       | false     |23.02.2021 |
+|   4   |Spreadsheet| 42        | 3.14      | true      |24.02.2021 |
+|   5   |Worksheet  | 20        | 0.11      | false     |24.05.2021 |
+|   6   |OOP        | 2         | 9.81      | true      |24.05.2021 |
+|===
+
+When we use: +
+'whereColumnNamesAndConditions' = new() { { "Header4", true }, { "Header5", 24.05.2021 } } +
+
+When we run the function, the table will look like this after that: +
+
+
+|===
+|       |   A       |   B       |   C       |   D       |   E       |   F
+|   1   | Header1   | Header2   | Header3   | Header4   | Header5   |Header6
+|   2   |Hello World| 0         | 1.0       | true      |22.02.2021 |
+|   3   |Foo Bar    | 10        | 2.2       | false     |23.02.2021 |
+|   4   |           |           |           |           |           |
+|   5   |Worksheet  | 20        | 0.11      | false     |24.05.2021 |
+|   6   |           |           |           |           |           |
+|===
+
+And the function returns the number 2 (because 2 rows where deleted). +
+As we see, all rows that match all conditions where updated with all new values. +
+All other rows stay unaffected. +
+
+In this simple version, the rows will stay empty and the references won't change. +
+This won't effect how data will be read or written, but when you open the spreadsheet manually, you can see those empty rows. +
+
+{nbsp} +
+
+===== 2.1.4.2 Delete Advanced with Where Condition
+
+{nbsp} +
+
+[source]
+--
+/// <summary>
+/// Deletes all rows that do match all the conditions in (parameter) 'whereColumnNamesAndValues'.
+/// </summary>
+/// <param name="filepath">
+/// Relative/absolute filepath to a *.xlsx file where the rows should be deleted.
+/// </param>
+/// <param name="worksheetName">
+/// Name of the worksheet in the *.xlsx file where the rows should be deleted.
+/// </param>
+/// <param name="whereColumnNamesAndConditions">
+/// Every KeyValuePair represents one condition, where the key is the (so called) 'header-column' 
+/// and the value is the condition a cell should match (the cell should match data-type and value) and that is below the (so called) 'header-column' in the key.
+/// </param>
+/// <returns>
+/// Number of deleted rows.
+/// </returns>
+
+public static int DeleteAdvanced(string filepath, string worksheetName, Dictionary<string, object> whereColumnNamesAndConditions)
+--
+
+The parameter 'whereColumnNamesAndCoditions' contains multiple KeyValuePairs, where the Keys are the 'header-columns' and the Value is the condition a cell below this 'header-colummns' (a cell with the same 'letterID' as the 'header-column') must match (data-type and value). +
+The conditions are combined with AND (that means a row in the table must match ALL conditions in 'whereColumnNamesAndConditions'). +
+
+This function will delete ALL rows in the table that do match (all) the conditions in 'whereColumnNamesAndConditions' and returns the number of deleted rows. +
+
+Example: +
+We have the table: +
+
+|===
+|       |   A       |   B       |   C       |   D       |   E       |   F
+|   1   | Header1   | Header2   | Header3   | Header4   | Header5   |Header6
+|   2   |Hello World| 0         | 1.0       | true      |22.02.2021 |
+|   3   |Foo Bar    | 10        | 2.2       | false     |23.02.2021 |
+|   4   |Spreadsheet| 42        | 3.14      | true      |24.02.2021 |
+|   5   |Worksheet  | 20        | 0.11      | false     |24.05.2021 |
+|   6   |OOP        | 2         | 9.81      | true      |24.05.2021 |
+|===
+
+When we use: +
+'whereColumnNamesAndConditions' = new() { { "Header4", true }, { "Header5", 24.05.2021 } } +
+
+When we run the function, the table will look like this after that: +
+
+
+|===
+|       |   A       |   B       |   C       |   D       |   E       |   F
+|   1   | Header1   | Header2   | Header3   | Header4   | Header5   |Header6
+|   2   |Hello World| 0         | 1.0       | true      |22.02.2021 |
+|   3   |Foo Bar    | 10        | 2.2       | false     |23.02.2021 |
+|   4   |Worksheet  | 20        | 0.11      | false     |24.05.2021 |
+|   5   |           |           |           |           |           |
+|   6   |           |           |           |           |           |
+|===
+
+And the function returns the number 2 (because 2 rows where deleted). +
+As we see, all rows that match all conditions where updated with all new values. +
+All other rows stay unaffected. +
+
+In this advanced function, the rows that are not deleted follow up and fill the places of the deleted rows and the references will be updated. +
+This means there will be no empty rows when you open the spreadsheet manually. +
+
+Because all references will be updated, this advanced version takes more resources and time than the simple version. +
+
+
+{nbsp} +
