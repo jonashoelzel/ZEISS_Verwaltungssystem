@@ -16,6 +16,12 @@
     "directories": {
       "output": "../../../bin/Desktop"
     },
+    "win": {
+      "target": [ "portable" ]
+    },
+    "portable": {
+      "artifactName": "Publicationmanager.exe"
+    },
     "extraResources": [
       {
         "from": "./bin",

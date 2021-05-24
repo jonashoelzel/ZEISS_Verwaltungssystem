@@ -1,4 +1,4 @@
-﻿@page "/addDateOfRelease"
+﻿@page "/editDateOfRelease"
 @using Zeiss.PublicationManager.Data.DataSet.Model
 
 @inject NavigationManager NavigationManager
@@ -11,7 +11,7 @@
     <DataAnnotationsValidator />
 
     <div class="mode">
-        <h2>Neue Veröffentlichung hinzufügen</h2>
+        <h2>Veröffentlichung bearbeiten</h2>
     </div>
     <section class="panel-default">
         <header class="panel-heading">
@@ -22,6 +22,7 @@
         </div>
     </section>
 
+    <button class="primaryButton addPub" type="submit">Veröffentlichung speichern</button>
     <button class="primaryButton back" type="button" @onclick="NavigateToPreviousScreen">
         <span class="fas fa-arrow-circle-left fa-3x"></span>
     </button>
@@ -33,9 +34,9 @@
 
 @code
 {
-    private void NavigateToPreviousScreen() => NavigationManager.NavigateTo("addDivision");
+    private void NavigateToPreviousScreen() => NavigationManager.NavigateTo("editDivision");
 
-    private void NavigateToNextScreen() => NavigationManager.NavigateTo("addPublicationType");
+    private void NavigateToNextScreen() => NavigationManager.NavigateTo("editPublicationType");
 
     private void HandleInvalidSubmit() { }
 }
