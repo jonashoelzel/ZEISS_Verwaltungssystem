@@ -221,7 +221,7 @@ Before we define and explain some terms, we need to explain some basics how a ta
 |   6   |       |       |       |       |       |
 |===
 
-('LetterID') ('LetterIndex')+
+('LetterID') ('LetterIndex') +
 At the top row, there a letters that fo from A to Z and from AZ zo ZZ and so on. +
 We call the the letterIDs (sometimes letterIndex), because these letters are used to identify the columns. +
 
