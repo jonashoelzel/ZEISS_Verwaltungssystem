@@ -75,17 +75,15 @@
             @foreach (var publication in items)
             {
                 <tr>
-                    <td>@publication.WorkingTitle</td>
-                    <td>@publication.MainAuthor.Name</td>
-                    <td>@publication.MainAuthor.Surname</td>
-                    <td>@publication.DateOfRelease.ToString("dd.MM.yyyy")</td>
+                    <td class="align-middle">@publication.WorkingTitle</td>
+                    <td class="align-middle">@publication.MainAuthor.Name</td>
+                    <td class="align-middle">@publication.MainAuthor.Surname</td>
+                    <td class="align-middle">@publication.DateOfRelease.ToString("dd.MM.yyyy")</td>
                     <td>
-                        <button type="button" class="btn-primary" disabled>
-                            Bearbeiten
+                        <button type="button" class="btn" @onclick="NavigateToEditTitleComp">
                             <span class="fas fa-pencil-alt"></span>
                         </button>
-                        <button type="button" class="btn-primary" disabled>
-                            Löschen
+                        <button type="button" class="btn" @onclick="@(() => Delete(publication.ID))">
                             <span class="fas fa-trash-alt"></span>
                         </button>
                     </td>
@@ -93,10 +91,16 @@
             }
         </tbody>
     </table>
-    <div class="landingPageAddPublication">
-        <button type="button" class="btn blueIcon" @onclick="NavigateToAddTitleComp">
-            <span class="fas fa-plus-circle fa-5x"></span>
-        </button>
+    <div class="form-inline">
+        <div class="landingPageFileInput">
+           <InputFile OnChange="@FilePath"></InputFile>
+       </div>
+
+        <div class="landingPageAddPublication">
+            <button type="button" class="btn" @onclick="NavigateToAddTitleComp">
+                <span class="fas fa-plus-circle fa-5x"></span>
+            </button>
+        </div>
     </div>
 </EditForm>
 
@@ -104,6 +108,8 @@
 {
     private List<PublicationDataSet> data;
     private List<Division> divisions;
+
+    private void FilePath() { }
 
     void fetchData()
     {
@@ -119,6 +125,11 @@
     {
         Publication.Reset();
         NavigationManager.NavigateTo("addTitle");
+    }
+
+    private void NavigateToEditTitleComp()
+    {
+        NavigationManager.NavigateTo("editTitle");
     }
 
     private bool HideFilter = true;
@@ -221,5 +232,10 @@
         {
             data = helpData.Where(f => f.Division.Name.Equals(SelectedDivsion)).ToList();
         }
+    }
+
+    private void Delete(Guid? PubID)
+    {
+        data.Remove(data.Where(Publication => Publication.ID == PubID).First());
     }
 }

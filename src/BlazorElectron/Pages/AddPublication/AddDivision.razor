@@ -8,8 +8,7 @@
 @inject PublicationDataSetModel Publication
 @inject DataHandler dataHandler
 
-<img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg"
-     class="logo" />
+<img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg" class="logo" />
 
 @if (ShowAddPopup)
 {
@@ -20,17 +19,17 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h3 class="modal-title w-100 text-center"> Geschäftsbereich hinzufügen</h3>
-                        <button type="reset" id="cancelButton" @onclick="@CancelAddPopup">
+                        <button type="reset" class="cancelButton" @onclick="@CancelAddPopup">
                             <span class="fas fa-times fa-2x"></span>
                         </button>
                     </div>
-                    <div class="author-default">
+                    <div class="modal-object">
                         <label for="divisionName">Geschäftsbereich</label>
                         <InputText class="form-control" id="divisionName" @bind-Value="NewDivision.Name" /><br />
                         <ValidationMessage For="@(() => NewDivision.Name)" />
                     </div>
                     <div class="modal-body">
-                        <button type="submit" id="ButtonInPopup" class="form-control">Neuen Geschäftsbereich hinzufügen</button>
+                        <button type="submit" id="addButtonInPopup" class="form-control">Hinzufügen</button>
                     </div>
                 </div>
             </div>
@@ -50,19 +49,22 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <button type="submit" id="ButtonInPopup" class="form-control" @onclick="@OpenAddPopup">Neuen Geschäftsbereich hinzufügen</button>
+                    <button type="submit" id="addButtonInPopup" class="form-control" @onclick="@OpenAddPopup">Neuen Geschäftsbereich hinzufügen</button>
                 </div>
             </div>
         </div>
     </div>
 }
 
-<section class="division panel-default">
+<div class="mode">
+    <h2>Neue Veröffentlichung hinzufügen</h2>
+</div>
+<section class="panel-default">
     <header class="panel-heading">
         <h4 class="panel-title">Geschäftsbereich</h4>
     </header>
-    <div class="auhtor panel-body">
-        <div class="author-default">
+    <div class="panel-body">
+        <div class="panel-object">
             <select class="form-control" @onchange="SetDivision">
                 @foreach (var division in divisions)
                 {
@@ -70,16 +72,16 @@
                 }
             </select>
         </div>
-        <div class="CenteredButton">
-            <button class="AddNewAuthor" @onclick="@OpenAddPopup">Neuen Geschäftsbereich hinzufügen</button>
+        <div class="centeredButton">
+            <button class="primaryButton addNewField" @onclick="@OpenAddPopup">Neuen Geschäftsbereich hinzufügen</button>
         </div>
     </div>
 </section>
 
-<button class="back" type="button" @onclick="NavigateToPreviousScreen">
+<button class="primaryButton back" type="button" @onclick="NavigateToPreviousScreen">
     <span class="fas fa-arrow-circle-left fa-3x"></span>
 </button>
-<button class="continue" type="submit" @onclick="@NavigateToNextScreen">
+<button class="primaryButton continue" type="submit" @onclick="@NavigateToNextScreen">
     <span class="fas fa-arrow-circle-right fa-3x"></span>
 </button>
 

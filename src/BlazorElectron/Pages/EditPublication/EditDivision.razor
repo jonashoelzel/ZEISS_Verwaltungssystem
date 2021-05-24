@@ -1,9 +1,8 @@
-﻿@page "/addAuthor"
+﻿@page "/editDivision"
 @using Zeiss.PublicationManager.Data.DataSet.Model
 @using Zeiss.PublicationManager.Data.DataSet
 @using Zeiss.PublicationManager.Data.DataSet.IO.Read
 @using Zeiss.PublicationManager.Business.Logic.IO
-@using System.IO
 
 @inject NavigationManager NavigationManager
 @inject PublicationDataSetModel Publication
@@ -13,26 +12,21 @@
 
 @if (ShowAddPopup)
 {
-    <EditForm Model="@NewAuthor" OnInvalidSubmit="@HandleInvalidSubmit" OnValidSubmit="@AddNewAuthor">
+    <EditForm Model="@NewDivision" OnInvalidSubmit="@HandleInvalidSubmit" OnValidSubmit="@AddNewDivision">
         <DataAnnotationsValidator />
         <div class="modal fade show" role="dialog">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h3 class="modal-title w-100 text-center">Autor hinzufügen</h3>
+                        <h3 class="modal-title w-100 text-center"> Geschäftsbereich hinzufügen</h3>
                         <button type="reset" class="cancelButton" @onclick="@CancelAddPopup">
                             <span class="fas fa-times fa-2x"></span>
                         </button>
                     </div>
                     <div class="modal-object">
-                        <label for="firstname">Vorname</label>
-                        <InputText class="form-control" id="firstname" @bind-Value="NewAuthor.Name" /><br />
-                        <ValidationMessage For="@(() => NewAuthor.Name)" />
-                    </div>
-                    <div class="modal-object">
-                        <label for="surname">Nachname</label>
-                        <InputText class="form-control" id="surname" @bind-Value="NewAuthor.Surname" /><br />
-                        <ValidationMessage For="@(() => NewAuthor.Surname)" />
+                        <label for="divisionName">Geschäftsbereich</label>
+                        <InputText class="form-control" id="divisionName" @bind-Value="NewDivision.Name" /><br />
+                        <ValidationMessage For="@(() => NewDivision.Name)" />
                     </div>
                     <div class="modal-body">
                         <button type="submit" id="addButtonInPopup" class="form-control">Hinzufügen</button>
@@ -49,13 +43,13 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3 class="modal-title w-100 text-center">Autor ist ein Pflichtfeld.<br /> Bitte fügen sie einen neuen Autor hinzu!</h3>
+                    <h3 class="modal-title w-100 text-center">Geschäftsbereich ist ein Pflichtfeld.<br /> Bitte fügen sie einen neuen Geschäftsbereich hinzu!</h3>
                     <button type="reset" id="cancelButton" @onclick="@CancelPflichtfeldPopup">
                         <span class="fas fa-times fa-2x"></span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <button type="submit" id="addButtonInPopup" class="form-control" @onclick="@OpenAddPopup">Neuen Autor hinzufügen</button>
+                    <button type="submit" id="addButtonInPopup" class="form-control" @onclick="@OpenAddPopup">Neuen Geschäftsbereich hinzufügen</button>
                 </div>
             </div>
         </div>
@@ -63,48 +57,48 @@
 }
 
 <div class="mode">
-    <h2>Neue Veröffentlichung hinzufügen</h2>
+    <h2>Veröffentlichung bearbeiten</h2>
 </div>
 <section class="panel-default">
     <header class="panel-heading">
-        <h4 class="panel-title">Autor</h4>
+        <h4 class="panel-title">Geschäftsbereich</h4>
     </header>
     <div class="panel-body">
         <div class="panel-object">
-            <select class="form-control" @onchange="SetAuthor">
-                @foreach (var author in authors)
+            <select class="form-control" @onchange="SetDivision">
+                @foreach (var division in divisions)
                 {
-                    <option value="@author.ID">@string.Concat(author.Name, " ", author.Surname)</option>
+                    <option value="@division.ID">@division.Name</option>
                 }
             </select>
         </div>
         <div class="centeredButton">
-            <button class="primaryButton addNewField" @onclick="@OpenAddPopup">Neuen Autor hinzufügen</button>
+            <button class="primaryButton addNewField" @onclick="@OpenAddPopup">Neuen Geschäftsbereich hinzufügen</button>
         </div>
     </div>
 </section>
 
+<button class="primaryButton addPub" type="submit">Veröffentlichung speichern</button>
 <button class="primaryButton back" type="button" @onclick="NavigateToPreviousScreen">
     <span class="fas fa-arrow-circle-left fa-3x"></span>
 </button>
-<button class="primaryButton continue" type="button" @onclick="@NavigateToNextScreen">
+<button class="primaryButton continue" type="submit" @onclick="@NavigateToNextScreen">
     <span class="fas fa-arrow-circle-right fa-3x"></span>
 </button>
 
 @code
 {
-    AuthorModel NewAuthor = new();
-    List<IAuthor> authors;
+    DivisionModel NewDivision = new();
+    List<IDivision> divisions;
     bool ShowAddPopup = false;
     bool ShowPflichtfeldPopup = false;
 
-    private void NavigateToPreviousScreen() => NavigationManager.NavigateTo("addTitle");
+    private void NavigateToPreviousScreen() => NavigationManager.NavigateTo("editAuthor");
 
     private void NavigateToNextScreen()
     {
-        if (Publication.MainAuthor is not null)
-            NavigationManager.NavigateTo("addDivision");
-
+        if (Publication.Division is not null)
+            NavigationManager.NavigateTo("editDateOfRelease");
         ShowPflichtfeldPopup = true;
     }
 
@@ -112,8 +106,7 @@
 
     void CancelAddPopup()
     {
-        NewAuthor.Name = string.Empty;
-        NewAuthor.Surname = string.Empty;
+        NewDivision.Name = string.Empty;
         ShowAddPopup = false;
     }
 
@@ -125,33 +118,33 @@
         ShowAddPopup = true;
     }
 
-    void AddNewAuthor()
+    void AddNewDivision()
     {
         ShowAddPopup = false;
-        authors.Insert(0, NewAuthor);
+        divisions.Insert(0, NewDivision);
 
-        dataHandler.SaveAuthor(NewAuthor);
+        dataHandler.SaveDivision(NewDivision);
 
-        Publication.MainAuthor = NewAuthor;
-        NewAuthor = new();
+        Publication.Division = NewDivision;
+        NewDivision = new();
     }
 
-    void SetAuthor(ChangeEventArgs author)
+    void SetDivision(ChangeEventArgs division)
     {
-        var selectedAuthorID = Guid.Parse(author.Value.ToString());
-        Publication.MainAuthor = authors.First(a => a.ID.Equals(selectedAuthorID));
+        var selectedDivisionID = Guid.Parse(division.Value.ToString());
+        Publication.Division = divisions.First(a => a.ID.Equals(selectedDivisionID));
     }
 
     void fetchData()
     {
-        if (authors is not null)
+        if (divisions is not null)
             return;
 
-        authors = new List<IAuthor>();
-        var readAuthors = dataHandler.ExcelReader.ReadAuthors();
-        foreach (var author in readAuthors)
+        divisions = new List<IDivision>();
+        var readDivisions = dataHandler.ExcelReader.ReadDivisions();
+        foreach (var division in readDivisions)
         {
-            authors.Add(author);
+            divisions.Add(division);
         }
     }
 
@@ -159,13 +152,13 @@
     {
         fetchData();
 
-        var selected = authors.Where(a => a.ID.Equals(Publication.MainAuthor.ID))?.FirstOrDefault();
+        var selected = divisions.Where(a => a.ID.Equals(Publication.Division.ID))?.FirstOrDefault();
         if (selected is not null)
         {
-            authors.Remove(selected);
-            authors.Insert(0, selected);
+            divisions.Remove(selected);
+            divisions.Insert(0, selected);
         }
         else
-            Publication.MainAuthor = authors.FirstOrDefault();
+            Publication.Division = divisions.FirstOrDefault();
     }
 }

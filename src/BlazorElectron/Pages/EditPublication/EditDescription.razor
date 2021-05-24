@@ -1,4 +1,4 @@
-﻿@page "/addDescription"
+﻿@page "/editDescription"
 @using Zeiss.PublicationManager.Data.DataSet.Model
 @using Zeiss.PublicationManager.Business.Logic.IO
 
@@ -29,7 +29,7 @@
     <DataAnnotationsValidator />
 
     <div class="mode">
-        <h2>Neue Veröffentlichung hinzufügen</h2>
+        <h2>Veröffentlichung bearbeiten</h2>
     </div>
     <section class="panel-default">
         <header class="panel-heading">
@@ -51,7 +51,7 @@
         </div>
     </section>
 
-    <button class="primaryButton addPub" type="submit" @onclick="() => buttonType = ButtonType.save">Veröffentlichung hinzufügen</button>
+    <button class="primaryButton addPub" type="submit">Veröffentlichung speichern</button>
     <button class="primaryButton back" type="button" @onclick="NavigateToPreviousScreen">Pflichtangaben</button>
     <button class="primaryButton continue" type="submit" @onclick="() => buttonType = ButtonType.next">
         <span class="fas fa-arrow-circle-right fa-3x"></span>
@@ -66,7 +66,7 @@
     private void NavigateToPreviousScreen()
     {
         updatePublication();
-        NavigationManager.NavigateTo("addPublicationType");
+        NavigationManager.NavigateTo("editPublicationType");
     }
 
     private void NavigateToNextScreen()
@@ -109,7 +109,7 @@
         updatePublication();
 
         if (buttonType == ButtonType.next)
-            NavigationManager.NavigateTo("addPublisher");
+            NavigationManager.NavigateTo("editPublisher");
         else
         {
             dataHandler.Save(Publication);
