@@ -73,6 +73,20 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
                 //Return String
                 return (sharedStringTable.ElementAt(Int32.Parse(cellValue)).InnerText);
             }
+            //Normal way in OpenXML. Does NOT work for xlsx (!)
+            /*
+            else if (cell.DataType is not null && cell.DataType == CellValues.Date)
+            {
+                if (!String.IsNullOrEmpty(cell?.CellValue?.Text))
+                {
+                    //Make sure that the double is converted into the correct format (with '.' instead of ',')
+                    if (double.TryParse(cell.CellValue.Text, NumberStyles.Float, CultureInfo.InvariantCulture, out double dateTimeDouble))
+                    {
+                        return DateTime.FromOADate(dateTimeDouble);
+                    }
+                }
+            }
+            */
             //DataType is null, but cell contains text
             else if (!String.IsNullOrEmpty(cell?.CellValue?.Text))
             {
@@ -86,7 +100,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
                         //Number formats that can be interpreted as a number
                         || styleIndex >= 1 && styleIndex <= 5)
                     {
-                        //Make sure that the double is converted into the correct format (with '.' instead of ','
+                        //Make sure that the double is converted into the correct format (with '.' instead of ',')
                         if (double.TryParse(cell.CellValue.Text, NumberStyles.Float, CultureInfo.InvariantCulture, out double dateTimeDouble))
                         {
                             return DateTime.FromOADate(dateTimeDouble);
