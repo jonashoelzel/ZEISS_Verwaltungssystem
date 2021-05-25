@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 using Zeiss.PublicationManager.Data.Excel.IO.Write;
 
@@ -10,6 +11,11 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
         public WriteDataSet(string filePaht)
         {
             FilePath = filePaht;
+        }
+
+        public void DeletePublication(Guid guid)
+        {
+            RowDelete.Delete(FilePath, worksheets[0], new Dictionary<string, object>() { { "Publication_ID", guid }, });
         }
 
         public void InsertPublication(IPublicationDataSet dataSet)
