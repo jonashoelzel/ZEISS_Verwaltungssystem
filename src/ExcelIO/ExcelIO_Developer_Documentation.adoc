@@ -677,7 +677,7 @@ When we run the function, the table will look like this after that: +
 |===
 
 And the function returns the number 2 (because 2 rows where deleted). +
-As we see, all rows that match all conditions where updated with all new values. +
+As we see, all rows that match all conditions where deleted. +
 All other rows stay unaffected. +
 
 In this simple version, the rows will stay empty and the references won't change. +
@@ -746,7 +746,7 @@ When we run the function, the table will look like this after that: +
 |===
 
 And the function returns the number 2 (because 2 rows where deleted). +
-As we see, all rows that match all conditions where updated with all new values. +
+As we see, all rows that match all conditions where deleted. +
 All other rows stay unaffected. +
 
 In this advanced function, the rows that are not deleted follow up and fill the places of the deleted rows and the references will be updated. +
