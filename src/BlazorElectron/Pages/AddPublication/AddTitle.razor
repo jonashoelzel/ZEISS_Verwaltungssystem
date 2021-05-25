@@ -4,78 +4,50 @@
 @inject NavigationManager NavigationManager
 @inject PublicationDataSetModel Publication
 
-<img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg"
-     class="logo" />
+<img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg" class="logo" />
 
-<!--
-    <div class="mandatory-types">
-        <input type="radio" name="mandatory-types" values="title"
-               id="title" />
-        <label for="title">
-            Titelname
-        </label>
+<EditForm Model="@NewTitel" OnInvalidSubmit="@HandleInvalidSubmit" OnValidSubmit="@NavigateToNextScreen">
 
-        <input type="radio" name="mandatory-types" values="author"
-               id="auhtor" />
-        <label for="author">
-            Autor
-        </label>
-
-        <input type="radio" name="mandatory-types" values="division"
-               id="division" />
-        <label for="division">
-            Geschäftsbereich
-        </label>
-
-        <input type="radio" name="mandatory-types" values="dateofrelease"
-               id="dateofrelease" />
-        <label for="dateofrelease">
-            Datum der Veröffentlichung
-        </label>
-
-        <input type="radio" name="mandatory-types" values="publicationtype"
-               id="publicationtype" />
-        <label for="publicationtype">
-            Art der Veröffentlichung
-        </label>
-    </div>
--->
-
-<EditForm Model="@Publication" OnValidSubmit="NavigateToNextScreen">
     <DataAnnotationsValidator />
-    <ValidationSummary />
-    <section class="title panel-default">
+    <div class="mode">
+        <h2>Neue Veröffentlichung hinzufügen</h2>
+    </div>
+    <section class="panel-default">
         <header class="panel-heading">
-            <h4 class="panel-title">Dokument</h4>
+            <h4 class="panel-title">Arbeitstitel</h4>
         </header>
         <div class="panel-body">
-            <label for="workingtitle">Titelname</label>
-            <InputText id="workingtitle" DisplayName="workingtitle" @bind-Value="@Publication.WorkingTitle" /><br />
+            <InputText class="form-control" @bind-Value="@NewTitel.Name"/><br />
+            <ValidationMessage For="@(() => NewTitel.Name)" />
         </div>
     </section>
 
-    <button class="back" type="button" @onclick="NavigateToPreviousScreen">
-        Startseite
+    <button class="primaryButton back" type="button" @onclick="NavigateToPreviousScreen">
+        <span class="fas fa-home fa-3x"></span>
     </button>
-    <button class="continue" type="submit" @onclick="NavigateToNextScreen">
-        Weiter
+    <button class="primaryButton continue" type="submit">
+        <span class="fas fa-arrow-circle-right fa-3x"></span>
     </button>
+
 </EditForm>
 
 @code
 {
-    private void NavigateToPreviousScreen()
-    {
-        NavigationManager.NavigateTo("/");
-    }
+    TitleModel NewTitel = new();
+
+    private void NavigateToPreviousScreen() => NavigationManager.NavigateTo("/");
 
     private void NavigateToNextScreen()
     {
+        Publication.WorkingTitle = NewTitel.Name;
         NavigationManager.NavigateTo("addAuthor");
     }
 
-    private void HandleInvalidSubmit()
-    {
+    private void HandleInvalidSubmit() { }
 
+    protected override void OnInitialized()
+    {
+        NewTitel.Name = Publication.WorkingTitle;
+        base.OnInitialized();
     }
 }

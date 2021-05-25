@@ -1,0 +1,54 @@
+﻿@page "/editTitle"
+@using Zeiss.PublicationManager.Data.DataSet.Model
+
+@inject NavigationManager NavigationManager
+@inject PublicationDataSetModel Publication
+
+<img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg" class="logo" />
+
+<EditForm Model="@NewTitel" OnInvalidSubmit="@HandleInvalidSubmit" OnValidSubmit="@NavigateToNextScreen">
+
+    <DataAnnotationsValidator />
+    <div class="mode">
+        <h2>Veröffentlichung bearbeiten</h2>
+    </div>
+    <section class="panel-default">
+        <header class="panel-heading">
+            <h4 class="panel-title">Arbeitstitel</h4>
+        </header>
+        <div class="panel-body">
+            <InputText class="form-control" @bind-Value="@NewTitel.Name" /><br />
+            <ValidationMessage For="@(() => NewTitel.Name)" />
+        </div>
+    </section>
+
+    <button class="primaryButton addPub" type="submit">Veröffentlichung speichern</button>
+    <button class="primaryButton back" type="button" @onclick="NavigateToPreviousScreen">
+        <span class="fas fa-home fa-3x"></span>
+    </button>
+    <button class="primaryButton continue" type="submit">
+        <span class="fas fa-arrow-circle-right fa-3x"></span>
+    </button>
+
+</EditForm>
+
+@code
+{
+    TitleModel NewTitel = new();
+
+    private void NavigateToPreviousScreen() => NavigationManager.NavigateTo("/");
+
+    private void NavigateToNextScreen()
+    {
+        Publication.WorkingTitle = NewTitel.Name;
+        NavigationManager.NavigateTo("editAuthor");
+    }
+
+    private void HandleInvalidSubmit() { }
+
+    protected override void OnInitialized()
+    {
+        NewTitel.Name = Publication.WorkingTitle;
+        base.OnInitialized();
+    }
+}

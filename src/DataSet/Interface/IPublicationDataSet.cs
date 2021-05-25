@@ -16,7 +16,7 @@ namespace Zeiss.PublicationManager.Data.DataSet
         List<ITag> Tags { get; set; }
         string Description { get; set; }
         string AdditionalInformation { get; set; }
-        string Division { get; set; }
+        IDivision Division { get; set; }
         IPublisher PublishedBy { get; set; }
     }
 }

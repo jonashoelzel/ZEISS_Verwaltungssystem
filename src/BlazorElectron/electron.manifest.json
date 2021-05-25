@@ -3,18 +3,24 @@
   "splashscreen": {
     "imageFile": ""
   },
-  "name": "BlazorElectron",
+  "name": "PublicationManager",
   "author": "",
-  "singleInstance": false,
+  "singleInstance": true,
   "environment": "Production",
   "build": {
-    "appId": "com.BlazorElectron.app",
-    "productName": "BlazorElectron",
+    "appId": "com.PublicationManager.app",
+    "productName": "PublicationManager",
     "copyright": "Copyright © 2020",
     "buildVersion": "1.0.0",
     "compression": "maximum",
     "directories": {
       "output": "../../../bin/Desktop"
+    },
+    "win": {
+      "target": [ "portable" ]
+    },
+    "portable": {
+      "artifactName": "Publicationmanager.exe"
     },
     "extraResources": [
       {

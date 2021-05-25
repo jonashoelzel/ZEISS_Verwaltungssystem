@@ -12,10 +12,14 @@
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DocumentFormat.OpenXml" Version="2.12.1" />
-    <PackageReference Include="ElectronNET.API" Version="9.31.2" />
+    <PackageReference Include="DocumentFormat.OpenXml" Version="2.12.3" />
+    <PackageReference Include="ElectronNET.API" Version="11.5.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -24,5 +28,4 @@
     <ProjectReference Include="..\ExcelIOComponentTest\DataSetlIOComponentTest.csproj" />
     <ProjectReference Include="..\ExcelIO\ExcelIO.csproj" />
   </ItemGroup>
-
 </Project>
