@@ -1,10 +1,9 @@
-@page "/"
+@page "/SearchPublication"
 @using Zeiss.PublicationManager.Data.DataSet.Model
 @using Zeiss.PublicationManager.Data.DataSet
 @using Zeiss.PublicationManager.Data.DataSet.IO.Read
 @using Zeiss.PublicationManager.UI
 @using Zeiss.PublicationManager.Business.Logic.IO
-@using System.IO
 
 @inject NavigationManager NavigationManager
 @inject PublicationDataSetModel Publication
@@ -92,10 +91,6 @@
         </tbody>
     </table>
     <div class="form-inline">
-        <div class="landingPageFileInput">
-           <InputFile OnChange="@FilePath"></InputFile>
-       </div>
-
         <div class="landingPageAddPublication">
             <button type="button" class="btn" @onclick="NavigateToAddTitleComp">
                 <span class="fas fa-plus-circle fa-5x"></span>
@@ -108,8 +103,6 @@
 {
     private List<PublicationDataSet> data;
     private List<Division> divisions;
-
-    private void FilePath() { }
 
     void fetchData()
     {
