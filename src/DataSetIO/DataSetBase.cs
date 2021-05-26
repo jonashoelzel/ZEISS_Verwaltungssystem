@@ -1,21 +1,14 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Zeiss.PublicationManager.Data;
 using Zeiss.PublicationManager.Data.Excel.IO.Write;
 
 namespace Zeiss.PublicationManager.Data.DataSet.IO
 {
     public class DataSetBase
     {
-        private static string _filePath;
-        private static string _workSheetName;
+        private string _filePath;
 
-        protected internal static string FilePath { get => _filePath; set => _filePath = value; }
-        protected internal static string WorkSheetName { get => _workSheetName; set => _workSheetName = value; }
+        protected string FilePath { get => _filePath; set => _filePath = value; }
 
         private static readonly List<object> Publication = new()
         {
@@ -72,7 +65,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO
             "Name",
         };
 
-        protected internal static Dictionary<string, List<object>> WorksheetsHeader()
+        protected static Dictionary<string, List<object>> WorksheetsHeader()
         {
             return new Dictionary<string, List<object>>()
             {
@@ -97,7 +90,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO
             Publisher
         }
 
-        protected internal static readonly List<string> worksheets = new()
+        protected static readonly List<string> worksheets = new()
         {
             "Publication",
             "Author",
@@ -109,7 +102,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO
         };
 
 
-        protected internal static string ConvertAuthorsToCSV(List<IAuthor> coAuthors)
+        protected static string ConvertAuthorsToCSV(List<IAuthor> coAuthors)
         {
             if (coAuthors is null)
                 return string.Empty;
@@ -126,7 +119,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO
                     WriteCSVLine(authorCSVs, ';').Trim('\n');
         }
 
-        protected internal static List<Guid> ConvertCSVToGuids(string csv)
+        protected static List<Guid> ConvertCSVToGuids(string csv)
         {
             List<Guid> ids = new();
             if (string.IsNullOrEmpty(csv))
@@ -141,7 +134,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO
             return ids;
         }
 
-        protected internal static string ConvertTagsToCSV(List<ITag> tags)
+        protected static string ConvertTagsToCSV(List<ITag> tags)
         {
             if (tags is null)
                 return string.Empty;
@@ -158,33 +151,37 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO
 
 
 
-        protected internal static void CheckWorkBook(ref string filepath)
+        public void CheckWorkBook()
         {
-            if (!ValidateWorkBook(ref filepath))
-                InitializeWorkBook(filepath);
+            if (!ValidateWorkBook())
+                InitializeWorkBook();
         }
 
-        private static void InitializeWorkBook(string filepath)
+        private void InitializeWorkBook()
         {
+            var dirPath = _filePath.Remove(_filePath.LastIndexOf('\\'));
+            if (!System.IO.File.Exists(dirPath))
+                System.IO.Directory.CreateDirectory(dirPath);
+
             foreach (var worksheet in WorksheetsHeader())
             {
-                if (!WriteExcel.WorksheetExists(ref filepath, worksheet.Key))
+                if (!WriteExcel.WorksheetExists(ref _filePath, worksheet.Key))
                 {
                     // TODO: Check if columns exist
                     // Create new Worksheet
-                    RowInsert.Insert(filepath, worksheet.Key, worksheet.Value);
+                    RowInsert.Insert(FilePath, worksheet.Key, worksheet.Value);
                 }
             }
         }
 
-        private static bool ValidateWorkBook(ref string filepath)
+        private bool ValidateWorkBook()
         {
             foreach (var worksheet in WorksheetsHeader())
             {
-                if (!WriteExcel.WorksheetExists(ref filepath, worksheet.Key))
+                if (!WriteExcel.WorksheetExists(ref _filePath, worksheet.Key))
                     return false;
 
-                if (!Excel.IO.ExcelIOBase.CheckHeaderColumnsExist(filepath, worksheet.Key, worksheet.Value))
+                if (!Excel.IO.ExcelIOBase.CheckHeaderColumnsExist(FilePath, worksheet.Key, worksheet.Value))
                     return false;
 
             }

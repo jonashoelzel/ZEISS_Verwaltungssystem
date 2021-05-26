@@ -1,11 +1,14 @@
-﻿@page "/searchPub"
+@page "/"
 @using Zeiss.PublicationManager.Data.DataSet.Model
 @using Zeiss.PublicationManager.Data.DataSet
 @using Zeiss.PublicationManager.Data.DataSet.IO.Read
+@using Zeiss.PublicationManager.UI
+@using Zeiss.PublicationManager.Business.Logic.IO
 @using System.IO
 
 @inject NavigationManager NavigationManager
 @inject PublicationDataSetModel Publication
+@inject DataHandler dataHandler
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg" class="logo" />
 
@@ -15,19 +18,16 @@
         <div class="input-group">
             <input type="text" class="form-control" placeholder="Titel, Autor, Stichwort, ..."
                    @bind-value="SearchTerm" @bind-value:event="oninput" />
-            <!--<button type="button" class="btn">
-                <span class="fas fa-search"></span>
-            </button> -->
             <button type="button" class="btn" @onclick="@ChangeFilterVisibility" id="openFilter">
                 <span class="fas fa-filter fa-2x"></span>
             </button>
         </div>
     </section>
 
-    <section class="dropdownFilter" hidden=@HideFilter>
+    <section class="filterSection" hidden=@HideFilter>
         <div class="input-group">
             <label>Filtern nach:</label>
-            <div class="divisionFilter">
+            <div class="dropdownFilter">
                 <select class="form-control" @onchange="@DivisionFilter">
                     @foreach (var div in divisions)
                     {
@@ -36,7 +36,7 @@
                 </select>
             </div>
             <!--
-            <div class="tagFilter">
+            <div class="dropdownFilter">
                 <InputSelect class="form-control" @bind-Value="@Publication.Tags">
                     <option></option>
                     @foreach (var tag in Tags)
@@ -48,7 +48,7 @@
         </div>
     </section>
 
-    <table class="table table-striped">
+    <table class="table table-striped table-hover">
         <thead class="thead-dark">
             <tr>
                 <th>
@@ -56,11 +56,11 @@
                     <span class="fa @(GetSortStyle("WorkingTitle"))"></span>
                 </th>
                 <th>
-                    <span class="sort-link" @onclick="@(() => SortTable("MainAuthor.Name"))">Nachname</span>
+                    <span class="sort-link" @onclick="@(() => SortTable("MainAuthor.Name"))">Vorname</span>
                     <span class="fa @(GetSortStyle("MainAuthor.Name"))"></span>
                 </th>
                 <th>
-                    <span class="sort-link" @onclick="@(() => SortTable("MainAuthor.Surname"))">Vorname des Autors</span>
+                    <span class="sort-link" @onclick="@(() => SortTable("MainAuthor.Surname"))">Nachname des Autors</span>
                     <span class="fa @(GetSortStyle("MainAuthor.Surname"))"></span>
                 </th>
                 <th>
@@ -70,21 +70,20 @@
                 <th>Aktion</th>
             </tr>
         </thead>
+
         <tbody>
             @foreach (var publication in items)
             {
                 <tr>
-                    <td>@publication.WorkingTitle</td>
-                    <td>@publication.MainAuthor.Name</td>
-                    <td>@publication.MainAuthor.Surname</td>
-                    <td>@publication.DateOfRelease.ToString("dd.MM.yyyy")</td>
+                    <td class="align-middle">@publication.WorkingTitle</td>
+                    <td class="align-middle">@publication.MainAuthor.Name</td>
+                    <td class="align-middle">@publication.MainAuthor.Surname</td>
+                    <td class="align-middle">@publication.DateOfRelease.ToString("dd.MM.yyyy")</td>
                     <td>
-                        <button type="button" class="btn-primary">
-                            Bearbeiten
+                        <button type="button" class="btn" @onclick="NavigateToEditTitleComp">
                             <span class="fas fa-pencil-alt"></span>
                         </button>
-                        <button type="button" class="btn-primary">
-                            Löschen
+                        <button type="button" class="btn" @onclick="@(() => Delete(publication.ID))">
                             <span class="fas fa-trash-alt"></span>
                         </button>
                     </td>
@@ -92,6 +91,17 @@
             }
         </tbody>
     </table>
+    <div class="form-inline">
+        <div class="landingPageFileInput">
+           <InputFile OnChange="@FilePath"></InputFile>
+       </div>
+
+        <div class="landingPageAddPublication">
+            <button type="button" class="btn" @onclick="NavigateToAddTitleComp">
+                <span class="fas fa-plus-circle fa-5x"></span>
+            </button>
+        </div>
+    </div>
 </EditForm>
 
 @code
@@ -99,22 +109,27 @@
     private List<PublicationDataSet> data;
     private List<Division> divisions;
 
+    private void FilePath() { }
+
     void fetchData()
     {
         if (data is not null && divisions is not null)
             return;
 
-        string folderPath = @"\TestFiles";
-        string fileName = @"\ExcelDataBase.xlsx";
-        string directory = System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + folderPath;
-        Directory.CreateDirectory(directory);
-        string filepath = directory + fileName;
+        data = dataHandler.ExcelReader.ReadPublicationDataSet();
+        divisions = dataHandler.ExcelReader.ReadDivisions();
+        divisions.Insert(0, new Division() { Name = string.Empty });
+    }
 
-        var reader = new ReadDataSet(filepath, string.Empty);
+    private void NavigateToAddTitleComp()
+    {
+        Publication.Reset();
+        NavigationManager.NavigateTo("addTitle");
+    }
 
-        data = reader.ReadPublicationDataSet();
-        divisions = reader.ReadDivisions();
-        divisions.Insert(0, new Division() { Name=string.Empty });
+    private void NavigateToEditTitleComp()
+    {
+        NavigationManager.NavigateTo("editTitle");
     }
 
     private bool HideFilter = true;
@@ -127,12 +142,12 @@
     string SelectedDivsion { get; set; } = "";
 
     List<string> Divisions = new List<string>()
-    {
+{
         "", "DAC", "DQA", "DQA I", "DQA II", "DQA, TAD III", "MSD", "QA", "SAP", "SBD", "SEV", "TAD", "TAD I", "TAD II", "TAD III", "Vorstand", "Vorstand, TAD I"
     };
 
     List<string> Tags = new List<string>()
-    {
+{
         "Backend", "Frontend", "Development", ".NET 5.0", ".NET Core", ".NET Framework"
     };
 
@@ -163,43 +178,38 @@
         }
         if (IsSortedAscending)
         {
-            return "fa-sort-up";
+            return "fas fa-sort-amount-up";
         }
         else
         {
-            return "fa-sort-down";
+            return "fas fa-sort-amount-down";
         }
     }
 
     // sort the column which was choosen
     private void SortTable(string columnName)
     {
-        if (columnName != CurrentSortColumn)
+        //1 = ASC. -1 = DESC
+        int sortInt = IsSortedAscending ? 1 : -1;
+        CurrentSortColumn = columnName;
+        switch (columnName)
         {
-            var split = columnName.Split('.');
-            if (split.Length < 2)
-                data = data.OrderBy(x => x.GetType().GetProperty(columnName).GetValue(x, null)).ToList();
-            else if (split[0].Equals("MainAuthor"))
-                data = data.OrderBy(x => x.MainAuthor.Name).ToList();
-            CurrentSortColumn = columnName;
-            IsSortedAscending = true;
+            case "WorkingTitle":
+                data.Sort(delegate (PublicationDataSet x, PublicationDataSet y) { return String.Compare(x.WorkingTitle, y.WorkingTitle) * sortInt; });
+                break;
+            case "MainAuthor.Name":
+                data.Sort(delegate (PublicationDataSet x, PublicationDataSet y) { return String.Compare(x.MainAuthor.Name, y.MainAuthor.Name) * sortInt; });
+                break;
+            case "MainAuthor.Surname":
+                data.Sort(delegate (PublicationDataSet x, PublicationDataSet y) { return String.Compare(x.MainAuthor.Surname, y.MainAuthor.Surname) * sortInt; });
+                break;
+            case "DateOfRelease":
+                data.Sort(delegate (PublicationDataSet x, PublicationDataSet y) { return DateTime.Compare(x.DateOfRelease, y.DateOfRelease) * sortInt; });
+                break;
+
         }
-        else
-        {
-            if (IsSortedAscending)
-            {
-                var split = columnName.Split('.');
-                if (split.Length < 2)
-                    data = data.OrderByDescending(x => x.GetType().GetProperty(columnName).GetValue(x, null)).ToList();
-                else if (split[0].Equals("MainAuthor"))
-                    data = data.OrderByDescending(x => x.MainAuthor.Name).ToList();
-            }
-            else
-            {
-                data = data.OrderBy(x => x.GetType().GetProperty(columnName).GetValue(x, null)).ToList();
-            }
-            IsSortedAscending = !IsSortedAscending;
-        }
+
+        IsSortedAscending = !IsSortedAscending;
     }
 
     private List<PublicationDataSet> helpData;
@@ -222,5 +232,10 @@
         {
             data = helpData.Where(f => f.Division.Name.Equals(SelectedDivsion)).ToList();
         }
+    }
+
+    private void Delete(Guid? PubID)
+    {
+        data.Remove(data.Where(Publication => Publication.ID == PubID).First());
     }
 }

@@ -14,7 +14,28 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Read
 {
     public class RowSelect : ExcelIOBase
     {       
-        //return: <columnName, columnEntries>
+        /// <summary>
+        /// Reads and returns all values below of entered (so-called) 'header-columns' in (parameter) 'columnNames'.
+        /// </summary>
+        /// <param name="filepath">
+        /// Relative/absolute filepath to a *.xlsx file that should be opened.
+        /// </param>
+        /// <param name="worksheetName">
+        /// Name of the worksheet in the *.xlsx file that should be read.
+        /// </param>
+        /// <param name="columnNames">
+        /// Names of all columns that should be used to identify the header, so that it'll only read values that are below those headers.
+        /// </param>
+        /// <returns>
+        /// Returns a Dictionary, where the keys are the entered (parameter) 'columnNames' and the values of those keys are all read values that are below of those (so called) 'header-column'.
+        /// </returns>
+        /// <exception cref="FileNotFoundException">Thrown if File was not found</exception>
+        /// <exception cref="UnauthorizedAccessException">Thrown when misssing permission to access File</exception>
+        /// <exception cref="PathTooLongException">Thrown when File-path is too long and path cannot be conveted</exception>
+        /// <exception cref="ArgumentNullException">Thrown when an Argument was or became Null</exception>
+        /// <exception cref="ArgumentException">Thrown when an entred argument was or became invalid</exception>
+        /// <exception cref="InvalidCastException">Thrown when an entered value had an unexpected data-type</exception>
+        /// <exception cref="OpenXmlPackageException">Thrown when exception occurred in the OpenXML-Package</exception>
         public static Dictionary<string, List<object>> Select(string filepath, string worksheetName, List<string> columnNames)
         {
             SpreadsheetDocument spreadsheetDocument = OpenSpreadsheetDocument(filepath, worksheetName, out SheetData sheetData, false, false);
@@ -33,8 +54,33 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Read
             return result;
         }
 
-        //return: <columnName, columnEntries>
-        //whereColumnNamesAndConditions: <columnName, condition>
+        /// <summary>
+        /// Reads and returns all values of rows that do match all of the entered conditions in (parameter) 'whereColumnNamesAndConditions' 
+        /// below of entered (so-called) 'header-columns' in (parameter) 'columnNames'.
+        /// </summary>
+        /// <param name="filepath">
+        /// Relative/absolute filepath to a *.xlsx file that should be opened.
+        /// </param>
+        /// <param name="worksheetName">
+        /// Name of the worksheet in the *.xlsx file that should be read.
+        /// </param>
+        /// <param name="columnNames">
+        /// Names of all columns that should be used to identify the header, so that it'll only read values that are below those headers.
+        /// </param>
+        /// <param name="whereColumnNamesAndConditions">
+        /// Every KeyValuePair represents one condition, where the key is the (so called) 'header-column' 
+        /// and the value is the condition a cell should match (the cell should match data-type and value) and that is below the (so called) 'header-column' in the key.
+        /// </param>
+        /// <returns>
+        /// Returns a Dictionary, where the keys are the entered (parameter) 'columnNames' and the values of those keys are all read values that are below of those (so called) 'header-column'.
+        /// </returns>
+        /// <exception cref="FileNotFoundException">Thrown if File was not found</exception>
+        /// <exception cref="UnauthorizedAccessException">Thrown when misssing permission to access File</exception>
+        /// <exception cref="PathTooLongException">Thrown when File-path is too long and path cannot be conveted</exception>
+        /// <exception cref="ArgumentNullException">Thrown when an Argument was or became Null</exception>
+        /// <exception cref="ArgumentException">Thrown when an entred argument was or became invalid</exception>
+        /// <exception cref="InvalidCastException">Thrown when an entered value had an unexpected data-type</exception>
+        /// <exception cref="OpenXmlPackageException">Thrown when exception occurred in the OpenXML-Package</exception>
         public static Dictionary<string, List<object>> Select(string filepath, string worksheetName, List<string> columnNames, Dictionary<string, object> whereColumnNamesAndConditions)
         {
             SpreadsheetDocument spreadsheetDocument = OpenSpreadsheetDocument(filepath, worksheetName, out SheetData sheetData, false, false);

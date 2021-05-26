@@ -78,9 +78,9 @@ namespace Zeiss.PublicationManager.Data.DataSet.Model
             ID = Guid.NewGuid();
         }
 
-        [Required(ErrorMessage = "Name ist ein Pflichtfeld")]
-        [MaxLength(100, ErrorMessage = "Name ist zu lang")]
-        [MinLength(1, ErrorMessage = "Bitte Name eingeben")]
+        [Required(ErrorMessage = "Geschäftsbereich ist ein Pflichtfeld")]
+        [MaxLength(100, ErrorMessage = "Geschäftsbereich ist zu lang")]
+        [MinLength(1, ErrorMessage = "Bitte Geschäftsbereich eingeben")]
         public string Name { get; set; }
     }
 }
