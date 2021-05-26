@@ -52,6 +52,9 @@
 
         var selectedFiles = await Electron.Dialog.ShowOpenDialogAsync(mainWindow, options);
 
+        if (!System.IO.File.Exists(selectedFiles.FirstOrDefault()))
+            return;
+
         dataHandler.SetFilePath(selectedFiles.FirstOrDefault());
 
         NavigationManager.NavigateTo("/SearchPublication");
