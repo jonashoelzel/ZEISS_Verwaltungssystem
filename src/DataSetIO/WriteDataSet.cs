@@ -15,7 +15,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
 
         public void DeletePublication(Guid guid)
         {
-            RowDelete.Delete(FilePath, worksheets[0], new Dictionary<string, object>() { { "Publication_ID", guid }, });
+            RowDelete.Delete(FilePath, worksheets[0], new Dictionary<string, object>() { { "Publication_ID", guid.ToString() }, });
         }
 
         public void InsertPublication(IPublicationDataSet dataSet)
