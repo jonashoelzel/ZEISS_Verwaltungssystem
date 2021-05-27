@@ -2,86 +2,100 @@
 
 /* Hintergrund*/
 body {
-    background-color: #e5e5e5;
+    background-color: #d5d5d5;
 }
 
 /* ZEISS Logo */
 .logo {             
     display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 11%;
-    height: auto;
+    margin: 15px auto 15px auto;
+    width: 30%;
+    max-width: 18em;
 }
 
 /* aktueller Workflow Modus*/
 .mode {
     position: absolute;
-    top: 25%;
-    left: 25%;
+    top:25%;
+    left: 5%;
     font-weight:bold;
     color: white;
     text-shadow: 2px 2px 4px #000000;
 }
 
+/* Maximaler und minimaler Skalierungswert der Schrift*/
+.mode h2 {
+    font-size: 2.5vmax;
+    font-size: 2.8vmin;
+}
+
 .primaryButton {
     border: 3px groove #565656;
     border-radius: 15px;
-    background-color: #2f2e2e;
+    background-color: #244ca4;
     color: #ffffff;
     font-family: Arial;
-    font-size: 150%;
+    font-size: 120%;
     font-weight: bold;
     text-align: center;
     line-height: 20px;
 }
+    .primaryButton:hover {
+        background-color: blue;
+    }
 
+.secondaryButton {
+    border: 3px groove #244ca4;
+    border-radius: 15px;
+    background-color: white;
+    color: #244ca4;
+    font-family: Arial;
+    font-size: 120%;
+    font-weight: bold;
+    text-align: center;
+    line-height: 20px;
+}
+    .secondaryButton:hover {
+        color: darkblue;
+    }
+
+.continue, .back {
+    position: absolute;
+    bottom: 15%;
+    width: 9em;
+    height: 5em;
+}
 /* Weiter-Button */
 .continue {
-    position: absolute;
-    bottom: 7%;
     right: 7%;
-    width: 20%;
-    height: 10%;
-    min-width: 190px;
-    min-height: 50px;
 }
 
 /* Zurück-Button */
 .back {
-    position: absolute;
-    bottom: 7%;
     left: 7%;
-    width: 20%;
-    height: 10%;
-    min-width: 190px;
-    min-height: 50px;
 }
 
-/* Veröffentlichung hinzufügen/speichern-Button */
 .addPub {
     position: absolute;
     top: 24%;
-    right: 3%;
-    width: 30%;
-    height: 8%;
-    min-width: 225px;
-    min-height: 50px;
+    right: 7%;
+    width: 9em;
+    height: 5em;
 }
 
-/* Zentrierter Button */
+/* Zentrierter Button für Panels*/
 .centeredButton {
     text-align: center;
 }
 
 /* Neuen ... hinzufügen-Button*/
 .addNewField {
+    border-radius: 5px;
     position: static;
     font-size: 100%;
     font-weight: normal;
-    width: 40%;
-    height: 120%;
-    min-width: 170px;
+    width: 80%;
+    max-width: 20em;
     padding: 2%;
 }
 
@@ -95,24 +109,15 @@ body {
     top: 0px;
     right: 1px;
 }
+    .cancelButton:hover {
+        color: black;
+    }
 
 /* Hinzufügen-Button*/
-#addButtonInPopup {
-    border: 3px groove #565656;
-    border-radius: 15px;
-    background-color: #2f2e2e;
-    color: #ffffff;
-    font-family: Arial;
-    font-size: 120%;
-    font-weight: bold;
+.addButtonInPopup {
     text-align: center;
     line-height: 20px;
     min-height: 50px;
-}
-
-/* Excel-Liste Eingabe*/
-.landingPageFileInput {
-    margin: 1% 5%;
 }
 
 /* "+"-Button */
@@ -121,6 +126,12 @@ body {
     right: 5%;
     margin-top: 2%;
 }
+    .landingPageAddPublication button {
+        color: #244ca4;
+    }
+    .landingPageAddPublication button:hover {
+        color: blue;
+    }
 
 /* Panel */
 .panel-title {
@@ -187,6 +198,9 @@ body {
 .sort-link {
     cursor: pointer;
 }
+.sort-link:hover {
+    font-weight: 900;
+}
 
 .table {
     width: 90%;
@@ -200,7 +214,6 @@ tbody {
     overflow-y: auto;
     width: 100%;
 }
-
     thead, tbody tr {
         display: table;
         width: 100%;
@@ -209,6 +222,15 @@ tbody {
 
 thead {
     width: calc( 100% - 1em)
+}
+
+/* Farbe bei hovern über Tabellenzeile*/
+.table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+    background-color: gray;
+}
+
+.fa-pencil-alt:hover, .fa-trash-alt:hover {
+    text-shadow: 2px 2px 4px #000000;
 }
 
 .form-check.tags {

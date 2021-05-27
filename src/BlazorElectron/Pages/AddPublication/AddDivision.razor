@@ -8,7 +8,7 @@
 @inject PublicationDataSetModel Publication
 @inject DataHandler dataHandler
 
-<img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg" class="logo" />
+<img src="images/ZEISS_Logo.png" class="logo" />
 
 @if (ShowAddPopup)
 {
@@ -29,7 +29,7 @@
                         <ValidationMessage For="@(() => NewDivision.Name)" />
                     </div>
                     <div class="modal-body">
-                        <button type="submit" id="addButtonInPopup" class="form-control">Hinzufügen</button>
+                        <button type="submit" class="form-control addButtonInPopup primaryButton">Hinzufügen</button>
                     </div>
                 </div>
             </div>
@@ -44,12 +44,12 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h3 class="modal-title w-100 text-center">Geschäftsbereich ist ein Pflichtfeld.<br /> Bitte fügen sie einen neuen Geschäftsbereich hinzu!</h3>
-                    <button type="reset" id="cancelButton" @onclick="@CancelPflichtfeldPopup">
+                    <button type="reset" class="cancelButton" @onclick="@CancelPflichtfeldPopup">
                         <span class="fas fa-times fa-2x"></span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <button type="submit" id="addButtonInPopup" class="form-control" @onclick="@OpenAddPopup">Neuen Geschäftsbereich hinzufügen</button>
+                    <button type="submit" class="form-control addButtonInPopup primaryButton" @onclick="@OpenAddPopup">Neuen Geschäftsbereich hinzufügen</button>
                 </div>
             </div>
         </div>
@@ -73,16 +73,16 @@
             </select>
         </div>
         <div class="centeredButton">
-            <button class="primaryButton addNewField" @onclick="@OpenAddPopup">Neuen Geschäftsbereich hinzufügen</button>
+            <button class="secondaryButton addNewField" @onclick="@OpenAddPopup">Neuen Geschäftsbereich hinzufügen</button>
         </div>
     </div>
 </section>
 
-<button class="primaryButton back" type="button" @onclick="NavigateToPreviousScreen">
-    <span class="fas fa-arrow-circle-left fa-3x"></span>
+<button class="secondaryButton back" type="button" @onclick="NavigateToPreviousScreen">
+    <span class="fas fa-arrow-circle-left fa-2x"></span>
 </button>
 <button class="primaryButton continue" type="submit" @onclick="@NavigateToNextScreen">
-    <span class="fas fa-arrow-circle-right fa-3x"></span>
+    <span class="fas fa-arrow-circle-right fa-2x"></span>
 </button>
 
 @code

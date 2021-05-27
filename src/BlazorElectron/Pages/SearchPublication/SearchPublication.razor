@@ -10,7 +10,7 @@
 @inject PublicationDataSetModel Publication
 @inject DataHandler dataHandler
 
-<img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg" class="logo" />
+<img src="images/ZEISS_Logo.png" class="logo" />
 
 <EditForm Model="@Publication">
 
@@ -52,20 +52,20 @@
         <thead class="thead-dark">
             <tr>
                 <th>
-                    <span class="sort-link" @onclick="@(() => SortTable("WorkingTitle"))">Titel</span>
                     <span class="fa @(GetSortStyle("WorkingTitle"))"></span>
+                    <span class="sort-link" @onclick="@(() => SortTable("WorkingTitle"))">Titel</span>
                 </th>
                 <th>
-                    <span class="sort-link" @onclick="@(() => SortTable("MainAuthor.Name"))">Vorname</span>
                     <span class="fa @(GetSortStyle("MainAuthor.Name"))"></span>
+                    <span class="sort-link" @onclick="@(() => SortTable("MainAuthor.Name"))">Vorname</span>
                 </th>
                 <th>
-                    <span class="sort-link" @onclick="@(() => SortTable("MainAuthor.Surname"))">Nachname des Autors</span>
                     <span class="fa @(GetSortStyle("MainAuthor.Surname"))"></span>
+                    <span class="sort-link" @onclick="@(() => SortTable("MainAuthor.Surname"))">Nachname des Autors</span>
                 </th>
                 <th>
-                    <span class="sort-link" @onclick="@(() => SortTable("DateOfRelease"))">Datum der Veröffentlichung</span>
                     <span class="fa @(GetSortStyle("DateOfRelease"))"></span>
+                    <span class="sort-link" @onclick="@(() => SortTable("DateOfRelease"))">Datum der Veröffentlichung</span>
                 </th>
                 <th>Aktion</th>
             </tr>
@@ -91,16 +91,10 @@
             }
         </tbody>
     </table>
-    <div class="form-inline">
-        <div class="landingPageFileInput">
-           <InputFile OnChange="@FilePath"></InputFile>
-       </div>
-
-        <div class="landingPageAddPublication">
-            <button type="button" class="btn" @onclick="NavigateToAddTitleComp">
-                <span class="fas fa-plus-circle fa-5x"></span>
-            </button>
-        </div>
+    <div class="landingPageAddPublication">
+        <button type="button" class="btn" @onclick="NavigateToAddTitleComp">
+            <span class="fas fa-plus-circle fa-5x"></span>
+        </button>
     </div>
 </EditForm>
 

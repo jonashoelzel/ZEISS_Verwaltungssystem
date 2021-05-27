@@ -4,7 +4,7 @@
 @inject NavigationManager NavigationManager
 @inject PublicationDataSetModel Publication
 
-<img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg" class="logo" />
+<img src="images/ZEISS_Logo.png" class="logo" />
 
 <EditForm Model="@Publication" OnInvalidSubmit="@NavigateToNextScreen" OnValidSubmit="@NavigateToNextScreen">
 
@@ -22,11 +22,11 @@
         </div>
     </section>
 
-    <button class="primaryButton back" type="button" @onclick="NavigateToPreviousScreen">
-        <span class="fas fa-arrow-circle-left fa-3x"></span>
+    <button class="secondaryButton back" type="button" @onclick="NavigateToPreviousScreen">
+        <span class="fas fa-arrow-circle-left fa-2x"></span>
     </button>
     <button class="primaryButton continue" type="submit">
-        <span class="fas fa-arrow-circle-right fa-3x"></span>
+        <span class="fas fa-arrow-circle-right fa-2x"></span>
     </button>
 
 </EditForm>

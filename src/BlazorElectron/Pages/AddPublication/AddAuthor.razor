@@ -9,7 +9,7 @@
 @inject PublicationDataSetModel Publication
 @inject DataHandler dataHandler
 
-<img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg" class="logo" />
+<img src="images/ZEISS_Logo.png" class="logo" />
 
 @if (ShowAddPopup)
 {
@@ -35,7 +35,7 @@
                         <ValidationMessage For="@(() => NewAuthor.Surname)" />
                     </div>
                     <div class="modal-body">
-                        <button type="submit" id="addButtonInPopup" class="form-control">Hinzufügen</button>
+                        <button type="submit" class="form-control addButtonInPopup primaryButton">Hinzufügen</button>
                     </div>
                 </div>
             </div>
@@ -50,12 +50,12 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h3 class="modal-title w-100 text-center">Autor ist ein Pflichtfeld.<br /> Bitte fügen sie einen neuen Autor hinzu!</h3>
-                    <button type="reset" id="cancelButton" @onclick="@CancelPflichtfeldPopup">
+                    <button type="reset" class="cancelButton" @onclick="@CancelPflichtfeldPopup">
                         <span class="fas fa-times fa-2x"></span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <button type="submit" id="addButtonInPopup" class="form-control" @onclick="@OpenAddPopup">Neuen Autor hinzufügen</button>
+                    <button type="submit" class="form-control addButtonInPopup primaryButton" @onclick="@OpenAddPopup">Neuen Autor hinzufügen</button>
                 </div>
             </div>
         </div>
@@ -79,16 +79,16 @@
             </select>
         </div>
         <div class="centeredButton">
-            <button class="primaryButton addNewField" @onclick="@OpenAddPopup">Neuen Autor hinzufügen</button>
+            <button class="secondaryButton addNewField" @onclick="@OpenAddPopup">Neuen Autor hinzufügen</button>
         </div>
     </div>
 </section>
 
-<button class="primaryButton back" type="button" @onclick="NavigateToPreviousScreen">
-    <span class="fas fa-arrow-circle-left fa-3x"></span>
+<button class="secondaryButton back" type="button" @onclick="NavigateToPreviousScreen">
+    <span class="fas fa-arrow-circle-left fa-2x"></span>
 </button>
 <button class="primaryButton continue" type="button" @onclick="@NavigateToNextScreen">
-    <span class="fas fa-arrow-circle-right fa-3x"></span>
+    <span class="fas fa-arrow-circle-right fa-2x"></span>
 </button>
 
 @code
