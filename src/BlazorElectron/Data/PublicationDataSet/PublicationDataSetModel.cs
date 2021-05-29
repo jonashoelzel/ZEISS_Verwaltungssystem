@@ -38,8 +38,10 @@ namespace Zeiss.PublicationManager.Data.DataSet.Model
 
         // Additional Information
         public IState CurrentState { get; set; } = new StateModel();
+
         public DateTime DateOfStartWorking { get; set; } = DateTime.Now;
         public DateTime DateOfRelease { get; set; } = DateTime.Now;
+
         public List<ITag> Tags { get; set; }
         public string Description { get; set; }
         public string AdditionalInformation { get; set; }
