@@ -6,43 +6,43 @@
 
 {nbsp} +
 
-* 0.0.0.0 Table of Contents
+* <<0.0.0.0 Table of Contents>>
 
 {nbsp} +
 
-* 1.0.0.0 OpenXML/Excel - Technical Background
-** 1.1.0.0 Examples of Differences
-*** 1.1.1.0 Write/Read Dates
-**** 1.1.1.1 Writing Dates
-**** 1.1.1.2 Reading Dates
+* <<1.0.0.0 OpenXML/Excel - Technical Background>>
+** <<1.1.0.0 Examples of Differences>>
+*** <<1.1.1.0 Write/Read Dates>>
+**** <<1.1.1.1 Writing Dates>>
+**** <<1.1.1.2 Reading Dates>>
 
-** 1.2.0.0 Glossary
-*** 1.2.1.0 OpenXML Classes
-*** 1.2.2.0  Used Terms and Definitions
-**** 1.2.2.1 Empty Table Design
-**** 1.2.2.2 Used Table Design
+** <<1.2.0.0 Glossary>>
+*** <<1.2.1.0 OpenXML Classes>>
+*** <<1.2.2.0  Used Terms and Definitions>>
+**** <<1.2.2.1 Empty Table Design>>
+**** <<1.2.2.2 Used Table Design>>
 
 {nbsp} +
 
-* 2.0.0.0 Code Documentation
-** 2.1.0.0 Public APIs
+* <<2.0.0.0 Code Documentation>>
+** <<2.1.0.0 Public APIs>>
 
-*** 2.1.1.0 RowInsert Class
-**** 2.1.1.1 Insert with List
-**** 2.1.1.1 Insert with Dictionary
+*** <<2.1.1.0 RowInsert Class>>
+**** <<2.1.1.1 Insert with List>>
+**** <<2.1.1.1 Insert with Dictionary>>
 
-*** 2.1.2.0 RowSelect Class
-**** 2.1.2.1 SelectAsRows with List
-**** 2.1.2.2 SelectAsRows with List and Where Condition
-**** 2.1.2.3 SelectAsColumns with List
-**** 2.1.2.4 SelectAsColumns with List and Where Condition
+*** <<2.1.2.0 RowSelect Class>>
+**** <<2.1.2.1 SelectAsRows with List>>
+**** <<2.1.2.2 SelectAsRows with List and Where Condition>>
+**** <<2.1.2.3 SelectAsColumns with List>>
+**** <<2.1.2.4 SelectAsColumns with List and Where Condition>>
 
-*** 2.1.3.0 RowUpdate Class
-**** 2.1.3.1 Update with Where Condition
+*** <<2.1.3.0 RowUpdate Class>>
+**** <<2.1.3.1 Update with Where Condition>>
 
-*** 2.1.4.0 RowDelete Class
-**** 2.1.4.1 Delete with Where Condition
-**** 2.1.4.2 Delete Advanced with Where Condition
+*** <<2.1.4.0 RowDelete Class>>
+**** <<2.1.4.1 Delete with Where Condition>>
+**** <<2.1.4.2 Delete Advanced with Where Condition>>
 
 {nbsp} +
 
@@ -175,6 +175,11 @@ With the Stylesheet, Excel is able to interpret the cell value as Date and you c
 
 {nbsp} +
 
+Link: Go to <<1.0.0.0 OpenXML/Excel - Technical Background>> +
+Link: Go to <<0.0.0.0 Table of Contents>> +
+
+{nbsp} +
+
 === 1.2.0.0 Glossary
 
 {nbsp} +
@@ -277,6 +282,11 @@ For example when we want to read from: +
 "Header1" we get all below cells where the CellReference does contain the 'letterID' A, +
 "Header2" we get all below cells where the CellReference does contain the 'letterID' B, +
 "Header3" we get all below cells where the CellReference does contain the 'letterID' C, [...]. +
+
+{nbsp} +
+
+Link: Go to <<1.0.0.0 OpenXML/Excel - Technical Background>> +
+Link: Go to <<0.0.0.0 Table of Contents>> +
 
 {nbsp} +
 
@@ -857,5 +867,10 @@ This means there will be no empty rows when you open the spreadsheet manually. +
 
 Because all references will be updated, this advanced version takes more resources and time than the simple version. +
 
+
+{nbsp} +
+
+Link: Go to <<2.0.0.0 Code Documentation>> +
+Link: Go to <<0.0.0.0 Table of Contents>> +
 
 {nbsp} +
