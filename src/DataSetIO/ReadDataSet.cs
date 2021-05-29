@@ -17,7 +17,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Read
         {
             List<T> dataSets = new();
 
-            Dictionary<string, List<object>> table = RowSelect.Select(filepath, worksheetName, headerColumns);
+            Dictionary<string, List<object>> table = RowSelect.SelectAsColumns(filepath, worksheetName, headerColumns);
             if (table.Any())
             {
                 int rowsCount = table[headerColumns[0]].Count;
