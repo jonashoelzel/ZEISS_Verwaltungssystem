@@ -14,10 +14,23 @@ using Zeiss.PublicationManager.Data.DataSet;
 namespace Zeiss.PublicationManager.Data.Excel.IO.Write
 {  
     public class WriteExcel : ExcelIOBase
-    {       
-       
+    {
+
         #region CreateSpreadSheetEntries       
         #region CreateSharedString
+        protected static void AddSharedString(ref SpreadsheetDocument spreadsheetDocument, ref Cell newCell, string text)
+        {
+            //If no SharedStringTable is created, we create new one if no exist.
+            //We shouldn't create a SharedStringTable if it's not used, because it can corrupt the file
+            SharedStringTablePart sharedStringTablePart = GetSharedStringTablePart(ref spreadsheetDocument);
+
+            int index = InsertSharedStringItem(text, ref sharedStringTablePart);
+
+            newCell.DataType = new EnumValue<CellValues>(CellValues.SharedString);
+            newCell.CellValue = new CellValue(index.ToString());
+        }
+
+
         private static SharedStringTablePart GetSharedStringTablePart(ref SpreadsheetDocument spreadsheetDocument)
         {
             SharedStringTablePart sharedStringTablePart;
@@ -31,18 +44,6 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Write
             }
 
             return sharedStringTablePart;
-        }
-
-        protected static void AddSharedString(ref SpreadsheetDocument spreadsheetDocument, ref Cell newCell, string text)
-        {
-            //If no SharedStringTable is created, we create new one if no exist.
-            //We shouldn't create a SharedStringTable if it's not used, because it can corrupt the file
-            SharedStringTablePart sharedStringTablePart = GetSharedStringTablePart(ref spreadsheetDocument);
-
-            int index = InsertSharedStringItem(text, ref sharedStringTablePart);
-
-            newCell.DataType = new EnumValue<CellValues>(CellValues.SharedString);
-            newCell.CellValue = new CellValue(index.ToString());
         }
 
         // Given text and a SharedStringTablePart, creates a SharedStringItem with the specified text 
@@ -76,7 +77,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Write
         #endregion
 
         #region Cell    
-        //letterIDAndValue: <cellReference, value>
+        //cellReferenceIDAndValue: <cellReference, value>
         protected static void CreateCell(ref SpreadsheetDocument spreadsheetDocument, ref Row row, KeyValuePair<string, object> cellReferenceIDAndValue)
         {
             //Get reference cell
@@ -163,8 +164,8 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Write
                             string oldCellReference = cells[i].CellReference.Value;
 
                             //Decrement Row index
-                            int rowIndex = Convert.ToInt32(Regex.Replace(oldCellReference, @"[^\d]+", "")) - 1;
-                            string letterIndex = Regex.Replace(oldCellReference, @"[\d-]", "");
+                            int rowIndex = Convert.ToInt32(Regex.Replace(oldCellReference, @"[\d-]", "")) - 1;
+                            string letterIndex = Regex.Replace(oldCellReference, @"[^\d]+", "");
 
                             cells[i].CellReference.Value = $"{letterIndex}{rowIndex}";
                         }

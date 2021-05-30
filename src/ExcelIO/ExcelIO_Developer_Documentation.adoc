@@ -33,9 +33,9 @@
 
 *** <<2.1.2.0 RowSelect Class>>
 **** <<2.1.2.1 SelectAsRows with List>>
-**** <<2.1.2.2 SelectAsRows with List and Where Condition>>
+**** <<2.1.2.2 SelectWhereAsRows with List and Where Condition>>
 **** <<2.1.2.3 SelectAsColumns with List>>
-**** <<2.1.2.4 SelectAsColumns with List and Where Condition>>
+**** <<2.1.2.4 SelectWhereAsColumns with List and Where Condition>>
 
 *** <<2.1.3.0 RowUpdate Class>>
 **** <<2.1.3.1 Update with Where Condition>>
@@ -43,6 +43,10 @@
 *** <<2.1.4.0 RowDelete Class>>
 **** <<2.1.4.1 Delete with Where Condition>>
 **** <<2.1.4.2 Delete Advanced with Where Condition>>
+
+** <<2.2.0.0 Technical Documentation and Private APIs (Selection)>>
+
+*** <<2.2.1.0 SharedString>>
 
 {nbsp} +
 
@@ -494,7 +498,7 @@ We can call a function that uses the keys of the dictionary to add the value int
 
 {nbsp} +
 
-===== 2.1.2.2 SelectAsRows with List and Where Condition
+===== 2.1.2.2 SelectWhereAsRows with List and Where Condition
 
 {nbsp} +
 
@@ -628,7 +632,7 @@ When we add those results into a row/list, we can recreate the rows in the table
 
 {nbsp} +
 
-===== 2.1.2.4 SelectAsColumns with List and Where Condition
+===== 2.1.2.4 SelectWhereAsColumns with List and Where Condition
 
 {nbsp} +
 
@@ -874,3 +878,174 @@ Link: Go to <<2.0.0.0 Code Documentation>> +
 Link: Go to <<0.0.0.0 Table of Contents>> +
 
 {nbsp} +
+
+=== 2.2.0.0 Technical Documentation and Private APIs (Selection)
+
+{nbsp} +
+
+==== 2.2.1.0 SharedString
+
+Spreadsheet do use a SharedStringTable to store strings. +
+In the cells will be only references to a specific entry in the SharedStringTable stored. +
+A string can be referenced by multible cells, if they share the same string content. +
+(That's why it called SharedStringTable => A Table for Shared-Strings) +
+
+
+===== 2.2.1.1 (API) GetSharedStringTablePart
+[source]
+---
+private static SharedStringTablePart GetSharedStringTablePart(ref SpreadsheetDocument spreadsheetDocument)
+{
+    SharedStringTablePart sharedStringTablePart;
+    if (spreadsheetDocument.WorkbookPart.GetPartsOfType<SharedStringTablePart>().Any())
+    {
+        sharedStringTablePart = spreadsheetDocument.WorkbookPart.GetPartsOfType<SharedStringTablePart>().First();
+    }
+    else
+    {
+        sharedStringTablePart = spreadsheetDocument.WorkbookPart.AddNewPart<SharedStringTablePart>();
+    }
+
+    return sharedStringTablePart;
+}
+---
+
+First, we need to check if the spreadsheet has an SharedStringTable. +
+A SharedStringTable must be created explicitly. +
+If it has none, we easily can create a SharedStringTable in the spreadsheet. +
+
+Because the cells only store the references, we need to parse throu the SharedStringTable to check if the String already exists (to safe storage). +
+
+We can do this this way: +
+
+===== 2.2.1.2 (API) InsertSharedStringItem
+[source]
+---
+// Given text and a SharedStringTablePart, creates a SharedStringItem with the specified text 
+// and inserts it into the SharedStringTablePart. If the item already exists, returns its index.
+protected static int InsertSharedStringItem(string text, ref SharedStringTablePart sharedStringTablePart)
+{
+    // If the part does not contain a SharedStringTable, create one.
+    if (sharedStringTablePart.SharedStringTable is null)
+    {
+        sharedStringTablePart.SharedStringTable = new SharedStringTable();
+    }
+
+    int i = 0;
+    // Iterate through all the items in the SharedStringTable. If the text already exists, return its index.
+    foreach (SharedStringItem item in sharedStringTablePart.SharedStringTable.Elements<SharedStringItem>())
+    {
+        if (item.InnerText == text)
+        {
+            return i;
+        }
+
+        i++;
+    }
+
+    // The text does not exist in the part. Create the SharedStringItem and return its index.
+    sharedStringTablePart.SharedStringTable.AppendChild(new SharedStringItem(new DocumentFormat.OpenXml.Spreadsheet.Text(text)));
+    sharedStringTablePart.SharedStringTable.Save();
+
+    return i;
+}
+---
+
+Then we can add the (cell) entry like this: +
+
+===== 2.2.1.3 (API) AddSharedString
+[source]
+---
+protected static void AddSharedString(ref SpreadsheetDocument spreadsheetDocument, ref Cell newCell, string text)
+{
+    //If no SharedStringTable is created, we create new one if no exist.
+    //We shouldn't create a SharedStringTable if it's not used, because it can corrupt the file
+    SharedStringTablePart sharedStringTablePart = GetSharedStringTablePart(ref spreadsheetDocument);
+
+    int index = InsertSharedStringItem(text, ref sharedStringTablePart);
+
+    newCell.DataType = new EnumValue<CellValues>(CellValues.SharedString);
+    newCell.CellValue = new CellValue(index.ToString());
+}
+---
+
+{nbsp} +
+
+==== 2.2.2.0 Cells
+
+We can create cells this way: +
+
+===== 2.2.2.1 (API) CreateCell
+[source]
+---
+//cellReferenceIDAndValue: <cellReference, value>
+protected static void CreateCell(ref SpreadsheetDocument spreadsheetDocument, ref Row row, KeyValuePair<string, object> cellReferenceIDAndValue)
+{
+    //Get reference cell
+    //The referenceCell is the Cell in the previous row with the same letterIndex
+    Cell referenceCell = GetReferenceCell(row, cellReferenceIDAndValue.Key);
+    Cell newCell = new() { CellReference = cellReferenceIDAndValue.Key };
+    row.InsertBefore(newCell, referenceCell);
+
+    UpdateCell(ref spreadsheetDocument, ref newCell, cellReferenceIDAndValue.Value);
+}
+---
+
+First, we get the referenceCell. +
+The referenceCell is a cell in the same column (with the same 'letterID') in the previous (upper) row. +
+If the referenceCell does not exists or is empty, the referenceCell is null. +
+
+The CellReference is the 'column-letter' ('letterID') and the RowIndex. +
+
+The cell can be saved this way: +
+
+===== 2.2.2.1 (API) UpdateCell
+[source]
+---
+protected static void UpdateCell(ref SpreadsheetDocument spreadsheetDocument, ref Cell cell, object newValue)
+{
+    switch (newValue)
+    {
+        case string objstr:
+            AddSharedString(ref spreadsheetDocument, ref cell, objstr);
+            break;
+
+        case DateTime objdate:
+            //Normal way. Does NOT work for xlsx (!)
+            //string strdate = objdate.ToOADate().ToString();
+            //cell.DataType = CellValues.Date;
+            //cell.CellValue = new CellValue(strdate);
+
+            //"StyleIndex" is "1", because we added a new stylesheet (index 0 would be default) with "NumberFormatId=14"
+            //is in the 2nd item of 'CellFormats' array.
+            cell.DataType = new EnumValue<CellValues>(CellValues.Number);
+            cell.StyleIndex = 1;
+            cell.CellValue = new CellValue(objdate.ToOADate().ToString(CultureInfo.InvariantCulture));
+            break;
+
+        case bool objbool:
+            AddSharedString(ref spreadsheetDocument, ref cell, objbool.ToString());
+            break;
+
+        default:
+            if (newValue is not null && Decimal.TryParse(newValue.ToString(), out decimal objdec))
+            {
+                cell.DataType = new EnumValue<CellValues>(CellValues.Number);
+                cell.CellValue = new CellValue(objdec.ToString(CultureInfo.InvariantCulture));
+            }
+            else
+            {
+                //Enter an empty cell to make IO easier
+                AddSharedString(ref spreadsheetDocument, ref cell, " ");
+            }
+            break;
+    }
+}
+---
+
+Normaly, OpenXML has a native support for boolean. +
+This format is not suppported by MS Excel (MS Excel cannot work with the boolean format of OpenXML and must be implemented in other ways). +
+
+Microsoft Excel can support the following data-types: +
+String; DateTime; (Boolean); Numbers (Decimal); +
+If you want to use other data-types than the specified, they should be converted into one of these data-types before inserting them into Public APIs (!) +

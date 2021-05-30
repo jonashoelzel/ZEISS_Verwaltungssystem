@@ -9,7 +9,7 @@ using System.Globalization;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
-
+using System.Text.RegularExpressions;
 
 namespace Zeiss.PublicationManager.Data.Excel.IO
 {
@@ -144,6 +144,11 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
 
         protected static string GetLetterIDOfCellReference(string cellReference)
         {
+            string letterID = Regex.Match(cellReference, @"[^\d]+").Value;
+
+            return letterID;
+
+            /*
             for (int i = 0; i < cellReference.Length; i++)
             {
                 char c = cellReference[i];
@@ -153,6 +158,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
 
             //Already letters only
             return cellReference;
+            */
         }
 
         //return: <letterID, columnName>
@@ -527,6 +533,11 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
         #region GetRowInformation
         protected static int GetRowIDOfCellReference(string cellReference)
         {
+            string rowID = Regex.Match(cellReference, @"[\d-]").Value;
+
+            return Convert.ToInt32(rowID);
+            
+            /*
             for (int i = 0; i < cellReference.Length; i++)
             {
                 char c = cellReference[i];
@@ -536,6 +547,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
 
             //Already letters only
             return Convert.ToInt32(cellReference);
+            */
         }
 
 
