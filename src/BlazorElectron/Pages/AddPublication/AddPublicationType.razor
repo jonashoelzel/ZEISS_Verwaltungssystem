@@ -3,14 +3,16 @@
 @using Zeiss.PublicationManager.Data.DataSet
 @using Zeiss.PublicationManager.Data.DataSet.IO.Read
 @using Zeiss.PublicationManager.Business.Logic.IO
+@using BlazorElectron.Data.DataLogic
 
 @inject NavigationManager NavigationManager
 @inject PublicationDataSetModel Publication
 @inject DataHandler dataHandler
+@inject WorkflowState workflowState
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg" class="logo" />
 
-@if (ShowSavePopup)
+@if (ShowSavePopup && workflowState.State == Data.DataLogic.State.Add)
 {
     <div class="modal fade show" role="dialog">
         <div class="modal-dialog" role="document">
@@ -25,6 +27,22 @@
             </div>
         </div>
     </div>
+}
+else if (ShowSavePopup && workflowState.State == Data.DataLogic.State.Edit)
+{
+<div class="modal fade show" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title w-100 text-center">Erfolgreich gespeichert</h3>
+            </div>
+            <div class="modal-body">
+                <p>Die Änderungen wurden gespeichert.</p>
+                <button type="submit" class="form-control primaryButton" @onclick="@NavigateToLandingPage">Zurück zur Startseite</button>
+            </div>
+        </div>
+    </div>
+</div>
 }
 
 @if (ShowAddPopup)
@@ -94,8 +112,14 @@
         </div>
     </div>
 </section>
-
-<button class="primaryButton addPub" type="submit" @onclick="@Save">Veröffentlichung hinzufügen</button>
+@if (workflowState.State == Data.DataLogic.State.Add)
+{
+    <button class="primaryButton addPub" type="submit" @onclick="@Save">Veröffentlichung hinzufügen</button>
+}
+else
+{
+    <button class="primaryButton addPub" type="submit" @onclick="@Save">Änderungen Speichern</button>
+}
 <button class="primaryButton back" type="button" @onclick="NavigateToPreviousScreen">
     <span class="fas fa-arrow-circle-left fa-3x"></span>
 </button>
@@ -140,7 +164,8 @@
         {
             dataHandler.Save(Publication);
             ShowSavePopup = true;
-        }else
+        }
+        else
             ShowPflichtfeldPopup = true;
     }
 

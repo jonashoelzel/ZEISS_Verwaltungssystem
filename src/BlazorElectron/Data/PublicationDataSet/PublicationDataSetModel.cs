@@ -70,5 +70,23 @@ namespace Zeiss.PublicationManager.Data.DataSet.Model
             Division = new DivisionModel();
             PublishedBy = new PublisherModel();
         }
+
+        public void Set(IPublicationDataSet publication)
+        {
+            ID = publication.ID;
+            WorkingTitle = publication.WorkingTitle;
+            PublicationTitle = publication.PublicationTitle;
+            TypeOfPublication = publication.TypeOfPublication;
+            MainAuthor = publication.MainAuthor;
+            CoAuthors = publication.CoAuthors;
+            CurrentState = publication.CurrentState;
+            DateOfStartWorking = publication.DateOfStartWorking;
+            DateOfRelease = publication.DateOfRelease;
+            Tags = publication.Tags;
+            Description = publication.Description;
+            AdditionalInformation = publication.AdditionalInformation;
+            Division = publication.Division;
+            PublishedBy = publication.PublishedBy;
+        }
     }
 }

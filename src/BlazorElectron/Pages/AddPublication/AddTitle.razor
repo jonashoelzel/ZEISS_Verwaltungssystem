@@ -1,12 +1,34 @@
 ﻿@page "/addTitle"
 @using Zeiss.PublicationManager.Data.DataSet.Model
+@using BlazorElectron.Data.DataLogic
+@using Zeiss.PublicationManager.Business.Logic.IO
 
 @inject NavigationManager NavigationManager
 @inject PublicationDataSetModel Publication
+@inject WorkflowState workflowState
+@inject DataHandler dataHandler
+
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg" class="logo" />
 
-<EditForm Model="@NewTitel" OnInvalidSubmit="@HandleInvalidSubmit" OnValidSubmit="@NavigateToNextScreen">
+@if (ShowSavePopup && workflowState.State == Data.DataLogic.State.Edit)
+{
+    <div class="modal fade show" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title w-100 text-center">Erfolgreich gespeichert</h3>
+                </div>
+                <div class="modal-body">
+                    <p>Die Änderungen wurden gespeichert.</p>
+                    <button type="submit" class="form-control primaryButton" @onclick="@NavigateToLandingPage">Zurück zur Startseite</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<EditForm Model="@NewTitel" OnInvalidSubmit="@HandleInvalidSubmit" OnValidSubmit="onValidSubmit">
 
     <DataAnnotationsValidator />
     <div class="mode">
@@ -17,15 +39,20 @@
             <h4 class="panel-title">Arbeitstitel</h4>
         </header>
         <div class="panel-body">
-            <InputText class="form-control" @bind-Value="@NewTitel.Name"/><br />
+            <InputText class="form-control" @bind-Value="@NewTitel.Name" /><br />
             <ValidationMessage For="@(() => NewTitel.Name)" />
         </div>
     </section>
 
+
+    @if (workflowState.State == State.Edit)
+    {
+        <button class="primaryButton addPub" type="submit" @onclick="(() => NavigateButton  = ButtonType.Save)">Änderungen Speichern</button>
+    }
     <button class="primaryButton back" type="button" @onclick="NavigateToPreviousScreen">
         <span class="fas fa-home fa-3x"></span>
     </button>
-    <button class="primaryButton continue" type="submit">
+    <button class="primaryButton continue" type="submit" @onclick="(() => NavigateButton = ButtonType.Next)">
         <span class="fas fa-arrow-circle-right fa-3x"></span>
     </button>
 
@@ -34,14 +61,10 @@
 @code
 {
     TitleModel NewTitel = new();
+    bool ShowSavePopup = false;
+    ButtonType NavigateButton;
 
     private void NavigateToPreviousScreen() => NavigationManager.NavigateTo("/SearchPublication");
-
-    private void NavigateToNextScreen()
-    {
-        Publication.WorkingTitle = NewTitel.Name;
-        NavigationManager.NavigateTo("addAuthor");
-    }
 
     private void HandleInvalidSubmit() { }
 
@@ -50,4 +73,27 @@
         NewTitel.Name = Publication.WorkingTitle;
         base.OnInitialized();
     }
+
+    private void Save()
+    {
+        Publication.WorkingTitle = NewTitel.Name;
+        dataHandler.Save(Publication);
+        ShowSavePopup = true;
+    }
+
+    private void onValidSubmit()
+    {
+        Publication.WorkingTitle = NewTitel.Name;
+        if (NavigateButton == ButtonType.Next)
+            NavigationManager.NavigateTo("addAuthor");
+        else
+        {
+            dataHandler.Save(Publication);
+            ShowSavePopup = true;
+        }
+    }
+
+    private void NavigateToLandingPage() => NavigationManager.NavigateTo("/SearchPublication");
+
+    enum ButtonType { Next, Save }
 }

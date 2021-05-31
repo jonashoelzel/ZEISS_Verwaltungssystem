@@ -1,8 +1,10 @@
 ﻿@page "/addDateOfRelease"
 @using Zeiss.PublicationManager.Data.DataSet.Model
+@using BlazorElectron.Data.DataLogic
 
 @inject NavigationManager NavigationManager
 @inject PublicationDataSetModel Publication
+@inject WorkflowState workflowState
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg" class="logo" />
 
@@ -37,7 +39,7 @@
                         <InputDate class="form-control" @bind-Value="Publication.DateOfRelease" />
                     </div>
                     <div class="modal-body">
-                        <button type="submit" id="addButtonInPopup" class="form-control"  @onclick="@CancelPflichtfeldPopup">Hinzufügen</button>
+                        <button type="submit" id="addButtonInPopup" class="form-control" @onclick="@CancelPflichtfeldPopup">Hinzufügen</button>
                     </div>
                 </div>
             </div>
