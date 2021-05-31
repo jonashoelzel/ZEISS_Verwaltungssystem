@@ -185,15 +185,16 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
 
         public static Dictionary<string, object> PublicationToAttributes(IPublicationDataSet dataSet)
         {
-            var publication = new Dictionary<string, object>();
-
-            publication.Add("Publication_ID", dataSet.ID.ToString());
-            publication.Add("WorkingTitle", dataSet.WorkingTitle);
-            publication.Add("PublicationTitle", dataSet.PublicationTitle);
-            publication.Add("DateOfStartWorking", dataSet.DateOfStartWorking);
-            publication.Add("DateOfRelease", dataSet.DateOfRelease);
-            publication.Add("Description", dataSet.Description);
-            publication.Add("AdditionalInformation", dataSet.AdditionalInformation);
+            var publication = new Dictionary<string, object>
+            {
+                { "Publication_ID", dataSet.ID.ToString() },
+                { "WorkingTitle", dataSet.WorkingTitle },
+                { "PublicationTitle", dataSet.PublicationTitle },
+                { "DateOfStartWorking", dataSet.DateOfStartWorking },
+                { "DateOfRelease", dataSet.DateOfRelease },
+                { "Description", dataSet.Description },
+                { "AdditionalInformation", dataSet.AdditionalInformation }
+            };
 
             string divisionID = string.Empty;
             if (!string.IsNullOrEmpty(dataSet.Division.Name))

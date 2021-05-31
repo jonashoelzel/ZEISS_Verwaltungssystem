@@ -22,6 +22,28 @@
         </div>
     </section>
 
+    @if (ShowPflichtfeldPopup)
+    {
+        <div class="modal fade show" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title w-100 text-center">Ungültiges Datum!<br />Datum muss nach '02.01.1900' (DD.MM.YYYY) sein!</h3>
+                        <button type="reset" id="cancelButton" @onclick="@CancelPflichtfeldPopup">
+                            <span class="fas fa-times fa-2x"></span>
+                        </button>
+                    </div>
+                    <div class="panel-body">
+                        <InputDate class="form-control" @bind-Value="Publication.DateOfRelease" />
+                    </div>
+                    <div class="modal-body">
+                        <button type="submit" id="addButtonInPopup" class="form-control"  @onclick="@CancelPflichtfeldPopup">Hinzufügen</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
     <button class="primaryButton back" type="button" @onclick="NavigateToPreviousScreen">
         <span class="fas fa-arrow-circle-left fa-3x"></span>
     </button>
@@ -33,9 +55,20 @@
 
 @code
 {
+    bool ShowPflichtfeldPopup = false;
+
+    void CancelPflichtfeldPopup() => ShowPflichtfeldPopup = false;
+
     private void NavigateToPreviousScreen() => NavigationManager.NavigateTo("addDivision");
 
-    private void NavigateToNextScreen() => NavigationManager.NavigateTo("addPublicationType");
+    private void NavigateToNextScreen()
+    {
+        //OADate first Date is 1900/01/01 12:00:00 => 1900/01/02 00:00:00
+        if (Publication.DateOfRelease >= new DateTime(1900, 1, 2))
+            NavigationManager.NavigateTo("addPublicationType");
+
+        ShowPflichtfeldPopup = true;
+    }
 
     private void HandleInvalidSubmit() { }
 }
