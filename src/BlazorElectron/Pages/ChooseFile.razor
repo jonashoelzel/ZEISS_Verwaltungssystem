@@ -17,7 +17,7 @@
     <div class="panel-body chooseExcel centeredButton">
         <div class="form-check-inline">
             <button type="button" class="primaryButton openExcel" @onclick="openFileDialog">Datei Öffnen</button>
-            <button type="button" class="secondaryButton newExcel">Neue Excel erstellen</button>
+            <button type="button" class="secondaryButton newExcel" @onclick="createFielDialog">Neue Excel erstellen</button>
         </div>
     </div>
 </section>
@@ -57,6 +57,38 @@
             return;
 
         dataHandler.SetFilePath(selectedFiles.FirstOrDefault());
+
+        NavigationManager.NavigateTo("/SearchPublication");
+    }
+
+    async Task createFielDialog()
+    {
+        if (!HybridSupport.IsElectronActive)
+        {
+            return;
+        }
+
+        var mainWindow = Electron.WindowManager.BrowserWindows.FirstOrDefault();
+
+        var options = new SaveDialogOptions
+        {
+            Title = "Choose a path to save the file",
+            Filters = new[]
+            {
+                new FileFilter
+                {
+                    Name = "Excel",
+                    Extensions = new[] { "xlsx" }
+                },
+            },
+        };
+
+        var newFile = await Electron.Dialog.ShowSaveDialogAsync(mainWindow, options);
+
+        if (string.IsNullOrWhiteSpace(newFile))
+            return;
+
+        dataHandler.SetFilePath(newFile);
 
         NavigationManager.NavigateTo("/SearchPublication");
     }

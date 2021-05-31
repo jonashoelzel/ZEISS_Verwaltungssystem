@@ -20,7 +20,6 @@ namespace Zeiss.PublicationManager.Business.Logic.IO
         {
             excelReader = new ReadDataSet(filePath);
             excelWriter = new WriteDataSet(filePath);
-            excelReader.CheckWorkBook();
         }
 
         public DataHandler(string filePath) : this()
