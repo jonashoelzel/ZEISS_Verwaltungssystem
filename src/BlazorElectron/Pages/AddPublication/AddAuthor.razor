@@ -13,6 +13,23 @@
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg" class="logo" />
 
+@if (ShowSavePopup && workflowState.State == Data.DataLogic.State.Edit)
+{
+    <div class="modal fade show" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title w-100 text-center">Erfolgreich gespeichert</h3>
+                </div>
+                <div class="modal-body">
+                    <p>Die Änderungen wurden gespeichert.</p>
+                    <button type="submit" class="form-control primaryButton" @onclick="@NavigateToLandingPage">Zurück zur Startseite</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
 @if (ShowAddPopup)
 {
     <EditForm Model="@NewAuthor" OnInvalidSubmit="@HandleInvalidSubmit" OnValidSubmit="@AddNewAuthor">
@@ -64,9 +81,18 @@
     </div>
 }
 
-<div class="mode">
-    <h2>Neue Veröffentlichung hinzufügen</h2>
-</div>
+@if (workflowState.State == Data.DataLogic.State.Edit)
+{
+    <div class="mode">
+        <h2>Veröffentlichung bearbeiten</h2>
+    </div>
+}
+else if (workflowState.State == Data.DataLogic.State.Add)
+{
+    <div class="mode">
+        <h2>Neue Veröffentlichung hinzufügen</h2>
+    </div>
+}
 <section class="panel-default">
     <header class="panel-heading">
         <h4 class="panel-title">Autor</h4>
@@ -86,10 +112,14 @@
     </div>
 </section>
 
+@if (workflowState.State == Data.DataLogic.State.Edit)
+{
+    <button class="primaryButton addPub" type="submit" @onclick="Save">Änderungen Speichern</button>
+}
 <button class="primaryButton back" type="button" @onclick="NavigateToPreviousScreen">
     <span class="fas fa-arrow-circle-left fa-3x"></span>
 </button>
-<button class="primaryButton continue" type="button" @onclick="@NavigateToNextScreen">
+<button class="primaryButton continue" type="button" @onclick="NavigateToNextScreen">
     <span class="fas fa-arrow-circle-right fa-3x"></span>
 </button>
 
@@ -97,10 +127,13 @@
 {
     AuthorModel NewAuthor = new();
     List<IAuthor> authors;
+    bool ShowSavePopup = false;
     bool ShowAddPopup = false;
     bool ShowPflichtfeldPopup = false;
 
     private void NavigateToPreviousScreen() => NavigationManager.NavigateTo("addTitle");
+
+    private void NavigateToLandingPage() => NavigationManager.NavigateTo("/SearchPublication");
 
     private void NavigateToNextScreen()
     {
@@ -142,6 +175,12 @@
     {
         var selectedAuthorID = Guid.Parse(author.Value.ToString());
         Publication.MainAuthor = authors.First(a => a.ID.Equals(selectedAuthorID));
+    }
+
+    private void Save()
+    {
+        dataHandler.Save(Publication);
+        ShowSavePopup = true;
     }
 
     void fetchData()

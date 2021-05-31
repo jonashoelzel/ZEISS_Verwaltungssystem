@@ -5,9 +5,8 @@
 
 @inject NavigationManager NavigationManager
 @inject PublicationDataSetModel Publication
-@inject WorkflowState workflowState
 @inject DataHandler dataHandler
-
+@inject WorkflowState workflowState
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg" class="logo" />
 
@@ -29,11 +28,19 @@
 }
 
 <EditForm Model="@NewTitel" OnInvalidSubmit="@HandleInvalidSubmit" OnValidSubmit="onValidSubmit">
-
     <DataAnnotationsValidator />
-    <div class="mode">
-        <h2>Neue Veröffentlichung hinzufügen</h2>
-    </div>
+    @if (workflowState.State == State.Edit)
+    {
+        <div class="mode">
+            <h2>Veröffentlichung bearbeiten</h2>
+        </div>
+    }
+    else if (workflowState.State == State.Add)
+    {
+        <div class="mode">
+            <h2>Neue Veröffentlichung hinzufügen</h2>
+        </div>
+    }
     <section class="panel-default">
         <header class="panel-heading">
             <h4 class="panel-title">Arbeitstitel</h4>
@@ -43,7 +50,6 @@
             <ValidationMessage For="@(() => NewTitel.Name)" />
         </div>
     </section>
-
 
     @if (workflowState.State == State.Edit)
     {
@@ -63,9 +69,12 @@
     TitleModel NewTitel = new();
     bool ShowSavePopup = false;
     ButtonType NavigateButton;
+    enum ButtonType { Next, Save }
 
     private void NavigateToPreviousScreen() => NavigationManager.NavigateTo("/SearchPublication");
 
+    private void NavigateToLandingPage() => NavigationManager.NavigateTo("/SearchPublication");
+    
     private void HandleInvalidSubmit() { }
 
     protected override void OnInitialized()
@@ -92,8 +101,4 @@
             ShowSavePopup = true;
         }
     }
-
-    private void NavigateToLandingPage() => NavigationManager.NavigateTo("/SearchPublication");
-
-    enum ButtonType { Next, Save }
 }

@@ -30,19 +30,19 @@
 }
 else if (ShowSavePopup && workflowState.State == Data.DataLogic.State.Edit)
 {
-<div class="modal fade show" role="dialog">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title w-100 text-center">Erfolgreich gespeichert</h3>
-            </div>
-            <div class="modal-body">
-                <p>Die Änderungen wurden gespeichert.</p>
-                <button type="submit" class="form-control primaryButton" @onclick="@NavigateToLandingPage">Zurück zur Startseite</button>
+    <div class="modal fade show" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title w-100 text-center">Erfolgreich gespeichert</h3>
+                </div>
+                <div class="modal-body">
+                    <p>Die Änderungen wurden gespeichert.</p>
+                    <button type="submit" class="form-control primaryButton" @onclick="@NavigateToLandingPage">Zurück zur Startseite</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 }
 
 @if (ShowAddPopup)
@@ -91,9 +91,18 @@ else if (ShowSavePopup && workflowState.State == Data.DataLogic.State.Edit)
     </div>
 }
 
-<div class="mode">
-    <h2>Neue Veröffentlichung hinzufügen</h2>
-</div>
+@if (workflowState.State == Data.DataLogic.State.Edit)
+{
+    <div class="mode">
+        <h2>Veröffentlichung bearbeiten</h2>
+    </div>
+}
+else if (workflowState.State == Data.DataLogic.State.Add)
+{
+    <div class="mode">
+        <h2>Neue Veröffentlichung hinzufügen</h2>
+    </div>
+}
 <section class="panel-default">
     <header class="panel-heading">
         <h4 class="panel-title">Art der Veröffentlichung</h4>
@@ -134,6 +143,8 @@ else
     bool ShowSavePopup = false;
 
     private void NavigateToPreviousScreen() => NavigationManager.NavigateTo("addDateOfRelease");
+    
+    private void NavigateToLandingPage() => NavigationManager.NavigateTo("/SearchPublication");
 
     private void NavigateToNextScreen()
     {
@@ -141,8 +152,6 @@ else
             NavigationManager.NavigateTo("addDescription");
         ShowPflichtfeldPopup = true;
     }
-
-    private void NavigateToLandingPage() => NavigationManager.NavigateTo("/SearchPublication");
 
     void CancelAddPopup()
     {
