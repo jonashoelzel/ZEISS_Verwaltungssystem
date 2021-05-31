@@ -29,7 +29,8 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Read
                     {
                         row.Add(headerColumns[i], table[headerColumns[i]][rowIndex]);
                     }
-                    dataSets.Add(convertAttributesFunction(row));
+                    var converted = convertAttributesFunction(row);
+                    dataSets.Add(converted);
                 }
             }
 
@@ -137,9 +138,9 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Read
                 else throw new Exception("File Corrupt");
             }
 
-            if (!string.IsNullOrWhiteSpace(attributes["Publisher_ID"].ToString()))
+            if (!string.IsNullOrWhiteSpace(attributes["Publication_ID"].ToString()))
             {
-                if (Guid.TryParse(attributes["Publisher_ID"].ToString(), out Guid id))
+                if (Guid.TryParse(attributes["Publication_ID"].ToString(), out Guid id))
                     publication.ID = id;
                 else throw new Exception("File Corrupt");
             }

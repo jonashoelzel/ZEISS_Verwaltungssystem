@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Zeiss.PublicationManager.Data.DataSet;
 using Zeiss.PublicationManager.Data.DataSet.IO.Read;
 using Zeiss.PublicationManager.Data.DataSet.IO.Write;
@@ -84,5 +84,11 @@ namespace Zeiss.PublicationManager.Business.Logic.IO
         {
             excelWriter.InsertPublisher(publisher);
         }
+
+        public void DeletePublication(Guid guid)
+        {
+            excelWriter.DeletePublication(guid);
+        }
+
     }
 }

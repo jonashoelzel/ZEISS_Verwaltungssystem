@@ -1,10 +1,9 @@
-@page "/"
+@page "/SearchPublication"
 @using Zeiss.PublicationManager.Data.DataSet.Model
 @using Zeiss.PublicationManager.Data.DataSet
 @using Zeiss.PublicationManager.Data.DataSet.IO.Read
 @using Zeiss.PublicationManager.UI
 @using Zeiss.PublicationManager.Business.Logic.IO
-@using System.IO
 
 @inject NavigationManager NavigationManager
 @inject PublicationDataSetModel Publication
@@ -17,7 +16,7 @@
     <section class="search-default">
         <div class="input-group">
             <input type="text" class="form-control" placeholder="Titel, Autor, Stichwort, ..."
-                   @bind-value="SearchTerm" @bind-value:event="oninput" />
+                    @oninput="Filter"/>
             <button type="button" class="btn" @onclick="@ChangeFilterVisibility" id="openFilter">
                 <span class="fas fa-filter fa-2x"></span>
             </button>
@@ -92,10 +91,6 @@
         </tbody>
     </table>
     <div class="form-inline">
-        <div class="landingPageFileInput">
-           <InputFile OnChange="@FilePath"></InputFile>
-       </div>
-
         <div class="landingPageAddPublication">
             <button type="button" class="btn" @onclick="NavigateToAddTitleComp">
                 <span class="fas fa-plus-circle fa-5x"></span>
@@ -109,8 +104,6 @@
     private List<PublicationDataSet> data;
     private List<Division> divisions;
 
-    private void FilePath() { }
-
     void fetchData()
     {
         if (data is not null && divisions is not null)
@@ -119,6 +112,8 @@
         data = dataHandler.ExcelReader.ReadPublicationDataSet();
         divisions = dataHandler.ExcelReader.ReadDivisions();
         divisions.Insert(0, new Division() { Name = string.Empty });
+
+        items = data;
     }
 
     private void NavigateToAddTitleComp()
@@ -137,19 +132,7 @@
     private bool IsSortedAscending = false;
     private string CurrentSortColumn;
 
-    string SearchTerm { get; set; } = "";
-
     string SelectedDivsion { get; set; } = "";
-
-    List<string> Divisions = new List<string>()
-{
-        "", "DAC", "DQA", "DQA I", "DQA II", "DQA, TAD III", "MSD", "QA", "SAP", "SBD", "SEV", "TAD", "TAD I", "TAD II", "TAD III", "Vorstand", "Vorstand, TAD I"
-    };
-
-    List<string> Tags = new List<string>()
-{
-        "Backend", "Frontend", "Development", ".NET 5.0", ".NET Core", ".NET Framework"
-    };
 
     // Test Data
     public class TableTest
@@ -161,10 +144,16 @@
         public string Division { get; set; }
     };
 
-    // search term input
-    List<PublicationDataSet> items => data?.Where(i => i.WorkingTitle.ToLower().Contains(SearchTerm.ToLower()) ||
-                                             i.MainAuthor.Name.ToLower().Contains(SearchTerm.ToLower()) ||
-                                             i.MainAuthor.Surname.ToLower().Contains(SearchTerm.ToLower())).ToList();
+    List<PublicationDataSet> items = new();
+
+    void Filter(ChangeEventArgs args)
+    {
+        var searchTerm = args.Value.ToString();
+        items = data?.Where(i => i.WorkingTitle.ToLower().Contains(searchTerm.ToLower()) ||
+                                         i.MainAuthor.Name.ToLower().Contains(searchTerm.ToLower()) ||
+                                         i.MainAuthor.Surname.ToLower().Contains(searchTerm.ToLower())).ToList();
+    }
+
 
     // hide or show dropdown-filter
     private void ChangeFilterVisibility() => HideFilter = !HideFilter;
@@ -234,8 +223,10 @@
         }
     }
 
-    private void Delete(Guid? PubID)
+    private void Delete(Guid pubID)
     {
-        data.Remove(data.Where(Publication => Publication.ID == PubID).First());
+        data.Remove(data.Where(Publication => Publication.ID == pubID).First());
+
+        dataHandler.DeletePublication(pubID);
     }
 }
