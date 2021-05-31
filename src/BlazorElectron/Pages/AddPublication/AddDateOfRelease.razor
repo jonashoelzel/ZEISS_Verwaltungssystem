@@ -1,27 +1,34 @@
 ﻿@page "/addDateOfRelease"
 @using Zeiss.PublicationManager.Data.DataSet.Model
+@using BlazorElectron.Data.DataLogic
+@using Zeiss.PublicationManager.Business.Logic.IO
 
 @inject NavigationManager NavigationManager
 @inject PublicationDataSetModel Publication
+@inject DataHandler dataHandler
+@inject WorkflowState workflowState
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg" class="logo" />
 
-<EditForm Model="@Publication" OnInvalidSubmit="@NavigateToNextScreen" OnValidSubmit="@NavigateToNextScreen">
-
-    <DataAnnotationsValidator />
-
-    <div class="mode">
-        <h2>Neue Veröffentlichung hinzufügen</h2>
-    </div>
-    <section class="panel-default">
-        <header class="panel-heading">
-            <h4 class="panel-title">Datum der Veröffentlichung</h4>
-        </header>
-        <div class="panel-body">
-            <InputDate class="form-control" @bind-Value="Publication.DateOfRelease" />
+@if (ShowSavePopup && workflowState.State == Data.DataLogic.State.Edit)
+{
+    <div class="modal fade show" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title w-100 text-center">Erfolgreich gespeichert</h3>
+                </div>
+                <div class="modal-body">
+                    <p>Die Änderungen wurden gespeichert.</p>
+                    <button type="submit" class="form-control primaryButton" @onclick="@NavigateToLandingPage">Zurück zur Startseite</button>
+                </div>
+            </div>
         </div>
-    </section>
+    </div>
+}
 
+<EditForm Model="@Publication">
+    <DataAnnotationsValidator />
     @if (ShowPflichtfeldPopup)
     {
         <div class="modal fade show" role="dialog">
@@ -37,29 +44,56 @@
                         <InputDate class="form-control" @bind-Value="Publication.DateOfRelease" />
                     </div>
                     <div class="modal-body">
-                        <button type="submit" id="addButtonInPopup" class="form-control"  @onclick="@CancelPflichtfeldPopup">Hinzufügen</button>
+                        <button type="submit" id="addButtonInPopup" class="form-control" @onclick="@CancelPflichtfeldPopup">Hinzufügen</button>
                     </div>
                 </div>
             </div>
         </div>
     }
+</EditForm>
+<EditForm Model="@Publication" OnInvalidSubmit="@NavigateToNextScreen" OnValidSubmit="@NavigateToNextScreen">
+    <DataAnnotationsValidator />
+    @if (workflowState.State == Data.DataLogic.State.Edit)
+    {
+        <div class="mode">
+            <h2>Veröffentlichung bearbeiten</h2>
+        </div>
+    }
+    else if (workflowState.State == Data.DataLogic.State.Add)
+    {
+        <div class="mode">
+            <h2>Neue Veröffentlichung hinzufügen</h2>
+        </div>
+    }
+    <section class="panel-default">
+        <header class="panel-heading">
+            <h4 class="panel-title">Datum der Veröffentlichung</h4>
+        </header>
+        <div class="panel-body">
+            <InputDate class="form-control" @bind-Value="Publication.DateOfRelease" />
+        </div>
+    </section>
 
+    @if (workflowState.State == Data.DataLogic.State.Edit)
+    {
+        <button class="primaryButton addPub" type="submit" @onclick="Save">Änderungen Speichern</button>
+    }
     <button class="primaryButton back" type="button" @onclick="NavigateToPreviousScreen">
         <span class="fas fa-arrow-circle-left fa-3x"></span>
     </button>
     <button class="primaryButton continue" type="submit">
         <span class="fas fa-arrow-circle-right fa-3x"></span>
     </button>
-
 </EditForm>
 
 @code
 {
+    bool ShowSavePopup = false;
     bool ShowPflichtfeldPopup = false;
 
-    void CancelPflichtfeldPopup() => ShowPflichtfeldPopup = false;
-
     private void NavigateToPreviousScreen() => NavigationManager.NavigateTo("addDivision");
+
+    private void NavigateToLandingPage() => NavigationManager.NavigateTo("/SearchPublication");
 
     private void NavigateToNextScreen()
     {
@@ -70,5 +104,13 @@
         ShowPflichtfeldPopup = true;
     }
 
+    void CancelPflichtfeldPopup() => ShowPflichtfeldPopup = false;
+
     private void HandleInvalidSubmit() { }
+
+    private void Save()
+    {
+        dataHandler.Save(Publication);
+        ShowSavePopup = true;
+    }
 }
