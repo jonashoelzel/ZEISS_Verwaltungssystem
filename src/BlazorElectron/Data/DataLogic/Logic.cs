@@ -35,6 +35,11 @@ namespace Zeiss.PublicationManager.Business.Logic.IO
             excelReader.CheckWorkBook();
         }
 
+        public void CreateNewExcelIfNotExisting()
+        {
+            excelReader.CheckWorkBook();
+        }
+
         public void Save(IPublicationDataSet dataSet)
         {
 

@@ -26,6 +26,7 @@
     {
         if (!HybridSupport.IsElectronActive)
         {
+            dataHandler.CreateNewExcelIfNotExisting();
             NavigationManager.NavigateTo("/SearchPublication");
             return;
         }
