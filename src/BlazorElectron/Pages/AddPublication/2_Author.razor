@@ -15,7 +15,7 @@
 
 @if (ShowSavePopup && workflowState.State == Data.DataLogic.State.Edit)
 {
-    <div class="modal fade show" role="dialog">
+    <div class="modal fade show" role="dialog" style="@modalDisplay">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -34,7 +34,7 @@
 {
     <EditForm Model="@NewAuthor" OnInvalidSubmit="@HandleInvalidSubmit" OnValidSubmit="@AddNewAuthor">
         <DataAnnotationsValidator />
-        <div class="modal fade show" role="dialog">
+        <div class="modal fade show" role="dialog" style="@modalDisplay">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -64,7 +64,7 @@
 
 @if (ShowPflichtfeldPopup)
 {
-    <div class="modal fade show" role="dialog">
+    <div class="modal fade show" role="dialog" style="@modalDisplay">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -130,6 +130,7 @@ else if (workflowState.State == Data.DataLogic.State.Add)
     bool ShowSavePopup = false;
     bool ShowAddPopup = false;
     bool ShowPflichtfeldPopup = false;
+    string modalDisplay = "display:none";
 
     private void NavigateToPreviousScreen() => NavigationManager.NavigateTo("addTitle");
 
@@ -138,9 +139,11 @@ else if (workflowState.State == Data.DataLogic.State.Add)
     private void NavigateToNextScreen()
     {
         if (Publication.MainAuthor is not null)
+        {
             NavigationManager.NavigateTo("addDivision");
-
-        ShowPflichtfeldPopup = true;
+        } else
+            modalDisplay = "display:block";
+            ShowPflichtfeldPopup = true;
     }
 
     private void HandleInvalidSubmit() { }
@@ -150,19 +153,25 @@ else if (workflowState.State == Data.DataLogic.State.Add)
         NewAuthor.Name = string.Empty;
         NewAuthor.Surname = string.Empty;
         ShowAddPopup = false;
+        modalDisplay = "display:none";
     }
 
-    void CancelPflichtfeldPopup() => ShowPflichtfeldPopup = false;
-
+    void CancelPflichtfeldPopup()
+    {
+        ShowPflichtfeldPopup = false;
+        modalDisplay = "display:none";
+    }
     void OpenAddPopup()
     {
         ShowPflichtfeldPopup = false;
+        modalDisplay = "display:block";
         ShowAddPopup = true;
     }
 
     void AddNewAuthor()
     {
         ShowAddPopup = false;
+        modalDisplay = "display:none";
         authors.Insert(0, NewAuthor);
 
         dataHandler.SaveAuthor(NewAuthor);
@@ -180,6 +189,7 @@ else if (workflowState.State == Data.DataLogic.State.Add)
     private void Save()
     {
         dataHandler.Save(Publication);
+        modalDisplay = "display:block";
         ShowSavePopup = true;
     }
 

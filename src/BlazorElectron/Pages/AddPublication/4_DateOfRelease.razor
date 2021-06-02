@@ -12,7 +12,7 @@
 
 @if (ShowSavePopup && workflowState.State == Data.DataLogic.State.Edit)
 {
-    <div class="modal fade show" role="dialog">
+    <div class="modal fade show" role="dialog" style="@modalDisplay">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -31,7 +31,7 @@
     <DataAnnotationsValidator />
     @if (ShowPflichtfeldPopup)
     {
-        <div class="modal fade show" role="dialog">
+        <div class="modal fade show" role="dialog" style="@modalDisplay">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -91,6 +91,7 @@
 {
     bool ShowSavePopup = false;
     bool ShowPflichtfeldPopup = false;
+    string modalDisplay = "display:none";
 
     private void NavigateToPreviousScreen() => NavigationManager.NavigateTo("addDivision");
 
@@ -100,18 +101,25 @@
     {
         //OADate first Date is 1900/01/01 12:00:00 => 1900/01/02 00:00:00
         if (Publication.DateOfRelease >= new DateTime(1900, 1, 2))
+        {
             NavigationManager.NavigateTo("addPublicationType");
-
-        ShowPflichtfeldPopup = true;
+        } else
+            modalDisplay = "display:block";
+            ShowPflichtfeldPopup = true;
     }
 
-    void CancelPflichtfeldPopup() => ShowPflichtfeldPopup = false;
+    void CancelPflichtfeldPopup()
+    {
+        ShowPflichtfeldPopup = false;
+        modalDisplay = "display:none";
+    }
 
     private void HandleInvalidSubmit() { }
 
     private void Save()
     {
         dataHandler.Save(Publication);
+        modalDisplay = "display:block";
         ShowSavePopup = true;
     }
 }

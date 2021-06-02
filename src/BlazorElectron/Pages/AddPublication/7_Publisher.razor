@@ -14,7 +14,7 @@
 
 @if (ShowSavePopup && workflowState.State == Data.DataLogic.State.Add)
 {
-    <div class="modal fade show" role="dialog">
+    <div class="modal fade show" role="dialog" style="@modalDisplay">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -30,7 +30,7 @@
 }
 else if (ShowSavePopup && workflowState.State == Data.DataLogic.State.Edit)
 {
-    <div class="modal fade show" role="dialog">
+    <div class="modal fade show" role="dialog" style="@modalDisplay">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -49,7 +49,7 @@ else if (ShowSavePopup && workflowState.State == Data.DataLogic.State.Edit)
 {
     <EditForm Model="@newPublisher" OnInvalidSubmit="@HandleInvalidSubmit" OnValidSubmit="@AddNewPublisher">
         <DataAnnotationsValidator />
-        <div class="modal fade show" role="dialog">
+        <div class="modal fade show" role="dialog" style="@modalDisplay">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -124,6 +124,7 @@ else if (workflowState.State == Data.DataLogic.State.Add)
     List<IPublisher> publishers;
     bool ShowAddPopup = false;
     bool ShowSavePopup = false;
+    string modalDisplay = "display:block";
 
     private void NavigateToPreviousScreen() => NavigationManager.NavigateTo("addDescription");
 
@@ -135,13 +136,19 @@ else if (workflowState.State == Data.DataLogic.State.Add)
     {
         newPublisher.Name = string.Empty;
         ShowAddPopup = false;
+        modalDisplay = "display:none";
     }
 
-    void OpenAddPopup() => ShowAddPopup = true;
+    void OpenAddPopup()
+    {
+        modalDisplay = "display:block";
+        ShowAddPopup = true;
+    }
 
     private void Save()
     {
         dataHandler.Save(Publication);
+        modalDisplay = "display:block";
         ShowSavePopup = true;
     }
 
@@ -150,6 +157,7 @@ else if (workflowState.State == Data.DataLogic.State.Add)
     void AddNewPublisher()
     {
         ShowAddPopup = false;
+        modalDisplay = "display:none";
         publishers.Insert(0, newPublisher);
 
         dataHandler.SavePublisher(newPublisher);

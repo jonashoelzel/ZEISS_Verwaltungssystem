@@ -14,7 +14,7 @@
 
 @if (ShowSavePopup && workflowState.State == Data.DataLogic.State.Add)
 {
-    <div class="modal fade show" role="dialog">
+    <div class="modal fade show" role="dialog" style="@modalDisplay">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -30,7 +30,7 @@
 }
 else if (ShowSavePopup && workflowState.State == Data.DataLogic.State.Edit)
 {
-    <div class="modal fade show" role="dialog">
+    <div class="modal fade show" role="dialog" style="@modalDisplay">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -49,7 +49,7 @@ else if (ShowSavePopup && workflowState.State == Data.DataLogic.State.Edit)
 {
     <EditForm Model="@NewPublicationType" OnInvalidSubmit="@HandleInvalidSubmit" OnValidSubmit="@AddNewPublicationType">
         <DataAnnotationsValidator />
-        <div class="modal fade show" role="dialog">
+        <div class="modal fade show" role="dialog" style="@modalDisplay">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -74,7 +74,7 @@ else if (ShowSavePopup && workflowState.State == Data.DataLogic.State.Edit)
 
 @if (ShowPflichtfeldPopup)
 {
-    <div class="modal fade show" role="dialog">
+    <div class="modal fade show" role="dialog" style="@modalDisplay">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -141,29 +141,39 @@ else
     bool ShowAddPopup = false;
     bool ShowPflichtfeldPopup = false;
     bool ShowSavePopup = false;
+    string modalDisplay = "display:block";
 
     private void NavigateToPreviousScreen() => NavigationManager.NavigateTo("addDateOfRelease");
-    
+
     private void NavigateToLandingPage() => NavigationManager.NavigateTo("/SearchPublication");
 
     private void NavigateToNextScreen()
     {
         if (Publication.TypeOfPublication is not null)
+        {
             NavigationManager.NavigateTo("addDescription");
-        ShowPflichtfeldPopup = true;
+        } else
+            modalDisplay = "display:block";
+            ShowPflichtfeldPopup = true;
     }
 
     void CancelAddPopup()
     {
         NewPublicationType.Name = string.Empty;
         ShowAddPopup = false;
+        modalDisplay = "display:none";
     }
 
-    void CancelPflichtfeldPopup() => ShowPflichtfeldPopup = false;
+    void CancelPflichtfeldPopup()
+    {
+        ShowPflichtfeldPopup = false;
+        modalDisplay = "display:none";
+    }
 
     void OpenAddPopup()
     {
         ShowPflichtfeldPopup = false;
+        modalDisplay = "display:block";
         ShowAddPopup = true;
     }
 
@@ -172,10 +182,14 @@ else
         if (Publication.TypeOfPublication is not null)
         {
             dataHandler.Save(Publication);
+            modalDisplay = "display:block";
             ShowSavePopup = true;
         }
         else
+        {
+            modalDisplay = "display:block";
             ShowPflichtfeldPopup = true;
+        }
     }
 
     private void HandleInvalidSubmit() { }
@@ -183,6 +197,7 @@ else
     void AddNewPublicationType()
     {
         ShowAddPopup = false;
+        modalDisplay = "display:none";
         publicationTypes.Insert(0, NewPublicationType);
 
         dataHandler.SavePublicationType(NewPublicationType);

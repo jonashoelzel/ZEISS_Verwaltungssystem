@@ -12,7 +12,7 @@
 
 @if (ShowSavePopup && workflowState.State == Data.DataLogic.State.Edit)
 {
-    <div class="modal fade show" role="dialog">
+    <div class="modal fade show" role="dialog" style="@modalDisplay">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -70,11 +70,12 @@
     bool ShowSavePopup = false;
     ButtonType NavigateButton;
     enum ButtonType { Next, Save }
+    string modalDisplay = "display:none";
 
     private void NavigateToPreviousScreen() => NavigationManager.NavigateTo("/SearchPublication");
 
     private void NavigateToLandingPage() => NavigationManager.NavigateTo("/SearchPublication");
-    
+
     private void HandleInvalidSubmit() { }
 
     protected override void OnInitialized()
@@ -87,6 +88,7 @@
     {
         Publication.WorkingTitle = NewTitel.Name;
         dataHandler.Save(Publication);
+        modalDisplay = "display:block";
         ShowSavePopup = true;
     }
 
@@ -98,6 +100,7 @@
         else
         {
             dataHandler.Save(Publication);
+            modalDisplay = "display:block";
             ShowSavePopup = true;
         }
     }

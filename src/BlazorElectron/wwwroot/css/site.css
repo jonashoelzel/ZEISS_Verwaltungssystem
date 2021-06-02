@@ -170,7 +170,6 @@ body {
 
 /* Popup-Fenster */
 .modal {
-    display: block;
     font-family: Arial;
     background-color: rgba(10,10,10,.8);
 }

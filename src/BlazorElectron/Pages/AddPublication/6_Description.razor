@@ -12,7 +12,7 @@
 
 @if (ShowSavePopup && workflowState.State == Data.DataLogic.State.Add)
 {
-    <div class="modal fade show" role="dialog">
+    <div class="modal fade show" role="dialog" style="@modalDisplay">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -28,7 +28,7 @@
 }
 else if (ShowSavePopup && workflowState.State == Data.DataLogic.State.Edit)
 {
-    <div class="modal fade show" role="dialog">
+    <div class="modal fade show" role="dialog" style="@modalDisplay">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -95,6 +95,7 @@ else if (ShowSavePopup && workflowState.State == Data.DataLogic.State.Edit)
 {
     DescriptionModel NewDescription = new();
     bool ShowSavePopup = false;
+    string modalDisplay = "display:block";
 
     private void NavigateToPreviousScreen()
     {
@@ -114,6 +115,7 @@ else if (ShowSavePopup && workflowState.State == Data.DataLogic.State.Edit)
     {
         updatePublication();
         dataHandler.Save(Publication);
+        modalDisplay = "display:block";
         ShowSavePopup = true;
     }
 

@@ -14,7 +14,7 @@
 
 @if (ShowSavePopup && workflowState.State == Data.DataLogic.State.Edit)
 {
-    <div class="modal fade show" role="dialog">
+    <div class="modal fade show" role="dialog" style="@modalDisplay">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -33,7 +33,7 @@
 {
     <EditForm Model="@NewDivision" OnInvalidSubmit="@HandleInvalidSubmit" OnValidSubmit="@AddNewDivision">
         <DataAnnotationsValidator />
-        <div class="modal fade show" role="dialog">
+        <div class="modal fade show" role="dialog" style="@modalDisplay">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -58,7 +58,7 @@
 
 @if (ShowPflichtfeldPopup)
 {
-    <div class="modal fade show" role="dialog">
+    <div class="modal fade show" role="dialog" style="@modalDisplay">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -124,6 +124,7 @@ else if (workflowState.State == Data.DataLogic.State.Add)
     bool ShowSavePopup = false;
     bool ShowAddPopup = false;
     bool ShowPflichtfeldPopup = false;
+    string modalDisplay = "display:none";
 
     private void NavigateToPreviousScreen() => NavigationManager.NavigateTo("AddAuthor");
 
@@ -132,8 +133,11 @@ else if (workflowState.State == Data.DataLogic.State.Add)
     private void NavigateToNextScreen()
     {
         if (Publication.Division is not null)
+        {
             NavigationManager.NavigateTo("addDateOfRelease");
-        ShowPflichtfeldPopup = true;
+        } else
+            modalDisplay = "display:block";
+            ShowPflichtfeldPopup = true;
     }
 
     private void HandleInvalidSubmit() { }
@@ -142,19 +146,26 @@ else if (workflowState.State == Data.DataLogic.State.Add)
     {
         NewDivision.Name = string.Empty;
         ShowAddPopup = false;
+        modalDisplay = "display:none";
     }
 
-    void CancelPflichtfeldPopup() => ShowPflichtfeldPopup = false;
+    void CancelPflichtfeldPopup()
+    {
+        ShowPflichtfeldPopup = false;
+        modalDisplay = "display:none";
+    }
 
     void OpenAddPopup()
     {
         ShowPflichtfeldPopup = false;
+        modalDisplay = "display:block";
         ShowAddPopup = true;
     }
 
     void AddNewDivision()
     {
         ShowAddPopup = false;
+        modalDisplay = "display:none";
         divisions.Insert(0, NewDivision);
 
         dataHandler.SaveDivision(NewDivision);
@@ -172,6 +183,7 @@ else if (workflowState.State == Data.DataLogic.State.Add)
     private void Save()
     {
         dataHandler.Save(Publication);
+        modalDisplay = "display:block";
         ShowSavePopup = true;
     }
 
