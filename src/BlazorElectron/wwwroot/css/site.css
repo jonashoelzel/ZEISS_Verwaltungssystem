@@ -136,11 +136,6 @@ body {
     min-height: 50px;
 }
 
-/* Excel-Liste Eingabe*/
-.landingPageFileInput {
-    margin: 1% 5%;
-}
-
 /* "+"-Button */
 .landingPageAddPublication {
     position: absolute;
@@ -173,11 +168,6 @@ body {
     margin: 3%;
 }
 
-.chooseExcel {
-    max-width: 60em;
-    min-width: 30em;
-}
-
 /* Popup-Fenster */
 .modal {
     display: block;
@@ -199,6 +189,12 @@ body {
 .modal-header {
     padding: 2%;
     margin: 0 5%;
+}
+
+/* Landing-Page */
+.chooseExcel {
+    display: flex;
+    justify-content: center;
 }
 
 /* Suchtext Leiste */
