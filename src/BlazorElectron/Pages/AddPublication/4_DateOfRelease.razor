@@ -36,11 +36,11 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h3 class="modal-title w-100 text-center">Ungültiges Datum!<br />Datum muss nach '02.01.1900' (DD.MM.YYYY) sein!</h3>
-                        <button type="reset" id="cancelButton" @onclick="@CancelPflichtfeldPopup">
+                        <button type="reset" class="cancelButton" @onclick="@CancelPflichtfeldPopup">
                             <span class="fas fa-times fa-2x"></span>
                         </button>
                     </div>
-                    <div class="panel-body">
+                    <div class="modal-object">
                         <InputDate class="form-control" @bind-Value="Publication.DateOfRelease" />
                     </div>
                     <div class="modal-body">
@@ -51,6 +51,7 @@
         </div>
     }
 </EditForm>
+
 <EditForm Model="@Publication" OnInvalidSubmit="@NavigateToNextScreen" OnValidSubmit="@NavigateToNextScreen">
     <DataAnnotationsValidator />
     @if (workflowState.State == Data.DataLogic.State.Edit)
