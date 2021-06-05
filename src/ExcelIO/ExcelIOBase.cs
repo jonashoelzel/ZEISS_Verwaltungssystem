@@ -16,7 +16,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
     public class ExcelIOBase
     {
         #region GetCellInformation
-        protected enum LetterEnum
+        private enum LetterEnum
         {
             A = 1,
             B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y,
@@ -24,7 +24,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
         }
 
         //Excel column names are from A-Z over AA-AZ and ZA-ZZ up to AAA-ZZZ, [...]
-        protected static string ConvertNumberToCellLetters(int number)
+        private static string ConvertNumberToCellLetters(int number)
         {
             //If the number is invalid
             if (number <= 0)
@@ -116,23 +116,6 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
             return new string(" ");
         }
 
-
-        protected static Cell GetReferenceCell(Row row, string cellName)
-        {
-            if (String.IsNullOrEmpty(cellName))
-                return null;
-
-            foreach (Cell cell in row.Elements<Cell>())
-            {
-                if (string.Compare(cell.CellReference, cellName, true) > 0)
-                {
-                    return cell;
-                }
-            }
-
-            return null;
-        }
-
         protected static List<string> GetCellReferenceLetters(int count)
         {
             List<string> columnLetterIDs = new();
@@ -187,7 +170,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
             return letterIDsAndColumnNames;
         }
 
-        protected static string GetColumnLetterIDsOfColumnNames(ref SpreadsheetDocument spreadsheetDocument, SheetData sheetData, string columnNames, out int rowIndex)
+        private static string GetColumnLetterIDsOfColumnNames(ref SpreadsheetDocument spreadsheetDocument, SheetData sheetData, string columnNames, out int rowIndex)
         {
             Row row = SearchRow(ref spreadsheetDocument, sheetData, columnNames);
             if (row is not null)
@@ -197,7 +180,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
             return null;
         }
 
-        protected static string GetColumnLetterIDsOfColumnNames(ref SpreadsheetDocument spreadsheetDocument, Row row, string columnNames, out int rowIndex)
+        private static string GetColumnLetterIDsOfColumnNames(ref SpreadsheetDocument spreadsheetDocument, Row row, string columnNames, out int rowIndex)
         {
             //Try to read SharedStringTable if it exists. If not, make sure to do NOT try to read from it
             SharedStringTable sharedStringTable = spreadsheetDocument?.WorkbookPart?.SharedStringTablePart?.SharedStringTable;
@@ -384,7 +367,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
             spreadsheetDocument.Close();
         }
         #region CreateWorkbook
-        protected static SheetData CreateNewWorkbookPartAndGetSheetData(ref SpreadsheetDocument spreadsheetDocument, string worksheetName, bool isAppendable = true)
+        private static SheetData CreateNewWorkbookPartAndGetSheetData(ref SpreadsheetDocument spreadsheetDocument, string worksheetName, bool isAppendable = true)
         {
             if (isAppendable)
             {
@@ -461,7 +444,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
         #endregion
 
         #region Read
-        protected static bool OpenWorksheet(ref SpreadsheetDocument spreadsheetDocument, string worksheetName, out SheetData sheetData)
+        private static bool OpenWorksheet(ref SpreadsheetDocument spreadsheetDocument, string worksheetName, out SheetData sheetData)
         {
             if (WorksheetExists(ref spreadsheetDocument, worksheetName, out IEnumerable<Sheet> sheetsIEnum))
             {
@@ -587,7 +570,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
 
         //columnConditions can be type of 'List<object>', 'string', 'Dictionary<string, object>' or 'KeyValuePair<string, object>'
         //objects (values) in columnConditions are the conditions and strings (keys) are columnLetterIDs
-        protected static Row SearchRow(ref SpreadsheetDocument spreadsheetDocument, SheetData sheetData, object columnConditions)
+        private static Row SearchRow(ref SpreadsheetDocument spreadsheetDocument, SheetData sheetData, object columnConditions)
         {
             //Try to read SharedStringTable if it exists. If not, make sure to do NOT try to read from it
             SharedStringTable sharedStringTable = spreadsheetDocument?.WorkbookPart?.SharedStringTablePart?.SharedStringTable;
@@ -628,14 +611,9 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
         }
 
 
-        //protected static Row SearchRow(ref SpreadsheetDocument spreadsheetDocument, List<string> columnIDs, List<object> columnConditions)
-        //{
-
-        //}
-
         //columnConditions can be type of 'List<object>', 'string', 'Dictionary<string, object>' or 'KeyValuePair<string, object>'
         //objects (values) in columnConditions are the conditions and strings (keys) are columnLetterIDs
-        protected static bool CompareRows(Row row, SharedStringTable sharedStringTable, object columnConditions)
+        private static bool CompareRows(Row row, SharedStringTable sharedStringTable, object columnConditions)
         {
             return columnConditions switch
             {            
@@ -652,7 +630,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
         }
 
 
-        protected static bool CompareRows(Row row, SharedStringTable sharedStringTable, List<object> columnConditions)
+        private static bool CompareRows(Row row, SharedStringTable sharedStringTable, List<object> columnConditions)
         {
             //Create 'copy'
             List<object> leftConditions = new(columnConditions);
@@ -675,7 +653,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
         }
 
         //columnConditions: <letterID, value>
-        protected static bool CompareRows(Row row, SharedStringTable sharedStringTable, Dictionary<string, object> columnConditions)
+        private static bool CompareRows(Row row, SharedStringTable sharedStringTable, Dictionary<string, object> columnConditions)
         {
             //Create 'copy'
             //<letterID, condition>
@@ -699,9 +677,8 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
         }
         #endregion
 
-        #region Protected_Helper_Methods
-
-        protected static bool CompareObjects(object a, object b)
+        #region Helper_Methods
+        private static bool CompareObjects(object a, object b)
         {
             //Compare datatypes
             if (a.GetType() == b.GetType())
