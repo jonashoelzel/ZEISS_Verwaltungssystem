@@ -14,10 +14,23 @@ using Zeiss.PublicationManager.Data.DataSet;
 namespace Zeiss.PublicationManager.Data.Excel.IO.Write
 {  
     public class WriteExcel : ExcelIOBase
-    {       
-       
+    {
+
         #region CreateSpreadSheetEntries       
         #region CreateSharedString
+        private static void AddSharedString(ref SpreadsheetDocument spreadsheetDocument, ref Cell newCell, string text)
+        {
+            //If no SharedStringTable is created, we create new one if no exist.
+            //We shouldn't create a SharedStringTable if it's not used, because it can corrupt the file
+            SharedStringTablePart sharedStringTablePart = GetSharedStringTablePart(ref spreadsheetDocument);
+
+            int index = InsertSharedStringItem(text, ref sharedStringTablePart);
+
+            newCell.DataType = new EnumValue<CellValues>(CellValues.SharedString);
+            newCell.CellValue = new CellValue(index.ToString());
+        }
+
+
         private static SharedStringTablePart GetSharedStringTablePart(ref SpreadsheetDocument spreadsheetDocument)
         {
             SharedStringTablePart sharedStringTablePart;
@@ -33,21 +46,9 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Write
             return sharedStringTablePart;
         }
 
-        protected static void AddSharedString(ref SpreadsheetDocument spreadsheetDocument, ref Cell newCell, string text)
-        {
-            //If no SharedStringTable is created, we create new one if no exist.
-            //We shouldn't create a SharedStringTable if it's not used, because it can corrupt the file
-            SharedStringTablePart sharedStringTablePart = GetSharedStringTablePart(ref spreadsheetDocument);
-
-            int index = InsertSharedStringItem(text, ref sharedStringTablePart);
-
-            newCell.DataType = new EnumValue<CellValues>(CellValues.SharedString);
-            newCell.CellValue = new CellValue(index.ToString());
-        }
-
         // Given text and a SharedStringTablePart, creates a SharedStringItem with the specified text 
         // and inserts it into the SharedStringTablePart. If the item already exists, returns its index.
-        protected static int InsertSharedStringItem(string text, ref SharedStringTablePart sharedStringTablePart)
+        private static int InsertSharedStringItem(string text, ref SharedStringTablePart sharedStringTablePart)
         {
             // If the part does not contain a SharedStringTable, create one.
             if (sharedStringTablePart.SharedStringTable is null)
@@ -76,7 +77,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Write
         #endregion
 
         #region Cell    
-        //letterIDAndValue: <cellReference, value>
+        //cellReferenceIDAndValue: <cellReference, value>
         protected static void CreateCell(ref SpreadsheetDocument spreadsheetDocument, ref Row row, KeyValuePair<string, object> cellReferenceIDAndValue)
         {
             //Get reference cell
@@ -127,51 +128,23 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Write
                     break;
             }
         }
-        #endregion
 
-        protected static void RemoveRow(List<Row> deletingRows)
+        private static Cell GetReferenceCell(Row row, string cellName)
         {
-            for (int i = 0; i < deletingRows.Count; i++)
-                deletingRows[i].Remove();
-        }
+            if (String.IsNullOrEmpty(cellName))
+                return null;
 
-        protected static void RemoveRowAdvanced(SheetData sheetData, List<Row> deletingRows)
-        {
-            while (deletingRows.Any())
+            foreach (Cell cell in row.Elements<Cell>())
             {
-                RemoveRowAdvanced(sheetData, deletingRows.FirstOrDefault());
-                deletingRows.RemoveAt(0);
-            }
-        }
-
-        protected static void RemoveRowAdvanced(SheetData sheetData, Row deletingRow)
-        {
-            List<Row> allRows = sheetData.Elements<Row>().ToList();
-            uint deletedRowIndex = deletingRow.RowIndex.Value;
-            deletingRow.Remove();
-        
-            for (int i = 0; i < allRows.Count; i++)
-            {
-                //Only change the indexes of the rows and cells after the deleted row
-                if (allRows[i].RowIndex.Value > deletedRowIndex)
+                if (string.Compare(cell.CellReference, cellName, true) > 0)
                 {
-                    List<Cell> cells = allRows[i].Elements<Cell>().ToList();
-                    if (cells is not null)
-                    {
-                        for (int j = 0; j < cells.Count; j++)
-                        {
-                            string oldCellReference = cells[i].CellReference.Value;
-
-                            //Decrement Row index
-                            int rowIndex = Convert.ToInt32(Regex.Replace(oldCellReference, @"[^\d]+", "")) - 1;
-                            string letterIndex = Regex.Replace(oldCellReference, @"[\d-]", "");
-
-                            cells[i].CellReference.Value = $"{letterIndex}{rowIndex}";
-                        }
-                    }
-                }            
+                    return cell;
+                }
             }
+
+            return null;
         }
+        #endregion      
         #endregion
     }
 }
