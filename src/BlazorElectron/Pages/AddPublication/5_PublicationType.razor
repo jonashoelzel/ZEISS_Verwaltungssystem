@@ -1,18 +1,20 @@
-﻿@page "/editPublicationType"
+﻿@page "/addPublicationType"
 @using Zeiss.PublicationManager.Data.DataSet.Model
 @using Zeiss.PublicationManager.Data.DataSet
 @using Zeiss.PublicationManager.Data.DataSet.IO.Read
 @using Zeiss.PublicationManager.Business.Logic.IO
+@using BlazorElectron.Data.DataLogic
 
 @inject NavigationManager NavigationManager
 @inject PublicationDataSetModel Publication
 @inject DataHandler dataHandler
+@inject WorkflowState workflowState
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg" class="logo" />
 
-@if (ShowSavePopup)
+@if (ShowSavePopup && workflowState.State == Data.DataLogic.State.Add)
 {
-    <div class="modal fade show" role="dialog">
+    <div class="modal fade show" role="dialog" style="@modalDisplay">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -26,12 +28,28 @@
         </div>
     </div>
 }
+else if (ShowSavePopup && workflowState.State == Data.DataLogic.State.Edit)
+{
+    <div class="modal fade show" role="dialog" style="@modalDisplay">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title w-100 text-center">Erfolgreich gespeichert</h3>
+                </div>
+                <div class="modal-body">
+                    <p>Die Änderungen wurden gespeichert.</p>
+                    <button type="submit" class="form-control primaryButton" @onclick="@NavigateToLandingPage">Zurück zur Startseite</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
 
 @if (ShowAddPopup)
 {
     <EditForm Model="@NewPublicationType" OnInvalidSubmit="@HandleInvalidSubmit" OnValidSubmit="@AddNewPublicationType">
         <DataAnnotationsValidator />
-        <div class="modal fade show" role="dialog">
+        <div class="modal fade show" role="dialog" style="@modalDisplay">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -56,12 +74,12 @@
 
 @if (ShowPflichtfeldPopup)
 {
-    <div class="modal fade show" role="dialog">
+    <div class="modal fade show" role="dialog" style="@modalDisplay">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h3 class="modal-title w-100 text-center">Veröffentlichungsart ist ein Pflichtfeld.<br /> Bitte fügen sie eine neue Veröffentlichungsart hinzu!</h3>
-                    <button type="reset" id="cancelButton" @onclick="@CancelPflichtfeldPopup">
+                    <button type="reset" class="cancelButton" @onclick="@CancelPflichtfeldPopup">
                         <span class="fas fa-times fa-2x"></span>
                     </button>
                 </div>
@@ -73,9 +91,18 @@
     </div>
 }
 
-<div class="mode">
-    <h2>Veröffentlichung bearbeiten</h2>
-</div>
+@if (workflowState.State == Data.DataLogic.State.Edit)
+{
+    <div class="mode">
+        <h2>Veröffentlichung bearbeiten</h2>
+    </div>
+}
+else if (workflowState.State == Data.DataLogic.State.Add)
+{
+    <div class="mode">
+        <h2>Neue Veröffentlichung hinzufügen</h2>
+    </div>
+}
 <section class="panel-default">
     <header class="panel-heading">
         <h4 class="panel-title">Art der Veröffentlichung</h4>
@@ -94,8 +121,14 @@
         </div>
     </div>
 </section>
-
-<button class="primaryButton addPub" type="submit">Veröffentlichung speichern</button>
+@if (workflowState.State == Data.DataLogic.State.Add)
+{
+    <button class="primaryButton addPub" type="submit" @onclick="@Save">Veröffentlichung hinzufügen</button>
+}
+else
+{
+    <button class="primaryButton addPub" type="submit" @onclick="@Save">Änderungen Speichern</button>
+}
 <button class="primaryButton back" type="button" @onclick="NavigateToPreviousScreen">
     <span class="fas fa-arrow-circle-left fa-3x"></span>
 </button>
@@ -108,29 +141,39 @@
     bool ShowAddPopup = false;
     bool ShowPflichtfeldPopup = false;
     bool ShowSavePopup = false;
+    string modalDisplay = "display:block";
 
-    private void NavigateToPreviousScreen() => NavigationManager.NavigateTo("editDateOfRelease");
+    private void NavigateToPreviousScreen() => NavigationManager.NavigateTo("addDateOfRelease");
+
+    private void NavigateToLandingPage() => NavigationManager.NavigateTo("/SearchPublication");
 
     private void NavigateToNextScreen()
     {
         if (Publication.TypeOfPublication is not null)
-            NavigationManager.NavigateTo("editDescription");
-        ShowPflichtfeldPopup = true;
+        {
+            NavigationManager.NavigateTo("addDescription");
+        } else
+            modalDisplay = "display:block";
+            ShowPflichtfeldPopup = true;
     }
-
-    private void NavigateToLandingPage() => NavigationManager.NavigateTo("/SearchPublication");
 
     void CancelAddPopup()
     {
         NewPublicationType.Name = string.Empty;
         ShowAddPopup = false;
+        modalDisplay = "display:none";
     }
 
-    void CancelPflichtfeldPopup() => ShowPflichtfeldPopup = false;
+    void CancelPflichtfeldPopup()
+    {
+        ShowPflichtfeldPopup = false;
+        modalDisplay = "display:none";
+    }
 
     void OpenAddPopup()
     {
         ShowPflichtfeldPopup = false;
+        modalDisplay = "display:block";
         ShowAddPopup = true;
     }
 
@@ -139,9 +182,14 @@
         if (Publication.TypeOfPublication is not null)
         {
             dataHandler.Save(Publication);
+            modalDisplay = "display:block";
             ShowSavePopup = true;
-        }else
+        }
+        else
+        {
+            modalDisplay = "display:block";
             ShowPflichtfeldPopup = true;
+        }
     }
 
     private void HandleInvalidSubmit() { }
@@ -149,6 +197,7 @@
     void AddNewPublicationType()
     {
         ShowAddPopup = false;
+        modalDisplay = "display:none";
         publicationTypes.Insert(0, NewPublicationType);
 
         dataHandler.SavePublicationType(NewPublicationType);

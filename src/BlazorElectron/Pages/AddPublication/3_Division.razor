@@ -3,18 +3,37 @@
 @using Zeiss.PublicationManager.Data.DataSet
 @using Zeiss.PublicationManager.Data.DataSet.IO.Read
 @using Zeiss.PublicationManager.Business.Logic.IO
+@using BlazorElectron.Data.DataLogic
 
 @inject NavigationManager NavigationManager
 @inject PublicationDataSetModel Publication
 @inject DataHandler dataHandler
+@inject WorkflowState workflowState
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg" class="logo" />
+
+@if (ShowSavePopup && workflowState.State == Data.DataLogic.State.Edit)
+{
+    <div class="modal fade show" role="dialog" style="@modalDisplay">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title w-100 text-center">Erfolgreich gespeichert</h3>
+                </div>
+                <div class="modal-body">
+                    <p>Die Änderungen wurden gespeichert.</p>
+                    <button type="submit" class="form-control primaryButton" @onclick="@NavigateToLandingPage">Zurück zur Startseite</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
 
 @if (ShowAddPopup)
 {
     <EditForm Model="@NewDivision" OnInvalidSubmit="@HandleInvalidSubmit" OnValidSubmit="@AddNewDivision">
         <DataAnnotationsValidator />
-        <div class="modal fade show" role="dialog">
+        <div class="modal fade show" role="dialog" style="@modalDisplay">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -39,12 +58,12 @@
 
 @if (ShowPflichtfeldPopup)
 {
-    <div class="modal fade show" role="dialog">
+    <div class="modal fade show" role="dialog" style="@modalDisplay">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h3 class="modal-title w-100 text-center">Geschäftsbereich ist ein Pflichtfeld.<br /> Bitte fügen sie einen neuen Geschäftsbereich hinzu!</h3>
-                    <button type="reset" id="cancelButton" @onclick="@CancelPflichtfeldPopup">
+                    <button type="reset" class="cancelButton" @onclick="@CancelPflichtfeldPopup">
                         <span class="fas fa-times fa-2x"></span>
                     </button>
                 </div>
@@ -56,9 +75,18 @@
     </div>
 }
 
-<div class="mode">
-    <h2>Neue Veröffentlichung hinzufügen</h2>
-</div>
+@if (workflowState.State == Data.DataLogic.State.Edit)
+{
+    <div class="mode">
+        <h2>Veröffentlichung bearbeiten</h2>
+    </div>
+}
+else if (workflowState.State == Data.DataLogic.State.Add)
+{
+    <div class="mode">
+        <h2>Neue Veröffentlichung hinzufügen</h2>
+    </div>
+}
 <section class="panel-default">
     <header class="panel-heading">
         <h4 class="panel-title">Geschäftsbereich</h4>
@@ -78,6 +106,10 @@
     </div>
 </section>
 
+@if (workflowState.State == Data.DataLogic.State.Edit)
+{
+    <button class="primaryButton addPub" type="submit" @onclick="Save">Änderungen Speichern</button>
+}
 <button class="primaryButton back" type="button" @onclick="NavigateToPreviousScreen">
     <span class="fas fa-arrow-circle-left fa-3x"></span>
 </button>
@@ -89,16 +121,23 @@
 {
     DivisionModel NewDivision = new();
     List<IDivision> divisions;
+    bool ShowSavePopup = false;
     bool ShowAddPopup = false;
     bool ShowPflichtfeldPopup = false;
+    string modalDisplay = "display:none";
 
     private void NavigateToPreviousScreen() => NavigationManager.NavigateTo("AddAuthor");
+
+    private void NavigateToLandingPage() => NavigationManager.NavigateTo("/SearchPublication");
 
     private void NavigateToNextScreen()
     {
         if (Publication.Division is not null)
+        {
             NavigationManager.NavigateTo("addDateOfRelease");
-        ShowPflichtfeldPopup = true;
+        } else
+            modalDisplay = "display:block";
+            ShowPflichtfeldPopup = true;
     }
 
     private void HandleInvalidSubmit() { }
@@ -107,19 +146,26 @@
     {
         NewDivision.Name = string.Empty;
         ShowAddPopup = false;
+        modalDisplay = "display:none";
     }
 
-    void CancelPflichtfeldPopup() => ShowPflichtfeldPopup = false;
+    void CancelPflichtfeldPopup()
+    {
+        ShowPflichtfeldPopup = false;
+        modalDisplay = "display:none";
+    }
 
     void OpenAddPopup()
     {
         ShowPflichtfeldPopup = false;
+        modalDisplay = "display:block";
         ShowAddPopup = true;
     }
 
     void AddNewDivision()
     {
         ShowAddPopup = false;
+        modalDisplay = "display:none";
         divisions.Insert(0, NewDivision);
 
         dataHandler.SaveDivision(NewDivision);
@@ -132,6 +178,13 @@
     {
         var selectedDivisionID = Guid.Parse(division.Value.ToString());
         Publication.Division = divisions.First(a => a.ID.Equals(selectedDivisionID));
+    }
+
+    private void Save()
+    {
+        dataHandler.Save(Publication);
+        modalDisplay = "display:block";
+        ShowSavePopup = true;
     }
 
     void fetchData()

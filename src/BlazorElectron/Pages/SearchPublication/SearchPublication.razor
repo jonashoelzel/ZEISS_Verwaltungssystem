@@ -4,10 +4,12 @@
 @using Zeiss.PublicationManager.Data.DataSet.IO.Read
 @using Zeiss.PublicationManager.UI
 @using Zeiss.PublicationManager.Business.Logic.IO
+@using BlazorElectron.Data.DataLogic
 
 @inject NavigationManager NavigationManager
 @inject PublicationDataSetModel Publication
 @inject DataHandler dataHandler
+@inject WorkflowState workflowState
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg" class="logo" />
 
@@ -16,7 +18,7 @@
     <section class="search-default">
         <div class="input-group">
             <input type="text" class="form-control" placeholder="Titel, Autor, Stichwort, ..."
-                    @oninput="Filter"/>
+                   @oninput="Filter" />
             <button type="button" class="btn" @onclick="@ChangeFilterVisibility" id="openFilter">
                 <span class="fas fa-filter fa-2x"></span>
             </button>
@@ -79,7 +81,7 @@
                     <td class="align-middle">@publication.MainAuthor.Surname</td>
                     <td class="align-middle">@publication.DateOfRelease.ToString("dd.MM.yyyy")</td>
                     <td>
-                        <button type="button" class="btn" @onclick="NavigateToEditTitleComp">
+                        <button type="button" class="btn" @onclick="(() => EditThisPublication(publication))">
                             <span class="fas fa-pencil-alt"></span>
                         </button>
                         <button type="button" class="btn" @onclick="@(() => Delete(publication.ID))">
@@ -118,13 +120,16 @@
 
     private void NavigateToAddTitleComp()
     {
+        workflowState.State = Data.DataLogic.State.Add;
         Publication.Reset();
         NavigationManager.NavigateTo("addTitle");
     }
 
-    private void NavigateToEditTitleComp()
+    private void EditThisPublication(IPublicationDataSet publication)
     {
-        NavigationManager.NavigateTo("editTitle");
+        workflowState.State = Data.DataLogic.State.Edit;
+        Publication.Set(publication);
+        NavigationManager.NavigateTo("addTitle");
     }
 
     private bool HideFilter = true;
