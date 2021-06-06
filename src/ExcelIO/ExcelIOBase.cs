@@ -235,7 +235,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
         /// <returns>
         /// True, if worksheet with (parameter) 'worksheetName' does exist, otherwise False.
         /// </returns>
-        public static bool WorksheetExists(ref SpreadsheetDocument spreadsheetDocument, string worksheetName, out IEnumerable<Sheet> sheetsIEnum)
+        protected static bool WorksheetExists(ref SpreadsheetDocument spreadsheetDocument, string worksheetName, out IEnumerable<Sheet> sheetsIEnum)
         {
             //Search for specific sheet
             sheetsIEnum = spreadsheetDocument?.WorkbookPart?.Workbook?.Descendants<Sheet>()?.Where(s => s.Name == worksheetName);
@@ -262,7 +262,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
         /// <exception cref="ArgumentException">Thrown when an entred argument was or became invalid</exception>
         /// <exception cref="InvalidCastException">Thrown when an entered value had an unexpected data-type</exception>
         /// <exception cref="OpenXmlPackageException">Thrown when exception occurred in the OpenXML-Package</exception>
-        public static bool WorksheetExists(ref string filepath, string worksheetName)
+        public static bool WorksheetExists(string filepath, string worksheetName)
         {
             if (!CheckPathExist(ref filepath))
                 return false;
@@ -315,7 +315,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
                     //Either file does not exist or prefix is unsupported if true
                     if (!File.Exists(filepath))
                         throw new PathTooLongException("The entered filepath:\n" + filepath +
-                            "\nis too long (and current IO API does not support \"" + @"\\?\" + "\") or does not exist");
+                            "\nis too long (and current OS-IO-API does not support \"" + @"\\?\" + "\") or does not exist");
                 }
             }
         }

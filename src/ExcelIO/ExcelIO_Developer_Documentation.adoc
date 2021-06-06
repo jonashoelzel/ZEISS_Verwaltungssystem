@@ -871,6 +871,87 @@ This means there will be no empty rows when you open the spreadsheet manually. +
 
 Because all references will be updated, this advanced version takes more resources and time than the simple version. +
 
+{nbsp} +
+
+==== 2.1.5.0 Others
+
+{nbsp} +
+
+===== 2.1.5.1 WorksheetExists
+
+{nbsp} +
+
+[source]
+--
+/// <summary>
+/// Check if a worksheet does exist in a spreadsheet.
+/// </summary>
+/// <param name="filepath">
+/// Relative/absolute filepath to a *.xlsx file that should be opened.
+/// </param>
+/// <param name="worksheetName">
+/// Name of the worksheet that should be searched.
+/// </param>
+/// <returns>
+/// True, if worksheet with (parameter) 'worksheetName' does exist, otherwise False.
+/// </returns>
+
+public static bool WorksheetExists(ref string filepath, string worksheetName)
+{
+    if (!CheckPathExist(ref filepath))
+        return false;
+
+    SpreadsheetDocument spreadsheetDocument = SpreadsheetDocument.Open(filepath, false);
+
+    //Search for specific sheet
+    IEnumerable<Sheet> sheetsIEnum = spreadsheetDocument?.WorkbookPart?.Workbook?.Descendants<Sheet>()?.Where(s => s.Name == worksheetName);
+    //If specified sheet does not exists => return false
+    bool isExists = sheetsIEnum.Any();
+
+    spreadsheetDocument.Close();
+
+    return isExists;
+}
+--
+
+This function checks if a specified worksheet does exist in a specified spreadsheet. +
+
+{nbsp} +
+
+===== 2.1.5.1 CheckPathExists
+
+{nbsp} +
+
+[source]
+--
+/// <summary>
+/// Check if a path at the specified (parameter) 'filepath' does exist. 
+/// If the filepath is too long it'll try to access directly to the OS-File-System.
+/// </summary>
+/// <param name="filepath">
+/// The path to the file that should be searched.
+/// If the filepath is too long it'll try to access directly to the OS-File-System to search for the file.
+/// </param>
+/// <returns>
+/// True, if the file exists, otherwise false.
+/// </returns>
+
+public static bool CheckPathExist(ref string filepath)
+{
+    CheckAndConvertLongFilePath(ref filepath);
+
+    //If the path exists, it returns true and other functions can work further
+    return File.Exists(filepath);
+}
+--
+
+This function checks if a specified file does exist on the filepath. +
+
+If the path is longer than 256 characters, it'll add the prefix '\\?\' so that the APIs can directly access the WINDOWS File-System. +
+That is why we use 'ref filepath', so that the filepath is extended with the prefix '\\?\'. +
+The prefix '\\?\' is ONLY supported on WINDOWS, where the 'MAX_PATH is regularly 260' characters (longer paths would throw a PathTooLOngException). +
+To prevent that, the prefix '\\?\' is used to directly access the WINDOWS File-System, where the path supports longer paths. +
+The prefix '\\?\' is not supported by all APIs (some APIs cannot use this prefix to access the OS-File-System). +
 
 {nbsp} +
 
