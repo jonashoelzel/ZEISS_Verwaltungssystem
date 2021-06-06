@@ -871,6 +871,13 @@ This means there will be no empty rows when you open the spreadsheet manually. +
 
 Because all references will be updated, this advanced version takes more resources and time than the simple version. +
 
+{nbsp} +
+
+==== 2.1.5.0 Others
+
+{nbsp} +
+
+===== 2.1.5.1 
 
 {nbsp} +
 

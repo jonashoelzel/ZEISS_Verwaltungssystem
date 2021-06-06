@@ -165,7 +165,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO
 
             foreach (var worksheet in WorksheetsHeader())
             {
-                if (!WriteExcel.WorksheetExists(ref _filePath, worksheet.Key))
+                if (!WriteExcel.WorksheetExists(_filePath, worksheet.Key))
                 {
                     // TODO: Check if columns exist
                     // Create new Worksheet
@@ -178,7 +178,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO
         {
             foreach (var worksheet in WorksheetsHeader())
             {
-                if (!WriteExcel.WorksheetExists(ref _filePath, worksheet.Key))
+                if (!WriteExcel.WorksheetExists(_filePath, worksheet.Key))
                     return false;
 
                 if (!Excel.IO.ExcelIOBase.CheckHeaderColumnsExist(FilePath, worksheet.Key, worksheet.Value))
