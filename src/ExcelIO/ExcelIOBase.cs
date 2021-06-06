@@ -315,7 +315,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
                     //Either file does not exist or prefix is unsupported if true
                     if (!File.Exists(filepath))
                         throw new PathTooLongException("The entered filepath:\n" + filepath +
-                            "\nis too long (and current IO API does not support \"" + @"\\?\" + "\") or does not exist");
+                            "\nis too long (and current OS-IO-API does not support \"" + @"\\?\" + "\") or does not exist");
                 }
             }
         }
