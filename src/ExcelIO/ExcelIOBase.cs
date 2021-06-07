@@ -480,7 +480,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
         /// <param name="worksheetName">
         /// Name of the worksheet that should be opened.
         /// </param>
-        /// <param name="id">
+        /// <param name="headerColumnAndID">
         /// The key is the (so called) 'header-column' 
         /// and the value is the condition a cell should match (the cell should match data-type and value) and that is below the (so called) 'header-column' in the key.
         /// </param>
@@ -494,16 +494,16 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
         /// <exception cref="ArgumentException">Thrown when an entred argument was or became invalid</exception>
         /// <exception cref="InvalidCastException">Thrown when an entered value had an unexpected data-type</exception>
         /// <exception cref="OpenXmlPackageException">Thrown when exception occurred in the OpenXML-Package</exception>
-        public static bool IsIDOfWorksheet(string filepath, string worksheetName, KeyValuePair<string, object> id)
+        public static bool IsIDOfWorksheet(string filepath, string worksheetName, KeyValuePair<string, object> headerColumnAndID)
         {
             SpreadsheetDocument spreadsheetDocument = OpenSpreadsheetDocument(filepath, worksheetName, out SheetData sheetData, false, false);
             
-            string letterID = GetColumnLetterIDsOfColumnNames(ref spreadsheetDocument, sheetData, id.Key, out _);
+            string letterID = GetColumnLetterIDsOfColumnNames(ref spreadsheetDocument, sheetData, headerColumnAndID.Key, out _);
             if (letterID is null)
-                throw new ArgumentException("The Header-Column: " + id.Key + " does not exist.");
+                throw new ArgumentException("The Header-Column: " + headerColumnAndID.Key + " does not exist.");
 
             //For easier usage, we take KeyValuePair<columnHeaderName, guid>, but we need the format KeyValuePair<columnLetterID, guid>
-            KeyValuePair<string, object> letterIDAndSearchID = new(letterID, id.Value);
+            KeyValuePair<string, object> letterIDAndSearchID = new(letterID, headerColumnAndID.Value);
             bool found = (SearchRow(ref spreadsheetDocument, sheetData, letterIDAndSearchID) is not null);
 
             SaveSpreadsheetDocument(ref spreadsheetDocument);
