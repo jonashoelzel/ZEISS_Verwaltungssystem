@@ -472,7 +472,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
         }
 
         /// <summary>
-        /// Checks if a specified ID does exist in a worksheet of the spreadsheet.
+        /// Checks if a specified ID does exist in a worksheet of the spreadsheet and that is below a specific (so called) 'header-column'.
         /// </summary>
         /// <param name="filepath">
         /// Relative/absolute filepath to a *.xlsx file that should be opened.
@@ -485,7 +485,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
         /// and the value is the condition a cell should match (the cell should match data-type and value) and that is below the (so called) 'header-column' in the key.
         /// </param>
         /// <returns>
-        /// True, if the value in (parameter) 'id' was found below the (so called) 'header-column' below the key of (parameter) 'id'.
+        /// True, if the value in (parameter) 'headerColumnAndID' was found below the (so called) 'header-column' below the key of (parameter) 'headerColumnAndID'.
         /// </returns>
         /// <exception cref="FileNotFoundException">Thrown if File was not found</exception>
         /// <exception cref="UnauthorizedAccessException">Thrown when misssing permission to access File</exception>
