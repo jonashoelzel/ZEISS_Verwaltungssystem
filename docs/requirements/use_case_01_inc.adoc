@@ -1,27 +1,23 @@
 == Use-Case 01: Veröffentlichung hinzufügen
 
 === Kurzbeschreibung
-In diesem Use-Case wird das Hinzufügen einer Veröffentlichung durch einen Autor (oder das Sales Department) beschrieben.
+Der Use-Case beschreibt den Vorgang eine Veröffentlichung hinzuzufügen. 
 
 ===	Kurzbeschreibung der Akteure
 
-*Autor*
+*Benutzer*
 
-Der Autor will eine Veröffentlichung in die Liste eintragen. 
+Der Benutzer will eine Veröffentlichung hinzfügen. (?)
 
-
-*Sales Department*
-
-Das Sales Department überprüft die eingetragenen Veröffentlichungen und kann eine Veröffentlichung im Auftrag eines Autors in die Liste eintragen.
 
 === Vorbedingungen
-* Fachbeitrag wurde von Herausgeber bereits veröffentlicht
-* Die Software ist installiert und geöffnet
-* Das Sales Department ist als solches eingeloggt 
+* Fachbeitrag wurde von Herausgeber bereits veröffentlicht (? Hintergrund ) 
+* Die Software ist geöffnet
+* Eine Excel-Datei wurde geöffnet 
 
 === Standardablauf (Basic Flow)
 
-. Der Use-Case beginnt, sobald "Veröffentlichung hinzufügen" auswählt wird.
+. Der Use-Case beginnt, wenn Benutzer "Veröffentlichung hinzufügen" auswählt wird.
 . Der Autor (oder das Sales Department) gibt in einem Workflow schrittweise sämtliche Pflichtangaben ein.
 . IF jeweilige Pflichtangabe eingetragen UND "Weiter" auswählt
 .. Der Autor (oder das Sales Department) navigiert mit "Weiter" zur jeweiligen nächsten Pflichteingabe.
