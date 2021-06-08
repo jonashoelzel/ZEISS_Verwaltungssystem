@@ -130,6 +130,8 @@
         workflowState.State = Data.DataLogic.State.Edit;
         Publication.Set(publication);
         NavigationManager.NavigateTo("addTitle");
+
+        Filter();
     }
 
     private bool HideFilter = true;
@@ -264,5 +266,7 @@
         data.Remove(data.Where(Publication => Publication.ID == pubID).First());
 
         dataHandler.DeletePublication(pubID);
+
+        Filter();
     }
 }
