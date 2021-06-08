@@ -13,7 +13,7 @@ using Zeiss.PublicationManager.Data.DataSet;
 
 namespace Zeiss.PublicationManager.Data.Excel.IO.Write
 {  
-    public class WriteExcel : ExcelIOBase
+    public abstract class WriteExcel : ExcelIOBase
     {
 
         #region CreateSpreadSheetEntries       

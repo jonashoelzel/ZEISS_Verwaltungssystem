@@ -12,7 +12,7 @@ using DocumentFormat.OpenXml.Spreadsheet;
 
 namespace Zeiss.PublicationManager.Data.Excel.IO.Read
 {
-    public class ReadExcel : ExcelIOBase
+    public abstract class ReadExcel : ExcelIOBase
     {
         //return: <letterID, columnName>
         protected static Dictionary<string, string> GetColumnLetterIDsOfColumnNames(ref SpreadsheetDocument spreadsheetDocument, SheetData sheetData, List<string> columnNames, out int rowIndex)

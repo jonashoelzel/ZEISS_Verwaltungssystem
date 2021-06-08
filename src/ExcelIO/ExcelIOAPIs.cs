@@ -138,6 +138,5 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
         {
             return ExcelIOBase.CheckPathExist(ref filepath);
         }
-
     }
 }

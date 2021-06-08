@@ -14,7 +14,7 @@ using DocumentFormat.OpenXml.Spreadsheet;
 
 namespace Zeiss.PublicationManager.Data.Excel.IO
 {
-    public class ExcelIOBase
+    public abstract class ExcelIOBase
     {
         #region GetCellInformation      
         protected static object ReadCell(Cell cell, SharedStringTable sharedStringTable)
