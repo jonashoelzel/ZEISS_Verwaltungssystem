@@ -179,7 +179,15 @@
 
     void SetSortColumn(string columnName)
     {
-        CurrentSortColumn = columnName;
+        if (columnName == CurrentSortColumn)
+        {
+            IsSortedAscending = !IsSortedAscending;
+        }
+        else
+        {
+            CurrentSortColumn = columnName;
+        }
+
         Filter();
     }
 
@@ -213,19 +221,15 @@
         {
             case "WorkingTitle":
                 items.Sort(delegate (PublicationDataSet x, PublicationDataSet y) { return String.Compare(x.WorkingTitle, y.WorkingTitle) * sortInt; });
-                IsSortedAscending = !IsSortedAscending;
                 break;
             case "MainAuthor.Name":
                 items.Sort(delegate (PublicationDataSet x, PublicationDataSet y) { return String.Compare(x.MainAuthor.Name, y.MainAuthor.Name) * sortInt; });
-                IsSortedAscending = !IsSortedAscending;
                 break;
             case "MainAuthor.Surname":
                 items.Sort(delegate (PublicationDataSet x, PublicationDataSet y) { return String.Compare(x.MainAuthor.Surname, y.MainAuthor.Surname) * sortInt; });
-                IsSortedAscending = !IsSortedAscending;
                 break;
             case "DateOfRelease":
                 items.Sort(delegate (PublicationDataSet x, PublicationDataSet y) { return DateTime.Compare(x.DateOfRelease, y.DateOfRelease) * sortInt; });
-                IsSortedAscending = !IsSortedAscending;
                 break;
         }
     }
