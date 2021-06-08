@@ -18,7 +18,7 @@
     <section class="search-default">
         <div class="input-group">
             <input type="text" class="form-control" placeholder="Titel, Autor, Stichwort, ..."
-                   @oninput="Filter" />
+                   @oninput="SetSearchTerm" />
             <button type="button" class="btn" @onclick="@ChangeFilterVisibility" id="openFilter">
                 <span class="fas fa-filter fa-2x"></span>
             </button>
@@ -29,7 +29,7 @@
         <div class="input-group">
             <label>Filtern nach:</label>
             <div class="dropdownFilter">
-                <select class="form-control" @onchange="@DivisionFilter">
+                <select class="form-control" @onchange="@SetDivisionFilter">
                     @foreach (var div in divisions)
                     {
                         <option value="@div.Name">@div.Name</option>
@@ -53,19 +53,19 @@
         <thead class="thead-dark">
             <tr>
                 <th>
-                    <span class="sort-link" @onclick="@(() => SortTable("WorkingTitle"))">Titel</span>
+                    <span class="sort-link" @onclick="@(() => SetSortColumn("WorkingTitle"))">Titel</span>
                     <span class="fa @(GetSortStyle("WorkingTitle"))"></span>
                 </th>
                 <th>
-                    <span class="sort-link" @onclick="@(() => SortTable("MainAuthor.Name"))">Vorname</span>
+                    <span class="sort-link" @onclick="@(() => SetSortColumn("MainAuthor.Name"))">Vorname</span>
                     <span class="fa @(GetSortStyle("MainAuthor.Name"))"></span>
                 </th>
                 <th>
-                    <span class="sort-link" @onclick="@(() => SortTable("MainAuthor.Surname"))">Nachname des Autors</span>
+                    <span class="sort-link" @onclick="@(() => SetSortColumn("MainAuthor.Surname"))">Nachname des Autors</span>
                     <span class="fa @(GetSortStyle("MainAuthor.Surname"))"></span>
                 </th>
                 <th>
-                    <span class="sort-link" @onclick="@(() => SortTable("DateOfRelease"))">Datum der Veröffentlichung</span>
+                    <span class="sort-link" @onclick="@(() => SetSortColumn("DateOfRelease"))">Datum der Veröffentlichung</span>
                     <span class="fa @(GetSortStyle("DateOfRelease"))"></span>
                 </th>
                 <th>Aktion</th>
@@ -139,6 +139,8 @@
 
     string SelectedDivsion { get; set; } = "";
 
+    string CurrentSearchTerm { get; set; } = "";
+
     // Test Data
     public class TableTest
     {
@@ -151,12 +153,32 @@
 
     List<PublicationDataSet> items = new();
 
-    void Filter(ChangeEventArgs args)
+    private List<PublicationDataSet> helpData;
+
+    protected override void OnInitialized()
     {
-        var searchTerm = args.Value.ToString();
-        items = data?.Where(i => i.WorkingTitle.ToLower().Contains(searchTerm.ToLower()) ||
-                                         i.MainAuthor.Name.ToLower().Contains(searchTerm.ToLower()) ||
-                                         i.MainAuthor.Surname.ToLower().Contains(searchTerm.ToLower())).ToList();
+        fetchData();
+        helpData = data;
+    }
+
+    // filter list when changing value of division-filter
+    public void SetDivisionFilter(ChangeEventArgs e)
+    {
+        SelectedDivsion = e.Value.ToString();
+        Filter();
+    }
+
+
+    void SetSearchTerm(ChangeEventArgs args)
+    {
+        CurrentSearchTerm = args.Value.ToString();
+        Filter();
+    }
+
+    void SetSortColumn(string columnName)
+    {
+        CurrentSortColumn = columnName;
+        Filter();
     }
 
 
@@ -181,52 +203,61 @@
     }
 
     // sort the column which was choosen
-    private void SortTable(string columnName)
+    private void SortTable()
     {
         //1 = ASC. -1 = DESC
         int sortInt = IsSortedAscending ? 1 : -1;
-        CurrentSortColumn = columnName;
-        switch (columnName)
+        switch (CurrentSortColumn)
         {
             case "WorkingTitle":
-                data.Sort(delegate (PublicationDataSet x, PublicationDataSet y) { return String.Compare(x.WorkingTitle, y.WorkingTitle) * sortInt; });
+                items.Sort(delegate (PublicationDataSet x, PublicationDataSet y) { return String.Compare(x.WorkingTitle, y.WorkingTitle) * sortInt; });
+                IsSortedAscending = !IsSortedAscending;
                 break;
             case "MainAuthor.Name":
-                data.Sort(delegate (PublicationDataSet x, PublicationDataSet y) { return String.Compare(x.MainAuthor.Name, y.MainAuthor.Name) * sortInt; });
+                items.Sort(delegate (PublicationDataSet x, PublicationDataSet y) { return String.Compare(x.MainAuthor.Name, y.MainAuthor.Name) * sortInt; });
+                IsSortedAscending = !IsSortedAscending;
                 break;
             case "MainAuthor.Surname":
-                data.Sort(delegate (PublicationDataSet x, PublicationDataSet y) { return String.Compare(x.MainAuthor.Surname, y.MainAuthor.Surname) * sortInt; });
+                items.Sort(delegate (PublicationDataSet x, PublicationDataSet y) { return String.Compare(x.MainAuthor.Surname, y.MainAuthor.Surname) * sortInt; });
+                IsSortedAscending = !IsSortedAscending;
                 break;
             case "DateOfRelease":
-                data.Sort(delegate (PublicationDataSet x, PublicationDataSet y) { return DateTime.Compare(x.DateOfRelease, y.DateOfRelease) * sortInt; });
+                items.Sort(delegate (PublicationDataSet x, PublicationDataSet y) { return DateTime.Compare(x.DateOfRelease, y.DateOfRelease) * sortInt; });
+                IsSortedAscending = !IsSortedAscending;
                 break;
-
         }
-
-        IsSortedAscending = !IsSortedAscending;
     }
 
-    private List<PublicationDataSet> helpData;
 
-    protected override void OnInitialized()
+
+    void SearchAndFilter()
     {
-        fetchData();
-        helpData = data;
+        Filter();
     }
 
-    // filter list when changing value of division-filter
-    public void DivisionFilter(ChangeEventArgs e)
+
+    void Filter()
     {
-        SelectedDivsion = e.Value.ToString();
-        if (string.IsNullOrEmpty(SelectedDivsion))
+        if (String.IsNullOrWhiteSpace(CurrentSearchTerm))
         {
-            data = helpData;
+            items = data;
         }
         else
         {
-            data = helpData.Where(f => f.Division.Name.Equals(SelectedDivsion)).ToList();
+            items = data?.Where(i => i.WorkingTitle.ToLower().Contains(CurrentSearchTerm.ToLower()) ||
+                                             i.MainAuthor.Name.ToLower().Contains(CurrentSearchTerm.ToLower()) ||
+                                             i.MainAuthor.Surname.ToLower().Contains(CurrentSearchTerm.ToLower())).ToList();
         }
+
+        if (!String.IsNullOrWhiteSpace(SelectedDivsion))
+        {
+            items = items?.Where(f => f.Division.Name.Equals(SelectedDivsion)).ToList();
+        }
+
+        SortTable();
     }
+
+
 
     private void Delete(Guid pubID)
     {
