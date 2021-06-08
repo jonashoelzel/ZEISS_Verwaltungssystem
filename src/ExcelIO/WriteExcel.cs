@@ -144,7 +144,66 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Write
 
             return null;
         }
-        #endregion      
         #endregion
+        #endregion
+
+        protected enum LetterEnum
+        {
+            A = 1,
+            B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y,
+            Z = 26
+        }
+
+
+        protected static List<string> GetCellReferenceLetters(int count)
+        {
+            List<string> columnLetterIDs = new();
+            for (int i = 1; i <= count; i++)
+                columnLetterIDs.Add(ConvertNumberToCellLetters(i));
+
+            return columnLetterIDs;
+        }
+
+
+        //Excel column names are from A-Z over AA-AZ and ZA-ZZ up to AAA-ZZZ, [...]
+        private static string ConvertNumberToCellLetters(int number)
+        {
+            //If the number is invalid
+            if (number <= 0)
+                throw new IndexOutOfRangeException("Value 'number' must be a value greater or equal 1. Current 'number was " + number);
+
+            string columnname = "";
+            int letterEnumCounter = 0;
+            int letterValue = number;
+
+            //For columnnames with multiple letters
+            while (letterValue > 26)
+            {
+                letterValue -= 26;
+                letterEnumCounter++;
+
+                //Appends a Z for columnnames with 3 or more letters
+                if (letterEnumCounter > 26)
+                {
+                    letterEnumCounter -= 26;
+                    columnname += "Z";
+                }
+            }
+
+            //Converts the lettervalues into the letter
+            LetterEnum letter;
+            if (letterEnumCounter > 0)
+            {
+                letter = (LetterEnum)letterEnumCounter;
+                columnname += letter.ToString();
+            }
+
+            letter = (LetterEnum)letterValue;
+            columnname += letter.ToString();
+
+
+            return columnname;
+        }
+
     }
 }

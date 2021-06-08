@@ -44,7 +44,7 @@
 **** <<2.1.4.1 Delete with Where Condition>>
 **** <<2.1.4.2 Delete Advanced with Where Condition>>
 
-*** <<2.1.5.0 Others>>
+*** <<2.1.5.0 ExcelIOAPIs>>
 **** <<2.1.5.1 WorksheetExists>>
 **** <<2.1.5.2 CheckPathExists>>
 **** <<2.1.5.3 IsIDOfWorksheet>>
@@ -886,7 +886,7 @@ Because all references will be updated, this advanced version takes more resourc
 
 {nbsp} +
 
-==== 2.1.5.0 Others
+==== 2.1.5.0 ExcelIOAPIs
 
 {nbsp} +
 
