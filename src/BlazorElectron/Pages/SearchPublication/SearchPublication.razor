@@ -244,20 +244,22 @@
 
     void Filter()
     {
-        if (String.IsNullOrWhiteSpace(CurrentSearchTerm))
-        {
-            items = data;
-        }
-        else
-        {
-            items = data?.Where(i => i.WorkingTitle.ToLower().Contains(CurrentSearchTerm.ToLower()) ||
-                                             i.MainAuthor.Name.ToLower().Contains(CurrentSearchTerm.ToLower()) ||
-                                             i.MainAuthor.Surname.ToLower().Contains(CurrentSearchTerm.ToLower())).ToList();
-        }
 
         if (!String.IsNullOrWhiteSpace(SelectedDivsion))
         {
-            items = items?.Where(f => f.Division.Name.Equals(SelectedDivsion)).ToList();
+            items = data?.Where(f => f.Division.Name.Equals(SelectedDivsion)).ToList();
+        }
+        else
+        {
+            items = data;
+        }
+
+
+        if (!String.IsNullOrWhiteSpace(CurrentSearchTerm))
+        {
+            items = items?.Where(i => i.WorkingTitle.ToLower().Contains(CurrentSearchTerm.ToLower()) ||
+                                             i.MainAuthor.Name.ToLower().Contains(CurrentSearchTerm.ToLower()) ||
+                                             i.MainAuthor.Surname.ToLower().Contains(CurrentSearchTerm.ToLower())).ToList();
         }
 
         SortTable();
