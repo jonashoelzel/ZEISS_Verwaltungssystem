@@ -131,3 +131,9 @@ Zeiss.PublicationManager.Data.Excel.IO.Write (Contains all code that is used to 
 Zeiss.PublicationManager.Data.Excel.IO.Read (Contains all code that is used to read Excel entries)
 
 as you saw in all examples above many namespaces look very similar and namespaces with similar names do almost the same thing. That makes the namespaces easier to use and it is easier to find the wished namespaces and classes.
+
+Sources:
+Github: https://github.com/dotnet/runtime/blob/main/docs/coding-guidelines/coding-style.md
+MSDN: https://docs.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions
+Book (German): "Professionell entwickeln mit C# 6 und Visual Studio 2015" by 'Matthias Geirhos' from 'Rheinwerk Computing' (ISBN: 978-3-8362-3929-5)
+Also: Private (Internal/Company) Style Guides
