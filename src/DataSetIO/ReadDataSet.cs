@@ -13,32 +13,6 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Read
             FilePath = filePaht;
         }
 
-        /*
-        public static List<T> GetAllFromTable<T>(string filepath, string worksheetName, List<string> headerColumns, Func<Dictionary<string, object>, T> convertAttributesFunction)
-        {
-            List<T> dataSets = new();
-
-            Dictionary<string, List<object>> table = RowSelect.SelectAsColumns(filepath, worksheetName, headerColumns);
-            if (table.Any())
-            {
-                int rowsCount = table[headerColumns[0]].Count;
-
-                for (int rowIndex = 0; rowIndex < rowsCount; rowIndex++)
-                {
-                    Dictionary<string, object> row = new();
-                    for (int i = 0; i < headerColumns.Count; i++)
-                    {
-                        row.Add(headerColumns[i], table[headerColumns[i]][rowIndex]);
-                    }
-                    var converted = convertAttributesFunction(row);
-                    dataSets.Add(converted);
-                }
-            }
-
-            return dataSets;
-        }
-        */
-
         public static List<T> GetAllFromTable<T>(string filepath, string worksheetName, List<string> headerColumns, Func<Dictionary<string, object>, T> convertAttributesFunction)
         {
             List<T> dataSets = new();

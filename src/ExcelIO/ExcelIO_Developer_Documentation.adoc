@@ -44,9 +44,22 @@
 **** <<2.1.4.1 Delete with Where Condition>>
 **** <<2.1.4.2 Delete Advanced with Where Condition>>
 
+*** <<2.1.5.0 ExcelIOAPIs>>
+**** <<2.1.5.1 WorksheetExists>>
+**** <<2.1.5.2 CheckPathExists>>
+**** <<2.1.5.3 IsIDOfWorksheet>>
+**** <<2.1.5.4 CheckHeaderColumnsExist>>
+
 ** <<2.2.0.0 Technical Documentation and Private APIs (Selection)>>
 
 *** <<2.2.1.0 SharedString>>
+**** <<2.2.1.1 (API) GetSharedStringTablePart>>
+**** <<2.2.1.2 (API) InsertSharedStringItem>>
+**** <<2.2.1.3 (API) AddSharedString>>
+
+*** <<2.2.2.0 Cells>>
+**** <<2.2.2.1 (API) CreateCell>>
+**** <<2.2.2.1 (API) UpdateCell>>
 
 {nbsp} +
 
@@ -873,7 +886,7 @@ Because all references will be updated, this advanced version takes more resourc
 
 {nbsp} +
 
-==== 2.1.5.0 Others
+==== 2.1.5.0 ExcelIOAPIs
 
 {nbsp} +
 
@@ -918,7 +931,7 @@ This function checks if a specified worksheet does exist in a specified spreadsh
 
 {nbsp} +
 
-===== 2.1.5.1 CheckPathExists
+===== 2.1.5.2 CheckPathExists
 
 {nbsp} +
 
@@ -952,6 +965,68 @@ That is why we use 'ref filepath', so that the filepath is extended with the pre
 The prefix '\\?\' is ONLY supported on WINDOWS, where the 'MAX_PATH is regularly 260' characters (longer paths would throw a PathTooLOngException). +
 To prevent that, the prefix '\\?\' is used to directly access the WINDOWS File-System, where the path supports longer paths. +
 The prefix '\\?\' is not supported by all APIs (some APIs cannot use this prefix to access the OS-File-System). +
+
+{nbsp} +
+
+===== 2.1.5.3 IsIDOfWorksheet
+
+{nbsp} +
+
+[source]
+--
+/// <summary>
+/// Checks if a specified ID does exist in a worksheet of the spreadsheet and that is below a specific (so called) 'header-column'.
+/// </summary>
+/// <param name="filepath">
+/// Relative/absolute filepath to a *.xlsx file that should be opened.
+/// </param>
+/// <param name="worksheetName">
+/// Name of the worksheet that should be opened.
+/// </param>
+/// <param name="headerColumnAndID">
+/// The key is the (so called) 'header-column' 
+/// and the value is the condition a cell should match (the cell should match data-type and value) and that is below the (so called) 'header-column' in the key.
+/// </param>
+/// <returns>
+/// True, if the value in (parameter) 'headerColumnAndID' was found below the (so called) 'header-column' below the key of (parameter) 'headerColumnAndID'.
+/// </returns>
+
+public static bool IsIDOfWorksheet(string filepath, string worksheetName, KeyValuePair<string, object> headerColumnAndID)
+--
+
+This function checks if a specified ID does exist in a specified worksheet. +
+
+The key of 'headerColumnAndID' is the (so called) 'header-column' and the value is a condition a cell must match (it must match data-type and value) and must be below this (so called) 'header-column'. +
+
+===== 2.1.5.4 CheckHeaderColumnsExist
+
+{nbsp} +
+
+[source]
+--
+/// <summary>
+/// Check if a row with all of the entered (so called) 'header-columns' do exist in the worksheet.
+/// </summary>
+/// <param name="filepath">
+/// Relative/absolute filepath to a *.xlsx file that should be opened.
+/// </param>
+/// <param name="worksheetName">
+/// Name of the worksheet that should be opened.
+/// </param>
+/// <param name="headerColumns">
+/// Every entry represents one (so called) 'header-column' that should be searched.
+/// </param>
+/// <returns>
+/// True, if all (so called) 'header-columns' where found in the same row, otherwise false.
+/// </returns>
+
+public static bool CheckHeaderColumnsExist(string filepath, string worksheetName, List<object> headerColumns)
+--
+
+This function checks if all specified 'header-columns' of (parameter) 'headerColumns' where found in the same row. +
+
+All 'header-columns' must be in the same row. +
+If one 'header-column' is missing in the row, it'll search until the end of the document and then return false if no row was found that contains all specified 'header-columns' in (parameter) 'headerColumns'. +
 
 {nbsp} +
 
@@ -1130,3 +1205,10 @@ This format is not suppported by MS Excel (MS Excel cannot work with the boolean
 Microsoft Excel can support the following data-types: +
 String; DateTime; (Boolean); Numbers (Decimal); +
 If you want to use other data-types than the specified, they should be converted into one of these data-types before inserting them into Public APIs (!) +
+
+{nbsp} +
+
+Link: Go to <<2.0.0.0 Code Documentation>> +
+Link: Go to <<0.0.0.0 Table of Contents>> +
+
+{nbsp} +

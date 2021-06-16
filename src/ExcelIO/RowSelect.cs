@@ -12,7 +12,7 @@ using DocumentFormat.OpenXml.Spreadsheet;
 
 namespace Zeiss.PublicationManager.Data.Excel.IO.Read
 {
-    public class RowSelect : ExcelIOBase
+    public class RowSelect : ReadExcel
     {
         #region SelectAsRows
         /// <summary>

@@ -26,7 +26,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
 
             var id = new KeyValuePair<string, object>("Publication_ID", attributes["Publication_ID"]);
 
-            if (Excel.IO.ExcelIOBase.IsIDOfWorksheet(FilePath, worksheets[0], id))
+            if (Excel.IO.ExcelIOAPIs.IsIDOfWorksheet(FilePath, worksheets[0], id))
             {
                 var idColumn = new Dictionary<string, object>() { { id.Key, id.Value } };
                 RowUpdate.Update(FilePath, worksheets[0], idColumn, attributes);
@@ -44,7 +44,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
 
             var id = new KeyValuePair<string, object>("Author_ID", attributes["Author_ID"]);
 
-            if (Excel.IO.ExcelIOBase.IsIDOfWorksheet(FilePath, worksheets[1], id))
+            if (Excel.IO.ExcelIOAPIs.IsIDOfWorksheet(FilePath, worksheets[1], id))
             {
                 var idColumn = new Dictionary<string, object>() { { id.Key, id.Value } };
                 RowUpdate.Update(FilePath, worksheets[1], idColumn, attributes);
@@ -61,7 +61,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
 
             var id = new KeyValuePair<string, object>("Division_ID", attributes["Division_ID"]);
 
-            if (Excel.IO.ExcelIOBase.IsIDOfWorksheet(FilePath, worksheets[2], id))
+            if (Excel.IO.ExcelIOAPIs.IsIDOfWorksheet(FilePath, worksheets[2], id))
             {
                 var idColumn = new Dictionary<string, object>() { { id.Key, id.Value } };
                 RowUpdate.Update(FilePath, worksheets[2], idColumn, attributes);
@@ -79,7 +79,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
 
             var id = new KeyValuePair<string, object>("PublicationType_ID", attributes["PublicationType_ID"]);
 
-            if (Excel.IO.ExcelIOBase.IsIDOfWorksheet(FilePath, worksheets[3], id))
+            if (Excel.IO.ExcelIOAPIs.IsIDOfWorksheet(FilePath, worksheets[3], id))
             {
                 var idColumn = new Dictionary<string, object>() { { id.Key, id.Value } };
                 RowUpdate.Update(FilePath, worksheets[3], idColumn, attributes);
@@ -97,7 +97,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
 
             var id = new KeyValuePair<string, object>("State_ID", attributes["State_ID"]);
 
-            if (Excel.IO.ExcelIOBase.IsIDOfWorksheet(FilePath, worksheets[4], id))
+            if (Excel.IO.ExcelIOAPIs.IsIDOfWorksheet(FilePath, worksheets[4], id))
             {
                 var idColumn = new Dictionary<string, object>() { { id.Key, id.Value } };
                 RowUpdate.Update(FilePath, worksheets[4], idColumn, attributes);
@@ -115,7 +115,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
 
             var id = new KeyValuePair<string, object>("Tag_ID", attributes["Tag_ID"]);
 
-            if (Excel.IO.ExcelIOBase.IsIDOfWorksheet(FilePath, worksheets[5], id))
+            if (Excel.IO.ExcelIOAPIs.IsIDOfWorksheet(FilePath, worksheets[5], id))
             {
                 var idColumn = new Dictionary<string, object>() { { id.Key, id.Value } };
                 RowUpdate.Update(FilePath, worksheets[5], idColumn, attributes);
@@ -133,7 +133,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
 
             var id = new KeyValuePair<string, object>("Publisher_ID", attributes["Publisher_ID"]);
 
-            if (Excel.IO.ExcelIOBase.IsIDOfWorksheet(FilePath, worksheets[6], id))
+            if (Excel.IO.ExcelIOAPIs.IsIDOfWorksheet(FilePath, worksheets[6], id))
             {
                 var idColumn = new Dictionary<string, object>() { { id.Key, id.Value } };
                 RowUpdate.Update(FilePath, worksheets[6], idColumn, attributes);
