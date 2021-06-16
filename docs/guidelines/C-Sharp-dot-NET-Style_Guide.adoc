@@ -135,5 +135,6 @@ as you saw in all examples above many namespaces look very similar and namespace
 Sources: +
 Github: https://github.com/dotnet/runtime/blob/main/docs/coding-guidelines/coding-style.md +
 MSDN: https://docs.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions +
-Book (German): "Professionell entwickeln mit C# 6 und Visual Studio 2015" by 'Matthias Geirhos' from 'Rheinwerk Computing' (ISBN: 978-3-8362-3929-5) +
+Book (German): "Professionell entwickeln mit C# 6 und Visual Studio 2015" (S. 59 - S. 81, S. 423 - S. 443) +
+by 'Matthias Geirhos' from 'Rheinwerk Computing' (ISBN: 978-3-8362-3929-5) +
 Also: Private (Internal/Company) Style Guides +
