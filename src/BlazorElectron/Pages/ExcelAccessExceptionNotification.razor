@@ -1,48 +1,11 @@
-﻿@page "/Preview"
-@using Zeiss.PublicationManager.Data.DataSet.Model
-@using Zeiss.PublicationManager.Business.Logic.IO
-@using BlazorElectron.Data.DataLogic
+﻿@page "/excelException"
 
-@inject NavigationManager NavigationManager
+@using Zeiss.PublicationManager.Data.DataSet.Model
+@using BlazorElectron.Data.DataLogic
+@using Zeiss.PublicationManager.Business.Logic.IO
+
 @inject PublicationDataSetModel Publication
 @inject DataHandler dataHandler
-@inject WorkflowState workflowState
-
-<img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg"
-     class="logo" />
-
-<section class="preview-default">
-    <header class="panel-heading">
-        <h4 class="panel-title">Dokumentenvorschau</h4>
-    </header>
-    <div class="panel-body">
-    </div>
-</section>
-<button class="addPub" type="button" @onclick="SavePublication">
-    Veröffentlichung Speichern
-</button>
-
-
-@code
-{
-    private void SavePublication()
-    {
-        //try
-        //{
-        //    modalDisplay = "display:block";
-        //    ShowSavePopup = true;
-
-        //    dataHandler.Save(Publication);
-
-        //    NavigateToLandingPage();
-        //}
-        //catch
-        //{
-        //    OpenException();
-        //}
-    }
-}
-
 
 @if (ShowException)
 {
@@ -50,12 +13,10 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3 class="modal-title w-100 text-center" style="font-size:16px">
+                    <h3 class="modal-title w-100 text-center">
                         Datei-Zugriffs-Berechtigungs-Fehler
                         <br />
-                        <br />Die Datei:
-                        <br />"@dataHandler.filePath";
-                        <br />wird derzeit von einem anderen Programm verwendet
+                        <br />Die Datei "@dataHandler.filePath" wird derzeit von einem anderen Programm verwendet
                         <br />oder Ihr Adminstrator hat Ihnen den Zugriff verwehrt.
                         <br />
                         <br />Sie können warten bis das andere Programm die Datei wieder freigegeben hat und den Vorgang wiederholen.
@@ -97,7 +58,7 @@
     {
         try
         {
-            SavePublication();
+            dataHandler.Save(Publication);
             CloseException();
         }
         catch

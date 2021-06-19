@@ -27,7 +27,28 @@
     </div>
 }
 
-<EditForm Model="@NewTitel" OnInvalidSubmit="@HandleInvalidSubmit" OnValidSubmit="onValidSubmit">
+
+@if (ShowPflichtfeldPopup)
+{
+    <div class="modal fade show" role="dialog" style="@modalDisplay">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title w-100 text-center">Der Arbeitstitel is ein Pflichtfeld.<br />Bitte geben Sie einen Arbeitstitel an!</h3>
+                    <button type="reset" class="cancelButton" @onclick="@CancelPflichtfeldPopup">
+                        <span class="fas fa-times fa-2x"></span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <button type="submit" id="addButtonInPopup" class="form-control" @onclick="@CancelPflichtfeldPopup">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+<EditForm Model="@NewTitel" OnInvalidSubmit="@HandleInvalidSubmit" OnValidSubmit="@AddTitle">
     <DataAnnotationsValidator />
     @if (workflowState.State == State.Edit)
     {
@@ -53,12 +74,12 @@
 
     @if (workflowState.State == State.Edit)
     {
-        <button class="primaryButton addPub" type="submit" @onclick="(() => NavigateButton  = ButtonType.Save)">Änderungen Speichern</button>
+        <button class="primaryButton addPub" type="submit" @onclick="SavePublication">Änderungen Speichern</button>
     }
     <button class="primaryButton back" type="button" @onclick="NavigateToPreviousScreen">
         <span class="fas fa-home fa-3x"></span>
     </button>
-    <button class="primaryButton continue" type="submit" @onclick="(() => NavigateButton = ButtonType.Next)">
+    <button class="primaryButton continue" type="submit" @onclick="NavigateToNextScreen">
         <span class="fas fa-arrow-circle-right fa-3x"></span>
     </button>
 
@@ -68,11 +89,33 @@
 {
     TitleModel NewTitel = new();
     bool ShowSavePopup = false;
-    ButtonType NavigateButton;
+    //ButtonType NavigateButton;
     enum ButtonType { Next, Save }
     string modalDisplay = "display:none";
 
+    bool ShowPflichtfeldPopup = false;
+
+    void CancelPflichtfeldPopup()
+    {
+        ShowPflichtfeldPopup = false;
+        modalDisplay = "display:none";
+    }
+
     private void NavigateToPreviousScreen() => NavigationManager.NavigateTo("/SearchPublication");
+
+    private void NavigateToNextScreen()
+    {
+        Publication.WorkingTitle = NewTitel.Name;
+        if (!String.IsNullOrWhiteSpace(Publication.WorkingTitle))
+        {
+            NavigationManager.NavigateTo("addAuthor");
+        }
+        else
+        {
+            modalDisplay = "display:block";
+            ShowPflichtfeldPopup = true;
+        }
+    }
 
     private void NavigateToLandingPage() => NavigationManager.NavigateTo("/SearchPublication");
 
@@ -84,24 +127,88 @@
         base.OnInitialized();
     }
 
-    private void Save()
+    private void SavePublication()
     {
-        Publication.WorkingTitle = NewTitel.Name;
-        dataHandler.Save(Publication);
-        modalDisplay = "display:block";
-        ShowSavePopup = true;
-    }
-
-    private void onValidSubmit()
-    {
-        Publication.WorkingTitle = NewTitel.Name;
-        if (NavigateButton == ButtonType.Next)
-            NavigationManager.NavigateTo("addAuthor");
-        else
+        try
         {
-            dataHandler.Save(Publication);
             modalDisplay = "display:block";
             ShowSavePopup = true;
+
+            dataHandler.Save(Publication);
+        }
+        catch
+        {
+            OpenException();
+        }
+    }
+
+    private void AddTitle()
+    {
+        NavigateToNextScreen();
+    }
+}
+
+
+@if (ShowException)
+{
+    <div class="modal fade show" role="dialog" style="@modalExceptionDisplay">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title w-100 text-center" style="font-size:16px">
+                        Datei-Zugriffs-Berechtigungs-Fehler
+                        <br />
+                        <br />Die Datei:
+                        <br />"@dataHandler.filePath";
+                        <br />wird derzeit von einem anderen Programm verwendet
+                        <br />oder Ihr Adminstrator hat Ihnen den Zugriff verwehrt.
+                        <br />
+                        <br />Sie können warten bis das andere Programm die Datei wieder freigegeben hat und den Vorgang wiederholen.
+                        <br />
+                        <br />Sollten Sie die Benachrichtigung nach meherern Versuchen immernoch sehen,
+                        <br />fragen Sie Ihren Adminstator und prüfen Sie, ob die Datei derzeit von einem anderen Programm verwendet wird
+                        <br />und prüfen Sie Ihre Berechtigungen.
+                    </h3>
+                    <button type="reset" class="cancelButton" @onclick="@CloseException">
+                        <span class="fas fa-times fa-2x"></span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <button type="submit" id="addButtonInPopup" class="form-control" @onclick="@Retry">Vorgang Wiederholen</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code
+{
+    string modalExceptionDisplay = "display:block";
+    bool ShowException = false;
+
+    public void OpenException()
+    {
+        modalExceptionDisplay = "display:block";
+        ShowException = true;
+    }
+
+    void CloseException()
+    {
+        ShowException = false;
+        modalExceptionDisplay = "display:none";
+    }
+
+    void Retry()
+    {
+        try
+        {
+            SavePublication();
+            CloseException();
+        }
+        catch
+        {
+            OpenException();
         }
     }
 }
+

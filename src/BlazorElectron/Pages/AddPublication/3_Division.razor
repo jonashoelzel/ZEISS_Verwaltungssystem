@@ -108,7 +108,7 @@ else if (workflowState.State == Data.DataLogic.State.Add)
 
 @if (workflowState.State == Data.DataLogic.State.Edit)
 {
-    <button class="primaryButton addPub" type="submit" @onclick="Save">Änderungen Speichern</button>
+    <button class="primaryButton addPub" type="submit" @onclick="SavePublication">Änderungen Speichern</button>
 }
 <button class="primaryButton back" type="button" @onclick="NavigateToPreviousScreen">
     <span class="fas fa-arrow-circle-left fa-3x"></span>
@@ -135,9 +135,12 @@ else if (workflowState.State == Data.DataLogic.State.Add)
         if (Publication.Division is not null)
         {
             NavigationManager.NavigateTo("addDateOfRelease");
-        } else
+        }
+        else
+        {
             modalDisplay = "display:block";
             ShowPflichtfeldPopup = true;
+        }
     }
 
     private void HandleInvalidSubmit() { }
@@ -166,12 +169,10 @@ else if (workflowState.State == Data.DataLogic.State.Add)
     {
         ShowAddPopup = false;
         modalDisplay = "display:none";
-        divisions.Insert(0, NewDivision);
-
-        dataHandler.SaveDivision(NewDivision);
 
         Publication.Division = NewDivision;
-        NewDivision = new();
+
+        SaveDivision();
     }
 
     void SetDivision(ChangeEventArgs division)
@@ -180,11 +181,33 @@ else if (workflowState.State == Data.DataLogic.State.Add)
         Publication.Division = divisions.First(a => a.ID.Equals(selectedDivisionID));
     }
 
-    private void Save()
+    private void SaveDivision()
     {
-        dataHandler.Save(Publication);
-        modalDisplay = "display:block";
-        ShowSavePopup = true;
+        try
+        {
+            dataHandler.SaveDivision(NewDivision);
+            divisions.Insert(0, NewDivision);
+            NewDivision = new();
+        }
+        catch
+        {
+            OpenException();
+        }
+    }
+
+    private void SavePublication()
+    {
+        try
+        {
+            modalDisplay = "display:block";
+            ShowSavePopup = true;
+
+            dataHandler.Save(Publication);
+        }
+        catch
+        {
+            OpenException();
+        }
     }
 
     void fetchData()
@@ -193,6 +216,7 @@ else if (workflowState.State == Data.DataLogic.State.Add)
             return;
 
         divisions = new List<IDivision>();
+        //TODO FIX
         var readDivisions = dataHandler.ExcelReader.ReadDivisions();
         foreach (var division in readDivisions)
         {
@@ -214,3 +238,68 @@ else if (workflowState.State == Data.DataLogic.State.Add)
             Publication.Division = divisions.FirstOrDefault();
     }
 }
+
+
+@if (ShowException)
+{
+    <div class="modal fade show" role="dialog" style="@modalExceptionDisplay">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title w-100 text-center" style="font-size:16px">
+                        Datei-Zugriffs-Berechtigungs-Fehler
+                        <br />
+                        <br />Die Datei:
+                        <br />"@dataHandler.filePath";
+                        <br />wird derzeit von einem anderen Programm verwendet
+                        <br />oder Ihr Adminstrator hat Ihnen den Zugriff verwehrt.
+                        <br />
+                        <br />Sie können warten bis das andere Programm die Datei wieder freigegeben hat und den Vorgang wiederholen.
+                        <br />
+                        <br />Sollten Sie die Benachrichtigung nach meherern Versuchen immernoch sehen,
+                        <br />fragen Sie Ihren Adminstator und prüfen Sie, ob die Datei derzeit von einem anderen Programm verwendet wird
+                        <br />und prüfen Sie Ihre Berechtigungen.
+                    </h3>
+                    <button type="reset" class="cancelButton" @onclick="@CloseException">
+                        <span class="fas fa-times fa-2x"></span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <button type="submit" id="addButtonInPopup" class="form-control" @onclick="@Retry">Vorgang Wiederholen</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code
+{
+    string modalExceptionDisplay = "display:block";
+    bool ShowException = false;
+
+    public void OpenException()
+    {
+        modalExceptionDisplay = "display:block";
+        ShowException = true;
+    }
+
+    void CloseException()
+    {
+        ShowException = false;
+        modalExceptionDisplay = "display:none";
+    }
+
+    void Retry()
+    {
+        try
+        {
+            SavePublication();
+            CloseException();
+        }
+        catch
+        {
+            OpenException();
+        }
+    }
+}
+

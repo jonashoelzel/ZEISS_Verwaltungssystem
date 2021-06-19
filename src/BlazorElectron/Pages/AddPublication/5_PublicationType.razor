@@ -123,11 +123,11 @@ else if (workflowState.State == Data.DataLogic.State.Add)
 </section>
 @if (workflowState.State == Data.DataLogic.State.Add)
 {
-    <button class="primaryButton addPub" type="submit" @onclick="@Save">Veröffentlichung hinzufügen</button>
+    <button class="primaryButton addPub" type="submit" @onclick="@SavePublication">Veröffentlichung hinzufügen</button>
 }
 else
 {
-    <button class="primaryButton addPub" type="submit" @onclick="@Save">Änderungen Speichern</button>
+    <button class="primaryButton addPub" type="submit" @onclick="@SavePublication">Änderungen Speichern</button>
 }
 <button class="primaryButton back" type="button" @onclick="NavigateToPreviousScreen">
     <span class="fas fa-arrow-circle-left fa-3x"></span>
@@ -152,9 +152,12 @@ else
         if (Publication.TypeOfPublication is not null)
         {
             NavigationManager.NavigateTo("addDescription");
-        } else
+        }
+        else
+        {
             modalDisplay = "display:block";
             ShowPflichtfeldPopup = true;
+        }
     }
 
     void CancelAddPopup()
@@ -177,18 +180,32 @@ else
         ShowAddPopup = true;
     }
 
-    private void Save()
+    private void SavePublicationType()
     {
-        if (Publication.TypeOfPublication is not null)
+        try
         {
-            dataHandler.Save(Publication);
+            dataHandler.SavePublicationType(NewPublicationType);
+            publicationTypes.Insert(0, NewPublicationType);
+            NewPublicationType = new();
+        }
+        catch
+        {
+            OpenException();
+        }
+    }
+
+    private void SavePublication()
+    {
+        try
+        {
             modalDisplay = "display:block";
             ShowSavePopup = true;
+
+            dataHandler.Save(Publication);
         }
-        else
+        catch
         {
-            modalDisplay = "display:block";
-            ShowPflichtfeldPopup = true;
+            OpenException();
         }
     }
 
@@ -198,12 +215,10 @@ else
     {
         ShowAddPopup = false;
         modalDisplay = "display:none";
-        publicationTypes.Insert(0, NewPublicationType);
-
-        dataHandler.SavePublicationType(NewPublicationType);
 
         Publication.TypeOfPublication = NewPublicationType;
-        NewPublicationType = new();
+
+        SavePublicationType();
     }
 
     void SetPublicationType(ChangeEventArgs publicationType)
@@ -218,6 +233,7 @@ else
             return;
 
         publicationTypes = new List<IPublicationType>();
+        //TODO FIX
         var readPublicationTypes = dataHandler.ExcelReader.ReadPublicationTypes();
         foreach (var division in readPublicationTypes)
         {
@@ -239,3 +255,68 @@ else
             Publication.TypeOfPublication = publicationTypes.FirstOrDefault();
     }
 }
+
+
+@if (ShowException)
+{
+    <div class="modal fade show" role="dialog" style="@modalExceptionDisplay">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title w-100 text-center" style="font-size:16px">
+                        Datei-Zugriffs-Berechtigungs-Fehler
+                        <br />
+                        <br />Die Datei:
+                        <br />"@dataHandler.filePath";
+                        <br />wird derzeit von einem anderen Programm verwendet
+                        <br />oder Ihr Adminstrator hat Ihnen den Zugriff verwehrt.
+                        <br />
+                        <br />Sie können warten bis das andere Programm die Datei wieder freigegeben hat und den Vorgang wiederholen.
+                        <br />
+                        <br />Sollten Sie die Benachrichtigung nach meherern Versuchen immernoch sehen,
+                        <br />fragen Sie Ihren Adminstator und prüfen Sie, ob die Datei derzeit von einem anderen Programm verwendet wird
+                        <br />und prüfen Sie Ihre Berechtigungen.
+                    </h3>
+                    <button type="reset" class="cancelButton" @onclick="@CloseException">
+                        <span class="fas fa-times fa-2x"></span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <button type="submit" id="addButtonInPopup" class="form-control" @onclick="@Retry">Vorgang Wiederholen</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code
+{
+    string modalExceptionDisplay = "display:block";
+    bool ShowException = false;
+
+    public void OpenException()
+    {
+        modalExceptionDisplay = "display:block";
+        ShowException = true;
+    }
+
+    void CloseException()
+    {
+        ShowException = false;
+        modalExceptionDisplay = "display:none";
+    }
+
+    void Retry()
+    {
+        try
+        {
+            SavePublication();
+            CloseException();
+        }
+        catch
+        {
+            OpenException();
+        }
+    }
+}
+

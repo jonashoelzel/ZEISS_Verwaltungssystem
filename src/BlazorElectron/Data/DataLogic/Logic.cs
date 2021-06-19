@@ -8,7 +8,7 @@ namespace Zeiss.PublicationManager.Business.Logic.IO
     public class DataHandler
     {
         private static string fileName = @"\ExcelDataBase.xlsx";
-        private string filePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\TestFiles" + fileName;
+        public string filePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\TestFiles" + fileName;
 
         private WriteDataSet excelWriter;
         private ReadDataSet excelReader;
@@ -42,7 +42,6 @@ namespace Zeiss.PublicationManager.Business.Logic.IO
 
         public void Save(IPublicationDataSet dataSet)
         {
-
             excelWriter.InsertPublication(dataSet);
 
             if (!string.IsNullOrEmpty(dataSet.MainAuthor.Name))

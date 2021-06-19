@@ -108,14 +108,24 @@
 
     void fetchData()
     {
-        if (data is not null && divisions is not null)
-            return;
+        try
+        {
+            if (data is not null && divisions is not null)
+                return;
 
-        data = dataHandler.ExcelReader.ReadPublicationDataSet();
-        divisions = dataHandler.ExcelReader.ReadDivisions();
-        divisions.Insert(0, new Division() { Name = string.Empty });
+            data = dataHandler.ExcelReader.ReadPublicationDataSet();
+            divisions = dataHandler.ExcelReader.ReadDivisions();
+            divisions.Insert(0, new Division() { Name = string.Empty });
 
-        items = data;
+            items = data;
+        }
+        catch
+        {
+            OpenException();
+        }
+
+
+
     }
 
     private void NavigateToAddTitleComp()
@@ -274,5 +284,69 @@
         dataHandler.DeletePublication(pubID);
 
         Filter();
+    }
+}
+
+
+@if (ShowOpenException)
+{
+    <div class="modal fade show" role="dialog" style="@modalExceptionDisplay">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title w-100 text-center" style="font-size:16px">
+                        Datei-Zugriffs-Berechtigungs-Fehler
+                        <br />
+                        <br />Die Datei:
+                        <br />"@dataHandler.filePath";
+                        <br />wird derzeit von einem anderen Programm verwendet
+                        <br />oder Ihr Adminstrator hat Ihnen den Zugriff verwehrt.
+                        <br />
+                        <br />Sie können warten bis das andere Programm die Datei wieder freigegeben hat und den Vorgang wiederholen.
+                        <br />
+                        <br />Sollten Sie die Benachrichtigung nach meherern Versuchen immernoch sehen,
+                        <br />fragen Sie Ihren Adminstator und prüfen Sie, ob die Datei derzeit von einem anderen Programm verwendet wird
+                        <br />und prüfen Sie Ihre Berechtigungen.
+                    </h3>
+                    <button type="reset" class="cancelButton" @onclick="@CloseException">
+                        <span class="fas fa-times fa-2x"></span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <button type="submit" id="addButtonInPopup" class="form-control" @onclick="@Retry">Vorgang Wiederholen</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code
+{
+    string modalExceptionDisplay = "display:block";
+    bool ShowOpenException = false;
+
+    public void OpenException()
+    {
+        modalExceptionDisplay = "display:block";
+        ShowOpenException = true;
+    }
+
+    void CloseException()
+    {
+        ShowOpenException = false;
+        modalExceptionDisplay = "display:none";
+    }
+
+    void Retry()
+    {
+        try
+        {
+            fetchData();
+            CloseException();
+        }
+        catch
+        {
+            OpenException();
+        }
     }
 }
