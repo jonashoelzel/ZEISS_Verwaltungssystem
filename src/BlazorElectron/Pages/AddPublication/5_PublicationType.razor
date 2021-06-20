@@ -114,7 +114,11 @@ else if (workflowState.State == Data.DataLogic.State.Add)
             <select class="form-control" @onchange="SetPublicationType">
                 @foreach (var publicationType in publicationTypes)
                 {
-                    <option value="@publicationType.ID">@publicationType.Name</option>
+                    if (!String.IsNullOrWhiteSpace(publicationType.Name))
+                    {
+                        <option value="@publicationType.ID">@publicationType.Name</option>
+                    }
+
                 }
             </select>
         </div>

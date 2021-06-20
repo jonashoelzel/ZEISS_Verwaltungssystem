@@ -104,7 +104,11 @@ else if (workflowState.State == Data.DataLogic.State.Add)
             <select class="form-control" @onchange="SetAuthor">
                 @foreach (var author in authors)
                 {
-                    <option value="@author.ID">@string.Concat(author.Name, " ", author.Surname)</option>
+                    if (!String.IsNullOrWhiteSpace(author.Name))
+                    {
+                        <option value="@author.ID">@string.Concat(author.Name, " ", author.Surname)</option>
+                    }
+
                 }
             </select>
         </div>

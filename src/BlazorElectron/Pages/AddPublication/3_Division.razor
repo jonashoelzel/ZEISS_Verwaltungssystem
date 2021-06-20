@@ -98,7 +98,11 @@ else if (workflowState.State == Data.DataLogic.State.Add)
             <select class="form-control" @onchange="SetDivision">
                 @foreach (var division in divisions)
                 {
-                    <option value="@division.ID">@division.Name</option>
+                    if (!String.IsNullOrWhiteSpace(division.Name))
+                    {
+                        <option value="@division.ID">@division.Name</option>
+                    }
+
                 }
             </select>
         </div>
