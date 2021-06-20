@@ -16,6 +16,12 @@ namespace Zeiss.PublicationManager.Data.DataSet.Model
         [MaxLength(100, ErrorMessage = "Name ist zu lang")]
         [MinLength(1, ErrorMessage = "Bitte Name eingeben")]
         public string Name { get; set; }
+
+        public void Set(IPublicationType publicationType)
+        {
+            ID = publicationType.ID;
+            Name = publicationType.Name;
+        }
     }
 
     public class StateModel : DataObject, IState
@@ -28,6 +34,12 @@ namespace Zeiss.PublicationManager.Data.DataSet.Model
         [MaxLength(100, ErrorMessage = "Name ist zu lang")]
         [MinLength(1, ErrorMessage = "Bitte Name eingeben")]
         public string Name { get; set; }
+
+        public void Set(IState state)
+        {
+            ID = state.ID;
+            Name = state.Name;
+        }
     }
 
     public class TagModel : DataObject, ITag
@@ -40,6 +52,12 @@ namespace Zeiss.PublicationManager.Data.DataSet.Model
         [MaxLength(100, ErrorMessage = "Name ist zu lang")]
         [MinLength(1, ErrorMessage = "Bitte Name eingeben")]
         public string Name { get; set; }
+
+        public void Set(ITag tag)
+        {
+            ID = tag.ID;
+            Name = tag.Name;
+        }
     }
 
     public class AuthorModel : DataObject, IAuthor
@@ -57,6 +75,13 @@ namespace Zeiss.PublicationManager.Data.DataSet.Model
         [MaxLength(100, ErrorMessage = "Name ist zu lang")]
         [MinLength(1, ErrorMessage = "Bitte Name eingeben")]
         public string Surname { get; set; }
+
+        public void Set(IAuthor author)
+        {
+            ID = author.ID;
+            Name = author.Name;
+            Surname = author.Surname;
+        }
     }
 
     public class PublisherModel : DataObject, IPublisher
@@ -69,6 +94,12 @@ namespace Zeiss.PublicationManager.Data.DataSet.Model
         [MaxLength(100, ErrorMessage = "Name ist zu lang")]
         [MinLength(1, ErrorMessage = "Bitte Name eingeben")]
         public string Name { get; set; }
+
+        public void Set(IPublisher publisher)
+        {
+            ID = publisher.ID;
+            Name = publisher.Name;
+        }
     }
 
     public class DivisionModel : DataObject, IDivision
@@ -82,5 +113,11 @@ namespace Zeiss.PublicationManager.Data.DataSet.Model
         [MaxLength(100, ErrorMessage = "Geschäftsbereich ist zu lang")]
         [MinLength(1, ErrorMessage = "Bitte Geschäftsbereich eingeben")]
         public string Name { get; set; }
+
+        public void Set(IDivision division)
+        {
+            ID = division.ID;
+            Name = division.Name;
+        }
     }
 }

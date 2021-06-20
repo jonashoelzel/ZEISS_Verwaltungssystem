@@ -110,7 +110,7 @@ else if (workflowState.State == Data.DataLogic.State.Add)
 
 @if (workflowState.State == Data.DataLogic.State.Edit)
 {
-    <button class="primaryButton addPub" type="submit" @onclick="Update">Änderungen Speichern</button>
+    <button class="primaryButton addPub" type="submit" @onclick="SavePublication">Änderungen Speichern</button>
 }
 <button class="primaryButton back" type="button" @onclick="NavigateToPreviousScreen">
     <span class="fas fa-arrow-circle-left fa-3x"></span>
@@ -188,9 +188,13 @@ else if (workflowState.State == Data.DataLogic.State.Add)
         try
         {
             dataHandler.SaveDivision(NewDivision);
-            divisions.Insert(0, NewDivision);
 
-            ReadDataSet.ChachedDivisions.Add(NewDivision);
+            DivisionModel newDivision = new();
+            newDivision.Set(NewDivision);
+
+            divisions.Insert(0, newDivision);
+
+            ReadDataSet.ChachedDivisions.Add(newDivision);
 
             NewDivision = new();
         }

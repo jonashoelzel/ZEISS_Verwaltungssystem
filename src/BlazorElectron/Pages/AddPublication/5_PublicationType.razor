@@ -125,11 +125,11 @@ else if (workflowState.State == Data.DataLogic.State.Add)
 </section>
 @if (workflowState.State == Data.DataLogic.State.Add)
 {
-    <button class="primaryButton addPub" type="submit" @onclick="@Update">Veröffentlichung hinzufügen</button>
+    <button class="primaryButton addPub" type="submit" @onclick="@SavePublication">Veröffentlichung hinzufügen</button>
 }
 else
 {
-    <button class="primaryButton addPub" type="submit" @onclick="@Update">Änderungen Speichern</button>
+    <button class="primaryButton addPub" type="submit" @onclick="@SavePublication">Änderungen Speichern</button>
 }
 <button class="primaryButton back" type="button" @onclick="NavigateToPreviousScreen">
     <span class="fas fa-arrow-circle-left fa-3x"></span>
@@ -187,9 +187,13 @@ else
         try
         {
             dataHandler.SavePublicationType(NewPublicationType);
-            publicationTypes.Insert(0, NewPublicationType);
 
-            ReadDataSet.ChachedPublicationTypes.Add(NewPublicationType);
+            PublicationTypeModel newPublicationType = new();
+            newPublicationType.Set(NewPublicationType);
+
+            publicationTypes.Insert(0, newPublicationType);
+
+            ReadDataSet.ChachedPublicationTypes.Add(newPublicationType);
 
             NewPublicationType = new();
         }

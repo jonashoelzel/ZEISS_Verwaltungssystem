@@ -116,7 +116,7 @@ else if (workflowState.State == Data.DataLogic.State.Add)
 
 @if (workflowState.State == Data.DataLogic.State.Edit)
 {
-    <button class="primaryButton addPub" type="submit" @onclick="Update">Änderungen Speichern</button>
+    <button class="primaryButton addPub" type="submit" @onclick="SavePublication">Änderungen Speichern</button>
 }
 <button class="primaryButton back" type="button" @onclick="NavigateToPreviousScreen">
     <span class="fas fa-arrow-circle-left fa-3x"></span>
@@ -195,8 +195,12 @@ else if (workflowState.State == Data.DataLogic.State.Add)
         try
         {
             dataHandler.SaveAuthor(NewAuthor);
-            authors.Insert(0, NewAuthor);
-            ReadDataSet.ChachedAuthors.Insert(0, NewAuthor);
+
+            AuthorModel newAuthor = new();
+            newAuthor.Set(NewAuthor);
+
+            authors.Insert(0, newAuthor);
+            ReadDataSet.ChachedAuthors.Insert(0, newAuthor);
 
             NewAuthor = new();
         }

@@ -152,9 +152,13 @@ else if (workflowState.State == Data.DataLogic.State.Add)
         try
         {
             dataHandler.SavePublisher(NewPublisher);
-            publishers.Insert(0, NewPublisher);
 
-            ReadDataSet.ChachedPublishers.Add(NewPublisher);
+            PublisherModel newPublisher = new();
+            newPublisher.Set(NewPublisher);
+
+            publishers.Insert(0, newPublisher);
+
+            ReadDataSet.ChachedPublishers.Add(newPublisher);
 
             NewPublisher = new();
         }
