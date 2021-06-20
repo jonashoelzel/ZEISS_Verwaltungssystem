@@ -173,6 +173,7 @@
     protected override void OnInitialized()
     {
         fetchData();
+        Filter();
     }
 
     // filter list when changing value of division-filter
@@ -256,7 +257,6 @@
 
     void Filter()
     {
-
         if (!String.IsNullOrWhiteSpace(SelectedDivsion))
         {
             items = data?.Where(f => f.Division.Name.Equals(SelectedDivsion)).ToList();

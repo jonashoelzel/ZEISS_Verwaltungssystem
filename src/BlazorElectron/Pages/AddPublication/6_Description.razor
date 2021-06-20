@@ -114,20 +114,31 @@ else if (ShowSavePopup && workflowState.State == Data.DataLogic.State.Edit)
 
     private void NavigateToLandingPage() => NavigationManager.NavigateTo("/SearchPublication");
 
+
+    private void Update()
+    {
+        UpdateOptional();
+        SavePublication();
+    }
+
+
     private void SavePublication()
     {
         try
         {
             dataHandler.Save(Publication);
 
+            PublicationDataSetModel NewDataSet = new();
+            NewDataSet.Set(Publication);
+
             if (workflowState.State == Data.DataLogic.State.Add)
             {
-                ReadDataSet.ChachedPublications.Add(Publication);
+                ReadDataSet.ChachedPublications.Add(NewDataSet);
             }
             else
             {
-                int index = ReadDataSet.ChachedPublications.FindIndex(item => item.ID == Publication.ID);
-                ReadDataSet.ChachedPublications[index] = Publication;
+                int index = ReadDataSet.ChachedPublications.FindIndex(item => item.ID == NewDataSet.ID);
+                ReadDataSet.ChachedPublications[index] = NewDataSet;
             }
 
             modalDisplay = "display:block";

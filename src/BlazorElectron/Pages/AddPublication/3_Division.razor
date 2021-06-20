@@ -110,7 +110,7 @@ else if (workflowState.State == Data.DataLogic.State.Add)
 
 @if (workflowState.State == Data.DataLogic.State.Edit)
 {
-    <button class="primaryButton addPub" type="submit" @onclick="SavePublication">Änderungen Speichern</button>
+    <button class="primaryButton addPub" type="submit" @onclick="Update">Änderungen Speichern</button>
 }
 <button class="primaryButton back" type="button" @onclick="NavigateToPreviousScreen">
     <span class="fas fa-arrow-circle-left fa-3x"></span>
@@ -206,20 +206,30 @@ else if (workflowState.State == Data.DataLogic.State.Add)
         }
     }
 
+
+    private void Update()
+    {
+        AddNewDivision();
+        SavePublication();
+    }
+
     private void SavePublication()
     {
         try
         {
             dataHandler.Save(Publication);
 
+            PublicationDataSetModel NewDataSet = new();
+            NewDataSet.Set(Publication);
+
             if (workflowState.State == Data.DataLogic.State.Add)
             {
-                ReadDataSet.ChachedPublications.Add(Publication);
+                ReadDataSet.ChachedPublications.Add(NewDataSet);
             }
             else
             {
-                int index = ReadDataSet.ChachedPublications.FindIndex(item => item.ID == Publication.ID);
-                ReadDataSet.ChachedPublications[index] = Publication;
+                int index = ReadDataSet.ChachedPublications.FindIndex(item => item.ID == NewDataSet.ID);
+                ReadDataSet.ChachedPublications[index] = NewDataSet;
             }
 
             modalDisplay = "display:block";
