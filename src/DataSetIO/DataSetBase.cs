@@ -111,13 +111,10 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO
             List<string> authorCSVs = new();
             foreach (var author in coAuthors)
             {
-                authorCSVs.Add(
-                    CSVHandler.IO.Write.CSVWriter.
-                    WriteCSVLine(new List<string> { author.ID.ToString(), author.Name, author.Surname }, escapeAll: false).Trim('\n'));
+                authorCSVs.Add(author.ID.ToString() + ",");
             }
 
-            return CSVHandler.IO.Write.CSVWriter.
-                    WriteCSVLine(authorCSVs, ';').Trim('\n');
+            return authorCSVs.ToString()[..^2];
         }
 
         protected static List<Guid> ConvertCSVToGuids(string csv)
@@ -126,7 +123,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO
             if (string.IsNullOrEmpty(csv))
                 return ids;
 
-            string[] readIds = CSVHandler.IO.Read.CSVReader.ReadCSVLine(csv, ';');
+            string[] readIds = csv.Split(",");
             foreach (string readId in readIds)
             {
                 ids.Add(Guid.Parse(readId));
@@ -143,11 +140,10 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO
             List<string> tagCSV = new();
             foreach (var tag in tags)
             {
-                tagCSV.Add(tag.ID.ToString());
+                tagCSV.Add(tag.ID.ToString() + ",");
             }
 
-            return CSVHandler.IO.Write.CSVWriter.
-                    WriteCSVLine(tagCSV).Trim('\n');
+            return tagCSV.ToString()[..^2];
         }
 
 
