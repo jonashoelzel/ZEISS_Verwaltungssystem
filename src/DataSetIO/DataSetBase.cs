@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using Zeiss.PublicationManager.Data.Excel.IO;
 using Zeiss.PublicationManager.Data.Excel.IO.Write;
 
@@ -105,13 +107,13 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO
 
         protected static string ConvertAuthorsToCSV(List<IAuthor> coAuthors)
         {
-            if (coAuthors is null)
-                return string.Empty;
+            if (coAuthors is null || !coAuthors.Any())
+                return String.Empty;
 
-            List<string> authorCSVs = new();
+            StringBuilder authorCSVs = new();
             foreach (var author in coAuthors)
             {
-                authorCSVs.Add(author.ID.ToString() + ",");
+                authorCSVs.Append(author.ID.ToString() + ",");
             }
 
             return authorCSVs.ToString()[..^2];
@@ -120,10 +122,14 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO
         protected static List<Guid> ConvertCSVToGuids(string csv)
         {
             List<Guid> ids = new();
-            if (string.IsNullOrEmpty(csv))
-                return ids;
+            if (String.IsNullOrWhiteSpace(csv))
+                return new();
 
             string[] readIds = csv.Split(",");
+
+            if (!readIds.Any())
+                return new();
+
             foreach (string readId in readIds)
             {
                 ids.Add(Guid.Parse(readId));
@@ -134,13 +140,13 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO
 
         protected static string ConvertTagsToCSV(List<ITag> tags)
         {
-            if (tags is null)
-                return string.Empty;
+            if (tags is null || !tags.Any())
+                return String.Empty;
 
-            List<string> tagCSV = new();
+            StringBuilder tagCSV = new();
             foreach (var tag in tags)
             {
-                tagCSV.Add(tag.ID.ToString() + ",");
+                tagCSV.Append(tag.ID.ToString() + ",");
             }
 
             return tagCSV.ToString()[..^2];

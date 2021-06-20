@@ -6,6 +6,8 @@
 @using System.IO
 @using BlazorElectron.Data.DataLogic
 
+
+
 @inject NavigationManager NavigationManager
 @inject PublicationDataSetModel Publication
 @inject DataHandler dataHandler
@@ -126,7 +128,7 @@ else if (workflowState.State == Data.DataLogic.State.Add)
 @code
 {
     AuthorModel NewAuthor = new();
-    List<IAuthor> authors;
+    List<IAuthor> authors = new();
     bool ShowSavePopup = false;
     bool ShowAddPopup = false;
     bool ShowPflichtfeldPopup = false;
@@ -194,12 +196,19 @@ else if (workflowState.State == Data.DataLogic.State.Add)
         {
             dataHandler.SaveAuthor(NewAuthor);
             authors.Insert(0, NewAuthor);
+            ReadDataSet.ChachedAuthors.Insert(0, NewAuthor);
 
             NewAuthor = new();
         }
-        catch
+        catch (Exception ex)
         {
-            OpenException();
+            if (ex is UnauthorizedAccessException || ex is IOException)
+            {
+                OpenException();
+                return;
+            }
+
+            throw ex;
         }
     }
 
@@ -209,23 +218,41 @@ else if (workflowState.State == Data.DataLogic.State.Add)
         {
             dataHandler.Save(Publication);
 
+            if (workflowState.State == Data.DataLogic.State.Add)
+            {
+                ReadDataSet.ChachedPublications.Add(Publication);
+            }
+            else
+            {
+                int index = ReadDataSet.ChachedPublications.FindIndex(item => item.ID == Publication.ID);
+                ReadDataSet.ChachedPublications[index] = Publication;
+            }
+
             modalDisplay = "display:block";
             ShowSavePopup = true;
         }
-        catch
+        catch (Exception ex)
         {
-            OpenException();
+            if (ex is UnauthorizedAccessException || ex is IOException)
+            {
+                OpenException();
+                return;
+            }
+
+            throw ex;
         }
+
+        StateHasChanged();
     }
 
 
     void fetchData()
     {
-        if (authors is not null)
+        if (authors.Any())
             return;
 
-        List<Author> readAuthors = ReadDataSet.ChachedAuthors;
-        foreach (Author author in readAuthors)
+        List<IAuthor> readAuthors = ReadDataSet.ChachedAuthors;
+        foreach (IAuthor author in readAuthors)
         {
             authors.Add(author);
         }

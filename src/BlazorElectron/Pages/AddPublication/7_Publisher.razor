@@ -5,6 +5,8 @@
 @using Zeiss.PublicationManager.Business.Logic.IO
 @using BlazorElectron.Data.DataLogic
 
+
+
 @inject NavigationManager NavigationManager
 @inject PublicationDataSetModel Publication
 @inject DataHandler dataHandler
@@ -47,7 +49,7 @@ else if (ShowSavePopup && workflowState.State == Data.DataLogic.State.Edit)
 
 @if (ShowAddPopup)
 {
-    <EditForm Model="@newPublisher" OnInvalidSubmit="@HandleInvalidSubmit" OnValidSubmit="@AddNewPublisher">
+    <EditForm Model="@NewPublisher" OnInvalidSubmit="@HandleInvalidSubmit" OnValidSubmit="@AddNewPublisher">
         <DataAnnotationsValidator />
         <div class="modal fade show" role="dialog" style="@modalDisplay">
             <div class="modal-dialog" role="document">
@@ -60,8 +62,8 @@ else if (ShowSavePopup && workflowState.State == Data.DataLogic.State.Edit)
                     </div>
                     <div class="modal-object">
                         <label for="publicationTypeName">Name des Verlags</label>
-                        <InputText class="form-control" id="publicationTypeName" @bind-Value="newPublisher.Name" /><br />
-                        <ValidationMessage For="@(() => newPublisher.Name)" />
+                        <InputText class="form-control" id="publicationTypeName" @bind-Value="NewPublisher.Name" /><br />
+                        <ValidationMessage For="@(() => NewPublisher.Name)" />
                     </div>
                     <div class="modal-body">
                         <button type="submit" id="addButtonInPopup" class="form-control">Hinzufügen</button>
@@ -120,8 +122,8 @@ else if (workflowState.State == Data.DataLogic.State.Add)
 
 @code
 {
-    PublisherModel newPublisher = new();
-    List<IPublisher> publishers;
+    PublisherModel NewPublisher = new();
+    List<IPublisher> publishers = new();
     bool ShowAddPopup = false;
     bool ShowSavePopup = false;
     string modalDisplay = "display:block";
@@ -134,7 +136,7 @@ else if (workflowState.State == Data.DataLogic.State.Add)
 
     void Cancel()
     {
-        newPublisher.Name = string.Empty;
+        NewPublisher.Name = string.Empty;
         ShowAddPopup = false;
         modalDisplay = "display:none";
     }
@@ -149,13 +151,22 @@ else if (workflowState.State == Data.DataLogic.State.Add)
     {
         try
         {
-            dataHandler.SavePublisher(newPublisher);
-            publishers.Insert(0, newPublisher);
-            newPublisher = new();
+            dataHandler.SavePublisher(NewPublisher);
+            publishers.Insert(0, NewPublisher);
+
+            ReadDataSet.ChachedPublishers.Add(NewPublisher);
+
+            NewPublisher = new();
         }
-        catch
+        catch (Exception ex)
         {
-            OpenException();
+            if (ex is UnauthorizedAccessException || ex is IOException)
+            {
+                OpenException();
+                return;
+            }
+
+            throw ex;
         }
     }
 
@@ -165,13 +176,31 @@ else if (workflowState.State == Data.DataLogic.State.Add)
         {
             dataHandler.Save(Publication);
 
+            if (workflowState.State == Data.DataLogic.State.Add)
+            {
+                ReadDataSet.ChachedPublications.Add(Publication);
+            }
+            else
+            {
+                int index = ReadDataSet.ChachedPublications.FindIndex(item => item.ID == Publication.ID);
+                ReadDataSet.ChachedPublications[index] = Publication;
+            }
+
             modalDisplay = "display:block";
             ShowSavePopup = true;
         }
-        catch
+        catch (Exception ex)
         {
-            OpenException();
+            if (ex is UnauthorizedAccessException || ex is IOException)
+            {
+                OpenException();
+                return;
+            }
+
+            throw ex;
         }
+
+        StateHasChanged();
     }
 
     private void HandleInvalidSubmit() { }
@@ -181,7 +210,7 @@ else if (workflowState.State == Data.DataLogic.State.Add)
         ShowAddPopup = false;
         modalDisplay = "display:none";
 
-        Publication.PublishedBy = newPublisher;
+        Publication.PublishedBy = NewPublisher;
 
         SavePublisher();
     }
@@ -194,11 +223,11 @@ else if (workflowState.State == Data.DataLogic.State.Add)
 
     void fetchData()
     {
-        if (publishers is not null)
+        if (publishers.Any())
             return;
 
-        List<Publisher> readPublishers = ReadDataSet.ChachedPublishers;
-        foreach (Publisher publisher in readPublishers)
+        List<IPublisher> readPublishers = ReadDataSet.ChachedPublishers;
+        foreach (IPublisher publisher in readPublishers)
         {
             publishers.Add(publisher);
         }

@@ -3,6 +3,8 @@ using Zeiss.PublicationManager.Data.DataSet;
 using Zeiss.PublicationManager.Data.DataSet.IO.Read;
 using Zeiss.PublicationManager.Data.DataSet.IO.Write;
 
+using System.IO;
+
 namespace Zeiss.PublicationManager.Business.Logic.IO
 {
     public class DataHandler
@@ -24,7 +26,7 @@ namespace Zeiss.PublicationManager.Business.Logic.IO
 
         public DataHandler(string filePath) : this()
         {
-            this.filePath = filePath;
+            this.filePath = filePath;        
         }
 
         public void SetFilePath(string filePath)
@@ -92,6 +94,5 @@ namespace Zeiss.PublicationManager.Business.Logic.IO
         {
             WriteDataSet.DeletePublication(guid);
         }
-
     }
 }

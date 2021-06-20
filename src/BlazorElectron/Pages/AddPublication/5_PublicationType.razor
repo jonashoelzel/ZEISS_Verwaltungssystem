@@ -5,6 +5,8 @@
 @using Zeiss.PublicationManager.Business.Logic.IO
 @using BlazorElectron.Data.DataLogic
 
+
+
 @inject NavigationManager NavigationManager
 @inject PublicationDataSetModel Publication
 @inject DataHandler dataHandler
@@ -137,7 +139,7 @@ else
 @code
 {
     PublicationTypeModel NewPublicationType = new();
-    List<IPublicationType> publicationTypes;
+    List<IPublicationType> publicationTypes = new();
     bool ShowAddPopup = false;
     bool ShowPflichtfeldPopup = false;
     bool ShowSavePopup = false;
@@ -186,12 +188,31 @@ else
         {
             dataHandler.SavePublicationType(NewPublicationType);
             publicationTypes.Insert(0, NewPublicationType);
+
+            if (workflowState.State == Data.DataLogic.State.Add)
+            {
+                ReadDataSet.ChachedPublications.Add(Publication);
+            }
+            else
+            {
+                int index = ReadDataSet.ChachedPublications.FindIndex(item => item.ID == Publication.ID);
+                ReadDataSet.ChachedPublications[index] = Publication;
+            }
+
             NewPublicationType = new();
         }
-        catch
+        catch (Exception ex)
         {
-            OpenException();
+            if (ex is UnauthorizedAccessException || ex is IOException)
+            {
+                OpenException();
+                return;
+            }
+
+            throw ex;
         }
+
+        StateHasChanged();
     }
 
     private void SavePublication()
@@ -199,13 +220,20 @@ else
         try
         {
             dataHandler.Save(Publication);
+            ReadDataSet.ChachedPublications.Add(Publication);
 
             modalDisplay = "display:block";
             ShowSavePopup = true;
         }
-        catch
+        catch (Exception ex)
         {
-            OpenException();
+            if (ex is UnauthorizedAccessException || ex is IOException)
+            {
+                OpenException();
+                return;
+            }
+
+            throw ex;
         }
     }
 
@@ -229,11 +257,11 @@ else
 
     void fetchData()
     {
-        if (publicationTypes is not null)
+        if (publicationTypes.Any())
             return;
 
-        List<PublicationType> readPublicationTypes = ReadDataSet.ChachedPublicationTypes;
-        foreach (PublicationType type in readPublicationTypes)
+        List<IPublicationType> readPublicationTypes = ReadDataSet.ChachedPublicationTypes;
+        foreach (IPublicationType type in readPublicationTypes)
         {
             publicationTypes.Add(type);
         }

@@ -103,29 +103,35 @@
 
 @code
 {
-    private List<PublicationDataSet> data;
-    private List<Division> divisions;
+    public static List<IPublicationDataSet> data = new();
+    public static List<IDivision> divisions = new();
 
     void fetchData()
     {
         try
         {
-            if (data is not null && divisions is not null)
-                return;
+            if (!ReadDataSet.ChachedPublications.Any() && !ReadDataSet.ChachedDivisions.Any())
+            {
+                ReadDataSet.LoadAndChacheData();
+            }
 
-            data = dataHandler.ExcelReader.ReadPublicationDataSets();
-            divisions = dataHandler.ExcelReader.ReadDivisions();
+            //REMEMBER: These are references. Chanches of the originals also changes the 'copies'.
+            data = ReadDataSet.ChachedPublications;
+            divisions = ReadDataSet.ChachedDivisions;
             divisions.Insert(0, new Division() { Name = string.Empty });
 
             items = data;
         }
-        catch
+        catch (Exception ex)
         {
-            OpenException();
+            if (ex is UnauthorizedAccessException || ex is IOException)
+            {
+                OpenException();
+                return;
+            }
+
+            throw ex;
         }
-
-
-
     }
 
     private void NavigateToAddTitleComp()
@@ -140,8 +146,6 @@
         workflowState.State = Data.DataLogic.State.Edit;
         Publication.Set(publication);
         NavigationManager.NavigateTo("addTitle");
-
-        Filter();
     }
 
     private bool HideFilter = true;
@@ -163,14 +167,12 @@
         public string Division { get; set; }
     };
 
-    List<PublicationDataSet> items = new();
+    List<IPublicationDataSet> items = new();
 
-    private List<PublicationDataSet> helpData;
 
     protected override void OnInitialized()
     {
         fetchData();
-        helpData = data;
     }
 
     // filter list when changing value of division-filter
@@ -230,16 +232,16 @@
         switch (CurrentSortColumn)
         {
             case "WorkingTitle":
-                items.Sort(delegate (PublicationDataSet x, PublicationDataSet y) { return String.Compare(x.WorkingTitle, y.WorkingTitle) * sortInt; });
+                items.Sort(delegate (IPublicationDataSet x, IPublicationDataSet y) { return String.Compare(x.WorkingTitle, y.WorkingTitle) * sortInt; });
                 break;
             case "MainAuthor.Name":
-                items.Sort(delegate (PublicationDataSet x, PublicationDataSet y) { return String.Compare(x.MainAuthor.Name, y.MainAuthor.Name) * sortInt; });
+                items.Sort(delegate (IPublicationDataSet x, IPublicationDataSet y) { return String.Compare(x.MainAuthor.Name, y.MainAuthor.Name) * sortInt; });
                 break;
             case "MainAuthor.Surname":
-                items.Sort(delegate (PublicationDataSet x, PublicationDataSet y) { return String.Compare(x.MainAuthor.Surname, y.MainAuthor.Surname) * sortInt; });
+                items.Sort(delegate (IPublicationDataSet x, IPublicationDataSet y) { return String.Compare(x.MainAuthor.Surname, y.MainAuthor.Surname) * sortInt; });
                 break;
             case "DateOfRelease":
-                items.Sort(delegate (PublicationDataSet x, PublicationDataSet y) { return DateTime.Compare(x.DateOfRelease, y.DateOfRelease) * sortInt; });
+                items.Sort(delegate (IPublicationDataSet x, IPublicationDataSet y) { return DateTime.Compare(x.DateOfRelease, y.DateOfRelease) * sortInt; });
                 break;
         }
     }
@@ -279,11 +281,24 @@
 
     private void Delete(Guid pubID)
     {
-        data.Remove(data.Where(Publication => Publication.ID == pubID).First());
+        try
+        {
+            dataHandler.DeletePublication(pubID);
+            ReadDataSet.ChachedPublications.Remove(ReadDataSet.ChachedPublications.Where(Publication => Publication.ID == pubID).First());
 
-        dataHandler.DeletePublication(pubID);
+            Filter();
+        }
+        //TODO FIX
+        catch (Exception ex)
+        {
+            if (ex is UnauthorizedAccessException || ex is IOException)
+            {
+                OpenException();
+                return;
+            }
 
-        Filter();
+            throw ex;
+        }
     }
 }
 

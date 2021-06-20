@@ -22,50 +22,64 @@
 
 @code
 {
+    bool isException = false;
+
     async Task openFileDialog()
     {
-        try
+        if (!HybridSupport.IsElectronActive)
         {
-            if (!HybridSupport.IsElectronActive)
+            try
             {
                 dataHandler.CreateNewExcelIfNotExisting();
+                isException = false;
+            }
+            catch (Exception ex)
+            {
+                isException = true;
+                if (ex is UnauthorizedAccessException || ex is IOException)
+                {
+                    OpenException();
+                    return;
+                }
 
+                throw ex;
+            }
+
+            if (!isException)
+            {
                 NavigationManager.NavigateTo("/SearchPublication");
                 return;
             }
-
-            var options = new OpenDialogOptions
-            {
-                Title = "Choose a file",
-                Filters = new[]
-                {
-                new FileFilter
-                {
-                    Name = "Excel",
-                    Extensions = new[] { "xlsx" }
-                },
-            },
-                Properties = new[]
-                {
-                OpenDialogProperty.multiSelections, OpenDialogProperty.showHiddenFiles
-            }
-            };
-
-            var mainWindow = Electron.WindowManager.BrowserWindows.First();
-
-            var selectedFiles = await Electron.Dialog.ShowOpenDialogAsync(mainWindow, options);
-
-            if (!System.IO.File.Exists(selectedFiles.FirstOrDefault()))
-                return;
-
-            dataHandler.SetFilePath(selectedFiles.FirstOrDefault());
-
-            NavigationManager.NavigateTo("/SearchPublication");
         }
-        catch
+
+        var options = new OpenDialogOptions
         {
-            OpenException();
+            Title = "Choose a file",
+            Filters = new[]
+            {
+            new FileFilter
+            {
+                Name = "Excel",
+                Extensions = new[] { "xlsx" }
+            },
+        },
+            Properties = new[]
+            {
+            OpenDialogProperty.multiSelections, OpenDialogProperty.showHiddenFiles
         }
+        };
+
+        var mainWindow = Electron.WindowManager.BrowserWindows.First();
+
+        var selectedFiles = await Electron.Dialog.ShowOpenDialogAsync(mainWindow, options);
+
+        if (!System.IO.File.Exists(selectedFiles.FirstOrDefault()))
+            return;
+
+        dataHandler.SetFilePath(selectedFiles.FirstOrDefault());
+
+        NavigationManager.NavigateTo("/SearchPublication");
+
     }
 
     async Task createFielDialog()

@@ -1,7 +1,10 @@
 ﻿@page "/addTags"
+@using Zeiss.PublicationManager.Data.DataSet
 @using Zeiss.PublicationManager.Data.DataSet.Model
 @using Zeiss.PublicationManager.Business.Logic.IO
 @using BlazorElectron.Data.DataLogic
+
+@using Zeiss.PublicationManager.Data.DataSet.IO.Read
 
 @inject NavigationManager NavigationManager
 @inject PublicationDataSetModel Publication
@@ -104,13 +107,31 @@ else if (ShowSavePopup && workflowState.State == Data.DataLogic.State.Edit)
         {
             dataHandler.Save(Publication);
 
+            if (workflowState.State == Data.DataLogic.State.Add)
+            {
+                ReadDataSet.ChachedPublications.Add(Publication);
+            }
+            else
+            {
+                int index = ReadDataSet.ChachedPublications.FindIndex(item => item.ID == Publication.ID);
+                ReadDataSet.ChachedPublications[index] = Publication;
+            }
+
             modalDisplay = "display:block";
             ShowSavePopup = true;
         }
-        catch
+        catch (Exception ex)
         {
-            OpenException();
+            if (ex is UnauthorizedAccessException || ex is IOException)
+            {
+                OpenException();
+                return;
+            }
+
+            throw ex;
         }
+
+        StateHasChanged();
     }
 }
 

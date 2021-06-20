@@ -5,6 +5,8 @@
 @using Zeiss.PublicationManager.Business.Logic.IO
 @using BlazorElectron.Data.DataLogic
 
+
+
 @inject NavigationManager NavigationManager
 @inject PublicationDataSetModel Publication
 @inject DataHandler dataHandler
@@ -120,7 +122,7 @@ else if (workflowState.State == Data.DataLogic.State.Add)
 @code
 {
     DivisionModel NewDivision = new();
-    List<IDivision> divisions;
+    List<IDivision> divisions = new();
     bool ShowSavePopup = false;
     bool ShowAddPopup = false;
     bool ShowPflichtfeldPopup = false;
@@ -187,11 +189,20 @@ else if (workflowState.State == Data.DataLogic.State.Add)
         {
             dataHandler.SaveDivision(NewDivision);
             divisions.Insert(0, NewDivision);
+
+            ReadDataSet.ChachedDivisions.Add(NewDivision);
+
             NewDivision = new();
         }
-        catch
+        catch (Exception ex)
         {
-            OpenException();
+            if (ex is UnauthorizedAccessException || ex is IOException)
+            {
+                OpenException();
+                return;
+            }
+
+            throw ex;
         }
     }
 
@@ -201,24 +212,40 @@ else if (workflowState.State == Data.DataLogic.State.Add)
         {
             dataHandler.Save(Publication);
 
+            if (workflowState.State == Data.DataLogic.State.Add)
+            {
+                ReadDataSet.ChachedPublications.Add(Publication);
+            }
+            else
+            {
+                int index = ReadDataSet.ChachedPublications.FindIndex(item => item.ID == Publication.ID);
+                ReadDataSet.ChachedPublications[index] = Publication;
+            }
+
             modalDisplay = "display:block";
             ShowSavePopup = true;
         }
-        catch
+        catch (Exception ex)
         {
-            OpenException();
+            if (ex is UnauthorizedAccessException || ex is IOException)
+            {
+                OpenException();
+                return;
+            }
+
+            throw ex;
         }
+
+        StateHasChanged();
     }
 
     void fetchData()
     {
-        if (divisions is not null)
+        if (divisions.Any())
             return;
 
-        divisions = new List<IDivision>();
-        //TODO FIX
-        var readDivisions = ReadDataSet.ChachedDivisions;
-        foreach (var division in readDivisions)
+        List<IDivision> readDivisions = ReadDataSet.ChachedDivisions;
+        foreach (IDivision division in readDivisions)
         {
             divisions.Add(division);
         }

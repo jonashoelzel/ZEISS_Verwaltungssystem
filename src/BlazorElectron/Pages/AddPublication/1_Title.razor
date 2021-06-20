@@ -1,7 +1,10 @@
 ﻿@page "/addTitle"
+@using Zeiss.PublicationManager.Data.DataSet
 @using Zeiss.PublicationManager.Data.DataSet.Model
 @using BlazorElectron.Data.DataLogic
 @using Zeiss.PublicationManager.Business.Logic.IO
+
+@using Zeiss.PublicationManager.Data.DataSet.IO.Read
 
 @inject NavigationManager NavigationManager
 @inject PublicationDataSetModel Publication
@@ -50,13 +53,13 @@
 
 <EditForm Model="@NewTitel" OnInvalidSubmit="@HandleInvalidSubmit" OnValidSubmit="@AddTitle">
     <DataAnnotationsValidator />
-    @if (workflowState.State == State.Edit)
+    @if (workflowState.State == Data.DataLogic.State.Edit)
     {
         <div class="mode">
             <h2>Veröffentlichung bearbeiten</h2>
         </div>
     }
-    else if (workflowState.State == State.Add)
+    else if (workflowState.State == Data.DataLogic.State.Add)
     {
         <div class="mode">
             <h2>Neue Veröffentlichung hinzufügen</h2>
@@ -72,7 +75,7 @@
         </div>
     </section>
 
-    @if (workflowState.State == State.Edit)
+    @if (workflowState.State == Data.DataLogic.State.Edit)
     {
         <button class="primaryButton addPub" type="submit" @onclick="SavePublication">Änderungen Speichern</button>
     }
@@ -133,18 +136,37 @@
         {
             dataHandler.Save(Publication);
 
+            if (workflowState.State == Data.DataLogic.State.Add)
+            {
+                ReadDataSet.ChachedPublications.Add(Publication);
+            }
+            else
+            {
+                int index = ReadDataSet.ChachedPublications.FindIndex(item => item.ID == Publication.ID);
+                ReadDataSet.ChachedPublications[index] = Publication;
+            }
+
             modalDisplay = "display:block";
             ShowSavePopup = true;
         }
-        catch
+        catch (Exception ex)
         {
-            OpenException();
+            if (ex is UnauthorizedAccessException || ex is IOException)
+            {
+                OpenException();
+                return;
+            }
+
+            throw ex;
         }
+
+        StateHasChanged();
     }
 
     private void AddTitle()
     {
-        NavigateToNextScreen();
+        Publication.PublicationTitle = NewTitel.Name;
+        Publication.WorkingTitle = NewTitel.Name;
     }
 }
 
