@@ -163,10 +163,10 @@ else if (workflowState.State == Data.DataLogic.State.Add)
     {
         try
         {
+            dataHandler.Save(Publication);
+
             modalDisplay = "display:block";
             ShowSavePopup = true;
-
-            dataHandler.Save(Publication);
         }
         catch
         {
@@ -197,10 +197,8 @@ else if (workflowState.State == Data.DataLogic.State.Add)
         if (publishers is not null)
             return;
 
-        publishers = new List<IPublisher>();
-        //TODO FIX
-        var readPublishers = dataHandler.ExcelReader.ReadPublishers();
-        foreach (var publisher in readPublishers)
+        List<Publisher> readPublishers = ReadDataSet.ChachedPublishers;
+        foreach (Publisher publisher in readPublishers)
         {
             publishers.Add(publisher);
         }

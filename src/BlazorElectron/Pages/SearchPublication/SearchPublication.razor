@@ -113,7 +113,7 @@
             if (data is not null && divisions is not null)
                 return;
 
-            data = dataHandler.ExcelReader.ReadPublicationDataSet();
+            data = dataHandler.ExcelReader.ReadPublicationDataSets();
             divisions = dataHandler.ExcelReader.ReadDivisions();
             divisions.Insert(0, new Division() { Name = string.Empty });
 

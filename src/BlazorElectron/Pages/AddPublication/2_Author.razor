@@ -207,10 +207,10 @@ else if (workflowState.State == Data.DataLogic.State.Add)
     {
         try
         {
+            dataHandler.Save(Publication);
+
             modalDisplay = "display:block";
             ShowSavePopup = true;
-
-            dataHandler.Save(Publication);
         }
         catch
         {
@@ -224,10 +224,8 @@ else if (workflowState.State == Data.DataLogic.State.Add)
         if (authors is not null)
             return;
 
-        authors = new List<IAuthor>();
-        //TODO FIX
-        var readAuthors = dataHandler.ExcelReader.ReadAuthors();
-        foreach (var author in readAuthors)
+        List<Author> readAuthors = ReadDataSet.ChachedAuthors;
+        foreach (Author author in readAuthors)
         {
             authors.Add(author);
         }

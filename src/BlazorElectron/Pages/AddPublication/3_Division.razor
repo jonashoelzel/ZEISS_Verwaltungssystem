@@ -199,10 +199,10 @@ else if (workflowState.State == Data.DataLogic.State.Add)
     {
         try
         {
+            dataHandler.Save(Publication);
+
             modalDisplay = "display:block";
             ShowSavePopup = true;
-
-            dataHandler.Save(Publication);
         }
         catch
         {
@@ -217,7 +217,7 @@ else if (workflowState.State == Data.DataLogic.State.Add)
 
         divisions = new List<IDivision>();
         //TODO FIX
-        var readDivisions = dataHandler.ExcelReader.ReadDivisions();
+        var readDivisions = ReadDataSet.ChachedDivisions;
         foreach (var division in readDivisions)
         {
             divisions.Add(division);

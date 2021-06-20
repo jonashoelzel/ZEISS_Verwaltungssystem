@@ -198,10 +198,10 @@ else
     {
         try
         {
+            dataHandler.Save(Publication);
+
             modalDisplay = "display:block";
             ShowSavePopup = true;
-
-            dataHandler.Save(Publication);
         }
         catch
         {
@@ -232,12 +232,10 @@ else
         if (publicationTypes is not null)
             return;
 
-        publicationTypes = new List<IPublicationType>();
-        //TODO FIX
-        var readPublicationTypes = dataHandler.ExcelReader.ReadPublicationTypes();
-        foreach (var division in readPublicationTypes)
+        List<PublicationType> readPublicationTypes = ReadDataSet.ChachedPublicationTypes;
+        foreach (PublicationType type in readPublicationTypes)
         {
-            publicationTypes.Add(division);
+            publicationTypes.Add(type);
         }
     }
 

@@ -7,9 +7,9 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO
 {
     public class DataSetBase
     {
-        private string _filePath;
+        private static string _filePath;
 
-        protected string FilePath { get => _filePath; set => _filePath = value; }
+        public static string FilePath { get => _filePath; set => _filePath = value; }
 
         private static readonly List<object> Publication = new()
         {
@@ -148,13 +148,13 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO
 
 
 
-        public void CheckWorkBook()
+        public static void CheckWorkBook()
         {
             if (!ValidateWorkBook())
                 InitializeWorkBook();
         }
 
-        private void InitializeWorkBook()
+        private static void InitializeWorkBook()
         {
             var dirPath = _filePath.Remove(_filePath.LastIndexOf('\\'));
             if (!System.IO.File.Exists(dirPath))
@@ -171,7 +171,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO
             }
         }
 
-        private bool ValidateWorkBook()
+        private static bool ValidateWorkBook()
         {
             foreach (var worksheet in WorksheetsHeader())
             {

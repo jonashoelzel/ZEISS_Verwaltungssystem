@@ -13,6 +13,14 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Read
             FilePath = filePaht;
         }
 
+        public static List<PublicationDataSet> ChachedPublications { get; set; } = new();
+        public static List<Author> ChachedAuthors { get; set; } = new();
+        public static List<Division> ChachedDivisions { get; set; } = new();
+        public static List<PublicationType> ChachedPublicationTypes { get; set; } = new();
+        public static List<State> ChachedStates { get; set; } = new();
+        public static List<Tag> ChachedTags { get; set; } = new();
+        public static List<Publisher> ChachedPublishers { get; set; } = new();
+
         public static List<T> GetAllFromTable<T>(string filepath, string worksheetName, List<string> headerColumns, Func<Dictionary<string, object>, T> convertAttributesFunction)
         {
             List<T> dataSets = new();
@@ -29,10 +37,22 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Read
             return dataSets;
         }
 
-        public List<PublicationDataSet> ReadPublicationDataSet()
+        public List<PublicationDataSet> ReadPublicationDataSets()
         {
+            LoadAndChacheData();
+
             var headerColumns = WorksheetsHeader()["Publication"].ConvertAll(e => e.ToString());
             return GetAllFromTable<PublicationDataSet>(FilePath, worksheets[0], headerColumns, AttributesToPublicationDataSet);
+        }
+
+        public void LoadAndChacheData()
+        {
+            ChachedAuthors = ReadAuthors();
+            ChachedDivisions = ReadDivisions();
+            ChachedPublicationTypes = ReadPublicationTypes();
+            ChachedStates = ReadStates();
+            ChachedTags = ReadTags();
+            ChachedPublishers = ReadPublishers();
         }
 
         public List<Author> ReadAuthors()
@@ -90,43 +110,41 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Read
             publication.AdditionalInformation = attributes["AdditionalInformation"].ToString();
 
             var authorID = Guid.Parse(attributes["Author_ID"].ToString());
-            publication.MainAuthor = ReadAuthors().First(e => e.ID.Equals(authorID));
+            publication.MainAuthor = ChachedAuthors.First(e => e.ID.Equals(authorID));
 
             var coAuthorIDs = ConvertCSVToGuids(attributes["CoAuthor_IDs"].ToString());
-            var allAuthors = ReadAuthors();
             foreach (var coAuthorID in coAuthorIDs)
-                publication.CoAuthors.Add(allAuthors.First(e => e.ID.Equals(coAuthorID)));
+                publication.CoAuthors.Add(ChachedAuthors.First(e => e.ID.Equals(coAuthorID)));
 
             if (!string.IsNullOrWhiteSpace(attributes["Division_ID"].ToString()))
             {
                 if (Guid.TryParse(attributes["Division_ID"].ToString(), out Guid divisionID))
-                    publication.Division = ReadDivisions().First(e => e.ID.Equals(divisionID));
+                    publication.Division = ChachedDivisions.First(e => e.ID.Equals(divisionID));
                 else throw new Exception("File Corrupt");
             }
 
             if (!string.IsNullOrWhiteSpace(attributes["PublicationType_ID"].ToString()))
             {
                 if (Guid.TryParse(attributes["PublicationType_ID"].ToString(), out Guid publicationTypeID))
-                    publication.TypeOfPublication = ReadPublicationTypes().First(e => e.ID.Equals(publicationTypeID));
+                    publication.TypeOfPublication = ChachedPublicationTypes.First(e => e.ID.Equals(publicationTypeID));
                 else throw new Exception("File Corrupt");
             }
 
             if (!string.IsNullOrWhiteSpace(attributes["State_ID"].ToString()))
             {
                 if (Guid.TryParse(attributes["State_ID"].ToString(), out Guid stateID))
-                    publication.CurrentState = ReadStates().First(e => e.ID.Equals(stateID));
+                    publication.CurrentState = ChachedStates.First(e => e.ID.Equals(stateID));
                 else throw new Exception("File Corrupt");
             }
 
             var tagIDs = ConvertCSVToGuids(attributes["Tag_ID"].ToString());
-            var allTags = ReadTags();
             foreach (var tagID in tagIDs)
-                publication.Tags.Add(allTags.First(e => e.ID.Equals(tagID)));
+                publication.Tags.Add(ChachedTags.First(e => e.ID.Equals(tagID)));
 
             if (!string.IsNullOrWhiteSpace(attributes["Publisher_ID"].ToString()))
             {
                 if (Guid.TryParse(attributes["Publisher_ID"].ToString(), out Guid publisherID))
-                    publication.PublishedBy = ReadPublishers().First(e => e.ID.Equals(publisherID));
+                    publication.PublishedBy = ChachedPublishers.First(e => e.ID.Equals(publisherID));
                 else throw new Exception("File Corrupt");
             }
 

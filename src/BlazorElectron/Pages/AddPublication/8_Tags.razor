@@ -102,10 +102,10 @@ else if (ShowSavePopup && workflowState.State == Data.DataLogic.State.Edit)
     {
         try
         {
+            dataHandler.Save(Publication);
+
             modalDisplay = "display:block";
             ShowSavePopup = true;
-
-            dataHandler.Save(Publication);
         }
         catch
         {
