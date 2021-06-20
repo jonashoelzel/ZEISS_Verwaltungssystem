@@ -5,15 +5,11 @@ VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorElectron", "BlazorElectron.csproj", "{E5F3DF8C-5F40-4F85-8BE3-8E4A053B62C4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataSetlIOComponentTest", "..\ExcelIOComponentTest\DataSetlIOComponentTest.csproj", "{013AD4AA-D741-4ED8-8D72-B57A382ADB67}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataSet", "..\DataSet\DataSet.csproj", "{18B2878F-7EFD-404F-8906-25B62FD4C527}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExcelIO", "..\ExcelIO\ExcelIO.csproj", "{8856F983-BA02-450F-8F4E-DBB353004151}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataSetIO", "..\DataSetIO\DataSetIO.csproj", "{B2ECAA65-9AD3-407A-AEC7-4F2B377F6556}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSVHandler", "..\CSVHandler\CSVHandler.csproj", "{6AD3784D-B624-4765-872B-9CC0C0338AD7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,10 +21,6 @@ Global
 		{E5F3DF8C-5F40-4F85-8BE3-8E4A053B62C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E5F3DF8C-5F40-4F85-8BE3-8E4A053B62C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E5F3DF8C-5F40-4F85-8BE3-8E4A053B62C4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{013AD4AA-D741-4ED8-8D72-B57A382ADB67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{013AD4AA-D741-4ED8-8D72-B57A382ADB67}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{013AD4AA-D741-4ED8-8D72-B57A382ADB67}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{013AD4AA-D741-4ED8-8D72-B57A382ADB67}.Release|Any CPU.Build.0 = Release|Any CPU
 		{18B2878F-7EFD-404F-8906-25B62FD4C527}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{18B2878F-7EFD-404F-8906-25B62FD4C527}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{18B2878F-7EFD-404F-8906-25B62FD4C527}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -41,10 +33,6 @@ Global
 		{B2ECAA65-9AD3-407A-AEC7-4F2B377F6556}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B2ECAA65-9AD3-407A-AEC7-4F2B377F6556}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B2ECAA65-9AD3-407A-AEC7-4F2B377F6556}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6AD3784D-B624-4765-872B-9CC0C0338AD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6AD3784D-B624-4765-872B-9CC0C0338AD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6AD3784D-B624-4765-872B-9CC0C0338AD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6AD3784D-B624-4765-872B-9CC0C0338AD7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
