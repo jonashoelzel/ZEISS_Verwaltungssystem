@@ -287,6 +287,8 @@ else
         {
             publicationTypes.Add(type);
         }
+
+        publicationTypes.RemoveAll(x => String.IsNullOrWhiteSpace(x.Name));
     }
 
     protected override void OnInitialized()

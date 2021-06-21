@@ -277,6 +277,8 @@ else if (workflowState.State == Data.DataLogic.State.Add)
         {
             authors.Add(author);
         }
+
+        authors.RemoveAll(x => String.IsNullOrWhiteSpace(x.Name));
     }
 
     protected override void OnInitialized()

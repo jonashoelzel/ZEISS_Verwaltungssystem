@@ -118,6 +118,8 @@
             //REMEMBER: These are references. Chanches of the originals also changes the 'copies'.
             data = ReadDataSet.CachedPublications;
             divisions = ReadDataSet.CachedDivisions;
+
+            divisions.RemoveAll(x => String.IsNullOrWhiteSpace(x.Name));
             divisions.Insert(0, new Division() { Name = String.Empty });
 
             items = data;

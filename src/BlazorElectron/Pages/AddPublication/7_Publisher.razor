@@ -252,6 +252,8 @@ else if (workflowState.State == Data.DataLogic.State.Add)
         {
             publishers.Add(publisher);
         }
+
+        publishers.RemoveAll(x => String.IsNullOrWhiteSpace(x.Name));
     }
 
     protected override void OnInitialized()

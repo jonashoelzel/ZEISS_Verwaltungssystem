@@ -269,6 +269,8 @@ else if (workflowState.State == Data.DataLogic.State.Add)
         {
             divisions.Add(division);
         }
+
+        divisions.RemoveAll(x => String.IsNullOrWhiteSpace(x.Name));
     }
 
     protected override void OnInitialized()
