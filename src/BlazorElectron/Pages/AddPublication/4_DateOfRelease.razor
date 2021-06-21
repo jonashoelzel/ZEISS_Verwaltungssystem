@@ -80,7 +80,7 @@
 
     @if (workflowState.State == Data.DataLogic.State.Edit)
     {
-        <button class="primaryButton addPub" type="submit" @onclick="Update">Änderungen Speichern</button>
+        <button class="primaryButton addPub" type="submit" @onclick="ValidateAndSave">Änderungen Speichern</button>
     }
     <button class="primaryButton back" type="button" @onclick="NavigateToPreviousScreen">
         <span class="fas fa-arrow-circle-left fa-3x"></span>
@@ -103,7 +103,7 @@
     private void NavigateToNextScreen()
     {
         //OADate first Date is 1900/01/01 12:00:00 => 1900/01/02 00:00:00
-        if (Publication.DateOfRelease >= new DateTime(1900, 1, 2))
+        if (Publication?.DateOfRelease >= new DateTime(1900, 1, 2))
         {
             NavigationManager.NavigateTo("addPublicationType");
         }
@@ -121,9 +121,18 @@
     private void HandleInvalidSubmit() { }
 
 
-    private void Update()
+    private void ValidateAndSave()
     {
-        SavePublication();
+        //OADate first Date is 1900/01/01 12:00:00 => 1900/01/02 00:00:00
+        if (!(Publication?.DateOfRelease >= new DateTime(1900, 1, 2)))
+        {
+            modalDisplay = "display:block";
+            ShowPflichtfeldPopup = true;
+        }
+        else
+        {
+            SavePublication();
+        }
     }
 
 

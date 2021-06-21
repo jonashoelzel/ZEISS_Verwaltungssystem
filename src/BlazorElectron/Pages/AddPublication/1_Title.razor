@@ -77,7 +77,7 @@
 
     @if (workflowState.State == Data.DataLogic.State.Edit)
     {
-        <button class="primaryButton addPub" type="submit" @onclick="Update">Änderungen Speichern</button>
+        <button class="primaryButton addPub" type="submit" @onclick="ValidateAndSave">Änderungen Speichern</button>
     }
     <button class="primaryButton back" type="button" @onclick="NavigateToPreviousScreen">
         <span class="fas fa-home fa-3x"></span>
@@ -130,10 +130,19 @@
         base.OnInitialized();
     }
 
-    private void Update()
+    private void ValidateAndSave()
     {
         AddTitle();
-        SavePublication();
+
+        if (String.IsNullOrWhiteSpace(Publication?.WorkingTitle))
+        {
+            modalDisplay = "display:block";
+            ShowPflichtfeldPopup = true;
+        }
+        else
+        {
+            SavePublication();
+        }
     }
 
     private void SavePublication()
