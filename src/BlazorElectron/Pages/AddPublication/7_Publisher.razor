@@ -162,7 +162,7 @@ else if (workflowState.State == Data.DataLogic.State.Add)
 
             publishers.Insert(0, newPublisher);
 
-            ReadDataSet.ChachedPublishers.Add(newPublisher);
+            ReadDataSet.CachedPublishers.Add(newPublisher);
 
             NewPublisher = new();
         }
@@ -170,6 +170,7 @@ else if (workflowState.State == Data.DataLogic.State.Add)
         {
             if (ex is UnauthorizedAccessException || ex is IOException)
             {
+                publisherException = true;
                 OpenException();
                 return;
             }
@@ -197,12 +198,12 @@ else if (workflowState.State == Data.DataLogic.State.Add)
 
             if (workflowState.State == Data.DataLogic.State.Add)
             {
-                ReadDataSet.ChachedPublications.Add(NewDataSet);
+                ReadDataSet.CachedPublications.Add(NewDataSet);
             }
             else
             {
-                int index = ReadDataSet.ChachedPublications.FindIndex(item => item.ID == NewDataSet.ID);
-                ReadDataSet.ChachedPublications[index] = NewDataSet;
+                int index = ReadDataSet.CachedPublications.FindIndex(item => item.ID == NewDataSet.ID);
+                ReadDataSet.CachedPublications[index] = NewDataSet;
             }
 
             modalDisplay = "display:block";
@@ -212,6 +213,7 @@ else if (workflowState.State == Data.DataLogic.State.Add)
         {
             if (ex is UnauthorizedAccessException || ex is IOException)
             {
+                publicationException = true;
                 OpenException();
                 return;
             }
@@ -245,7 +247,7 @@ else if (workflowState.State == Data.DataLogic.State.Add)
         if (publishers.Any())
             return;
 
-        List<IPublisher> readPublishers = ReadDataSet.ChachedPublishers;
+        List<IPublisher> readPublishers = ReadDataSet.CachedPublishers;
         foreach (IPublisher publisher in readPublishers)
         {
             publishers.Add(publisher);
@@ -305,6 +307,9 @@ else if (workflowState.State == Data.DataLogic.State.Add)
     string modalExceptionDisplay = "display:block";
     bool ShowException = false;
 
+    bool publicationException = false;
+    bool publisherException = false;
+
     public void OpenException()
     {
         modalExceptionDisplay = "display:block";
@@ -319,15 +324,18 @@ else if (workflowState.State == Data.DataLogic.State.Add)
 
     void Retry()
     {
-        try
+        if (publicationException)
         {
             SavePublication();
-            CloseException();
+            publicationException = false;
         }
-        catch
+        else if (publisherException)
         {
-            OpenException();
+            SavePublisher();
+            publisherException = false;
         }
+
+        CloseException();
     }
 }
 

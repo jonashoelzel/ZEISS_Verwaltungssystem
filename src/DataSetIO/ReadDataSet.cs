@@ -13,24 +13,24 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Read
             FilePath = filePaht;
         }
 
-        public static List<IPublicationDataSet> ChachedPublications { get; set; } = new();
-        public static List<IAuthor> ChachedAuthors { get; set; } = new();
-        public static List<IDivision> ChachedDivisions { get; set; } = new();
-        public static List<IPublicationType> ChachedPublicationTypes { get; set; } = new();
-        public static List<IState> ChachedStates { get; set; } = new();
-        public static List<ITag> ChachedTags { get; set; } = new();
-        public static List<IPublisher> ChachedPublishers { get; set; } = new();
+        public static List<IPublicationDataSet> CachedPublications { get; set; } = new();
+        public static List<IAuthor> CachedAuthors { get; set; } = new();
+        public static List<IDivision> CachedDivisions { get; set; } = new();
+        public static List<IPublicationType> CachedPublicationTypes { get; set; } = new();
+        public static List<IState> CachedStates { get; set; } = new();
+        public static List<ITag> CachedTags { get; set; } = new();
+        public static List<IPublisher> CachedPublishers { get; set; } = new();
 
-        public static void LoadAndChacheData()
+        public static void LoadAndCacheData()
         {
-            ChachedAuthors = ReadAuthors();
-            ChachedDivisions = ReadDivisions();
-            ChachedPublicationTypes = ReadPublicationTypes();
-            ChachedStates = ReadStates();
-            ChachedTags = ReadTags();
-            ChachedPublishers = ReadPublishers();
+            CachedAuthors = ReadAuthors();
+            CachedDivisions = ReadDivisions();
+            CachedPublicationTypes = ReadPublicationTypes();
+            CachedStates = ReadStates();
+            CachedTags = ReadTags();
+            CachedPublishers = ReadPublishers();
 
-            ChachedPublications = ReadPublicationDataSets();
+            CachedPublications = ReadPublicationDataSets();
         }
 
 
@@ -112,41 +112,41 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Read
             publication.AdditionalInformation = attributes["AdditionalInformation"].ToString();
 
             var authorID = Guid.Parse(attributes["Author_ID"].ToString());
-            publication.MainAuthor = ChachedAuthors.First(e => e.ID.Equals(authorID));
+            publication.MainAuthor = CachedAuthors.First(e => e.ID.Equals(authorID));
 
             var coAuthorIDs = ConvertCSVToGuids(attributes["CoAuthor_IDs"].ToString());
             foreach (var coAuthorID in coAuthorIDs)
-                publication.CoAuthors.Add(ChachedAuthors.First(e => e.ID.Equals(coAuthorID)));
+                publication.CoAuthors.Add(CachedAuthors.First(e => e.ID.Equals(coAuthorID)));
 
             if (!string.IsNullOrWhiteSpace(attributes["Division_ID"].ToString()))
             {
                 if (Guid.TryParse(attributes["Division_ID"].ToString(), out Guid divisionID))
-                    publication.Division = ChachedDivisions.First(e => e.ID.Equals(divisionID));
+                    publication.Division = CachedDivisions.First(e => e.ID.Equals(divisionID));
                 else throw new Exception("File Corrupt");
             }
 
             if (!string.IsNullOrWhiteSpace(attributes["PublicationType_ID"].ToString()))
             {
                 if (Guid.TryParse(attributes["PublicationType_ID"].ToString(), out Guid publicationTypeID))
-                    publication.TypeOfPublication = ChachedPublicationTypes.First(e => e.ID.Equals(publicationTypeID));
+                    publication.TypeOfPublication = CachedPublicationTypes.First(e => e.ID.Equals(publicationTypeID));
                 else throw new Exception("File Corrupt");
             }
 
             if (!string.IsNullOrWhiteSpace(attributes["State_ID"].ToString()))
             {
                 if (Guid.TryParse(attributes["State_ID"].ToString(), out Guid stateID))
-                    publication.CurrentState = ChachedStates.First(e => e.ID.Equals(stateID));
+                    publication.CurrentState = CachedStates.First(e => e.ID.Equals(stateID));
                 else throw new Exception("File Corrupt");
             }
 
             var tagIDs = ConvertCSVToGuids(attributes["Tag_ID"].ToString());
             foreach (var tagID in tagIDs)
-                publication.Tags.Add(ChachedTags.First(e => e.ID.Equals(tagID)));
+                publication.Tags.Add(CachedTags.First(e => e.ID.Equals(tagID)));
 
             if (!string.IsNullOrWhiteSpace(attributes["Publisher_ID"].ToString()))
             {
                 if (Guid.TryParse(attributes["Publisher_ID"].ToString(), out Guid publisherID))
-                    publication.PublishedBy = ChachedPublishers.First(e => e.ID.Equals(publisherID));
+                    publication.PublishedBy = CachedPublishers.First(e => e.ID.Equals(publisherID));
                 else throw new Exception("File Corrupt");
             }
 

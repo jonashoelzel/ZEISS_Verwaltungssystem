@@ -147,12 +147,12 @@
 
             if (workflowState.State == Data.DataLogic.State.Add)
             {
-                ReadDataSet.ChachedPublications.Add(NewDataSet);
+                ReadDataSet.CachedPublications.Add(NewDataSet);
             }
             else
             {
-                int index = ReadDataSet.ChachedPublications.FindIndex(item => item.ID == NewDataSet.ID);
-                ReadDataSet.ChachedPublications[index] = NewDataSet;
+                int index = ReadDataSet.CachedPublications.FindIndex(item => item.ID == NewDataSet.ID);
+                ReadDataSet.CachedPublications[index] = NewDataSet;
             }
 
             modalDisplay = "display:block";
@@ -217,6 +217,7 @@
     string modalExceptionDisplay = "display:block";
     bool ShowException = false;
 
+
     public void OpenException()
     {
         modalExceptionDisplay = "display:block";
@@ -231,15 +232,8 @@
 
     void Retry()
     {
-        try
-        {
-            SavePublication();
-            CloseException();
-        }
-        catch
-        {
-            OpenException();
-        }
+        SavePublication();
+        CloseException();
     }
 }
 

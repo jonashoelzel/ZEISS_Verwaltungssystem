@@ -110,14 +110,14 @@
     {
         try
         {
-            if (!ReadDataSet.ChachedPublications.Any() && !ReadDataSet.ChachedDivisions.Any())
+            if (!ReadDataSet.CachedPublications.Any() && !ReadDataSet.CachedDivisions.Any())
             {
-                ReadDataSet.LoadAndChacheData();
+                ReadDataSet.LoadAndCacheData();
             }
 
             //REMEMBER: These are references. Chanches of the originals also changes the 'copies'.
-            data = ReadDataSet.ChachedPublications;
-            divisions = ReadDataSet.ChachedDivisions;
+            data = ReadDataSet.CachedPublications;
+            divisions = ReadDataSet.CachedDivisions;
             divisions.Insert(0, new Division() { Name = String.Empty });
 
             items = data;
@@ -126,6 +126,7 @@
         {
             if (ex is UnauthorizedAccessException || ex is IOException)
             {
+                fetchException = true;
                 OpenException();
                 return;
             }
@@ -284,7 +285,7 @@
         try
         {
             dataHandler.DeletePublication(pubID);
-            ReadDataSet.ChachedPublications.Remove(ReadDataSet.ChachedPublications.Where(Publication => Publication.ID == pubID).First());
+            ReadDataSet.CachedPublications.Remove(ReadDataSet.CachedPublications.Where(Publication => Publication.ID == pubID).First());
 
             Filter();
         }
@@ -293,6 +294,7 @@
         {
             if (ex is UnauthorizedAccessException || ex is IOException)
             {
+                deleteException = true;
                 OpenException();
                 return;
             }
@@ -340,6 +342,11 @@
     string modalExceptionDisplay = "display:block";
     bool ShowOpenException = false;
 
+    bool fetchException = false;
+    bool deleteException = false;
+
+    Guid retryID = new();
+
     public void OpenException()
     {
         modalExceptionDisplay = "display:block";
@@ -354,14 +361,17 @@
 
     void Retry()
     {
-        try
+        if (fetchException)
         {
             fetchData();
-            CloseException();
+            fetchException = false;
         }
-        catch
+        else if (deleteException)
         {
-            OpenException();
+            Delete(retryID);
+            deleteException = false;
         }
+
+        CloseException();
     }
 }
