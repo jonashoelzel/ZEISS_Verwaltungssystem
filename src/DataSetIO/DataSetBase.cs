@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Zeiss.PublicationManager.Data.Excel.IO;
 using Zeiss.PublicationManager.Data.Excel.IO.Write;
 
 namespace Zeiss.PublicationManager.Data.DataSet.IO
@@ -165,7 +166,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO
 
             foreach (var worksheet in WorksheetsHeader())
             {
-                if (!WriteExcel.WorksheetExists(ref _filePath, worksheet.Key))
+                if (!ExcelIOAPIs.WorksheetExists(_filePath, worksheet.Key))
                 {
                     // TODO: Check if columns exist
                     // Create new Worksheet
@@ -178,10 +179,10 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO
         {
             foreach (var worksheet in WorksheetsHeader())
             {
-                if (!WriteExcel.WorksheetExists(ref _filePath, worksheet.Key))
+                if (!ExcelIOAPIs.WorksheetExists(_filePath, worksheet.Key))
                     return false;
 
-                if (!Excel.IO.ExcelIOBase.CheckHeaderColumnsExist(FilePath, worksheet.Key, worksheet.Value))
+                if (!Excel.IO.ExcelIOAPIs.CheckHeaderColumnsExist(FilePath, worksheet.Key, worksheet.Value))
                     return false;
 
             }

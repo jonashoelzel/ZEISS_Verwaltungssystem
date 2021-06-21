@@ -20,7 +20,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.Model
         public string Description { get; set; }
 
 
-        [MaxLength(1000, ErrorMessage = "Beschreibung ist zu lang")]
+        [MaxLength(2000, ErrorMessage = "Beschreibung ist zu lang")]
         public string AdditionalInformation { get; set; }
     }
 }

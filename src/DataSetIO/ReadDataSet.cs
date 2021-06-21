@@ -17,18 +17,11 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Read
         {
             List<T> dataSets = new();
 
-            Dictionary<string, List<object>> table = RowSelect.Select(filepath, worksheetName, headerColumns);
+            List<Dictionary<string, object>> table = RowSelect.SelectAsRows(filepath, worksheetName, headerColumns);
             if (table.Any())
             {
-                int rowsCount = table[headerColumns[0]].Count;
-
-                for (int rowIndex = 0; rowIndex < rowsCount; rowIndex++)
+                foreach (Dictionary<string, object> row in table)
                 {
-                    Dictionary<string, object> row = new();
-                    for (int i = 0; i < headerColumns.Count; i++)
-                    {
-                        row.Add(headerColumns[i], table[headerColumns[i]][rowIndex]);
-                    }
                     dataSets.Add(convertAttributesFunction(row));
                 }
             }
@@ -137,9 +130,9 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Read
                 else throw new Exception("File Corrupt");
             }
 
-            if (!string.IsNullOrWhiteSpace(attributes["Publisher_ID"].ToString()))
+            if (!string.IsNullOrWhiteSpace(attributes["Publication_ID"].ToString()))
             {
-                if (Guid.TryParse(attributes["Publisher_ID"].ToString(), out Guid id))
+                if (Guid.TryParse(attributes["Publication_ID"].ToString(), out Guid id))
                     publication.ID = id;
                 else throw new Exception("File Corrupt");
             }

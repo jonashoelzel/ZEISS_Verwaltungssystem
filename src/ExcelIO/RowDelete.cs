@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 using DocumentFormat.OpenXml;
@@ -115,6 +116,52 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Write
             RemoveRowAdvanced(sheetData, rows);
 
             return countRows;
+        }
+
+
+
+        private static void RemoveRow(List<Row> deletingRows)
+        {
+            for (int i = 0; i < deletingRows.Count; i++)
+                deletingRows[i].Remove();
+        }
+
+        private static void RemoveRowAdvanced(SheetData sheetData, List<Row> deletingRows)
+        {
+            while (deletingRows.Any())
+            {
+                RemoveRowAdvanced(sheetData, deletingRows.FirstOrDefault());
+                deletingRows.RemoveAt(0);
+            }
+        }
+
+        private static void RemoveRowAdvanced(SheetData sheetData, Row deletingRow)
+        {
+            List<Row> allRows = sheetData.Elements<Row>().ToList();
+            uint deletedRowIndex = deletingRow.RowIndex.Value;
+            deletingRow.Remove();
+
+            for (int i = 0; i < allRows.Count; i++)
+            {
+                //Only change the indexes of the rows and cells after the deleted row
+                if (allRows[i].RowIndex.Value > deletedRowIndex)
+                {
+                    List<Cell> cells = allRows[i].Elements<Cell>().ToList();
+                    if (cells is not null)
+                    {
+                        for (int j = 0; j < cells.Count; j++)
+                        {
+                            string oldCellReference = cells[i].CellReference.Value;
+
+                            //Decrement Row index
+                            int rowIndex = Convert.ToInt32(Regex.Replace(oldCellReference, @"[\d-]", "")) - 1;
+                            string letterIndex = Regex.Replace(oldCellReference, @"[^\d]+", "");
+
+                            cells[i].CellReference.Value = $"{letterIndex}{rowIndex}";
+                        }
+                    }
+                }
+            }
         }
     }
 }

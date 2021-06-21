@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Zeiss.PublicationManager.Data.DataSet;
 using Zeiss.PublicationManager.Data.DataSet.IO.Read;
 using Zeiss.PublicationManager.Data.DataSet.IO.Write;
@@ -20,7 +20,6 @@ namespace Zeiss.PublicationManager.Business.Logic.IO
         {
             excelReader = new ReadDataSet(filePath);
             excelWriter = new WriteDataSet(filePath);
-            excelReader.CheckWorkBook();
         }
 
         public DataHandler(string filePath) : this()
@@ -33,6 +32,11 @@ namespace Zeiss.PublicationManager.Business.Logic.IO
             this.filePath = filePath;
             excelReader = new ReadDataSet(filePath);
             excelWriter = new WriteDataSet(filePath);
+            excelReader.CheckWorkBook();
+        }
+
+        public void CreateNewExcelIfNotExisting()
+        {
             excelReader.CheckWorkBook();
         }
 
@@ -84,5 +88,11 @@ namespace Zeiss.PublicationManager.Business.Logic.IO
         {
             excelWriter.InsertPublisher(publisher);
         }
+
+        public void DeletePublication(Guid guid)
+        {
+            excelWriter.DeletePublication(guid);
+        }
+
     }
 }

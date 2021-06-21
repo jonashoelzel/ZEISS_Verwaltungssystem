@@ -17,6 +17,7 @@ using Zeiss.PublicationManager.Data.Excel.IO;
 using Zeiss.PublicationManager.Data.DataSet;
 using Zeiss.PublicationManager.Data.DataSet.Model;
 using Zeiss.PublicationManager.Business.Logic.IO;
+using BlazorElectron.Data.DataLogic;
 
 namespace Zeiss.PublicationManager.UI
 {
@@ -50,6 +51,7 @@ namespace Zeiss.PublicationManager.UI
             services.AddServerSideBlazor();
             services.AddSingleton<PublicationDataSetModel>();
             services.AddSingleton<DataHandler>();
+            services.AddSingleton<WorkflowState>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

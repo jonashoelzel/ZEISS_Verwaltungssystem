@@ -38,8 +38,10 @@ namespace Zeiss.PublicationManager.Data.DataSet.Model
 
         // Additional Information
         public IState CurrentState { get; set; } = new StateModel();
+
         public DateTime DateOfStartWorking { get; set; } = DateTime.Now;
         public DateTime DateOfRelease { get; set; } = DateTime.Now;
+
         public List<ITag> Tags { get; set; }
         public string Description { get; set; }
         public string AdditionalInformation { get; set; }
@@ -67,6 +69,24 @@ namespace Zeiss.PublicationManager.Data.DataSet.Model
             AdditionalInformation = "";
             Division = new DivisionModel();
             PublishedBy = new PublisherModel();
+        }
+
+        public void Set(IPublicationDataSet publication)
+        {
+            ID = publication.ID;
+            WorkingTitle = publication.WorkingTitle;
+            PublicationTitle = publication.PublicationTitle;
+            TypeOfPublication = publication.TypeOfPublication;
+            MainAuthor = publication.MainAuthor;
+            CoAuthors = publication.CoAuthors;
+            CurrentState = publication.CurrentState;
+            DateOfStartWorking = publication.DateOfStartWorking;
+            DateOfRelease = publication.DateOfRelease;
+            Tags = publication.Tags;
+            Description = publication.Description;
+            AdditionalInformation = publication.AdditionalInformation;
+            Division = publication.Division;
+            PublishedBy = publication.PublishedBy;
         }
     }
 }

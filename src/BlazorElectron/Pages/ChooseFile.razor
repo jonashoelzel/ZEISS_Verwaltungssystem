@@ -1,0 +1,94 @@
+﻿@page "/"
+@using Zeiss.PublicationManager.Data.DataSet.Model
+@using ElectronNET.API;
+@using ElectronNET.API.Entities;
+@using Zeiss.PublicationManager.Business.Logic.IO
+
+@inject NavigationManager NavigationManager
+@inject PublicationDataSetModel Publication 
+@inject DataHandler dataHandler
+
+<img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg" class="logo" />
+
+<section class="panel-default">
+    <header class="panel-heading">
+        <h4 class="panel-title">Excel Datei auswählen</h4>
+    </header>
+    <div class="panel-body centeredButton chooseExcel">
+        <button type="button" class="primaryButton openExcel" @onclick="openFileDialog">Datei Öffnen</button>
+        <button type="button" class="secondaryButton newExcel" @onclick="createFielDialog">Neue Excel erstellen</button>
+    </div>
+</section>
+
+@code
+{
+    async Task openFileDialog()
+    {
+        if (!HybridSupport.IsElectronActive)
+        {
+            dataHandler.CreateNewExcelIfNotExisting();
+            NavigationManager.NavigateTo("/SearchPublication");
+            return;
+        }
+
+        var options = new OpenDialogOptions
+        {
+            Title = "Choose a file",
+            Filters = new[]
+            {
+                new FileFilter
+                {
+                    Name = "Excel",
+                    Extensions = new[] { "xlsx" }
+                },
+            },
+            Properties = new[]
+            {
+                OpenDialogProperty.multiSelections, OpenDialogProperty.showHiddenFiles
+            }
+        };
+
+        var mainWindow = Electron.WindowManager.BrowserWindows.First();
+
+        var selectedFiles = await Electron.Dialog.ShowOpenDialogAsync(mainWindow, options);
+
+        if (!System.IO.File.Exists(selectedFiles.FirstOrDefault()))
+            return;
+
+        dataHandler.SetFilePath(selectedFiles.FirstOrDefault());
+
+        NavigationManager.NavigateTo("/SearchPublication");
+    }
+
+    async Task createFielDialog()
+    {
+        if (!HybridSupport.IsElectronActive)
+        {
+            return;
+        }
+
+        var mainWindow = Electron.WindowManager.BrowserWindows.FirstOrDefault();
+
+        var options = new SaveDialogOptions
+        {
+            Title = "Choose a path to save the file",
+            Filters = new[]
+            {
+                new FileFilter
+                {
+                    Name = "Excel",
+                    Extensions = new[] { "xlsx" }
+                },
+            },
+        };
+
+        var newFile = await Electron.Dialog.ShowSaveDialogAsync(mainWindow, options);
+
+        if (string.IsNullOrWhiteSpace(newFile))
+            return;
+
+        dataHandler.SetFilePath(newFile);
+
+        NavigationManager.NavigateTo("/SearchPublication");
+    }
+}

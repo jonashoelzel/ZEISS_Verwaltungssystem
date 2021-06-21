@@ -4,38 +4,41 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
 
-using Zeiss.PublicationManager.Data.Excel;
 
-namespace Zeiss.PublicationManager.Data.Excel.IO.Legacy
+namespace Zeiss.PublicationManager.Data.Excel.IO.Read
 {
-    public class LegacyExcelIOBase : ExcelIOBase
+    public abstract class ReadExcel : ExcelIOBase
     {
-        public static new List<string> GetColumnLetterIDsOfColumnNames(ref SpreadsheetDocument spreadsheetDocument, SheetData sheetData, List<string> columnNames, out int rowIndex)
+        //return: <letterID, columnName>
+        protected static Dictionary<string, string> GetColumnLetterIDsOfColumnNames(ref SpreadsheetDocument spreadsheetDocument, SheetData sheetData, List<string> columnNames, out int rowIndex)
         {
             rowIndex = -1;
-            List<string> letterIDs = new();
+            //<letterID, columnName>
+            Dictionary<string, string> letterIDsAndColumnNames = new();
             List<object> objectList = new();
             foreach (string strobj in columnNames)
             {
                 objectList.Add(strobj);
             }
 
-            Row row = ExcelIOBase.SearchRow(ref spreadsheetDocument, sheetData, objectList);
+            Row row = SearchRow(ref spreadsheetDocument, sheetData, objectList);
             if (row is not null)
             {
                 foreach (string name in columnNames)
                 {
                     string letterID = GetColumnLetterIDsOfColumnNames(ref spreadsheetDocument, row, name, out rowIndex);
                     if (letterID is not null)
-                        letterIDs.Add(letterID);
+                        letterIDsAndColumnNames.Add(letterID, name);
                 }
-            }        
+            }
 
-            return letterIDs;
+            return letterIDsAndColumnNames;
         }
+
     }
 }

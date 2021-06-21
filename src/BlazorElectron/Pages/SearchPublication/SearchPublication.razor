@@ -1,14 +1,15 @@
-@page "/"
+@page "/SearchPublication"
 @using Zeiss.PublicationManager.Data.DataSet.Model
 @using Zeiss.PublicationManager.Data.DataSet
 @using Zeiss.PublicationManager.Data.DataSet.IO.Read
 @using Zeiss.PublicationManager.UI
 @using Zeiss.PublicationManager.Business.Logic.IO
-@using System.IO
+@using BlazorElectron.Data.DataLogic
 
 @inject NavigationManager NavigationManager
 @inject PublicationDataSetModel Publication
 @inject DataHandler dataHandler
+@inject WorkflowState workflowState
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg" class="logo" />
 
@@ -17,7 +18,7 @@
     <section class="search-default">
         <div class="input-group">
             <input type="text" class="form-control" placeholder="Titel, Autor, Stichwort, ..."
-                   @bind-value="SearchTerm" @bind-value:event="oninput" />
+                   @oninput="SetSearchTerm" />
             <button type="button" class="btn" @onclick="@ChangeFilterVisibility" id="openFilter">
                 <span class="fas fa-filter fa-2x"></span>
             </button>
@@ -28,7 +29,7 @@
         <div class="input-group">
             <label>Filtern nach:</label>
             <div class="dropdownFilter">
-                <select class="form-control" @onchange="@DivisionFilter">
+                <select class="form-control" @onchange="@SetDivisionFilter">
                     @foreach (var div in divisions)
                     {
                         <option value="@div.Name">@div.Name</option>
@@ -52,19 +53,19 @@
         <thead class="thead-dark">
             <tr>
                 <th>
-                    <span class="sort-link" @onclick="@(() => SortTable("WorkingTitle"))">Titel</span>
+                    <span class="sort-link" @onclick="@(() => SetSortColumn("WorkingTitle"))">Titel</span>
                     <span class="fa @(GetSortStyle("WorkingTitle"))"></span>
                 </th>
                 <th>
-                    <span class="sort-link" @onclick="@(() => SortTable("MainAuthor.Name"))">Vorname</span>
+                    <span class="sort-link" @onclick="@(() => SetSortColumn("MainAuthor.Name"))">Vorname</span>
                     <span class="fa @(GetSortStyle("MainAuthor.Name"))"></span>
                 </th>
                 <th>
-                    <span class="sort-link" @onclick="@(() => SortTable("MainAuthor.Surname"))">Nachname des Autors</span>
+                    <span class="sort-link" @onclick="@(() => SetSortColumn("MainAuthor.Surname"))">Nachname des Autors</span>
                     <span class="fa @(GetSortStyle("MainAuthor.Surname"))"></span>
                 </th>
                 <th>
-                    <span class="sort-link" @onclick="@(() => SortTable("DateOfRelease"))">Datum der Veröffentlichung</span>
+                    <span class="sort-link" @onclick="@(() => SetSortColumn("DateOfRelease"))">Datum der Veröffentlichung</span>
                     <span class="fa @(GetSortStyle("DateOfRelease"))"></span>
                 </th>
                 <th>Aktion</th>
@@ -80,7 +81,7 @@
                     <td class="align-middle">@publication.MainAuthor.Surname</td>
                     <td class="align-middle">@publication.DateOfRelease.ToString("dd.MM.yyyy")</td>
                     <td>
-                        <button type="button" class="btn" @onclick="NavigateToEditTitleComp">
+                        <button type="button" class="btn" @onclick="(() => EditThisPublication(publication))">
                             <span class="fas fa-pencil-alt"></span>
                         </button>
                         <button type="button" class="btn" @onclick="@(() => Delete(publication.ID))">
@@ -92,10 +93,6 @@
         </tbody>
     </table>
     <div class="form-inline">
-        <div class="landingPageFileInput">
-           <InputFile OnChange="@FilePath"></InputFile>
-       </div>
-
         <div class="landingPageAddPublication">
             <button type="button" class="btn" @onclick="NavigateToAddTitleComp">
                 <span class="fas fa-plus-circle fa-5x"></span>
@@ -109,8 +106,6 @@
     private List<PublicationDataSet> data;
     private List<Division> divisions;
 
-    private void FilePath() { }
-
     void fetchData()
     {
         if (data is not null && divisions is not null)
@@ -119,17 +114,24 @@
         data = dataHandler.ExcelReader.ReadPublicationDataSet();
         divisions = dataHandler.ExcelReader.ReadDivisions();
         divisions.Insert(0, new Division() { Name = string.Empty });
+
+        items = data;
     }
 
     private void NavigateToAddTitleComp()
     {
+        workflowState.State = Data.DataLogic.State.Add;
         Publication.Reset();
         NavigationManager.NavigateTo("addTitle");
     }
 
-    private void NavigateToEditTitleComp()
+    private void EditThisPublication(IPublicationDataSet publication)
     {
-        NavigationManager.NavigateTo("editTitle");
+        workflowState.State = Data.DataLogic.State.Edit;
+        Publication.Set(publication);
+        NavigationManager.NavigateTo("addTitle");
+
+        Filter();
     }
 
     private bool HideFilter = true;
@@ -137,19 +139,9 @@
     private bool IsSortedAscending = false;
     private string CurrentSortColumn;
 
-    string SearchTerm { get; set; } = "";
-
     string SelectedDivsion { get; set; } = "";
 
-    List<string> Divisions = new List<string>()
-{
-        "", "DAC", "DQA", "DQA I", "DQA II", "DQA, TAD III", "MSD", "QA", "SAP", "SBD", "SEV", "TAD", "TAD I", "TAD II", "TAD III", "Vorstand", "Vorstand, TAD I"
-    };
-
-    List<string> Tags = new List<string>()
-{
-        "Backend", "Frontend", "Development", ".NET 5.0", ".NET Core", ".NET Framework"
-    };
+    string CurrentSearchTerm { get; set; } = "";
 
     // Test Data
     public class TableTest
@@ -161,10 +153,44 @@
         public string Division { get; set; }
     };
 
-    // search term input
-    List<PublicationDataSet> items => data?.Where(i => i.WorkingTitle.ToLower().Contains(SearchTerm.ToLower()) ||
-                                             i.MainAuthor.Name.ToLower().Contains(SearchTerm.ToLower()) ||
-                                             i.MainAuthor.Surname.ToLower().Contains(SearchTerm.ToLower())).ToList();
+    List<PublicationDataSet> items = new();
+
+    private List<PublicationDataSet> helpData;
+
+    protected override void OnInitialized()
+    {
+        fetchData();
+        helpData = data;
+    }
+
+    // filter list when changing value of division-filter
+    public void SetDivisionFilter(ChangeEventArgs e)
+    {
+        SelectedDivsion = e.Value.ToString();
+        Filter();
+    }
+
+
+    void SetSearchTerm(ChangeEventArgs args)
+    {
+        CurrentSearchTerm = args.Value.ToString();
+        Filter();
+    }
+
+    void SetSortColumn(string columnName)
+    {
+        if (columnName == CurrentSortColumn)
+        {
+            IsSortedAscending = !IsSortedAscending;
+        }
+        else
+        {
+            CurrentSortColumn = columnName;
+        }
+
+        Filter();
+    }
+
 
     // hide or show dropdown-filter
     private void ChangeFilterVisibility() => HideFilter = !HideFilter;
@@ -187,55 +213,66 @@
     }
 
     // sort the column which was choosen
-    private void SortTable(string columnName)
+    private void SortTable()
     {
         //1 = ASC. -1 = DESC
         int sortInt = IsSortedAscending ? 1 : -1;
-        CurrentSortColumn = columnName;
-        switch (columnName)
+        switch (CurrentSortColumn)
         {
             case "WorkingTitle":
-                data.Sort(delegate (PublicationDataSet x, PublicationDataSet y) { return String.Compare(x.WorkingTitle, y.WorkingTitle) * sortInt; });
+                items.Sort(delegate (PublicationDataSet x, PublicationDataSet y) { return String.Compare(x.WorkingTitle, y.WorkingTitle) * sortInt; });
                 break;
             case "MainAuthor.Name":
-                data.Sort(delegate (PublicationDataSet x, PublicationDataSet y) { return String.Compare(x.MainAuthor.Name, y.MainAuthor.Name) * sortInt; });
+                items.Sort(delegate (PublicationDataSet x, PublicationDataSet y) { return String.Compare(x.MainAuthor.Name, y.MainAuthor.Name) * sortInt; });
                 break;
             case "MainAuthor.Surname":
-                data.Sort(delegate (PublicationDataSet x, PublicationDataSet y) { return String.Compare(x.MainAuthor.Surname, y.MainAuthor.Surname) * sortInt; });
+                items.Sort(delegate (PublicationDataSet x, PublicationDataSet y) { return String.Compare(x.MainAuthor.Surname, y.MainAuthor.Surname) * sortInt; });
                 break;
             case "DateOfRelease":
-                data.Sort(delegate (PublicationDataSet x, PublicationDataSet y) { return DateTime.Compare(x.DateOfRelease, y.DateOfRelease) * sortInt; });
+                items.Sort(delegate (PublicationDataSet x, PublicationDataSet y) { return DateTime.Compare(x.DateOfRelease, y.DateOfRelease) * sortInt; });
                 break;
-
         }
-
-        IsSortedAscending = !IsSortedAscending;
     }
 
-    private List<PublicationDataSet> helpData;
 
-    protected override void OnInitialized()
+
+    void SearchAndFilter()
     {
-        fetchData();
-        helpData = data;
+        Filter();
     }
 
-    // filter list when changing value of division-filter
-    public void DivisionFilter(ChangeEventArgs e)
+
+    void Filter()
     {
-        SelectedDivsion = e.Value.ToString();
-        if (string.IsNullOrEmpty(SelectedDivsion))
+
+        if (!String.IsNullOrWhiteSpace(SelectedDivsion))
         {
-            data = helpData;
+            items = data?.Where(f => f.Division.Name.Equals(SelectedDivsion)).ToList();
         }
         else
         {
-            data = helpData.Where(f => f.Division.Name.Equals(SelectedDivsion)).ToList();
+            items = data;
         }
+
+
+        if (!String.IsNullOrWhiteSpace(CurrentSearchTerm))
+        {
+            items = items?.Where(i => i.WorkingTitle.ToLower().Contains(CurrentSearchTerm.ToLower()) ||
+                                             i.MainAuthor.Name.ToLower().Contains(CurrentSearchTerm.ToLower()) ||
+                                             i.MainAuthor.Surname.ToLower().Contains(CurrentSearchTerm.ToLower())).ToList();
+        }
+
+        SortTable();
     }
 
-    private void Delete(Guid? PubID)
+
+
+    private void Delete(Guid pubID)
     {
-        data.Remove(data.Where(Publication => Publication.ID == PubID).First());
+        data.Remove(data.Where(Publication => Publication.ID == pubID).First());
+
+        dataHandler.DeletePublication(pubID);
+
+        Filter();
     }
 }

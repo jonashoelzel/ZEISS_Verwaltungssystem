@@ -6,41 +6,60 @@
 
 {nbsp} +
 
-* 0.0.0.0 Table of Contents
+* <<0.0.0.0 Table of Contents>>
 
 {nbsp} +
 
-* 1.0.0.0 OpenXML/Excel - Technical Background
-** 1.1.0.0 Examples of Differences
-*** 1.1.1.0 Write/Read Dates
-**** 1.1.1.1 Writing Dates
-**** 1.1.1.2 Reading Dates
+* <<1.0.0.0 OpenXML/Excel - Technical Background>>
+** <<1.1.0.0 Examples of Differences>>
+*** <<1.1.1.0 Write/Read Dates>>
+**** <<1.1.1.1 Writing Dates>>
+**** <<1.1.1.2 Reading Dates>>
 
-** 1.2.0.0 Glossary
-*** 1.2.1.0 OpenXML Classes
-*** 1.2.2.0  Used Terms and Definitions
-**** 1.2.2.1 Empty Table Design
-**** 1.2.2.2 Used Table Design
+** <<1.2.0.0 Glossary>>
+*** <<1.2.1.0 OpenXML Classes>>
+*** <<1.2.2.0  Used Terms and Definitions>>
+**** <<1.2.2.1 Empty Table Design>>
+**** <<1.2.2.2 Used Table Design>>
 
 {nbsp} +
 
-* 2.0.0.0 Code Documentation
-** 2.1.0.0 Public APIs
+* <<2.0.0.0 Code Documentation>>
+** <<2.1.0.0 Public APIs>>
 
-*** 2.1.1.0 RowInsert Class
-**** 2.1.1.1 Insert with List
-**** 2.1.1.1 Insert with Dictionary
+*** <<2.1.1.0 RowInsert Class>>
+**** <<2.1.1.1 Insert with List>>
+**** <<2.1.1.1 Insert with Dictionary>>
 
-*** 2.1.2.0 RowSelect Class
-**** 2.1.2.1 Select with List
-**** 2.1.2.2 Select with List and Where Condition
+*** <<2.1.2.0 RowSelect Class>>
+**** <<2.1.2.1 SelectAsRows with List>>
+**** <<2.1.2.2 SelectWhereAsRows with List and Where Condition>>
+**** <<2.1.2.3 SelectAsColumns with List>>
+**** <<2.1.2.4 SelectWhereAsColumns with List and Where Condition>>
 
-*** 2.1.3.0 RowUpdate Class
-**** 2.1.3.1 Update with Where Condition
+*** <<2.1.3.0 RowUpdate Class>>
+**** <<2.1.3.1 Update with Where Condition>>
 
-*** 2.1.4.0 RowDelete Class
-**** 2.1.4.1 Delete with Where Condition
-**** 2.1.4.2 Delete Advanced with Where Condition
+*** <<2.1.4.0 RowDelete Class>>
+**** <<2.1.4.1 Delete with Where Condition>>
+**** <<2.1.4.2 Delete Advanced with Where Condition>>
+
+*** <<2.1.5.0 ExcelIOAPIs>>
+**** <<2.1.5.1 WorksheetExists>>
+**** <<2.1.5.2 CheckPathExists>>
+**** <<2.1.5.3 IsIDOfWorksheet>>
+**** <<2.1.5.4 CheckHeaderColumnsExist>>
+
+** <<2.2.0.0 Technical Documentation and Private APIs (Selection)>>
+
+*** <<2.2.1.0 SharedString>>
+**** <<2.2.1.1 (API) GetSharedStringTablePart>>
+**** <<2.2.1.2 (API) InsertSharedStringItem>>
+**** <<2.2.1.3 (API) AddSharedString>>
+
+*** <<2.2.2.0 Cells>>
+**** <<2.2.2.1 (API) CreateCell>>
+**** <<2.2.2.1 (API) UpdateCell>>
 
 {nbsp} +
 
@@ -173,6 +192,11 @@ With the Stylesheet, Excel is able to interpret the cell value as Date and you c
 
 {nbsp} +
 
+Link: Go to <<1.0.0.0 OpenXML/Excel - Technical Background>> +
+Link: Go to <<0.0.0.0 Table of Contents>> +
+
+{nbsp} +
+
 === 1.2.0.0 Glossary
 
 {nbsp} +
@@ -275,6 +299,11 @@ For example when we want to read from: +
 "Header1" we get all below cells where the CellReference does contain the 'letterID' A, +
 "Header2" we get all below cells where the CellReference does contain the 'letterID' B, +
 "Header3" we get all below cells where the CellReference does contain the 'letterID' C, [...]. +
+
+{nbsp} +
+
+Link: Go to <<1.0.0.0 OpenXML/Excel - Technical Background>> +
+Link: Go to <<0.0.0.0 Table of Contents>> +
 
 {nbsp} +
 
@@ -400,7 +429,107 @@ Again, the cell value and data-type do match the entered value in the value of t
 
 {nbsp} +
 
-===== 2.1.2.1 Select with List
+===== 2.1.2.1 SelectAsRows with List
+
+{nbsp} +
+
+[source]
+--
+/// <summary>
+/// Reads and returns all values below of entered (so-called) 'header-columns' in (parameter) 'columnNames'.
+/// </summary>
+/// <param name="filepath">
+/// Relative/absolute filepath to a *.xlsx file that should be opened.
+/// </param>
+/// <param name="worksheetName">
+/// Name of the worksheet in the *.xlsx file that should be read.
+/// </param>
+/// <param name="columnNames">
+/// Names of all columns that should be used to identify the header, so that it'll only read values that are below those headers.
+/// </param>
+/// <returns>
+/// Returns a List of Dictionary. 
+/// Every List entry (Every dictionary) represents one row.
+/// Every KeyValuePair of the Dictionarys has a key that is the (so called) 'header-column' and the value is a value in the row, that is below this (so called) 'header-column'.
+/// </returns>
+
+public static List<Dictionary<string, object>> SelectAsRows(string filepath, string worksheetName, List<string> columnNames)
+--
+
+The parameter 'columnNames' are the 'header-columns' where the values below should be selected. +
+The returning List contains multiple Dictionaries, where every Dictionary represents one row. +
+There are the same number KeyValuePairs in the Dictionary as entries in 'columnNames'. +
+Every KeyValuePair in the dictionaries contains in the key a (so called) 'header-columns' and in the value the value in the row that is below this (so called) 'header-column'. +
+
+Example: +
+We have the table: +
+
+|===
+|       |   A       |   B       |   C       |   D       |   E       |   F
+|   1   | Header1   | Header2   | Header3   | Header4   | Header5   |Header6
+|   2   |Hello World| 0         | 1.0       | true      |22.02.2021 |
+|   3   |Foo Bar    | 10        | 2.2       | false     |23.02.2021 |
+|   4   |Spreadsheet| 42        | 3.14      | true      |24.02.2021 |
+|   5   |           |           |           |           |           |
+|   6   |           |           |           |           |           |
+|===
+
+We use the entries in the first row as 'header-column'. +
+When we select entries, it would look like this: +
+'columnNames' = new() { "Header1", "Header5", "Header3" } +
+
+We get a List of Dictionarys that would look like this: +
+List<Dictionary> = new() +
+{ +
+new() { { "Header1", "Hello World" }, { "Header5", 22.02.2021 }, { "Header3", 1.0 } }, +
+new() { { "Header1", "Foo Bar" }, { "Header5", 23.02.2021 }, { "Header3", 2.2 } }, +
+new() { { "Header1", "Spreadsheet" }, { "Header5", 24.02.2021 }, { "Header3", 3.14 } } +
+} +
+
+We can create entries with the rows like this: +
+
+[source]
+--
+public static List<T> GetAllFromTable<T>(string filepath, string worksheetName, List<string> headerColumns, Func<Dictionary<string, object>, T> convertAttributesFunction)
+{
+    List<T> dataSets = new();
+
+    List<Dictionary<string, object>> table = RowSelect.SelectAsRows(filepath, worksheetName, headerColumns);
+    if (table.Any())
+    {
+        foreach (Dictionary<string, object> row in table)
+        {
+            dataSets.Add(convertAttributesFunction(row));
+        }
+    }
+
+    return dataSets;
+}
+--
+
+We can call a function that uses the keys of the dictionary to add the value into the right position of this entry. +
+
+{nbsp} +
+
+===== 2.1.2.2 SelectWhereAsRows with List and Where Condition
+
+{nbsp} +
+
+P +
+L +
+A +
+C +
+E +
+H +
+O +
+L +
+D +
+E +
+R +
+
+{nbsp} +
+
+===== 2.1.2.3 SelectAsColumns with List
 
 {nbsp} +
 
@@ -422,7 +551,7 @@ Again, the cell value and data-type do match the entered value in the value of t
 /// Returns a Dictionary, where the keys are the entered (parameter) 'columnNames' and the values of those keys are all read values that are below of those (so called) 'header-column'.
 /// </returns>
 
-public static Dictionary<string, List<object>> Select(string filepath, string worksheetName, List<string> columnNames)
+public static Dictionary<string, List<object>> SelectAsColumns(string filepath, string worksheetName, List<string> columnNames)
 --
 
 The parameter 'columnNames' are the 'header-columns' where the values below should be selected. +
@@ -516,7 +645,7 @@ When we add those results into a row/list, we can recreate the rows in the table
 
 {nbsp} +
 
-===== 2.1.2.2 Select with List and Where Condition
+===== 2.1.2.4 SelectWhereAsColumns with List and Where Condition
 
 {nbsp} +
 
@@ -533,6 +662,7 @@ E +
 R +
 
 {nbsp} +
+
 
 ==== 2.1.3.0 RowUpdate Class
 
@@ -754,5 +884,331 @@ This means there will be no empty rows when you open the spreadsheet manually. +
 
 Because all references will be updated, this advanced version takes more resources and time than the simple version. +
 
+{nbsp} +
+
+==== 2.1.5.0 ExcelIOAPIs
+
+{nbsp} +
+
+===== 2.1.5.1 WorksheetExists
+
+{nbsp} +
+
+[source]
+--
+/// <summary>
+/// Check if a worksheet does exist in a spreadsheet.
+/// </summary>
+/// <param name="filepath">
+/// Relative/absolute filepath to a *.xlsx file that should be opened.
+/// </param>
+/// <param name="worksheetName">
+/// Name of the worksheet that should be searched.
+/// </param>
+/// <returns>
+/// True, if worksheet with (parameter) 'worksheetName' does exist, otherwise False.
+/// </returns>
+
+public static bool WorksheetExists(ref string filepath, string worksheetName)
+{
+    if (!CheckPathExist(ref filepath))
+        return false;
+
+    SpreadsheetDocument spreadsheetDocument = SpreadsheetDocument.Open(filepath, false);
+
+    //Search for specific sheet
+    IEnumerable<Sheet> sheetsIEnum = spreadsheetDocument?.WorkbookPart?.Workbook?.Descendants<Sheet>()?.Where(s => s.Name == worksheetName);
+    //If specified sheet does not exists => return false
+    bool isExists = sheetsIEnum.Any();
+
+    spreadsheetDocument.Close();
+
+    return isExists;
+}
+--
+
+This function checks if a specified worksheet does exist in a specified spreadsheet. +
+
+{nbsp} +
+
+===== 2.1.5.2 CheckPathExists
+
+{nbsp} +
+
+[source]
+--
+/// <summary>
+/// Check if a path at the specified (parameter) 'filepath' does exist. 
+/// If the filepath is too long it'll try to access directly to the OS-File-System.
+/// </summary>
+/// <param name="filepath">
+/// The path to the file that should be searched.
+/// If the filepath is too long it'll try to access directly to the OS-File-System to search for the file.
+/// </param>
+/// <returns>
+/// True, if the file exists, otherwise false.
+/// </returns>
+
+public static bool CheckPathExist(ref string filepath)
+{
+    CheckAndConvertLongFilePath(ref filepath);
+
+    //If the path exists, it returns true and other functions can work further
+    return File.Exists(filepath);
+}
+--
+
+This function checks if a specified file does exist on the filepath. +
+
+If the path is longer than 256 characters, it'll add the prefix '\\?\' so that the APIs can directly access the WINDOWS File-System. +
+That is why we use 'ref filepath', so that the filepath is extended with the prefix '\\?\'. +
+The prefix '\\?\' is ONLY supported on WINDOWS, where the 'MAX_PATH is regularly 260' characters (longer paths would throw a PathTooLOngException). +
+To prevent that, the prefix '\\?\' is used to directly access the WINDOWS File-System, where the path supports longer paths. +
+The prefix '\\?\' is not supported by all APIs (some APIs cannot use this prefix to access the OS-File-System). +
+
+{nbsp} +
+
+===== 2.1.5.3 IsIDOfWorksheet
+
+{nbsp} +
+
+[source]
+--
+/// <summary>
+/// Checks if a specified ID does exist in a worksheet of the spreadsheet and that is below a specific (so called) 'header-column'.
+/// </summary>
+/// <param name="filepath">
+/// Relative/absolute filepath to a *.xlsx file that should be opened.
+/// </param>
+/// <param name="worksheetName">
+/// Name of the worksheet that should be opened.
+/// </param>
+/// <param name="headerColumnAndID">
+/// The key is the (so called) 'header-column' 
+/// and the value is the condition a cell should match (the cell should match data-type and value) and that is below the (so called) 'header-column' in the key.
+/// </param>
+/// <returns>
+/// True, if the value in (parameter) 'headerColumnAndID' was found below the (so called) 'header-column' below the key of (parameter) 'headerColumnAndID'.
+/// </returns>
+
+public static bool IsIDOfWorksheet(string filepath, string worksheetName, KeyValuePair<string, object> headerColumnAndID)
+--
+
+This function checks if a specified ID does exist in a specified worksheet. +
+
+The key of 'headerColumnAndID' is the (so called) 'header-column' and the value is a condition a cell must match (it must match data-type and value) and must be below this (so called) 'header-column'. +
+
+===== 2.1.5.4 CheckHeaderColumnsExist
+
+{nbsp} +
+
+[source]
+--
+/// <summary>
+/// Check if a row with all of the entered (so called) 'header-columns' do exist in the worksheet.
+/// </summary>
+/// <param name="filepath">
+/// Relative/absolute filepath to a *.xlsx file that should be opened.
+/// </param>
+/// <param name="worksheetName">
+/// Name of the worksheet that should be opened.
+/// </param>
+/// <param name="headerColumns">
+/// Every entry represents one (so called) 'header-column' that should be searched.
+/// </param>
+/// <returns>
+/// True, if all (so called) 'header-columns' where found in the same row, otherwise false.
+/// </returns>
+
+public static bool CheckHeaderColumnsExist(string filepath, string worksheetName, List<object> headerColumns)
+--
+
+This function checks if all specified 'header-columns' of (parameter) 'headerColumns' where found in the same row. +
+
+All 'header-columns' must be in the same row. +
+If one 'header-column' is missing in the row, it'll search until the end of the document and then return false if no row was found that contains all specified 'header-columns' in (parameter) 'headerColumns'. +
+
+{nbsp} +
+
+Link: Go to <<2.0.0.0 Code Documentation>> +
+Link: Go to <<0.0.0.0 Table of Contents>> +
+
+{nbsp} +
+
+=== 2.2.0.0 Technical Documentation and Private APIs (Selection)
+
+{nbsp} +
+
+==== 2.2.1.0 SharedString
+
+Spreadsheet do use a SharedStringTable to store strings. +
+In the cells will be only references to a specific entry in the SharedStringTable stored. +
+A string can be referenced by multible cells, if they share the same string content. +
+(That's why it called SharedStringTable => A Table for Shared-Strings) +
+
+
+===== 2.2.1.1 (API) GetSharedStringTablePart
+[source]
+---
+private static SharedStringTablePart GetSharedStringTablePart(ref SpreadsheetDocument spreadsheetDocument)
+{
+    SharedStringTablePart sharedStringTablePart;
+    if (spreadsheetDocument.WorkbookPart.GetPartsOfType<SharedStringTablePart>().Any())
+    {
+        sharedStringTablePart = spreadsheetDocument.WorkbookPart.GetPartsOfType<SharedStringTablePart>().First();
+    }
+    else
+    {
+        sharedStringTablePart = spreadsheetDocument.WorkbookPart.AddNewPart<SharedStringTablePart>();
+    }
+
+    return sharedStringTablePart;
+}
+---
+
+First, we need to check if the spreadsheet has an SharedStringTable. +
+A SharedStringTable must be created explicitly. +
+If it has none, we easily can create a SharedStringTable in the spreadsheet. +
+
+Because the cells only store the references, we need to parse throu the SharedStringTable to check if the String already exists (to safe storage). +
+
+We can do this this way: +
+
+===== 2.2.1.2 (API) InsertSharedStringItem
+[source]
+---
+// Given text and a SharedStringTablePart, creates a SharedStringItem with the specified text 
+// and inserts it into the SharedStringTablePart. If the item already exists, returns its index.
+protected static int InsertSharedStringItem(string text, ref SharedStringTablePart sharedStringTablePart)
+{
+    // If the part does not contain a SharedStringTable, create one.
+    if (sharedStringTablePart.SharedStringTable is null)
+    {
+        sharedStringTablePart.SharedStringTable = new SharedStringTable();
+    }
+
+    int i = 0;
+    // Iterate through all the items in the SharedStringTable. If the text already exists, return its index.
+    foreach (SharedStringItem item in sharedStringTablePart.SharedStringTable.Elements<SharedStringItem>())
+    {
+        if (item.InnerText == text)
+        {
+            return i;
+        }
+
+        i++;
+    }
+
+    // The text does not exist in the part. Create the SharedStringItem and return its index.
+    sharedStringTablePart.SharedStringTable.AppendChild(new SharedStringItem(new DocumentFormat.OpenXml.Spreadsheet.Text(text)));
+    sharedStringTablePart.SharedStringTable.Save();
+
+    return i;
+}
+---
+
+Then we can add the (cell) entry like this: +
+
+===== 2.2.1.3 (API) AddSharedString
+[source]
+---
+protected static void AddSharedString(ref SpreadsheetDocument spreadsheetDocument, ref Cell newCell, string text)
+{
+    //If no SharedStringTable is created, we create new one if no exist.
+    //We shouldn't create a SharedStringTable if it's not used, because it can corrupt the file
+    SharedStringTablePart sharedStringTablePart = GetSharedStringTablePart(ref spreadsheetDocument);
+
+    int index = InsertSharedStringItem(text, ref sharedStringTablePart);
+
+    newCell.DataType = new EnumValue<CellValues>(CellValues.SharedString);
+    newCell.CellValue = new CellValue(index.ToString());
+}
+---
+
+{nbsp} +
+
+==== 2.2.2.0 Cells
+
+We can create cells this way: +
+
+===== 2.2.2.1 (API) CreateCell
+[source]
+---
+//cellReferenceIDAndValue: <cellReference, value>
+protected static void CreateCell(ref SpreadsheetDocument spreadsheetDocument, ref Row row, KeyValuePair<string, object> cellReferenceIDAndValue)
+{
+    //Get reference cell
+    //The referenceCell is the Cell in the previous row with the same letterIndex
+    Cell referenceCell = GetReferenceCell(row, cellReferenceIDAndValue.Key);
+    Cell newCell = new() { CellReference = cellReferenceIDAndValue.Key };
+    row.InsertBefore(newCell, referenceCell);
+
+    UpdateCell(ref spreadsheetDocument, ref newCell, cellReferenceIDAndValue.Value);
+}
+---
+
+First, we get the referenceCell. +
+The referenceCell is a cell in the same column (with the same 'letterID') in the previous (upper) row. +
+If the referenceCell does not exists or is empty, the referenceCell is null. +
+
+The CellReference is the 'column-letter' ('letterID') and the RowIndex. +
+
+The cell can be saved this way: +
+
+===== 2.2.2.1 (API) UpdateCell
+[source]
+---
+protected static void UpdateCell(ref SpreadsheetDocument spreadsheetDocument, ref Cell cell, object newValue)
+{
+    switch (newValue)
+    {
+        case string objstr:
+            AddSharedString(ref spreadsheetDocument, ref cell, objstr);
+            break;
+
+        case DateTime objdate:
+            //Normal way. Does NOT work for xlsx (!)
+            //string strdate = objdate.ToOADate().ToString();
+            //cell.DataType = CellValues.Date;
+            //cell.CellValue = new CellValue(strdate);
+
+            //"StyleIndex" is "1", because we added a new stylesheet (index 0 would be default) with "NumberFormatId=14"
+            //is in the 2nd item of 'CellFormats' array.
+            cell.DataType = new EnumValue<CellValues>(CellValues.Number);
+            cell.StyleIndex = 1;
+            cell.CellValue = new CellValue(objdate.ToOADate().ToString(CultureInfo.InvariantCulture));
+            break;
+
+        case bool objbool:
+            AddSharedString(ref spreadsheetDocument, ref cell, objbool.ToString());
+            break;
+
+        default:
+            if (newValue is not null && Decimal.TryParse(newValue.ToString(), out decimal objdec))
+            {
+                cell.DataType = new EnumValue<CellValues>(CellValues.Number);
+                cell.CellValue = new CellValue(objdec.ToString(CultureInfo.InvariantCulture));
+            }
+            else
+            {
+                //Enter an empty cell to make IO easier
+                AddSharedString(ref spreadsheetDocument, ref cell, " ");
+            }
+            break;
+    }
+}
+---
+
+Normaly, OpenXML has a native support for boolean. +
+This format is not suppported by MS Excel (MS Excel cannot work with the boolean format of OpenXML and must be implemented in other ways). +
+
+Microsoft Excel can support the following data-types: +
+String; DateTime; (Boolean); Numbers (Decimal); +
+If you want to use other data-types than the specified, they should be converted into one of these data-types before inserting them into Public APIs (!) +
+
+{nbsp} +
+
+Link: Go to <<2.0.0.0 Code Documentation>> +
+Link: Go to <<0.0.0.0 Table of Contents>> +
 
 {nbsp} +

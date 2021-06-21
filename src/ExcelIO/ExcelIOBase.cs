@@ -6,64 +6,17 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Globalization;
 
+using System.Text.RegularExpressions;
+
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
 
-
 namespace Zeiss.PublicationManager.Data.Excel.IO
 {
-    public class ExcelIOBase
+    public abstract class ExcelIOBase
     {
-        #region GetCellInformation
-        protected enum LetterEnum
-        {
-            A = 1,
-            B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y,
-            Z = 26
-        }
-
-        //Excel column names are from A-Z over AA-AZ and ZA-ZZ up to AAA-ZZZ, [...]
-        protected static string ConvertNumberToCellLetters(int number)
-        {
-            //If the number is invalid
-            if (number <= 0)
-                throw new IndexOutOfRangeException("Value 'number' must be a value greater or equal 1. Current 'number was " + number);
-
-            string columnname = "";
-            int letterEnumCounter = 0;
-            int letterValue = number;
-
-            //For columnnames with multiple letters
-            while (letterValue > 26)
-            {
-                letterValue -= 26;
-                letterEnumCounter++;
-
-                //Appends a Z for columnnames with 3 or more letters
-                if (letterEnumCounter > 26)
-                {
-                    letterEnumCounter -= 26;
-                    columnname += "Z";
-                }
-            }
-
-            //Converts the lettervalues into the letter
-            LetterEnum letter;
-            if (letterEnumCounter > 0)
-            {
-                letter = (LetterEnum)letterEnumCounter;
-                columnname += letter.ToString();
-            }
-
-            letter = (LetterEnum)letterValue;
-            columnname += letter.ToString();
-
-
-            return columnname;
-        }
-
-
+        #region GetCellInformation      
         protected static object ReadCell(Cell cell, SharedStringTable sharedStringTable)
         {
             //Make sure that the Excel has a SharedStringTable, the Cell has a DataType and is a String
@@ -73,20 +26,6 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
                 //Return String
                 return (sharedStringTable.ElementAt(Int32.Parse(cellValue)).InnerText);
             }
-            //Normal way in OpenXML. Does NOT work for xlsx (!)
-            /*
-            else if (cell.DataType is not null && cell.DataType == CellValues.Date)
-            {
-                if (!String.IsNullOrEmpty(cell?.CellValue?.Text))
-                {
-                    //Make sure that the double is converted into the correct format (with '.' instead of ',')
-                    if (double.TryParse(cell.CellValue.Text, NumberStyles.Float, CultureInfo.InvariantCulture, out double dateTimeDouble))
-                    {
-                        return DateTime.FromOADate(dateTimeDouble);
-                    }
-                }
-            }
-            */
             //DataType is null, but cell contains text
             else if (!String.IsNullOrEmpty(cell?.CellValue?.Text))
             {
@@ -116,69 +55,11 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
             return new string(" ");
         }
 
-
-        protected static Cell GetReferenceCell(Row row, string cellName)
-        {
-            if (String.IsNullOrEmpty(cellName))
-                return null;
-
-            foreach (Cell cell in row.Elements<Cell>())
-            {
-                if (string.Compare(cell.CellReference, cellName, true) > 0)
-                {
-                    return cell;
-                }
-            }
-
-            return null;
-        }
-
-        protected static List<string> GetCellReferenceLetters(int count)
-        {
-            List<string> columnLetterIDs = new();
-            for (int i = 1; i <= count; i++)
-                columnLetterIDs.Add(ConvertNumberToCellLetters(i));
-
-            return columnLetterIDs;
-        }
-
         protected static string GetLetterIDOfCellReference(string cellReference)
         {
-            for (int i = 0; i < cellReference.Length; i++)
-            {
-                char c = cellReference[i];
-                if (Int32.TryParse(c.ToString(), out _))
-                    return cellReference[0..i];
-            }
+            string letterID = Regex.Match(cellReference, @"[^\d]+").Value;
 
-            //Already letters only
-            return cellReference;
-        }
-
-        //return: <letterID, columnName>
-        protected static Dictionary<string, string> GetColumnLetterIDsOfColumnNames(ref SpreadsheetDocument spreadsheetDocument, SheetData sheetData, List<string> columnNames, out int rowIndex)
-        {
-            rowIndex = -1;
-            //<letterID, columnName>
-            Dictionary<string, string> letterIDsAndColumnNames = new();
-            List<object> objectList = new();
-            foreach (string strobj in columnNames)
-            {
-                objectList.Add(strobj);
-            }
-
-            Row row = SearchRow(ref spreadsheetDocument, sheetData, objectList);
-            if (row is not null)
-            {
-                foreach (string name in columnNames)
-                {
-                    string letterID = GetColumnLetterIDsOfColumnNames(ref spreadsheetDocument, row, name, out rowIndex);
-                    if (letterID is not null)
-                        letterIDsAndColumnNames.Add(letterID, name);
-                }
-            }
-
-            return letterIDsAndColumnNames;
+            return letterID;
         }
 
         protected static string GetColumnLetterIDsOfColumnNames(ref SpreadsheetDocument spreadsheetDocument, SheetData sheetData, string columnNames, out int rowIndex)
@@ -246,48 +127,12 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
         /// <returns>
         /// True, if worksheet with (parameter) 'worksheetName' does exist, otherwise False.
         /// </returns>
-        public static bool WorksheetExists(ref SpreadsheetDocument spreadsheetDocument, string worksheetName, out IEnumerable<Sheet> sheetsIEnum)
+        protected static bool WorksheetExists(ref SpreadsheetDocument spreadsheetDocument, string worksheetName, out IEnumerable<Sheet> sheetsIEnum)
         {
             //Search for specific sheet
             sheetsIEnum = spreadsheetDocument?.WorkbookPart?.Workbook?.Descendants<Sheet>()?.Where(s => s.Name == worksheetName);
 
             return sheetsIEnum.Any();
-        }
-
-        /// <summary>
-        /// Check if a worksheet does exist in a spreadsheet.
-        /// </summary>
-        /// <param name="filepath">
-        /// Relative/absolute filepath to a *.xlsx file that should be opened.
-        /// </param>
-        /// <param name="worksheetName">
-        /// Name of the worksheet that should be searched.
-        /// </param>
-        /// <returns>
-        /// True, if worksheet with (parameter) 'worksheetName' does exist, otherwise False.
-        /// </returns>
-        /// <exception cref="FileNotFoundException">Thrown if File was not found</exception>
-        /// <exception cref="UnauthorizedAccessException">Thrown when misssing permission to access File</exception>
-        /// <exception cref="PathTooLongException">Thrown when File-path is too long and path cannot be conveted</exception>
-        /// <exception cref="ArgumentNullException">Thrown when an Argument was or became Null</exception>
-        /// <exception cref="ArgumentException">Thrown when an entred argument was or became invalid</exception>
-        /// <exception cref="InvalidCastException">Thrown when an entered value had an unexpected data-type</exception>
-        /// <exception cref="OpenXmlPackageException">Thrown when exception occurred in the OpenXML-Package</exception>
-        public static bool WorksheetExists(ref string filepath, string worksheetName)
-        {
-            if (!CheckPathExist(ref filepath))
-                return false;
-
-            SpreadsheetDocument spreadsheetDocument = SpreadsheetDocument.Open(filepath, false);
-
-            //Search for specific sheet
-            IEnumerable<Sheet> sheetsIEnum = spreadsheetDocument?.WorkbookPart?.Workbook?.Descendants<Sheet>()?.Where(s => s.Name == worksheetName);
-            //If specified sheet does not exists => return false
-            bool isExists = sheetsIEnum.Any();
-
-            spreadsheetDocument.Close();
-
-            return isExists;
         }
         #endregion
 
@@ -304,7 +149,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
         /// True, if the file exists, otherwise false.
         /// </returns>
         /// <exception cref="PathTooLongException">Thrown when File-path is too long and path cannot be conveted</exception>
-        public static bool CheckPathExist(ref string filepath)
+        protected static bool CheckPathExist(ref string filepath)
         {
             CheckAndConvertLongFilePath(ref filepath);
 
@@ -326,7 +171,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
                     //Either file does not exist or prefix is unsupported if true
                     if (!File.Exists(filepath))
                         throw new PathTooLongException("The entered filepath:\n" + filepath +
-                            "\nis too long (and current IO API does not support \"" + @"\\?\" + "\") or does not exist");
+                            "\nis too long (and current OS-IO-API does not support \"" + @"\\?\" + "\") or does not exist");
                 }
             }
         }
@@ -378,7 +223,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
             spreadsheetDocument.Close();
         }
         #region CreateWorkbook
-        protected static SheetData CreateNewWorkbookPartAndGetSheetData(ref SpreadsheetDocument spreadsheetDocument, string worksheetName, bool isAppendable = true)
+        private static SheetData CreateNewWorkbookPartAndGetSheetData(ref SpreadsheetDocument spreadsheetDocument, string worksheetName, bool isAppendable = true)
         {
             if (isAppendable)
             {
@@ -455,7 +300,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
         #endregion
 
         #region Read
-        protected static bool OpenWorksheet(ref SpreadsheetDocument spreadsheetDocument, string worksheetName, out SheetData sheetData)
+        private static bool OpenWorksheet(ref SpreadsheetDocument spreadsheetDocument, string worksheetName, out SheetData sheetData)
         {
             if (WorksheetExists(ref spreadsheetDocument, worksheetName, out IEnumerable<Sheet> sheetsIEnum))
             {
@@ -481,98 +326,10 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
 
             return sheetId;
         }
-
-        /// <summary>
-        /// Checks if a specified ID does exist in a worksheet of the spreadsheet.
-        /// </summary>
-        /// <param name="filepath">
-        /// Relative/absolute filepath to a *.xlsx file that should be opened.
-        /// </param>
-        /// <param name="worksheetName">
-        /// Name of the worksheet that should be opened.
-        /// </param>
-        /// <param name="id">
-        /// The key is the (so called) 'header-column' 
-        /// and the value is the condition a cell should match (the cell should match data-type and value) and that is below the (so called) 'header-column' in the key.
-        /// </param>
-        /// <returns>
-        /// True, if the value in (parameter) 'id' was found below the (so called) 'header-column' below the key of (parameter) 'id'.
-        /// </returns>
-        /// <exception cref="FileNotFoundException">Thrown if File was not found</exception>
-        /// <exception cref="UnauthorizedAccessException">Thrown when misssing permission to access File</exception>
-        /// <exception cref="PathTooLongException">Thrown when File-path is too long and path cannot be conveted</exception>
-        /// <exception cref="ArgumentNullException">Thrown when an Argument was or became Null</exception>
-        /// <exception cref="ArgumentException">Thrown when an entred argument was or became invalid</exception>
-        /// <exception cref="InvalidCastException">Thrown when an entered value had an unexpected data-type</exception>
-        /// <exception cref="OpenXmlPackageException">Thrown when exception occurred in the OpenXML-Package</exception>
-        public static bool IsIDOfWorksheet(string filepath, string worksheetName, KeyValuePair<string, object> id)
-        {
-            SpreadsheetDocument spreadsheetDocument = OpenSpreadsheetDocument(filepath, worksheetName, out SheetData sheetData, false, false);
-            
-            string letterID = GetColumnLetterIDsOfColumnNames(ref spreadsheetDocument, sheetData, id.Key, out _);
-            if (letterID is null)
-                throw new ArgumentException("The Header-Column: " + id.Key + " does not exist.");
-
-            //For easier usage, we take KeyValuePair<columnHeaderName, guid>, but we need the format KeyValuePair<columnLetterID, guid>
-            KeyValuePair<string, object> letterIDAndSearchID = new(letterID, id.Value);
-            bool found = (SearchRow(ref spreadsheetDocument, sheetData, letterIDAndSearchID) is not null);
-
-            SaveSpreadsheetDocument(ref spreadsheetDocument);
-
-            return found;
-        }
         #endregion
         #endregion
 
         #region GetRowInformation
-        protected static int GetRowIDOfCellReference(string cellReference)
-        {
-            for (int i = 0; i < cellReference.Length; i++)
-            {
-                char c = cellReference[i];
-                if (Int32.TryParse(c.ToString(), out _))
-                    return Convert.ToInt32(cellReference[i..]);
-            }
-
-            //Already letters only
-            return Convert.ToInt32(cellReference);
-        }
-
-
-        /// <summary>
-        /// Check if a row with all of the entered (so called) 'header-columns' do exist in the worksheet.
-        /// </summary>
-        /// <param name="filepath">
-        /// Relative/absolute filepath to a *.xlsx file that should be opened.
-        /// </param>
-        /// <param name="worksheetName">
-        /// Name of the worksheet that should be opened.
-        /// </param>
-        /// <param name="headerColumns">
-        /// Every entry represents one (so called) 'header-column' that should be searched.
-        /// </param>
-        /// <returns>
-        /// True, if all (so called) 'header-columns' where found in the same row, otherwise false.
-        /// </returns>
-        /// <exception cref="FileNotFoundException">Thrown if File was not found</exception>
-        /// <exception cref="UnauthorizedAccessException">Thrown when misssing permission to access File</exception>
-        /// <exception cref="PathTooLongException">Thrown when File-path is too long and path cannot be conveted</exception>
-        /// <exception cref="ArgumentNullException">Thrown when an Argument was or became Null</exception>
-        /// <exception cref="ArgumentException">Thrown when an entred argument was or became invalid</exception>
-        /// <exception cref="InvalidCastException">Thrown when an entered value had an unexpected data-type</exception>
-        /// <exception cref="OpenXmlPackageException">Thrown when exception occurred in the OpenXML-Package</exception>
-        public static bool CheckHeaderColumnsExist(string filepath, string worksheetName, List<object> headerColumns)
-        {
-            SpreadsheetDocument spreadsheetDocument = OpenSpreadsheetDocument(filepath, worksheetName, out SheetData sheetData, false, false);
-
-            bool found = (SearchRow(ref spreadsheetDocument, sheetData, headerColumns) is not null);
-
-            SaveSpreadsheetDocument(ref spreadsheetDocument);
-
-            return found;
-        }
-
-
         //columnConditions can be type of 'List<object>', 'string', 'Dictionary<string, object>' or 'KeyValuePair<string, object>'
         //objects (values) in columnConditions are the conditions and strings (keys) are columnLetterIDs
         protected static Row SearchRow(ref SpreadsheetDocument spreadsheetDocument, SheetData sheetData, object columnConditions)
@@ -616,14 +373,9 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
         }
 
 
-        //protected static Row SearchRow(ref SpreadsheetDocument spreadsheetDocument, List<string> columnIDs, List<object> columnConditions)
-        //{
-
-        //}
-
         //columnConditions can be type of 'List<object>', 'string', 'Dictionary<string, object>' or 'KeyValuePair<string, object>'
         //objects (values) in columnConditions are the conditions and strings (keys) are columnLetterIDs
-        protected static bool CompareRows(Row row, SharedStringTable sharedStringTable, object columnConditions)
+        private static bool CompareRows(Row row, SharedStringTable sharedStringTable, object columnConditions)
         {
             return columnConditions switch
             {            
@@ -640,7 +392,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
         }
 
 
-        protected static bool CompareRows(Row row, SharedStringTable sharedStringTable, List<object> columnConditions)
+        private static bool CompareRows(Row row, SharedStringTable sharedStringTable, List<object> columnConditions)
         {
             //Create 'copy'
             List<object> leftConditions = new(columnConditions);
@@ -663,7 +415,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
         }
 
         //columnConditions: <letterID, value>
-        protected static bool CompareRows(Row row, SharedStringTable sharedStringTable, Dictionary<string, object> columnConditions)
+        private static bool CompareRows(Row row, SharedStringTable sharedStringTable, Dictionary<string, object> columnConditions)
         {
             //Create 'copy'
             //<letterID, condition>
@@ -687,9 +439,8 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
         }
         #endregion
 
-        #region Protected_Helper_Methods
-
-        protected static bool CompareObjects(object a, object b)
+        #region Helper_Methods
+        private static bool CompareObjects(object a, object b)
         {
             //Compare datatypes
             if (a.GetType() == b.GetType())
