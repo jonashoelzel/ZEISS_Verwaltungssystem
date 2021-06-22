@@ -31,7 +31,7 @@
             <label>Filtern nach:</label>
             <div class="dropdownFilter">
                 <select class="form-control" @onchange="@SetDivisionFilter">
-                    @foreach (var div in divisions)
+                    @foreach (var div in cachedDivisions)
                     {
                         <option value="@div.Name">@div.Name</option>
                     }
@@ -90,7 +90,7 @@
                 </thead>
 
                 <tbody>
-                    @foreach (var publication in publications)
+                    @foreach (var publication in displayedPublications)
                     {
                         <tr>
                             <td class="align-middle">@publication.WorkingTitle</td>
@@ -128,7 +128,7 @@
                 </thead>
 
                 <tbody>
-                    @foreach (var author in authors)
+                    @foreach (var author in displayedAuthors)
                     {
                         <tr>
                             <td class="align-middle">@author.Name</td>
@@ -160,7 +160,7 @@
                 </thead>
 
                 <tbody>
-                    @foreach (var publicationType in publicationTypes)
+                    @foreach (var publicationType in displayedPublicationTypes)
                     {
                         <tr>
                             <td class="align-middle">@publicationType.Name</td>
@@ -192,14 +192,22 @@
 <!--Start Page Code-->
 @code
 {
-    public static List<IPublicationDataSet> data = new();
-    public static List<IDivision> divisions = new();
+    public static List<IPublicationDataSet> cachedPublications = new();
+    public static List<IPublicationDataSet> displayedPublications = new();
+
+    public static List<IDivision> cachedDivisions = new();
+
+    public static List<IAuthor> cachedAuthors = new();
+    public static List<IAuthor> displayedAuthors = new();
+    public static List<IPublicationType> cachedPublicationTypes = new();
+    public static List<IPublicationType> displayedPublicationTypes = new();
+
 
     void fetchData()
     {
         try
         {
-            if (!ReadDataSet.CachedPublications.Any() 
+            if (!ReadDataSet.CachedPublications.Any()
                 && !ReadDataSet.CachedDivisions.Any()
                 && !ReadDataSet.CachedAuthors.Any()
                 && !ReadDataSet.CachedPublicationTypes.Any())
@@ -208,14 +216,17 @@
             }
 
             //REMEMBER: These are references. Chanches of the originals also changes the 'copies'.
-            publications = ReadDataSet.CachedPublications;
+            cachedPublications = ReadDataSet.CachedPublications;
+            displayedPublications = cachedPublications;
 
-            divisions = ReadDataSet.CachedDivisions;
-            divisions.RemoveAll(x => String.IsNullOrWhiteSpace(x.Name));
-            divisions.Insert(0, new Division() { Name = String.Empty });
+            cachedDivisions = ReadDataSet.CachedDivisions;
+            cachedDivisions.RemoveAll(x => String.IsNullOrWhiteSpace(x.Name));
+            cachedDivisions.Insert(0, new Division() { Name = String.Empty });
 
-            authors = ReadDataSet.CachedAuthors;
-            publicationTypes = ReadDataSet.CachedPublicationTypes;
+            cachedAuthors = ReadDataSet.CachedAuthors;
+            displayedAuthors = cachedAuthors;
+            cachedPublicationTypes = ReadDataSet.CachedPublicationTypes;
+            displayedPublicationTypes = cachedPublicationTypes;
         }
         catch (Exception ex)
         {
@@ -256,29 +267,24 @@
         public string Division { get; set; }
     };
 
-    List<IPublicationDataSet> publications = new();
-    List<IAuthor> authors = new();
-    List<IPublicationType> publicationTypes = new();
-
-
     protected override void OnInitialized()
     {
         fetchData();
-        Filter();
+        FilterPublications();
     }
 
     // filter list when changing value of division-filter
     public void SetDivisionFilter(ChangeEventArgs e)
     {
         SelectedDivsion = e.Value.ToString();
-        Filter();
+        FilterPublications();
     }
 
 
     void SetSearchTerm(ChangeEventArgs args)
     {
         CurrentSearchTerm = args.Value.ToString();
-        Filter();
+        FilterPublications();
     }
 
     void SetSortColumn(string columnName)
@@ -292,7 +298,7 @@
             CurrentSortColumn = columnName;
         }
 
-        Filter();
+        FilterPublications();
     }
 
 
@@ -324,27 +330,27 @@
         switch (CurrentSortColumn)
         {
             case "Publication.WorkingTitle":
-                publications.Sort(delegate (IPublicationDataSet x, IPublicationDataSet y) { return String.Compare(x.WorkingTitle, y.WorkingTitle) * sortInt; });
+                displayedPublications.Sort(delegate (IPublicationDataSet x, IPublicationDataSet y) { return String.Compare(x.WorkingTitle, y.WorkingTitle) * sortInt; });
                 break;
             case "Publication.MainAuthor.Name":
-                publications.Sort(delegate (IPublicationDataSet x, IPublicationDataSet y) { return String.Compare(x.MainAuthor.Name, y.MainAuthor.Name) * sortInt; });
+                displayedPublications.Sort(delegate (IPublicationDataSet x, IPublicationDataSet y) { return String.Compare(x.MainAuthor.Name, y.MainAuthor.Name) * sortInt; });
                 break;
             case "Publication.MainAuthor.Surname":
-                publications.Sort(delegate (IPublicationDataSet x, IPublicationDataSet y) { return String.Compare(x.MainAuthor.Surname, y.MainAuthor.Surname) * sortInt; });
+                displayedPublications.Sort(delegate (IPublicationDataSet x, IPublicationDataSet y) { return String.Compare(x.MainAuthor.Surname, y.MainAuthor.Surname) * sortInt; });
                 break;
             case "PublicationDateOfRelease":
-                publications.Sort(delegate (IPublicationDataSet x, IPublicationDataSet y) { return DateTime.Compare(x.DateOfRelease, y.DateOfRelease) * sortInt; });
+                displayedPublications.Sort(delegate (IPublicationDataSet x, IPublicationDataSet y) { return DateTime.Compare(x.DateOfRelease, y.DateOfRelease) * sortInt; });
                 break;
 
             case "Author.Name":
-                authors.Sort(delegate (IAuthor x, IAuthor y) { return String.Compare(x.Name, y.Name) * sortInt; });
+                displayedAuthors.Sort(delegate (IAuthor x, IAuthor y) { return String.Compare(x.Name, y.Name) * sortInt; });
                 break;
             case "Author.Surname":
-                authors.Sort(delegate (IAuthor x, IAuthor y) { return String.Compare(x.Surname, y.Surname) * sortInt; });
+                displayedAuthors.Sort(delegate (IAuthor x, IAuthor y) { return String.Compare(x.Surname, y.Surname) * sortInt; });
                 break;
 
             case "PublicationType.Name":
-                publicationTypes.Sort(delegate (IPublicationType x, IPublicationType y) { return String.Compare(x.Name, y.Name) * sortInt; });
+                displayedPublicationTypes.Sort(delegate (IPublicationType x, IPublicationType y) { return String.Compare(x.Name, y.Name) * sortInt; });
                 break;
         }
     }
@@ -353,25 +359,25 @@
 
     void SearchAndFilter()
     {
-        Filter();
+        FilterPublications();
     }
 
 
-    void Filter()
+    void FilterPublications()
     {
         if (!String.IsNullOrWhiteSpace(SelectedDivsion))
         {
-            publications = data?.Where(f => f.Division.Name.Equals(SelectedDivsion)).ToList();
+            displayedPublications = cachedPublications?.Where(f => f.Division.Name.Equals(SelectedDivsion)).ToList();
         }
         else
         {
-            publications = data;
+            displayedPublications = cachedPublications;
         }
 
 
         if (!String.IsNullOrWhiteSpace(CurrentSearchTerm))
         {
-            publications = publications?.Where(i => i.WorkingTitle.ToLower().Contains(CurrentSearchTerm.ToLower()) ||
+            displayedPublications = displayedPublications?.Where(i => i.WorkingTitle.ToLower().Contains(CurrentSearchTerm.ToLower()) ||
                                              i.MainAuthor.Name.ToLower().Contains(CurrentSearchTerm.ToLower()) ||
                                              i.MainAuthor.Surname.ToLower().Contains(CurrentSearchTerm.ToLower())).ToList();
         }
@@ -449,7 +455,7 @@
             dataHandler.DeletePublication(pubID);
             ReadDataSet.CachedPublications.Remove(ReadDataSet.CachedPublications.Where(Publication => Publication.ID == pubID).First());
 
-            Filter();
+            FilterPublications();
         }
         //TODO FIX
         catch (Exception ex)
@@ -472,7 +478,7 @@
             dataHandler.DeleteAuthor(guid);
             ReadDataSet.CachedAuthors.Remove(ReadDataSet.CachedAuthors.Where(Author => Author.ID == guid).First());
 
-            Filter();
+            FilterPublications();
         }
         //TODO FIX
         catch (Exception ex)
@@ -495,7 +501,7 @@
             dataHandler.DeletePublicationType(guid);
             ReadDataSet.CachedPublicationTypes.Remove(ReadDataSet.CachedPublicationTypes.Where(PublicationType => PublicationType.ID == guid).First());
 
-            Filter();
+            FilterPublications();
         }
         //TODO FIX
         catch (Exception ex)
@@ -635,9 +641,9 @@
         modalDisplay = "display:none";
         showEditAuthorPopup = false;
 
-        var index = authors.FindIndex(author => author.ID.Equals(selectedAuthor.ID));
-        authors.RemoveAt(index);
-        authors.Insert(index, selectedAuthor);
+        var index = cachedAuthors.FindIndex(author => author.ID.Equals(selectedAuthor.ID));
+        cachedAuthors.RemoveAt(index);
+        cachedAuthors.Insert(index, selectedAuthor);
         dataHandler.SaveAuthor(selectedAuthor);
 
         fetchData();
@@ -656,9 +662,9 @@
         modalDisplay = "display:none";
         showEditPublicationType = false;
 
-        var index = publicationTypes.FindIndex(publT => publT.ID.Equals(selectedPublicationType.ID));
-        publicationTypes.RemoveAt(index);
-        publicationTypes.Insert(index, selectedPublicationType);
+        var index = cachedPublicationTypes.FindIndex(publT => publT.ID.Equals(selectedPublicationType.ID));
+        cachedPublicationTypes.RemoveAt(index);
+        cachedPublicationTypes.Insert(index, selectedPublicationType);
         dataHandler.SavePublicationType(selectedPublicationType);
 
         fetchData();
