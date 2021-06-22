@@ -59,7 +59,7 @@
             <a class="nav-link" id="Autoren-tab" data-toggle="tab" href="#Autoren" role="tab" aria-controls="Autoren" aria-selected="false">Autoren</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="Bereiche-tab" data-toggle="tab" href="#Bereiche" role="tab" aria-controls="Bereiche" aria-selected="false">Bereiche</a>
+            <a class="nav-link" id="Veröffentlichungsarten-tab" data-toggle="tab" href="#Veröffentlichungsarten" role="tab" aria-controls="Veröffentlichungsarten" aria-selected="false">Veröffentlichungsarten</a>
         </li>
     </ul>
     <div class="tab-content" id="myTabContent">
@@ -104,15 +104,73 @@
                                     <span class="fas fa-trash-alt"></span>
                                 </button>
                             </td>
-                        </tr>}
+                        </tr>
+}
                 </tbody>
             </table>
         </div>
         <div class="tab-pane fade" id="Autoren" role="tabpanel" aria-labelledby="Autoren-tab">
-            <p>Das sind die Autoren</p>
+            <table class="table table-striped table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>
+                            <span class="sort-link" @onclick="@(() => SetSortColumn("MainAuthor.Name"))">Vorname</span>
+                            <span class="fa @(GetSortStyle("MainAuthor.Name"))"></span>
+                        </th>
+                        <th>
+                            <span class="sort-link" @onclick="@(() => SetSortColumn("MainAuthor.Surname"))">Nachname des Autors</span>
+                            <span class="fa @(GetSortStyle("MainAuthor.Surname"))"></span>
+                        </th>
+                        <th>Aktion</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var publication in items)
+                    {
+                        <tr>
+                            <td class="align-middle">@publication.MainAuthor.Name</td>
+                            <td class="align-middle">@publication.MainAuthor.Surname</td>
+                            <td>
+                                <button type="button" class="btn" @onclick="(() => EditThisPublication(publication))">
+                                    <span class="fas fa-pencil-alt"></span>
+                                </button>
+                                <button type="button" class="btn" @onclick="@(() => Delete(publication.ID))">
+                                    <span class="fas fa-trash-alt"></span>
+                                </button>
+                            </td>
+                        </tr>}
+                </tbody>
+            </table>
         </div>
-        <div class="tab-pane fade" id="Bereiche" role="tabpanel" aria-labelledby="Bereiche-tab">
-            <p>Das sind die Bereiche</p>
+        <div class="tab-pane fade" id="Veröffentlichungsarten" role="tabpanel" aria-labelledby="Veröffentlichungsarten-tab">
+            <table class="table table-striped table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>
+                            <span class="sort-link" @onclick="@(() => SetSortColumn("MainAuthor.Name"))">Veröffentlichungsart</span>
+                            <span class="fa @(GetSortStyle("MainAuthor.Name"))"></span>
+                        </th>
+                        <th>Aktion</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var publication in items)
+                    {
+                        <tr>
+                            <td class="align-middle">@publication.TypeOfPublication.Name</td>
+                            <td>
+                                <button type="button" class="btn" @onclick="(() => EditThisPublication(publication))">
+                                    <span class="fas fa-pencil-alt"></span>
+                                </button>
+                                <button type="button" class="btn" @onclick="@(() => Delete(publication.ID))">
+                                    <span class="fas fa-trash-alt"></span>
+                                </button>
+                            </td>
+                        </tr>}
+                </tbody>
+            </table>
         </div>
     </div>
 
