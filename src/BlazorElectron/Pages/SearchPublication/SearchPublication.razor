@@ -391,17 +391,17 @@
 
 
 <!--Delete Confirmation Design-->
-@if (ShowSuccessfulDelete)
+@if (showDeleteFailed)
 {
     <div class="modal fade show" role="dialog" style="@modalDisplay">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3 class="modal-title w-100 text-center">Die Veröffentlichung wurde erfolgreich gelöscht!</h3>
+                    <h3 class="modal-title w-100 text-center">Löschen ist nicht möglich</h3>
                 </div>
                 <div class="modal-body">
-                    <p>Die Veröffentlichung wurde der Liste hinzugefügt.</p>
-                    <button type="submit" class="form-control primaryButton">Okay</button>
+                    <p>Das Löschen des Eintrags ist nicht möglich, da er noch in einer Veröffentlichung genutzt wird.</p>
+                    <button type="submit" class="form-control primaryButton" @onclick="CloseDeleteFailedDialog">Okay</button>
                 </div>
             </div>
         </div>
@@ -410,28 +410,28 @@
 
 @if (deletePopup != DeletePopup.Hide)
 {
-<div class="modal fade show" role="dialog" style="@modalDisplay">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title w-100 text-center">Wollen Sie die Veröffentlichung wirklich löschen?</h3>
-            </div>
-            <div class="modal-object">
-                <button type="submit" class="form-control primaryButton" @onclick="FinalDelete">Löschen</button>
-            </div>
-            <div class="modal-object">
-                <button type="submit" class="form-control secondaryButton" @onclick="(() => deletePopup = DeletePopup.Hide)">Abbrechen</button>
+    <div class="modal fade show" role="dialog" style="@modalDisplay">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title w-100 text-center">Wollen Sie die Veröffentlichung wirklich löschen?</h3>
+                </div>
+                <div class="modal-object">
+                    <button type="submit" class="form-control primaryButton" @onclick="FinalDelete">Löschen</button>
+                </div>
+                <div class="modal-object">
+                    <button type="submit" class="form-control secondaryButton" @onclick="(() => deletePopup = DeletePopup.Hide)">Abbrechen</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 }
 
 
 <!--Delete Confirmation Code-->
 @code
 {
-    bool ShowSuccessfulDelete = false;
+    bool showDeleteFailed = false;
     bool ShowDeletePopup = false;
 
     enum DeletePopup
@@ -448,73 +448,85 @@
 
     private void ChancelDeletePopup() => ShowDeletePopup = false;
 
-    private void DeletePublication(Guid pubID)
+    void CloseDeleteFailedDialog()
     {
+        modalDisplay = "display:none";
+        showDeleteFailed = false;
+    }
+
+    private bool DeletePublication(Guid pubID)
+    {
+        bool success = false;
+
         try
         {
-            dataHandler.DeletePublication(pubID);
+            success = dataHandler.DeletePublication(pubID);
             ReadDataSet.CachedPublications.Remove(ReadDataSet.CachedPublications.Where(Publication => Publication.ID == pubID).First());
 
             Filter();
         }
-        //TODO FIX
         catch (Exception ex)
         {
             if (ex is UnauthorizedAccessException || ex is IOException)
             {
                 deletePublicationException = true;
                 OpenException();
-                return;
             }
 
             throw ex;
         }
+
+        return success;
     }
 
-    public void DeleteAuthor(Guid guid)
+    public bool DeleteAuthor(Guid guid)
     {
+        bool success = false;
+
         try
         {
-            dataHandler.DeleteAuthor(guid);
+            success = dataHandler.DeleteAuthor(guid);
             ReadDataSet.CachedAuthors.Remove(ReadDataSet.CachedAuthors.Where(Author => Author.ID == guid).First());
 
             Filter();
         }
-        //TODO FIX
         catch (Exception ex)
         {
             if (ex is UnauthorizedAccessException || ex is IOException)
             {
                 deleteAuthorException = true;
                 OpenException();
-                return;
             }
 
             throw ex;
         }
+
+        return success;
     }
 
-    public void DeletePublicationType(Guid guid)
+    public bool DeletePublicationType(Guid guid)
     {
+        bool success = false;
+
         try
         {
-            dataHandler.DeletePublicationType(guid);
+            success = dataHandler.DeletePublicationType(guid);
             ReadDataSet.CachedPublicationTypes.Remove(ReadDataSet.CachedPublicationTypes.Where(PublicationType => PublicationType.ID == guid).First());
 
             Filter();
         }
-        //TODO FIX
         catch (Exception ex)
         {
             if (ex is UnauthorizedAccessException || ex is IOException)
             {
                 deletePublicationTypeException = true;
                 OpenException();
-                return;
             }
 
             throw ex;
         }
+
+        return success;
     }
 
     private void Delete(DeletePopup type, Guid guid)
@@ -526,6 +538,8 @@
 
     private void FinalDelete()
     {
+        bool success = true;
+
         switch (deletePopup)
         {
             case DeletePopup.Hide:
@@ -542,8 +556,19 @@
             default:
                 break;
         }
-        modalDisplay = "display:none";
-        deletePopup = DeletePopup.Hide;
+
+        if (!success && !ShowOpenException)
+        {
+            modalDisplay = "display:block";
+            deletePopup = DeletePopup.Hide;
+            showDeleteFailed = true;
+        }
+        else if (success)
+        {
+            modalDisplay = "display:none";
+            deletePopup = DeletePopup.Hide;
+            showDeleteFailed = false;
+        }
     }
 }
 
@@ -581,7 +606,8 @@
                 </div>
             </div>
         </div>
-    </EditForm>}
+    </EditForm>
+}
 
 @if (showEditPublicationType)
 {
@@ -607,7 +633,8 @@
                 </div>
             </div>
         </div>
-    </EditForm>}
+    </EditForm>
+}
 
 
 <!--Editor Code-->
@@ -742,17 +769,17 @@
         }
         else if (deletePublicationException)
         {
-            DeletePublication(retryID);
+            Delete(DeletePopup.Publication, retryID);
             deletePublicationException = false;
         }
         else if (deleteAuthorException)
         {
-            DeleteAuthor(retryID);
+            Delete(DeletePopup.Author, retryID);
             deleteAuthorException = false;
         }
         else if (deletePublicationTypeException)
         {
-            DeletePublicationType(retryID);
+            Delete(DeletePopup.PublicationType, retryID);
             deletePublicationTypeException = false;
         }
 
