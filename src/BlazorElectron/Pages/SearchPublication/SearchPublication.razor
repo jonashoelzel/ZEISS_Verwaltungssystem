@@ -70,7 +70,7 @@
                 <thead class="thead-dark">
                     <tr>
                         <th>
-                            <span class="sort-link" @onclick="@(() => SetSortColumn("PUblication.WorkingTitle"))">Titel</span>
+                            <span class="sort-link" @onclick="@(() => SetSortColumn("Publication.WorkingTitle"))">Titel</span>
                             <span class="fa @(GetSortStyle("Publication.WorkingTitle"))"></span>
                         </th>
                         <th>
@@ -117,11 +117,11 @@
                     <tr>
                         <th>
                             <span class="sort-link" @onclick="@(() => SetSortColumn("Author.Name"))">Vorname</span>
-                            <span class="fa @(GetSortStyle("MainAuthor.Name"))"></span>
+                            <span class="fa @(GetSortStyle("Author.Name"))"></span>
                         </th>
                         <th>
                             <span class="sort-link" @onclick="@(() => SetSortColumn("Author.Surname"))">Nachname des Autors</span>
-                            <span class="fa @(GetSortStyle("MainAuthor.Surname"))"></span>
+                            <span class="fa @(GetSortStyle("Author.Surname"))"></span>
                         </th>
                         <th>Aktion</th>
                     </tr>
@@ -153,7 +153,7 @@
                     <tr>
                         <th>
                             <span class="sort-link" @onclick="@(() => SetSortColumn("PublicationType.Name"))">Veröffentlichungsart</span>
-                            <span class="fa @(GetSortStyle("PublicationyType"))"></span>
+                            <span class="fa @(GetSortStyle("PublicationType.Name"))"></span>
                         </th>
                         <th>Aktion</th>
                     </tr>
@@ -369,10 +369,10 @@ private void SortTable()
         case "Publication.MainAuthor.Surname":
             displayedPublications.Sort(delegate (IPublicationDataSet x, IPublicationDataSet y) { return String.Compare(x.MainAuthor.Surname, y.MainAuthor.Surname) * sortInt; });
             break;
-        case "PublicationDateOfRelease":
+        case "Publication.DateOfRelease":
             displayedPublications.Sort(delegate (IPublicationDataSet x, IPublicationDataSet y) { return DateTime.Compare(x.DateOfRelease, y.DateOfRelease) * sortInt; });
             break;
-
+        
         case "Author.Name":
             displayedAuthors.Sort(delegate (IAuthor x, IAuthor y) { return String.Compare(x.Name, y.Name) * sortInt; });
             break;
