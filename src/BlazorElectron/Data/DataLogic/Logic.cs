@@ -102,7 +102,7 @@ namespace Zeiss.PublicationManager.Business.Logic.IO
 
         public bool DeleteAuthor(Guid guid)
         {
-            if (CheckIfAuthorIsUsed(guid))
+            if (!IsAuthorUsed(guid))
             {
                 WriteDataSet.DeleteAuthor(guid);
 
@@ -112,15 +112,15 @@ namespace Zeiss.PublicationManager.Business.Logic.IO
             return false;
         }
 
-        public bool CheckIfAuthorIsUsed(Guid guid)
+        public bool IsAuthorUsed(Guid guid)
         {
-            return !ReadDataSet.CachedPublications.Where(x => (x.MainAuthor.ID == guid
-            || x.CoAuthors.Where(y => y.ID == guid).Any())).Any();
+            return ReadDataSet.CachedPublications.Where(x => (x?.MainAuthor?.ID == guid
+            || (x?.CoAuthors?.Where(y => y?.ID == guid)?.Any() ?? false)))?.Any() ?? false;
         }
 
         public bool DeletePublicationType(Guid guid)
         {
-            if (CheckIfPublicationTypeIsUsed(guid))
+            if (!IsPublicationTypeUsed(guid))
             {
                 WriteDataSet.DeletePublicationType(guid);
 
@@ -130,9 +130,9 @@ namespace Zeiss.PublicationManager.Business.Logic.IO
             return false;
         }
 
-        public bool CheckIfPublicationTypeIsUsed(Guid guid)
+        public bool IsPublicationTypeUsed(Guid guid)
         {
-            return !ReadDataSet.CachedPublications.Where(x => x.TypeOfPublication.ID == guid).Any();
+            return ReadDataSet.CachedPublications.Where(x => x?.TypeOfPublication?.ID == guid)?.Any() ?? false;
         }
     }
 }
