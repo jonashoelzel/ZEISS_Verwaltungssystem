@@ -94,5 +94,14 @@ namespace Zeiss.PublicationManager.Business.Logic.IO
         {
             WriteDataSet.DeletePublication(guid);
         }
+
+        public void DeleteAuthor(Guid guid)
+        {
+            WriteDataSet.DeleteAuthor(guid);
+        }
+        public void DeletePublicationType(Guid guid)
+        {
+            WriteDataSet.DeletePublicationType(guid);
+        }
     }
 }

@@ -64,33 +64,33 @@
         </li>
     </ul>
     <div class="tab-content" id="myTabContent">
+        <!--Publications-->
         <div class="tab-pane fade show active" id="Veröffentlichungen" role="tabpanel" aria-labelledby="Veröffentlichungen-tab">
-
             <table class="table table-striped table-hover">
                 <thead class="thead-dark">
                     <tr>
                         <th>
-                            <span class="sort-link" @onclick="@(() => SetSortColumn("WorkingTitle"))">Titel</span>
-                            <span class="fa @(GetSortStyle("WorkingTitle"))"></span>
+                            <span class="sort-link" @onclick="@(() => SetSortColumn("PUblication.WorkingTitle"))">Titel</span>
+                            <span class="fa @(GetSortStyle("Publication.WorkingTitle"))"></span>
                         </th>
                         <th>
-                            <span class="sort-link" @onclick="@(() => SetSortColumn("MainAuthor.Name"))">Vorname</span>
-                            <span class="fa @(GetSortStyle("MainAuthor.Name"))"></span>
+                            <span class="sort-link" @onclick="@(() => SetSortColumn("Publication.MainAuthor.Name"))">Vorname</span>
+                            <span class="fa @(GetSortStyle("Publication.MainAuthor.Name"))"></span>
                         </th>
                         <th>
-                            <span class="sort-link" @onclick="@(() => SetSortColumn("MainAuthor.Surname"))">Nachname des Autors</span>
-                            <span class="fa @(GetSortStyle("MainAuthor.Surname"))"></span>
+                            <span class="sort-link" @onclick="@(() => SetSortColumn("Publication.MainAuthor.Surname"))">Nachname des Autors</span>
+                            <span class="fa @(GetSortStyle("Publication.MainAuthor.Surname"))"></span>
                         </th>
                         <th>
-                            <span class="sort-link" @onclick="@(() => SetSortColumn("DateOfRelease"))">Datum der Veröffentlichung</span>
-                            <span class="fa @(GetSortStyle("DateOfRelease"))"></span>
+                            <span class="sort-link" @onclick="@(() => SetSortColumn("Publication.DateOfRelease"))">Datum der Veröffentlichung</span>
+                            <span class="fa @(GetSortStyle("Publication.DateOfRelease"))"></span>
                         </th>
                         <th>Aktion</th>
                     </tr>
                 </thead>
 
                 <tbody>
-                    @foreach (var publication in items)
+                    @foreach (var publication in publications)
                     {
                         <tr>
                             <td class="align-middle">@publication.WorkingTitle</td>
@@ -98,10 +98,10 @@
                             <td class="align-middle">@publication.MainAuthor.Surname</td>
                             <td class="align-middle">@publication.DateOfRelease.ToString("dd.MM.yyyy")</td>
                             <td>
-                                <button type="button" class="btn" @onclick="(() => EditThisPublication(publication))">
+                                <button type="button" class="btn" @onclick="(() => EditPublication(publication))">
                                     <span class="fas fa-pencil-alt"></span>
                                 </button>
-                                <button type="button" class="btn" @onclick="@(() => Delete(publication.ID))">
+                                <button type="button" class="btn" @onclick="@(() => Delete(DeletePopup.Publication, publication.ID))">
                                     <span class="fas fa-trash-alt"></span>
                                 </button>
                             </td>
@@ -110,16 +110,17 @@
                 </tbody>
             </table>
         </div>
+        <!--Authors-->
         <div class="tab-pane fade" id="Autoren" role="tabpanel" aria-labelledby="Autoren-tab">
             <table class="table table-striped table-hover">
                 <thead class="thead-dark">
                     <tr>
                         <th>
-                            <span class="sort-link" @onclick="@(() => SetSortColumn("MainAuthor.Name"))">Vorname</span>
+                            <span class="sort-link" @onclick="@(() => SetSortColumn("Author.Name"))">Vorname</span>
                             <span class="fa @(GetSortStyle("MainAuthor.Name"))"></span>
                         </th>
                         <th>
-                            <span class="sort-link" @onclick="@(() => SetSortColumn("MainAuthor.Surname"))">Nachname des Autors</span>
+                            <span class="sort-link" @onclick="@(() => SetSortColumn("Author.Surname"))">Nachname des Autors</span>
                             <span class="fa @(GetSortStyle("MainAuthor.Surname"))"></span>
                         </th>
                         <th>Aktion</th>
@@ -127,16 +128,16 @@
                 </thead>
 
                 <tbody>
-                    @foreach (var publication in items)
+                    @foreach (var author in authors)
                     {
                         <tr>
-                            <td class="align-middle">@publication.MainAuthor.Name</td>
-                            <td class="align-middle">@publication.MainAuthor.Surname</td>
+                            <td class="align-middle">@author.Name</td>
+                            <td class="align-middle">@author.Surname</td>
                             <td>
-                                <button type="button" class="btn" @onclick="(() => EditThisPublication(publication))">
+                                <button type="button" class="btn" @onclick="(() => EditAuthor(author))">
                                     <span class="fas fa-pencil-alt"></span>
                                 </button>
-                                <button type="button" class="btn" @onclick="@(() => Delete(publication.ID))">
+                                <button type="button" class="btn" @onclick="@(() => Delete(DeletePopup.Author, author.ID))">
                                     <span class="fas fa-trash-alt"></span>
                                 </button>
                             </td>
@@ -145,28 +146,29 @@
                 </tbody>
             </table>
         </div>
+        <!--PublicationTypes-->
         <div class="tab-pane fade" id="Veröffentlichungsarten" role="tabpanel" aria-labelledby="Veröffentlichungsarten-tab">
             <table class="table table-striped table-hover">
                 <thead class="thead-dark">
                     <tr>
                         <th>
-                            <span class="sort-link" @onclick="@(() => SetSortColumn("MainAuthor.Name"))">Veröffentlichungsart</span>
-                            <span class="fa @(GetSortStyle("MainAuthor.Name"))"></span>
+                            <span class="sort-link" @onclick="@(() => SetSortColumn("PublicationType.Name"))">Veröffentlichungsart</span>
+                            <span class="fa @(GetSortStyle("PublicationyType"))"></span>
                         </th>
                         <th>Aktion</th>
                     </tr>
                 </thead>
 
                 <tbody>
-                    @foreach (var publication in items)
+                    @foreach (var publicationType in publicationTypes)
                     {
                         <tr>
-                            <td class="align-middle">@publication.TypeOfPublication.Name</td>
+                            <td class="align-middle">@publicationType.Name</td>
                             <td>
-                                <button type="button" class="btn" @onclick="(() => EditThisPublication(publication))">
+                                <button type="button" class="btn" @onclick="(() => EditPublicationType(publicationType))">
                                     <span class="fas fa-pencil-alt"></span>
                                 </button>
-                                <button type="button" class="btn" @onclick="@(() => Delete(publication.ID))">
+                                <button type="button" class="btn" @onclick="@(() => Delete(DeletePopup.PublicationType, publicationType.ID))">
                                     <span class="fas fa-trash-alt"></span>
                                 </button>
                             </td>
@@ -197,19 +199,23 @@
     {
         try
         {
-            if (!ReadDataSet.CachedPublications.Any() && !ReadDataSet.CachedDivisions.Any())
+            if (!ReadDataSet.CachedPublications.Any() 
+                && !ReadDataSet.CachedDivisions.Any()
+                && !ReadDataSet.CachedAuthors.Any()
+                && !ReadDataSet.CachedPublicationTypes.Any())
             {
                 ReadDataSet.LoadAndCacheData();
             }
 
             //REMEMBER: These are references. Chanches of the originals also changes the 'copies'.
-            data = ReadDataSet.CachedPublications;
-            divisions = ReadDataSet.CachedDivisions;
+            publications = ReadDataSet.CachedPublications;
 
+            divisions = ReadDataSet.CachedDivisions;
             divisions.RemoveAll(x => String.IsNullOrWhiteSpace(x.Name));
             divisions.Insert(0, new Division() { Name = String.Empty });
 
-            items = data;
+            authors = ReadDataSet.CachedAuthors;
+            publicationTypes = ReadDataSet.CachedPublicationTypes;
         }
         catch (Exception ex)
         {
@@ -228,13 +234,6 @@
     {
         workflowState.State = Data.DataLogic.State.Add;
         Publication.Reset();
-        NavigationManager.NavigateTo("addTitle");
-    }
-
-    private void EditThisPublication(IPublicationDataSet publication)
-    {
-        workflowState.State = Data.DataLogic.State.Edit;
-        Publication.Set(publication);
         NavigationManager.NavigateTo("addTitle");
     }
 
@@ -257,7 +256,9 @@
         public string Division { get; set; }
     };
 
-    List<IPublicationDataSet> items = new();
+    List<IPublicationDataSet> publications = new();
+    List<IAuthor> authors = new();
+    List<IPublicationType> publicationTypes = new();
 
 
     protected override void OnInitialized()
@@ -322,17 +323,28 @@
         int sortInt = IsSortedAscending ? 1 : -1;
         switch (CurrentSortColumn)
         {
-            case "WorkingTitle":
-                items.Sort(delegate (IPublicationDataSet x, IPublicationDataSet y) { return String.Compare(x.WorkingTitle, y.WorkingTitle) * sortInt; });
+            case "Publication.WorkingTitle":
+                publications.Sort(delegate (IPublicationDataSet x, IPublicationDataSet y) { return String.Compare(x.WorkingTitle, y.WorkingTitle) * sortInt; });
                 break;
-            case "MainAuthor.Name":
-                items.Sort(delegate (IPublicationDataSet x, IPublicationDataSet y) { return String.Compare(x.MainAuthor.Name, y.MainAuthor.Name) * sortInt; });
+            case "Publication.MainAuthor.Name":
+                publications.Sort(delegate (IPublicationDataSet x, IPublicationDataSet y) { return String.Compare(x.MainAuthor.Name, y.MainAuthor.Name) * sortInt; });
                 break;
-            case "MainAuthor.Surname":
-                items.Sort(delegate (IPublicationDataSet x, IPublicationDataSet y) { return String.Compare(x.MainAuthor.Surname, y.MainAuthor.Surname) * sortInt; });
+            case "Publication.MainAuthor.Surname":
+                publications.Sort(delegate (IPublicationDataSet x, IPublicationDataSet y) { return String.Compare(x.MainAuthor.Surname, y.MainAuthor.Surname) * sortInt; });
                 break;
-            case "DateOfRelease":
-                items.Sort(delegate (IPublicationDataSet x, IPublicationDataSet y) { return DateTime.Compare(x.DateOfRelease, y.DateOfRelease) * sortInt; });
+            case "PublicationDateOfRelease":
+                publications.Sort(delegate (IPublicationDataSet x, IPublicationDataSet y) { return DateTime.Compare(x.DateOfRelease, y.DateOfRelease) * sortInt; });
+                break;
+
+            case "Author.Name":
+                authors.Sort(delegate (IAuthor x, IAuthor y) { return String.Compare(x.Name, y.Name) * sortInt; });
+                break;
+            case "Author.Surname":
+                authors.Sort(delegate (IAuthor x, IAuthor y) { return String.Compare(x.Surname, y.Surname) * sortInt; });
+                break;
+
+            case "PublicationType.Name":
+                publicationTypes.Sort(delegate (IPublicationType x, IPublicationType y) { return String.Compare(x.Name, y.Name) * sortInt; });
                 break;
         }
     }
@@ -349,17 +361,17 @@
     {
         if (!String.IsNullOrWhiteSpace(SelectedDivsion))
         {
-            items = data?.Where(f => f.Division.Name.Equals(SelectedDivsion)).ToList();
+            publications = data?.Where(f => f.Division.Name.Equals(SelectedDivsion)).ToList();
         }
         else
         {
-            items = data;
+            publications = data;
         }
 
 
         if (!String.IsNullOrWhiteSpace(CurrentSearchTerm))
         {
-            items = items?.Where(i => i.WorkingTitle.ToLower().Contains(CurrentSearchTerm.ToLower()) ||
+            publications = publications?.Where(i => i.WorkingTitle.ToLower().Contains(CurrentSearchTerm.ToLower()) ||
                                              i.MainAuthor.Name.ToLower().Contains(CurrentSearchTerm.ToLower()) ||
                                              i.MainAuthor.Surname.ToLower().Contains(CurrentSearchTerm.ToLower())).ToList();
         }
@@ -375,11 +387,11 @@
 <!--Delete Confirmation Design-->
 @if (ShowSuccessfulDelete)
 {
-    <div class="modal fade show" role="dialog">
+    <div class="modal fade show" role="dialog" style="@modalDisplay">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3 class="modal-title w-100 text-center">Die Veröfffentlichung wurde erfolgreich gelöscht!</h3>
+                    <h3 class="modal-title w-100 text-center">Die Veröffentlichung wurde erfolgreich gelöscht!</h3>
                 </div>
                 <div class="modal-body">
                     <p>Die Veröffentlichung wurde der Liste hinzugefügt.</p>
@@ -390,25 +402,23 @@
     </div>
 }
 
-@if (ShowDeletePopup)
+@if (deletePopup != DeletePopup.Hide)
 {
-    <div class="modal fade show" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title w-100 text-center">Wollen Sie die Veröffentlichung wirklich löschen?</h3>
-                </div>
-                <div class="modal-object">
-                    <!--
-                        <button type="submit" class="form-control primaryButton" @onclick="">Löschen</button>
-                    </div>
-                    <div class="modal-object">
-                        <button type="submit" class="form-control secondaryButton" @onclick="">Abbrechen</button>
-                            -->
-                </div>
+<div class="modal fade show" role="dialog" style="@modalDisplay">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title w-100 text-center">Wollen Sie die Veröffentlichung wirklich löschen?</h3>
+            </div>
+            <div class="modal-object">
+                <button type="submit" class="form-control primaryButton" @onclick="FinalDelete">Löschen</button>
+            </div>
+            <div class="modal-object">
+                <button type="submit" class="form-control secondaryButton" @onclick="(() => deletePopup = DeletePopup.Hide)">Abbrechen</button>
             </div>
         </div>
     </div>
+</div>
 }
 
 
@@ -417,43 +427,243 @@
 {
     bool ShowSuccessfulDelete = false;
     bool ShowDeletePopup = false;
-    int ConfirmDel = 0;
+
+    enum DeletePopup
+    {
+        Hide,
+        Publication,
+        Author,
+        PublicationType,
+    }
+
+    private DeletePopup deletePopup = DeletePopup.Hide;
+
+    Guid itemToDelete = new();
 
     private void ChancelDeletePopup() => ShowDeletePopup = false;
 
-    private void Delete(Guid pubID)
+    private void DeletePublication(Guid pubID)
     {
-        if (ConfirmDel == 1)
+        try
         {
-            try
-            {
-                dataHandler.DeletePublication(pubID);
-                ReadDataSet.CachedPublications.Remove(ReadDataSet.CachedPublications.Where(Publication => Publication.ID == pubID).First());
+            dataHandler.DeletePublication(pubID);
+            ReadDataSet.CachedPublications.Remove(ReadDataSet.CachedPublications.Where(Publication => Publication.ID == pubID).First());
 
-                Filter();
-            }
-            //TODO FIX
-            catch (Exception ex)
-            {
-                if (ex is UnauthorizedAccessException || ex is IOException)
-                {
-                    deleteException = true;
-                    OpenException();
-                    return;
-                }
-
-                throw ex;
-            }
-
-            ConfirmDel = 0;
-
-            ShowDeletePopup = false;
+            Filter();
         }
-        else if (ConfirmDel == 0)
-            ChancelDeletePopup();
+        //TODO FIX
+        catch (Exception ex)
+        {
+            if (ex is UnauthorizedAccessException || ex is IOException)
+            {
+                deletePublicationException = true;
+                OpenException();
+                return;
+            }
+
+            throw ex;
+        }
+    }
+
+    public void DeleteAuthor(Guid guid)
+    {
+        try
+        {
+            dataHandler.DeleteAuthor(guid);
+            ReadDataSet.CachedAuthors.Remove(ReadDataSet.CachedAuthors.Where(Author => Author.ID == guid).First());
+
+            Filter();
+        }
+        //TODO FIX
+        catch (Exception ex)
+        {
+            if (ex is UnauthorizedAccessException || ex is IOException)
+            {
+                deleteAuthorException = true;
+                OpenException();
+                return;
+            }
+
+            throw ex;
+        }
+    }
+
+    public void DeletePublicationType(Guid guid)
+    {
+        try
+        {
+            dataHandler.DeletePublicationType(guid);
+            ReadDataSet.CachedPublicationTypes.Remove(ReadDataSet.CachedPublicationTypes.Where(PublicationType => PublicationType.ID == guid).First());
+
+            Filter();
+        }
+        //TODO FIX
+        catch (Exception ex)
+        {
+            if (ex is UnauthorizedAccessException || ex is IOException)
+            {
+                deletePublicationTypeException = true;
+                OpenException();
+                return;
+            }
+
+            throw ex;
+        }
+    }
+
+    private void Delete(DeletePopup type, Guid guid)
+    {
+        itemToDelete = guid;
+        deletePopup = type;
+        modalDisplay = "display:block";
+    }
+
+    private void FinalDelete()
+    {
+        switch (deletePopup)
+        {
+            case DeletePopup.Hide:
+                return;
+            case DeletePopup.Publication:
+                DeletePublication(itemToDelete);
+                break;
+            case DeletePopup.Author:
+                DeleteAuthor(itemToDelete);
+                break;
+            case DeletePopup.PublicationType:
+                DeletePublicationType(itemToDelete);
+                break;
+            default:
+                break;
+        }
+        modalDisplay = "display:none";
+        deletePopup = DeletePopup.Hide;
     }
 }
 
+
+
+
+
+<!--Editor Design-->
+@if (showEditAuthorPopup)
+{
+    <EditForm Model="@selectedAuthor" OnInvalidSubmit="@(() => null)" OnValidSubmit="@SaveAuthorChanges">
+        <DataAnnotationsValidator />
+        <div class="modal fade show" role="dialog" style="@modalDisplay">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title w-100 text-center">Autor bearbeiten</h3>
+                        <button type="reset" class="cancelButton" @onclick="@(() => { showEditAuthorPopup = false; modalDisplay = "display:none";})">
+                            <span class="fas fa-times fa-2x"></span>
+                        </button>
+                    </div>
+                    <div class="modal-object">
+                        <label for="firstname">Vorname</label>
+                        <InputText class="form-control" id="firstname" @bind-Value="selectedAuthor.Name" /><br />
+                        <ValidationMessage For="@(() => selectedAuthor.Name)" />
+                    </div>
+                    <div class="modal-object">
+                        <label for="surname">Nachname</label>
+                        <InputText class="form-control" id="surname" @bind-Value="selectedAuthor.Surname" /><br />
+                        <ValidationMessage For="@(() => selectedAuthor.Surname)" />
+                    </div>
+                    <div class="modal-body">
+                        <button type="submit" id="addButtonInPopup" class="form-control">Speichern</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </EditForm>}
+
+@if (showEditPublicationType)
+{
+    <EditForm Model="@selectedPublicationType" OnInvalidSubmit="@(() => null)" OnValidSubmit="@SavePublicationTypeChanges">
+        <DataAnnotationsValidator />
+        <div class="modal fade show" role="dialog" style="@modalDisplay">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title w-100 text-center">Veröffentlichungsart bearbeiten</h3>
+                        <button type="reset" class="cancelButton" @onclick="@(() => { showEditPublicationType = false; modalDisplay = "display:none";})">
+                            <span class="fas fa-times fa-2x"></span>
+                        </button>
+                    </div>
+                    <div class="modal-object">
+                        <label for="publicationTypeName">Art der Veröffentlichung</label>
+                        <InputText class="form-control" id="publicationTypeName" @bind-Value="selectedPublicationType.Name" /><br />
+                        <ValidationMessage For="@(() => selectedPublicationType.Name)" />
+                    </div>
+                    <div class="modal-body">
+                        <button type="submit" id="addButtonInPopup" class="form-control">Hinzufügen</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </EditForm>}
+
+
+<!--Editor Code-->
+@code
+{
+    private bool showEditAuthorPopup = false;
+    private IAuthor selectedAuthor = new Author();
+
+    private bool showEditPublicationType = false;
+    private IPublicationType selectedPublicationType = new PublicationType();
+
+    private string modalDisplay = "display:none";
+
+    private void EditPublication(IPublicationDataSet publication)
+    {
+        workflowState.State = Data.DataLogic.State.Edit;
+        Publication.Set(publication);
+        NavigationManager.NavigateTo("addTitle");
+    }
+
+
+    private void EditAuthor(IAuthor author)
+    {
+        selectedAuthor = author;
+        modalDisplay = "display:block";
+        showEditAuthorPopup = true;
+    }
+
+    private void SaveAuthorChanges()
+    {
+        modalDisplay = "display:none";
+        showEditAuthorPopup = false;
+
+        var index = authors.FindIndex(author => author.ID.Equals(selectedAuthor.ID));
+        authors.RemoveAt(index);
+        authors.Insert(index, selectedAuthor);
+        dataHandler.SaveAuthor(selectedAuthor);
+
+        fetchData();
+    }
+
+
+    private void EditPublicationType(IPublicationType publicationType)
+    {
+        selectedPublicationType = publicationType;
+        modalDisplay = "display:block";
+        showEditPublicationType = true;
+    }
+
+    private void SavePublicationTypeChanges()
+    {
+        modalDisplay = "display:none";
+        showEditPublicationType = false;
+
+        var index = publicationTypes.FindIndex(publT => publT.ID.Equals(selectedPublicationType.ID));
+        publicationTypes.RemoveAt(index);
+        publicationTypes.Insert(index, selectedPublicationType);
+        dataHandler.SavePublicationType(selectedPublicationType);
+
+        fetchData();
+    }
+}
 
 
 
@@ -499,7 +709,9 @@
     bool ShowOpenException = false;
 
     bool fetchException = false;
-    bool deleteException = false;
+    bool deletePublicationException = false;
+    bool deleteAuthorException = false;
+    bool deletePublicationTypeException = false;
 
     Guid retryID = new();
 
@@ -522,10 +734,20 @@
             fetchData();
             fetchException = false;
         }
-        else if (deleteException)
+        else if (deletePublicationException)
         {
-            Delete(retryID);
-            deleteException = false;
+            DeletePublication(retryID);
+            deletePublicationException = false;
+        }
+        else if (deleteAuthorException)
+        {
+            DeleteAuthor(retryID);
+            deleteAuthorException = false;
+        }
+        else if (deletePublicationTypeException)
+        {
+            DeletePublicationType(retryID);
+            deletePublicationTypeException = false;
         }
 
         CloseException();
