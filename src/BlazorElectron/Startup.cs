@@ -26,10 +26,13 @@ namespace Zeiss.PublicationManager.UI
         // This method opens the Electron window
         public async void ElectronBootstrap()
         {
+            WebPreferences wp = new WebPreferences();
+
             var browserWindow = await Electron.WindowManager.CreateWindowAsync(new BrowserWindowOptions
             {
                 Width = 1152,
                 Height = 940,
+                //AutoHideMenuBar = true,
             });
             await browserWindow.WebContents.Session.ClearCacheAsync();
             browserWindow.OnReadyToShow += () => browserWindow.Show();
