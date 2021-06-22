@@ -190,7 +190,7 @@ else if (workflowState.State == Data.DataLogic.State.Add)
         try
         {
             DivisionModel newDivision = new();
-            newDivision.Set(newDivision);
+            newDivision.Set(NewDivision);
 
             dataHandler.SaveDivision(newDivision);
             Publication.Division = newDivision;
