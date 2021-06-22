@@ -183,8 +183,6 @@ else if (workflowState.State == Data.DataLogic.State.Add)
         ShowAddPopup = false;
         modalDisplay = "display:none";
 
-        Publication.MainAuthor = NewAuthor;
-
         SaveAuthor();
     }
 
@@ -198,10 +196,11 @@ else if (workflowState.State == Data.DataLogic.State.Add)
     {
         try
         {
-            dataHandler.SaveAuthor(NewAuthor);
-
             AuthorModel newAuthor = new();
             newAuthor.Set(NewAuthor);
+
+            dataHandler.SaveAuthor(newAuthor);
+            Publication.MainAuthor = newAuthor;
 
             authors.Insert(0, newAuthor);
             ReadDataSet.CachedAuthors.Insert(0, newAuthor);

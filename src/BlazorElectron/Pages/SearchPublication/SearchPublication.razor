@@ -498,7 +498,10 @@ private void SortTable()
             if (ex is UnauthorizedAccessException || ex is IOException)
             {
                 deletePublicationException = true;
+                retryID = pubID;
                 OpenException();
+
+                return false;
             }
 
             throw ex;
@@ -526,7 +529,10 @@ private void SortTable()
             if (ex is UnauthorizedAccessException || ex is IOException)
             {
                 deleteAuthorException = true;
+                retryID = guid;
                 OpenException();
+
+                return false;
             }
 
             throw ex;
@@ -554,7 +560,10 @@ private void SortTable()
             if (ex is UnauthorizedAccessException || ex is IOException)
             {
                 deletePublicationTypeException = true;
+                retryID = guid;
                 OpenException();
+
+                return false;
             }
 
             throw ex;
@@ -636,7 +645,7 @@ private void SortTable()
                         <ValidationMessage For="@(() => selectedAuthor.Surname)" />
                     </div>
                     <div class="modal-body">
-                        <button type="submit" id="addButtonInPopup" class="form-control">Speichern</button>
+                        <button type="submit" id="addButtonInPopup" class="form-control">Änderung speichern</button>
                     </div>
                 </div>
             </div>
@@ -700,14 +709,29 @@ private void SortTable()
 
     private void SaveAuthorChanges()
     {
-        modalDisplay = "display:none";
-        showEditAuthorPopup = false;
+        try
+        {
+            modalDisplay = "display:none";
+            showEditAuthorPopup = false;
 
-        int index = ReadDataSet.CachedAuthors.FindIndex(author => author.ID.Equals(selectedAuthor.ID));
-        ReadDataSet.CachedAuthors[index] = selectedAuthor;
-        dataHandler.SaveAuthor(selectedAuthor);
+            dataHandler.SaveAuthor(selectedAuthor);
 
-        fetchData(true);
+            int index = ReadDataSet.CachedAuthors.FindIndex(author => author.ID.Equals(selectedAuthor.ID));
+            ReadDataSet.CachedAuthors[index] = selectedAuthor;
+
+            fetchData();
+        }
+        catch (Exception ex)
+        {
+            if (ex is UnauthorizedAccessException || ex is IOException)
+            {
+                updateAuthorException = true;
+                OpenException();
+            }
+
+            throw ex;
+        }
+
     }
 
 
@@ -720,14 +744,30 @@ private void SortTable()
 
     private void SavePublicationTypeChanges()
     {
-        modalDisplay = "display:none";
-        showEditPublicationType = false;
+        try
+        {
+            modalDisplay = "display:none";
+            showEditPublicationType = false;
+           
+            dataHandler.SavePublicationType(selectedPublicationType);
 
-        var index = ReadDataSet.CachedPublicationTypes.FindIndex(publT => publT.ID.Equals(selectedPublicationType.ID));
-        ReadDataSet.CachedPublicationTypes[index] = selectedPublicationType;
-        dataHandler.SavePublicationType(selectedPublicationType);
+            var index = ReadDataSet.CachedPublicationTypes.FindIndex(publT => publT.ID.Equals(selectedPublicationType.ID));
+            ReadDataSet.CachedPublicationTypes[index] = selectedPublicationType;
 
-        fetchData(true);
+            fetchData();
+        }
+        catch (Exception ex)
+        {
+            if (ex is UnauthorizedAccessException || ex is IOException)
+            {
+                updatePublicationTypeException = true;
+                OpenException();
+            }
+
+            throw ex;
+        }
+
+
     }
 }
 

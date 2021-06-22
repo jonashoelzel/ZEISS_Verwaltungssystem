@@ -176,8 +176,6 @@ else if (workflowState.State == Data.DataLogic.State.Add)
         ShowAddPopup = false;
         modalDisplay = "display:none";
 
-        Publication.Division = NewDivision;
-
         SaveDivision();
     }
 
@@ -191,10 +189,12 @@ else if (workflowState.State == Data.DataLogic.State.Add)
     {
         try
         {
-            dataHandler.SaveDivision(NewDivision);
-
             DivisionModel newDivision = new();
-            newDivision.Set(NewDivision);
+            newDivision.Set(newDivision);
+
+            dataHandler.SaveDivision(newDivision);
+            Publication.Division = newDivision;
+
 
             divisions.Insert(0, newDivision);
 

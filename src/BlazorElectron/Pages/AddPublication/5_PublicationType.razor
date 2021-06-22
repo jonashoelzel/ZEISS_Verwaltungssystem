@@ -190,10 +190,13 @@ else
     {
         try
         {
-            dataHandler.SavePublicationType(NewPublicationType);
 
             PublicationTypeModel newPublicationType = new();
             newPublicationType.Set(NewPublicationType);
+
+            dataHandler.SavePublicationType(newPublicationType);
+            Publication.TypeOfPublication = newPublicationType;
+
 
             publicationTypes.Insert(0, newPublicationType);
 
