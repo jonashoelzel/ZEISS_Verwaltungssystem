@@ -203,11 +203,12 @@ public static List<IPublicationType> cachedPublicationTypes = new();
 public static List<IPublicationType> displayedPublicationTypes = new();
 
 
-void fetchData()
+void fetchData(bool reload = false)
 {
     try
     {
-        if (!ReadDataSet.CachedPublications.Any()
+        if (reload 
+            || !ReadDataSet.CachedPublications.Any()
             && !ReadDataSet.CachedDivisions.Any()
             && !ReadDataSet.CachedAuthors.Any()
             && !ReadDataSet.CachedPublicationTypes.Any())
@@ -662,7 +663,7 @@ private void SortTable()
                         <ValidationMessage For="@(() => selectedPublicationType.Name)" />
                     </div>
                     <div class="modal-body">
-                        <button type="submit" id="addButtonInPopup" class="form-control">Hinzufügen</button>
+                        <button type="submit" id="addButtonInPopup" class="form-control">Änderung speichern</button>
                     </div>
                 </div>
             </div>
@@ -702,12 +703,11 @@ private void SortTable()
         modalDisplay = "display:none";
         showEditAuthorPopup = false;
 
-        var index = cachedAuthors.FindIndex(author => author.ID.Equals(selectedAuthor.ID));
-        cachedAuthors.RemoveAt(index);
-        cachedAuthors.Insert(index, selectedAuthor);
+        int index = ReadDataSet.CachedAuthors.FindIndex(author => author.ID.Equals(selectedAuthor.ID));
+        ReadDataSet.CachedAuthors[index] = selectedAuthor;
         dataHandler.SaveAuthor(selectedAuthor);
 
-        fetchData();
+        fetchData(true);
     }
 
 
@@ -723,12 +723,11 @@ private void SortTable()
         modalDisplay = "display:none";
         showEditPublicationType = false;
 
-        var index = cachedPublicationTypes.FindIndex(publT => publT.ID.Equals(selectedPublicationType.ID));
-        cachedPublicationTypes.RemoveAt(index);
-        cachedPublicationTypes.Insert(index, selectedPublicationType);
+        var index = ReadDataSet.CachedPublicationTypes.FindIndex(publT => publT.ID.Equals(selectedPublicationType.ID));
+        ReadDataSet.CachedPublicationTypes[index] = selectedPublicationType;
         dataHandler.SavePublicationType(selectedPublicationType);
 
-        fetchData();
+        fetchData(true);
     }
 }
 
@@ -780,6 +779,9 @@ private void SortTable()
     bool deleteAuthorException = false;
     bool deletePublicationTypeException = false;
 
+    bool updateAuthorException = false;
+    bool updatePublicationTypeException = false;
+
     Guid retryID = new();
 
     public void OpenException()
@@ -815,6 +817,16 @@ private void SortTable()
         {
             Delete(DeletePopup.PublicationType, retryID);
             deletePublicationTypeException = false;
+        }
+        else if (updateAuthorException)
+        {
+            SaveAuthorChanges();
+            updateAuthorException = false;
+        }
+        else if (updatePublicationTypeException)
+        {
+            SavePublicationTypeChanges();
+            updatePublicationTypeException = false;
         }
 
         CloseException();
