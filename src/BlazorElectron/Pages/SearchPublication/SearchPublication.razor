@@ -13,6 +13,85 @@
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg" class="logo" />
 
+@if (ShowSuccessfulDelete)
+{
+    <div class="modal fade show" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title w-100 text-center">Die Veröfffentlichung wurde erfolgreich gelöscht!</h3>
+            </div>
+            <div class="modal-body">
+                <p>Die Veröffentlichung wurde der Liste hinzugefügt.</p>
+                <button type="submit" class="form-control primaryButton">Okay</button>
+            </div>
+        </div>
+    </div>
+    </div>
+}
+
+@if (ShowDeletePopup)
+{
+    <div class="modal fade show" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title w-100 text-center">Wollen Sie die Veröffentlichung wirklich löschen?</h3>
+                </div>
+                <div class="modal-object">
+                    <!--
+        <button type="submit" class="form-control primaryButton" @onclick="">Löschen</button>
+    </div>
+    <div class="modal-object">
+        <button type="submit" class="form-control secondaryButton" @onclick="">Abbrechen</button>
+            -->
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code
+{
+    bool ShowSuccessfulDelete = false;
+    bool ShowDeletePopup = false;
+    int ConfirmDel = 0;
+
+    private void ChancelDeletePopup() => ShowDeletePopup = false;
+
+    private void Delete(Guid pubID)
+    {
+        if (ConfirmDel == 1)
+        {
+            try
+            {
+                dataHandler.DeletePublication(pubID);
+                ReadDataSet.CachedPublications.Remove(ReadDataSet.CachedPublications.Where(Publication => Publication.ID == pubID).First());
+
+                Filter();
+            }
+            //TODO FIX
+            catch (Exception ex)
+            {
+                if (ex is UnauthorizedAccessException || ex is IOException)
+                {
+                    deleteException = true;
+                    OpenException();
+                    return;
+                }
+
+                throw ex;
+            }
+
+            ConfirmDel = 0;
+
+            ShowDeletePopup = false;
+        }
+        else if (ConfirmDel == 0)
+            ChancelDeletePopup();
+    }
+}
+
 <EditForm Model="@Publication">
 
     <section class="search-default">
@@ -170,7 +249,7 @@
                                 </button>
                             </td>
                         </tr>
-                     }
+                    }
                 </tbody>
             </table>
         </div>
@@ -362,31 +441,6 @@
         }
 
         SortTable();
-    }
-
-
-
-    private void Delete(Guid pubID)
-    {
-        try
-        {
-            dataHandler.DeletePublication(pubID);
-            ReadDataSet.CachedPublications.Remove(ReadDataSet.CachedPublications.Where(Publication => Publication.ID == pubID).First());
-
-            Filter();
-        }
-        //TODO FIX
-        catch (Exception ex)
-        {
-            if (ex is UnauthorizedAccessException || ex is IOException)
-            {
-                deleteException = true;
-                OpenException();
-                return;
-            }
-
-            throw ex;
-        }
     }
 }
 
