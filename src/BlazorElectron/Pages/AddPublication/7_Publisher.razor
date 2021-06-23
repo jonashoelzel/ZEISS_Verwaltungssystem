@@ -99,7 +99,7 @@ else if (workflowState.State == Data.DataLogic.State.Add)
                     {
                         <option value="@publisher.ID">@publisher.Name</option>
                     }
-                    
+
                 }
             </select>
         </div>
@@ -120,9 +120,11 @@ else if (workflowState.State == Data.DataLogic.State.Add)
 <button class="primaryButton back" type="button" @onclick="NavigateToPreviousScreen">
     <span class="fas fa-arrow-circle-left fa-3x"></span>
 </button>
+<!--
 <button class="primaryButton continue" type="button" @onclick="NavigateToNextScreen">
     <span class="fas fa-arrow-circle-right fa-3x"></span>
 </button>
+-->
 
 @code
 {
@@ -134,7 +136,7 @@ else if (workflowState.State == Data.DataLogic.State.Add)
 
     private void NavigateToPreviousScreen() => NavigationManager.NavigateTo("addDescription");
 
-    private void NavigateToNextScreen() => NavigationManager.NavigateTo("addTags");
+    // private void NavigateToNextScreen() => NavigationManager.NavigateTo("addTags");
 
     private void NavigateToLandingPage() => NavigationManager.NavigateTo("/SearchPublication");
 
