@@ -27,7 +27,7 @@ namespace Zeiss.PublicationManager.UI
         public async void ElectronBootstrap()
         {
             WebPreferences wp = new WebPreferences();
-
+            
             var browserWindow = await Electron.WindowManager.CreateWindowAsync(new BrowserWindowOptions
             {
                 Width = 1152,
@@ -50,6 +50,7 @@ namespace Zeiss.PublicationManager.UI
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddElectron();
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddSingleton<PublicationDataSetModel>();
