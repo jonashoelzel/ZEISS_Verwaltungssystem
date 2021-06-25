@@ -18,6 +18,7 @@ using Zeiss.PublicationManager.Data.DataSet;
 using Zeiss.PublicationManager.Data.DataSet.Model;
 using Zeiss.PublicationManager.Business.Logic.IO;
 using BlazorElectron.Data.DataLogic;
+using System.IO;
 
 namespace Zeiss.PublicationManager.UI
 {
@@ -27,16 +28,26 @@ namespace Zeiss.PublicationManager.UI
         public async void ElectronBootstrap()
         {
             WebPreferences wp = new WebPreferences();
-            
+
             var browserWindow = await Electron.WindowManager.CreateWindowAsync(new BrowserWindowOptions
             {
-                Width = 1152,
-                Height = 940,
+                Width = 1300,
+                Height = 1000,
                 //AutoHideMenuBar = true,
-            });
+                Show = false
+            }); ;
             await browserWindow.WebContents.Session.ClearCacheAsync();
             browserWindow.OnReadyToShow += () => browserWindow.Show();
+            //browserWindow.Reload();
             browserWindow.SetTitle("Zeiss"); // TODO: Edit title
+            browserWindow.OnClosed += () =>
+            {
+                // Directory.Delete(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "publication-manager", "Local Storage"), true);
+                Electron.App.Exit(0);
+                Environment.Exit(0);
+                Electron.App.Quit();
+                browserWindow = null;
+            };
         }
 
         public Startup(IConfiguration configuration)
@@ -50,7 +61,6 @@ namespace Zeiss.PublicationManager.UI
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddElectron();
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddSingleton<PublicationDataSetModel>();

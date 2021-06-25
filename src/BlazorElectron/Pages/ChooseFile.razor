@@ -23,6 +23,7 @@
 @code
 {
     bool isException = false;
+    bool isElectronConfigSetted = false;
 
     async Task openFileDialog()
     {
@@ -52,8 +53,10 @@
             }
         }
 
+
         var options = new OpenDialogOptions
         {
+            // DefaultPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
             Title = "Choose a file",
             Filters = new[]
             {
@@ -69,14 +72,45 @@
         }
         };
 
-        var mainWindow = Electron.WindowManager.BrowserWindows.First();
+        try
+        {
+            var mainWindow = Electron.WindowManager.BrowserWindows.First();
 
-        var selectedFiles = await Electron.Dialog.ShowOpenDialogAsync(mainWindow, options);
+            var selectedFiles = await Electron.Dialog.ShowOpenDialogAsync(mainWindow, options);
 
-        if (!System.IO.File.Exists(selectedFiles.FirstOrDefault()))
-            return;
+            if (!System.IO.File.Exists(selectedFiles.FirstOrDefault()))
+                return;
 
-        dataHandler.SetFilePath(selectedFiles.FirstOrDefault());
+            dataHandler.SetFilePath(selectedFiles.FirstOrDefault()); 
+
+            /*
+            Electron.IpcMain.On("show-app-menu-btn", async (args) =>
+            {
+
+                var mainWindow = Electron.WindowManager.BrowserWindows.First();
+
+                var selectedFiles = await Electron.Dialog.ShowOpenDialogAsync(mainWindow, options);
+
+                if (!System.IO.File.Exists(selectedFiles.FirstOrDefault()))
+                    return;
+
+                dataHandler.SetFilePath(selectedFiles.FirstOrDefault()); 
+            }); */
+
+        }
+        catch (Exception ex)
+        {
+            // Directory.Delete(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "publication-manager", "Local Storage"), true);
+            if (!isElectronConfigSetted)
+            {
+                isElectronConfigSetted = true;
+                await openFileDialog();
+                
+            }else
+            {
+                throw ex;
+            }
+        }
 
         NavigationManager.NavigateTo("/SearchPublication");
 
@@ -93,6 +127,7 @@
 
         var options = new SaveDialogOptions
         {
+            // DefaultPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
             Title = "Choose a path to save the file",
             Filters = new[]
             {
