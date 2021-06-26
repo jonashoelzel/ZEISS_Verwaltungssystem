@@ -165,12 +165,11 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Write
         }
 
 
-        //Excel column names are from A-Z over AA-AZ and ZA-ZZ up to AAA-ZZZ, [...]
         private static string ConvertNumberToCellLetters(int number)
         {
             //If the number is invalid
-            if (number <= 0)
-                throw new IndexOutOfRangeException("Value 'number' must be a value greater or equal 1. Current 'number was " + number);
+            if (number < 1 || number > 17575)
+                throw new IndexOutOfRangeException("Value 'number' must be a value greater or equal 1 and less or equal than 17575. Current 'number was " + number);
 
             string columnname = "";
             int letterEnumCounter = 0;
@@ -182,7 +181,6 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Write
                 letterValue -= 26;
                 letterEnumCounter++;
 
-                //Appends a Z for columnnames with 3 or more letters
                 if (letterEnumCounter > 26)
                 {
                     letterEnumCounter -= 26;
@@ -204,6 +202,5 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Write
 
             return columnname;
         }
-
     }
 }

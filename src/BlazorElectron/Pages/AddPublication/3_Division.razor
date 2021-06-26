@@ -5,6 +5,8 @@
 @using Zeiss.PublicationManager.Business.Logic.IO
 @using BlazorElectron.Data.DataLogic
 
+
+
 @inject NavigationManager NavigationManager
 @inject PublicationDataSetModel Publication
 @inject DataHandler dataHandler
@@ -96,7 +98,11 @@ else if (workflowState.State == Data.DataLogic.State.Add)
             <select class="form-control" @onchange="SetDivision">
                 @foreach (var division in divisions)
                 {
-                    <option value="@division.ID">@division.Name</option>
+                    if (!String.IsNullOrWhiteSpace(division.Name))
+                    {
+                        <option value="@division.ID">@division.Name</option>
+                    }
+
                 }
             </select>
         </div>
@@ -108,7 +114,7 @@ else if (workflowState.State == Data.DataLogic.State.Add)
 
 @if (workflowState.State == Data.DataLogic.State.Edit)
 {
-    <button class="primaryButton addPub" type="submit" @onclick="Save">Änderungen Speichern</button>
+    <button class="primaryButton addPub" type="submit" @onclick="ValidateAndSave">Änderungen Speichern</button>
 }
 <button class="primaryButton back" type="button" @onclick="NavigateToPreviousScreen">
     <span class="fas fa-arrow-circle-left fa-3x"></span>
@@ -120,7 +126,7 @@ else if (workflowState.State == Data.DataLogic.State.Add)
 @code
 {
     DivisionModel NewDivision = new();
-    List<IDivision> divisions;
+    List<IDivision> divisions = new();
     bool ShowSavePopup = false;
     bool ShowAddPopup = false;
     bool ShowPflichtfeldPopup = false;
@@ -135,9 +141,12 @@ else if (workflowState.State == Data.DataLogic.State.Add)
         if (Publication.Division is not null)
         {
             NavigationManager.NavigateTo("addDateOfRelease");
-        } else
+        }
+        else
+        {
             modalDisplay = "display:block";
             ShowPflichtfeldPopup = true;
+        }
     }
 
     private void HandleInvalidSubmit() { }
@@ -166,12 +175,10 @@ else if (workflowState.State == Data.DataLogic.State.Add)
     {
         ShowAddPopup = false;
         modalDisplay = "display:none";
-        divisions.Insert(0, NewDivision);
-
-        dataHandler.SaveDivision(NewDivision);
 
         Publication.Division = NewDivision;
-        NewDivision = new();
+
+        SaveDivision();
     }
 
     void SetDivision(ChangeEventArgs division)
@@ -180,24 +187,97 @@ else if (workflowState.State == Data.DataLogic.State.Add)
         Publication.Division = divisions.First(a => a.ID.Equals(selectedDivisionID));
     }
 
-    private void Save()
+    private void SaveDivision()
     {
-        dataHandler.Save(Publication);
-        modalDisplay = "display:block";
-        ShowSavePopup = true;
+        try
+        {
+            dataHandler.SaveDivision(NewDivision);
+
+            DivisionModel newDivision = new();
+            newDivision.Set(NewDivision);
+
+            divisions.Insert(0, newDivision);
+
+            ReadDataSet.CachedDivisions.Add(newDivision);
+
+            NewDivision = new();
+        }
+        catch (Exception ex)
+        {
+            if (ex is UnauthorizedAccessException || ex is IOException)
+            {
+                divisionException = true;
+                OpenException();
+                return;
+            }
+
+            throw ex;
+        }
+    }
+
+
+    private void ValidateAndSave()
+    {
+        if (String.IsNullOrWhiteSpace(Publication?.Division?.Name))
+        {
+            modalDisplay = "display:block";
+            ShowPflichtfeldPopup = true;
+        }
+        else
+        {
+            SavePublication();
+        }
+    }
+
+    private void SavePublication()
+    {
+        try
+        {
+            dataHandler.Save(Publication);
+
+            PublicationDataSetModel NewDataSet = new();
+            NewDataSet.Set(Publication);
+
+            if (workflowState.State == Data.DataLogic.State.Add)
+            {
+                ReadDataSet.CachedPublications.Add(NewDataSet);
+            }
+            else
+            {
+                int index = ReadDataSet.CachedPublications.FindIndex(item => item.ID == NewDataSet.ID);
+                ReadDataSet.CachedPublications[index] = NewDataSet;
+            }
+
+            modalDisplay = "display:block";
+            ShowSavePopup = true;
+        }
+        catch (Exception ex)
+        {
+            if (ex is UnauthorizedAccessException || ex is IOException)
+            {
+                publicationException = true;
+                OpenException();
+                return;
+            }
+
+            throw ex;
+        }
+
+        StateHasChanged();
     }
 
     void fetchData()
     {
-        if (divisions is not null)
+        if (divisions.Any())
             return;
 
-        divisions = new List<IDivision>();
-        var readDivisions = dataHandler.ExcelReader.ReadDivisions();
-        foreach (var division in readDivisions)
+        List<IDivision> readDivisions = ReadDataSet.CachedDivisions;
+        foreach (IDivision division in readDivisions)
         {
             divisions.Add(division);
         }
+
+        divisions.RemoveAll(x => String.IsNullOrWhiteSpace(x.Name));
     }
 
     protected override void OnInitialized()
@@ -214,3 +294,74 @@ else if (workflowState.State == Data.DataLogic.State.Add)
             Publication.Division = divisions.FirstOrDefault();
     }
 }
+
+
+@if (ShowException)
+{
+    <div class="modal fade show" role="dialog" style="@modalExceptionDisplay">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title w-100 text-center" style="font-size:16px">
+                        Datei-Zugriffs-Berechtigungs-Fehler
+                        <br />
+                        <br />Die Datei:
+                        <br />"@dataHandler.filePath";
+                        <br />wird derzeit von einem anderen Programm verwendet
+                        <br />oder Ihr Adminstrator hat Ihnen den Zugriff verwehrt.
+                        <br />
+                        <br />Sie können warten bis das andere Programm die Datei wieder freigegeben hat und den Vorgang wiederholen.
+                        <br />
+                        <br />Sollten Sie die Benachrichtigung nach mehrerern Versuchen immernoch sehen,
+                        <br />fragen Sie Ihren Adminstator und prüfen Sie, ob die Datei derzeit von einem anderen Programm verwendet wird
+                        <br />und prüfen Sie Ihre Berechtigungen.
+                    </h3>
+                    <button type="reset" class="cancelButton" @onclick="@CloseException">
+                        <span class="fas fa-times fa-2x"></span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <button type="submit" id="addButtonInPopup" class="form-control" @onclick="@Retry">Vorgang Wiederholen</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code
+{
+    string modalExceptionDisplay = "display:block";
+    bool ShowException = false;
+
+    bool publicationException = false;
+    bool divisionException = false;
+
+    public void OpenException()
+    {
+        modalExceptionDisplay = "display:block";
+        ShowException = true;
+    }
+
+    void CloseException()
+    {
+        ShowException = false;
+        modalExceptionDisplay = "display:none";
+    }
+
+    void Retry()
+    {
+        if (publicationException)
+        {
+            SavePublication();
+            publicationException = false;
+        }
+        else if (divisionException)
+        {
+            SaveDivision();
+            divisionException = false;
+        }
+
+        CloseException();
+    }
+}
+

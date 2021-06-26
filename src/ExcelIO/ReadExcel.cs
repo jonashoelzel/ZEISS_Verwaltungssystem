@@ -39,6 +39,5 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Read
 
             return letterIDsAndColumnNames;
         }
-
     }
 }

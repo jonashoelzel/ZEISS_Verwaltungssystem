@@ -910,21 +910,6 @@ Because all references will be updated, this advanced version takes more resourc
 /// </returns>
 
 public static bool WorksheetExists(ref string filepath, string worksheetName)
-{
-    if (!CheckPathExist(ref filepath))
-        return false;
-
-    SpreadsheetDocument spreadsheetDocument = SpreadsheetDocument.Open(filepath, false);
-
-    //Search for specific sheet
-    IEnumerable<Sheet> sheetsIEnum = spreadsheetDocument?.WorkbookPart?.Workbook?.Descendants<Sheet>()?.Where(s => s.Name == worksheetName);
-    //If specified sheet does not exists => return false
-    bool isExists = sheetsIEnum.Any();
-
-    spreadsheetDocument.Close();
-
-    return isExists;
-}
 --
 
 This function checks if a specified worksheet does exist in a specified spreadsheet. +
@@ -950,12 +935,6 @@ This function checks if a specified worksheet does exist in a specified spreadsh
 /// </returns>
 
 public static bool CheckPathExist(ref string filepath)
-{
-    CheckAndConvertLongFilePath(ref filepath);
-
-    //If the path exists, it returns true and other functions can work further
-    return File.Exists(filepath);
-}
 --
 
 This function checks if a specified file does exist on the filepath. +
@@ -998,6 +977,23 @@ This function checks if a specified ID does exist in a specified worksheet. +
 
 The key of 'headerColumnAndID' is the (so called) 'header-column' and the value is a condition a cell must match (it must match data-type and value) and must be below this (so called) 'header-column'. +
 
+Example: +
+We have the table: +
+
+|===
+|       |   A       |   B       |   C       |   D       |   E       |   F
+|   1   | Header1   | Header2   | Header3   | Header4   | Header5   |Header6
+|   2   |Hello World| 0         | 1.0       | true      |22.02.2021 | 1
+|   3   |Foo Bar    | 10        | 2.2       | false     |23.02.2021 | 2
+|   4   |Spreadsheet| 42        | 3.14      | true      |24.02.2021 | 3
+|   5   |Worksheet  | 20        | 0.11      | false     |24.05.2021 | 4
+|   6   |OOP        | 2         | 9.81      | true      |24.05.2021 | 5
+|===
+
+When we use: +
+'headerColumnAndID' = new() { { "Header6", 3 } } +
+The function will return true, because in the column F that does contain the 'header-column' 'Header6' also conains a cell that matches the value (and data-type). +
+
 ===== 2.1.5.4 CheckHeaderColumnsExist
 
 {nbsp} +
@@ -1027,6 +1023,23 @@ This function checks if all specified 'header-columns' of (parameter) 'headerCol
 
 All 'header-columns' must be in the same row. +
 If one 'header-column' is missing in the row, it'll search until the end of the document and then return false if no row was found that contains all specified 'header-columns' in (parameter) 'headerColumns'. +
+
+Example: +
+We have the table: +
+
+|===
+|       |   A       |   B       |   C       |   D       |   E       |   F
+|   1   | Header1   | Header2   | Header3   | Header4   | Header5   |Header6
+|   2   |Hello World| 0         | 1.0       | true      |22.02.2021 | 1
+|   3   |Foo Bar    | 10        | 2.2       | false     |23.02.2021 | 2
+|   4   |Spreadsheet| 42        | 3.14      | true      |24.02.2021 | 3
+|   5   |Worksheet  | 20        | 0.11      | false     |24.05.2021 | 4
+|   6   |OOP        | 2         | 9.81      | true      |24.05.2021 | 5
+|===
+
+When we use: +
+'headerColumns' = new() { "Header1", "Header2", "Header3" } +
+The function will return true, because there is a row that does contain ALL of those 'header-columns'. +
 
 {nbsp} +
 
@@ -1207,6 +1220,10 @@ String; DateTime; (Boolean); Numbers (Decimal); +
 If you want to use other data-types than the specified, they should be converted into one of these data-types before inserting them into Public APIs (!) +
 
 {nbsp} +
+
+==== 2.2.2.0 Worksheets
+
+Worksheets do contain the tables where the content is stored.
 
 Link: Go to <<2.0.0.0 Code Documentation>> +
 Link: Go to <<0.0.0.0 Table of Contents>> +

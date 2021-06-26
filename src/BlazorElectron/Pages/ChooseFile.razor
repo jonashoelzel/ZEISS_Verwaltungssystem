@@ -5,7 +5,7 @@
 @using Zeiss.PublicationManager.Business.Logic.IO
 
 @inject NavigationManager NavigationManager
-@inject PublicationDataSetModel Publication 
+@inject PublicationDataSetModel Publication
 @inject DataHandler dataHandler
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg" class="logo" />
@@ -22,13 +22,34 @@
 
 @code
 {
+    bool isException = false;
+
     async Task openFileDialog()
     {
         if (!HybridSupport.IsElectronActive)
         {
-            dataHandler.CreateNewExcelIfNotExisting();
-            NavigationManager.NavigateTo("/SearchPublication");
-            return;
+            try
+            {
+                dataHandler.CreateNewExcelIfNotExisting();
+                isException = false;
+            }
+            catch (Exception ex)
+            {
+                isException = true;
+                if (ex is UnauthorizedAccessException || ex is IOException)
+                {
+                    OpenException();
+                    return;
+                }
+
+                throw ex;
+            }
+
+            if (!isException)
+            {
+                NavigationManager.NavigateTo("/SearchPublication");
+                return;
+            }
         }
 
         var options = new OpenDialogOptions
@@ -36,16 +57,16 @@
             Title = "Choose a file",
             Filters = new[]
             {
-                new FileFilter
-                {
-                    Name = "Excel",
-                    Extensions = new[] { "xlsx" }
-                },
+            new FileFilter
+            {
+                Name = "Excel",
+                Extensions = new[] { "xlsx" }
             },
+        },
             Properties = new[]
             {
-                OpenDialogProperty.multiSelections, OpenDialogProperty.showHiddenFiles
-            }
+            OpenDialogProperty.multiSelections, OpenDialogProperty.showHiddenFiles
+        }
         };
 
         var mainWindow = Electron.WindowManager.BrowserWindows.First();
@@ -58,6 +79,7 @@
         dataHandler.SetFilePath(selectedFiles.FirstOrDefault());
 
         NavigationManager.NavigateTo("/SearchPublication");
+
     }
 
     async Task createFielDialog()
@@ -92,3 +114,61 @@
         NavigationManager.NavigateTo("/SearchPublication");
     }
 }
+
+
+@if (ShowException)
+{
+    <div class="modal fade show" role="dialog" style="@modalExceptionDisplay">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title w-100 text-center" style="font-size:16px">
+                        Datei-Zugriffs-Berechtigungs-Fehler
+                        <br />
+                        <br />Die Datei: 
+                        <br />"@dataHandler.filePath";
+                        <br />wird derzeit von einem anderen Programm verwendet
+                        <br />oder Ihr Adminstrator hat Ihnen den Zugriff verwehrt.
+                        <br />
+                        <br />Sie können warten bis das andere Programm die Datei wieder freigegeben hat und den Vorgang wiederholen.
+                        <br />
+                        <br />Sollten Sie die Benachrichtigung nach mehrerern Versuchen immernoch sehen,
+                        <br />fragen Sie Ihren Adminstator und prüfen Sie, ob die Datei derzeit von einem anderen Programm verwendet wird
+                        <br />und prüfen Sie Ihre Berechtigungen.
+                    </h3>
+                    <button type="reset" class="cancelButton" @onclick="@CloseException">
+                        <span class="fas fa-times fa-2x"></span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <button type="submit" id="addButtonInPopup" class="form-control" @onclick="@Retry">Vorgang Wiederholen</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code
+{
+    string modalExceptionDisplay = "display:none";
+    bool ShowException = false;
+
+    public void OpenException()
+    {
+        modalExceptionDisplay = "display:block";
+        ShowException = true;
+    }
+
+    void CloseException()
+    {
+        ShowException = false;
+        modalExceptionDisplay = "display:none";
+    }
+
+    async void Retry()
+    {
+        await openFileDialog();
+        CloseException();
+    }
+}
+

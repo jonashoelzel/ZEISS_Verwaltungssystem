@@ -5,6 +5,8 @@
 @using Zeiss.PublicationManager.Business.Logic.IO
 @using BlazorElectron.Data.DataLogic
 
+
+
 @inject NavigationManager NavigationManager
 @inject PublicationDataSetModel Publication
 @inject DataHandler dataHandler
@@ -47,7 +49,7 @@ else if (ShowSavePopup && workflowState.State == Data.DataLogic.State.Edit)
 
 @if (ShowAddPopup)
 {
-    <EditForm Model="@newPublisher" OnInvalidSubmit="@HandleInvalidSubmit" OnValidSubmit="@AddNewPublisher">
+    <EditForm Model="@NewPublisher" OnInvalidSubmit="@HandleInvalidSubmit" OnValidSubmit="@AddNewPublisher">
         <DataAnnotationsValidator />
         <div class="modal fade show" role="dialog" style="@modalDisplay">
             <div class="modal-dialog" role="document">
@@ -60,8 +62,8 @@ else if (ShowSavePopup && workflowState.State == Data.DataLogic.State.Edit)
                     </div>
                     <div class="modal-object">
                         <label for="publicationTypeName">Name des Verlags</label>
-                        <InputText class="form-control" id="publicationTypeName" @bind-Value="newPublisher.Name" /><br />
-                        <ValidationMessage For="@(() => newPublisher.Name)" />
+                        <InputText class="form-control" id="publicationTypeName" @bind-Value="NewPublisher.Name" /><br />
+                        <ValidationMessage For="@(() => NewPublisher.Name)" />
                     </div>
                     <div class="modal-body">
                         <button type="submit" id="addButtonInPopup" class="form-control">Hinzufügen</button>
@@ -93,7 +95,11 @@ else if (workflowState.State == Data.DataLogic.State.Add)
             <select class="form-control" @onchange="SetPublisher">
                 @foreach (var publisher in publishers)
                 {
-                    <option value="@publisher.ID">@publisher.Name</option>
+                    if (!String.IsNullOrWhiteSpace(publisher.Name))
+                    {
+                        <option value="@publisher.ID">@publisher.Name</option>
+                    }
+                    
                 }
             </select>
         </div>
@@ -105,11 +111,11 @@ else if (workflowState.State == Data.DataLogic.State.Add)
 
 @if (workflowState.State == Data.DataLogic.State.Edit)
 {
-    <button class="primaryButton addPub" type="submit" @onclick="Save">Änderungen Speichern</button>
+    <button class="primaryButton addPub" type="submit" @onclick="SavePublication">Änderungen Speichern</button>
 }
 else if (workflowState.State == Data.DataLogic.State.Add)
 {
-    <button class="primaryButton addPub" type="submit" @onclick="Save">Veröffentlichung hinzufügen</button>
+    <button class="primaryButton addPub" type="submit" @onclick="SavePublication">Veröffentlichung hinzufügen</button>
 }
 <button class="primaryButton back" type="button" @onclick="NavigateToPreviousScreen">
     <span class="fas fa-arrow-circle-left fa-3x"></span>
@@ -120,8 +126,8 @@ else if (workflowState.State == Data.DataLogic.State.Add)
 
 @code
 {
-    PublisherModel newPublisher = new();
-    List<IPublisher> publishers;
+    PublisherModel NewPublisher = new();
+    List<IPublisher> publishers = new();
     bool ShowAddPopup = false;
     bool ShowSavePopup = false;
     string modalDisplay = "display:block";
@@ -134,7 +140,7 @@ else if (workflowState.State == Data.DataLogic.State.Add)
 
     void Cancel()
     {
-        newPublisher.Name = string.Empty;
+        NewPublisher.Name = string.Empty;
         ShowAddPopup = false;
         modalDisplay = "display:none";
     }
@@ -145,11 +151,77 @@ else if (workflowState.State == Data.DataLogic.State.Add)
         ShowAddPopup = true;
     }
 
-    private void Save()
+    private void SavePublisher()
     {
-        dataHandler.Save(Publication);
-        modalDisplay = "display:block";
-        ShowSavePopup = true;
+        try
+        {
+            dataHandler.SavePublisher(NewPublisher);
+
+            PublisherModel newPublisher = new();
+            newPublisher.Set(NewPublisher);
+
+            publishers.Insert(0, newPublisher);
+
+            ReadDataSet.CachedPublishers.Add(newPublisher);
+
+            NewPublisher = new();
+        }
+        catch (Exception ex)
+        {
+            if (ex is UnauthorizedAccessException || ex is IOException)
+            {
+                publisherException = true;
+                OpenException();
+                return;
+            }
+
+            throw ex;
+        }
+    }
+
+
+    private void Update()
+    {
+        AddNewPublisher();
+        SavePublication();
+    }
+
+
+    private void SavePublication()
+    {
+        try
+        {
+            dataHandler.Save(Publication);
+
+            PublicationDataSetModel NewDataSet = new();
+            NewDataSet.Set(Publication);
+
+            if (workflowState.State == Data.DataLogic.State.Add)
+            {
+                ReadDataSet.CachedPublications.Add(NewDataSet);
+            }
+            else
+            {
+                int index = ReadDataSet.CachedPublications.FindIndex(item => item.ID == NewDataSet.ID);
+                ReadDataSet.CachedPublications[index] = NewDataSet;
+            }
+
+            modalDisplay = "display:block";
+            ShowSavePopup = true;
+        }
+        catch (Exception ex)
+        {
+            if (ex is UnauthorizedAccessException || ex is IOException)
+            {
+                publicationException = true;
+                OpenException();
+                return;
+            }
+
+            throw ex;
+        }
+
+        StateHasChanged();
     }
 
     private void HandleInvalidSubmit() { }
@@ -158,12 +230,10 @@ else if (workflowState.State == Data.DataLogic.State.Add)
     {
         ShowAddPopup = false;
         modalDisplay = "display:none";
-        publishers.Insert(0, newPublisher);
 
-        dataHandler.SavePublisher(newPublisher);
+        Publication.PublishedBy = NewPublisher;
 
-        Publication.PublishedBy = newPublisher;
-        newPublisher = new();
+        SavePublisher();
     }
 
     void SetPublisher(ChangeEventArgs publicationType)
@@ -174,15 +244,16 @@ else if (workflowState.State == Data.DataLogic.State.Add)
 
     void fetchData()
     {
-        if (publishers is not null)
+        if (publishers.Any())
             return;
 
-        publishers = new List<IPublisher>();
-        var readPublishers = dataHandler.ExcelReader.ReadPublishers();
-        foreach (var publisher in readPublishers)
+        List<IPublisher> readPublishers = ReadDataSet.CachedPublishers;
+        foreach (IPublisher publisher in readPublishers)
         {
             publishers.Add(publisher);
         }
+
+        publishers.RemoveAll(x => String.IsNullOrWhiteSpace(x.Name));
     }
 
     protected override void OnInitialized()
@@ -199,3 +270,74 @@ else if (workflowState.State == Data.DataLogic.State.Add)
             Publication.PublishedBy = publishers.FirstOrDefault();
     }
 }
+
+
+@if (ShowException)
+{
+    <div class="modal fade show" role="dialog" style="@modalExceptionDisplay">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title w-100 text-center" style="font-size:16px">
+                        Datei-Zugriffs-Berechtigungs-Fehler
+                        <br />
+                        <br />Die Datei:
+                        <br />"@dataHandler.filePath";
+                        <br />wird derzeit von einem anderen Programm verwendet
+                        <br />oder Ihr Adminstrator hat Ihnen den Zugriff verwehrt.
+                        <br />
+                        <br />Sie können warten bis das andere Programm die Datei wieder freigegeben hat und den Vorgang wiederholen.
+                        <br />
+                        <br />Sollten Sie die Benachrichtigung nach mehrerern Versuchen immernoch sehen,
+                        <br />fragen Sie Ihren Adminstator und prüfen Sie, ob die Datei derzeit von einem anderen Programm verwendet wird
+                        <br />und prüfen Sie Ihre Berechtigungen.
+                    </h3>
+                    <button type="reset" class="cancelButton" @onclick="@CloseException">
+                        <span class="fas fa-times fa-2x"></span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <button type="submit" id="addButtonInPopup" class="form-control" @onclick="@Retry">Vorgang Wiederholen</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code
+{
+    string modalExceptionDisplay = "display:block";
+    bool ShowException = false;
+
+    bool publicationException = false;
+    bool publisherException = false;
+
+    public void OpenException()
+    {
+        modalExceptionDisplay = "display:block";
+        ShowException = true;
+    }
+
+    void CloseException()
+    {
+        ShowException = false;
+        modalExceptionDisplay = "display:none";
+    }
+
+    void Retry()
+    {
+        if (publicationException)
+        {
+            SavePublication();
+            publicationException = false;
+        }
+        else if (publisherException)
+        {
+            SavePublisher();
+            publisherException = false;
+        }
+
+        CloseException();
+    }
+}
+
