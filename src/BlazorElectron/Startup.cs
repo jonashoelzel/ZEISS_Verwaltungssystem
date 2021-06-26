@@ -26,7 +26,7 @@ namespace Zeiss.PublicationManager.UI
         // This method opens the Electron window
         public async void ElectronBootstrap()
         {
-            WebPreferences wp = new WebPreferences();
+            WebPreferences wp = new();
 
             var browserWindow = await Electron.WindowManager.CreateWindowAsync(new BrowserWindowOptions
             {
@@ -37,6 +37,13 @@ namespace Zeiss.PublicationManager.UI
             await browserWindow.WebContents.Session.ClearCacheAsync();
             browserWindow.OnReadyToShow += () => browserWindow.Show();
             browserWindow.SetTitle("Zeiss"); // TODO: Edit title
+            browserWindow.OnClosed += () =>
+            {
+                Electron.App.Exit(0);
+                Environment.Exit(0);
+                Electron.App.Quit();
+                browserWindow = null;
+            };
         }
 
         public Startup(IConfiguration configuration)
