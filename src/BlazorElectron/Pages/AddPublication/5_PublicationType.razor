@@ -366,6 +366,14 @@ else
     {
         ShowException = false;
         modalExceptionDisplay = "display:none";
+
+        ResetExceptions();
+    }
+
+    void ResetExceptions()
+    {
+        publicationException = false;
+        publicationTypeException = false;
     }
 
     void Retry()
@@ -373,12 +381,10 @@ else
         if (publicationException)
         {
             SavePublication();
-            publicationException = false;
         }
         else if (publicationTypeException)
         {
             SavePublicationType();
-            publicationTypeException = false;
         }
 
         CloseException();

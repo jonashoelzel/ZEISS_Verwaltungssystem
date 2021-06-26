@@ -353,6 +353,14 @@ else if (workflowState.State == Data.DataLogic.State.Add)
     {
         ShowException = false;
         modalExceptionDisplay = "display:none";
+
+        ResetExceptions();
+    }
+
+    void ResetExceptions()
+    {
+        publicationException = false;
+        authorException = false;
     }
 
     void Retry()
@@ -360,12 +368,10 @@ else if (workflowState.State == Data.DataLogic.State.Add)
         if (publicationException)
         {
             SavePublication();
-            publicationException = false;
         }
         else if (authorException)
         {
             SaveAuthor();
-            authorException = false;
         }
 
         CloseException();

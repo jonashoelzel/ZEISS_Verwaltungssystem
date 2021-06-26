@@ -27,7 +27,7 @@ namespace Zeiss.PublicationManager.UI
         // This method opens the Electron window
         public async void ElectronBootstrap()
         {
-            WebPreferences wp = new WebPreferences();
+            WebPreferences wp = new();
 
             var browserWindow = await Electron.WindowManager.CreateWindowAsync(new BrowserWindowOptions
             {
@@ -42,7 +42,6 @@ namespace Zeiss.PublicationManager.UI
             browserWindow.SetTitle("Zeiss"); // TODO: Edit title
             browserWindow.OnClosed += () =>
             {
-                // Directory.Delete(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "publication-manager", "Local Storage"), true);
                 Electron.App.Exit(0);
                 Environment.Exit(0);
                 Electron.App.Quit();

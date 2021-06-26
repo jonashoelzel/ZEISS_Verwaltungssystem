@@ -16,15 +16,12 @@
     </header>
     <div class="panel-body centeredButton chooseExcel">
         <button type="button" class="primaryButton openExcel" @onclick="openFileDialog">Datei Öffnen</button>
-        <button type="button" class="secondaryButton newExcel" @onclick="createFielDialog">Neue Excel erstellen</button>
+        <button type="button" class="secondaryButton newExcel" @onclick="createFileDialog">Neue Excel erstellen</button>
     </div>
 </section>
 
 @code
 {
-    bool isException = false;
-    bool isElectronConfigSetted = false;
-
     async Task openFileDialog()
     {
         if (!HybridSupport.IsElectronActive)
@@ -32,13 +29,12 @@
             try
             {
                 dataHandler.CreateNewExcelIfNotExisting();
-                isException = false;
             }
             catch (Exception ex)
             {
-                isException = true;
                 if (ex is UnauthorizedAccessException || ex is IOException)
                 {
+                    openFileException = true;
                     OpenException();
                     return;
                 }
@@ -46,11 +42,8 @@
                 throw ex;
             }
 
-            if (!isException)
-            {
-                NavigationManager.NavigateTo("/SearchPublication");
-                return;
-            }
+            NavigationManager.NavigateTo("/SearchPublication");
+            return;
         }
 
 
@@ -65,11 +58,11 @@
                 Name = "Excel",
                 Extensions = new[] { "xlsx" }
             },
-        },
-            Properties = new[]
-            {
-            OpenDialogProperty.multiSelections, OpenDialogProperty.showHiddenFiles
-        }
+            },
+                Properties = new[]
+                {
+                OpenDialogProperty.multiSelections, OpenDialogProperty.showHiddenFiles
+            }
         };
 
         try
@@ -81,49 +74,31 @@
             if (!System.IO.File.Exists(selectedFiles.FirstOrDefault()))
                 return;
 
-            dataHandler.SetFilePath(selectedFiles.FirstOrDefault()); 
-
-            /*
-            Electron.IpcMain.On("show-app-menu-btn", async (args) =>
-            {
-
-                var mainWindow = Electron.WindowManager.BrowserWindows.First();
-
-                var selectedFiles = await Electron.Dialog.ShowOpenDialogAsync(mainWindow, options);
-
-                if (!System.IO.File.Exists(selectedFiles.FirstOrDefault()))
-                    return;
-
-                dataHandler.SetFilePath(selectedFiles.FirstOrDefault()); 
-            }); */
-
+            dataHandler.SetFilePath(selectedFiles.FirstOrDefault());
         }
         catch (Exception ex)
         {
-            // Directory.Delete(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "publication-manager", "Local Storage"), true);
-            if (!isElectronConfigSetted)
+            if (ex is UnauthorizedAccessException || ex is IOException)
             {
-                isElectronConfigSetted = true;
-                await openFileDialog();
-                
-            }else
-            {
-                throw ex;
+                openFileException = true;
+                OpenException();
+                return;
             }
+
+            throw ex;
         }
 
         NavigationManager.NavigateTo("/SearchPublication");
 
     }
 
-    async Task createFielDialog()
+    async Task createFileDialog()
     {
         if (!HybridSupport.IsElectronActive)
         {
             return;
         }
 
-        var mainWindow = Electron.WindowManager.BrowserWindows.FirstOrDefault();
 
         var options = new SaveDialogOptions
         {
@@ -139,12 +114,29 @@
             },
         };
 
-        var newFile = await Electron.Dialog.ShowSaveDialogAsync(mainWindow, options);
 
-        if (string.IsNullOrWhiteSpace(newFile))
-            return;
+        try
+        {
+            var mainWindow = Electron.WindowManager.BrowserWindows.FirstOrDefault();
 
-        dataHandler.SetFilePath(newFile);
+            var newFile = await Electron.Dialog.ShowSaveDialogAsync(mainWindow, options);
+
+            if (string.IsNullOrWhiteSpace(newFile))
+                return;
+
+            dataHandler.SetFilePath(newFile);
+        }
+        catch (Exception ex)
+        {
+            if (ex is UnauthorizedAccessException || ex is IOException)
+            {
+                createFileException = true;
+                OpenException();
+                return;
+            }
+
+            throw ex;
+        }
 
         NavigationManager.NavigateTo("/SearchPublication");
     }
@@ -188,6 +180,9 @@
     string modalExceptionDisplay = "display:none";
     bool ShowException = false;
 
+    bool openFileException = false;
+    bool createFileException = false;
+
     public void OpenException()
     {
         modalExceptionDisplay = "display:block";
@@ -198,11 +193,27 @@
     {
         ShowException = false;
         modalExceptionDisplay = "display:none";
+
+        ResetExceptions();
+    }
+
+    void ResetExceptions()
+    {
+        openFileException = false;
+        createFileException = false;
     }
 
     async void Retry()
     {
-        await openFileDialog();
+        if (openFileException)
+        {
+            await openFileDialog();
+        }
+        else if (createFileException)
+        {
+            await createFileDialog();
+        }
+
         CloseException();
     }
 }

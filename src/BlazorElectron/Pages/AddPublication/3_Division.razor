@@ -346,6 +346,14 @@ else if (workflowState.State == Data.DataLogic.State.Add)
     {
         ShowException = false;
         modalExceptionDisplay = "display:none";
+
+        ResetExceptions();
+    }
+
+    void ResetExceptions()
+    {
+        publicationException = false;
+        divisionException = false;
     }
 
     void Retry()
@@ -353,12 +361,10 @@ else if (workflowState.State == Data.DataLogic.State.Add)
         if (publicationException)
         {
             SavePublication();
-            publicationException = false;
         }
         else if (divisionException)
         {
             SaveDivision();
-            divisionException = false;
         }
 
         CloseException();

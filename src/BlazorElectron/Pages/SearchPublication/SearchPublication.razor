@@ -731,7 +731,6 @@ private void SortTable()
 
             throw ex;
         }
-
     }
 
 
@@ -834,6 +833,18 @@ private void SortTable()
     {
         ShowFileAccessException = false;
         modalExceptionDisplay = "display:none";
+
+        ResetExceptions();
+    }
+
+    void ResetExceptions()
+    {
+        fetchException = false;
+        deletePublicationException = false;
+        deleteAuthorException = false;
+        deletePublicationTypeException = false;
+        updateAuthorException = false;
+        updatePublicationTypeException = false;
     }
 
     void Retry()
@@ -841,32 +852,26 @@ private void SortTable()
         if (fetchException)
         {
             fetchData();
-            fetchException = false;
         }
         else if (deletePublicationException)
         {
             Delete(DeletePopup.Publication, retryID);
-            deletePublicationException = false;
         }
         else if (deleteAuthorException)
         {
             Delete(DeletePopup.Author, retryID);
-            deleteAuthorException = false;
         }
         else if (deletePublicationTypeException)
         {
             Delete(DeletePopup.PublicationType, retryID);
-            deletePublicationTypeException = false;
         }
         else if (updateAuthorException)
         {
             SaveAuthorChanges();
-            updateAuthorException = false;
         }
         else if (updatePublicationTypeException)
         {
             SavePublicationTypeChanges();
-            updatePublicationTypeException = false;
         }
 
         CloseException();
