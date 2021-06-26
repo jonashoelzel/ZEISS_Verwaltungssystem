@@ -31,11 +31,13 @@ namespace Zeiss.PublicationManager.UI
 
             var browserWindow = await Electron.WindowManager.CreateWindowAsync(new BrowserWindowOptions
             {
+                MinWidth = 1300,
                 Width = 1300,
+                MinHeight = 1000,
                 Height = 1000,
                 //AutoHideMenuBar = true,
-                Show = false
-            }); ;
+                Show = false,
+            }); ; ;
             await browserWindow.WebContents.Session.ClearCacheAsync();
             browserWindow.OnReadyToShow += () => browserWindow.Show();
             //browserWindow.Reload();
