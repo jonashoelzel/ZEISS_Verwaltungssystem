@@ -46,8 +46,10 @@
             return;
         }
 
+
         var options = new OpenDialogOptions
         {
+            // DefaultPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
             Title = "Choose a file",
             Filters = new[]
             {
@@ -100,6 +102,7 @@
 
         var options = new SaveDialogOptions
         {
+            // DefaultPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
             Title = "Choose a path to save the file",
             Filters = new[]
             {
