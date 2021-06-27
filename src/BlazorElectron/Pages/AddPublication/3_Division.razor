@@ -5,8 +5,6 @@
 @using Zeiss.PublicationManager.Business.Logic.IO
 @using BlazorElectron.Data.DataLogic
 
-
-
 @inject NavigationManager NavigationManager
 @inject PublicationDataSetModel Publication
 @inject DataHandler dataHandler
@@ -45,12 +43,12 @@
                         </button>
                     </div>
                     <div class="modal-object">
-                        <label for="divisionName">Geschäftsbereich</label>
+                        <label for="divisionName">Geschäftsbereich von ZEISS</label>
                         <InputText class="form-control" id="divisionName" @bind-Value="NewDivision.Name" /><br />
                         <ValidationMessage For="@(() => NewDivision.Name)" />
                     </div>
                     <div class="modal-body">
-                        <button type="submit" id="addButtonInPopup" class="form-control">Hinzufügen</button>
+                        <button type="submit" class="form-control primaryButton">Hinzufügen</button>
                     </div>
                 </div>
             </div>
@@ -70,7 +68,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <button type="submit" id="addButtonInPopup" class="form-control" @onclick="@OpenAddPopup">Neuen Geschäftsbereich hinzufügen</button>
+                    <button type="submit" class="form-control primaryButton" @onclick="@OpenAddPopup">Neuen Geschäftsbereich hinzufügen</button>
                 </div>
             </div>
         </div>
@@ -91,7 +89,7 @@ else if (workflowState.State == Data.DataLogic.State.Add)
 }
 <section class="panel-default">
     <header class="panel-heading">
-        <h4 class="panel-title">Geschäftsbereich</h4>
+        <h4 class="panel-title">Geschäftsbereich von ZEISS</h4>
     </header>
     <div class="panel-body">
         <div class="panel-object">
@@ -107,7 +105,7 @@ else if (workflowState.State == Data.DataLogic.State.Add)
             </select>
         </div>
         <div class="centeredButton">
-            <button class="primaryButton addNewField" @onclick="@OpenAddPopup">Neuen Geschäftsbereich hinzufügen</button>
+            <button class="secondaryButton addNewField" @onclick="@OpenAddPopup">Neuen Geschäftsbereich hinzufügen</button>
         </div>
     </div>
 </section>
@@ -116,11 +114,11 @@ else if (workflowState.State == Data.DataLogic.State.Add)
 {
     <button class="primaryButton addPub" type="submit" @onclick="ValidateAndSave">Änderungen Speichern</button>
 }
-<button class="primaryButton back" type="button" @onclick="NavigateToPreviousScreen">
-    <span class="fas fa-arrow-circle-left fa-3x"></span>
+<button class="secondaryButton back" type="button" @onclick="NavigateToPreviousScreen">
+    <span class="fas fa-arrow-circle-left fa-2x"></span>
 </button>
 <button class="primaryButton continue" type="submit" @onclick="@NavigateToNextScreen">
-    <span class="fas fa-arrow-circle-right fa-3x"></span>
+    <span class="fas fa-arrow-circle-right fa-2x"></span>
 </button>
 
 @code

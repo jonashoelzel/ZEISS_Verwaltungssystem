@@ -6,8 +6,6 @@
 @using System.IO
 @using BlazorElectron.Data.DataLogic
 
-
-
 @inject NavigationManager NavigationManager
 @inject PublicationDataSetModel Publication
 @inject DataHandler dataHandler
@@ -56,7 +54,7 @@
                         <ValidationMessage For="@(() => NewAuthor.Surname)" />
                     </div>
                     <div class="modal-body">
-                        <button type="submit" id="addButtonInPopup" class="form-control">Hinzufügen</button>
+                        <button type="submit" class="form-control primaryButton">Hinzufügen</button>
                     </div>
                 </div>
             </div>
@@ -76,7 +74,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <button type="submit" id="addButtonInPopup" class="form-control" @onclick="@OpenAddPopup">Neuen Autor hinzufügen</button>
+                    <button type="submit" class="form-control primaryButton" @onclick="@OpenAddPopup">Neuen Autor hinzufügen</button>
                 </div>
             </div>
         </div>
@@ -97,7 +95,7 @@ else if (workflowState.State == Data.DataLogic.State.Add)
 }
 <section class="panel-default">
     <header class="panel-heading">
-        <h4 class="panel-title">Autor</h4>
+        <h4 class="panel-title">Autor der Veröffentlichung</h4>
     </header>
     <div class="panel-body">
         <div class="panel-object">
@@ -108,12 +106,11 @@ else if (workflowState.State == Data.DataLogic.State.Add)
                     {
                         <option value="@author.ID">@string.Concat(author.Name, " ", author.Surname)</option>
                     }
-
                 }
             </select>
         </div>
         <div class="centeredButton">
-            <button class="primaryButton addNewField" @onclick="@OpenAddPopup">Neuen Autor hinzufügen</button>
+            <button class="secondaryButton addNewField" @onclick="@OpenAddPopup">Neuen Autor hinzufügen</button>
         </div>
     </div>
 </section>
@@ -122,11 +119,11 @@ else if (workflowState.State == Data.DataLogic.State.Add)
 {
     <button class="primaryButton addPub" type="submit" @onclick="ValidateAndSave">Änderungen Speichern</button>
 }
-<button class="primaryButton back" type="button" @onclick="NavigateToPreviousScreen">
-    <span class="fas fa-arrow-circle-left fa-3x"></span>
+<button class="secondaryButton back" type="button" @onclick="NavigateToPreviousScreen">
+    <span class="fas fa-arrow-circle-left fa-2x"></span>
 </button>
 <button class="primaryButton continue" type="button" @onclick="NavigateToNextScreen">
-    <span class="fas fa-arrow-circle-right fa-3x"></span>
+    <span class="fas fa-arrow-circle-right fa-2x"></span>
 </button>
 
 @code
@@ -153,7 +150,6 @@ else if (workflowState.State == Data.DataLogic.State.Add)
             modalDisplay = "display:block";
             ShowPflichtfeldPopup = true;
         }
-
     }
 
     private void HandleInvalidSubmit() { }

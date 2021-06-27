@@ -5,8 +5,6 @@
 @using Zeiss.PublicationManager.Business.Logic.IO
 @using BlazorElectron.Data.DataLogic
 
-
-
 @inject NavigationManager NavigationManager
 @inject PublicationDataSetModel Publication
 @inject DataHandler dataHandler
@@ -66,7 +64,7 @@ else if (ShowSavePopup && workflowState.State == Data.DataLogic.State.Edit)
                         <ValidationMessage For="@(() => NewPublicationType.Name)" />
                     </div>
                     <div class="modal-body">
-                        <button type="submit" id="addButtonInPopup" class="form-control">Hinzufügen</button>
+                        <button type="submit" class="form-control primaryButton">Hinzufügen</button>
                     </div>
                 </div>
             </div>
@@ -86,7 +84,7 @@ else if (ShowSavePopup && workflowState.State == Data.DataLogic.State.Edit)
                     </button>
                 </div>
                 <div class="modal-body">
-                    <button type="submit" id="addButtonInPopup" class="form-control" @onclick="@OpenAddPopup">Neue Veröffentlichungsart hinzufügen</button>
+                    <button type="submit" class="form-control primaryButton" @onclick="@OpenAddPopup">Neue Veröffentlichungsart hinzufügen</button>
                 </div>
             </div>
         </div>
@@ -123,22 +121,24 @@ else if (workflowState.State == Data.DataLogic.State.Add)
             </select>
         </div>
         <div class="centeredButton">
-            <button class="primaryButton addNewField" @onclick="@OpenAddPopup">Neue Veröffentlichungsart hinzufügen</button>
+            <button class="secondaryButton addNewField" @onclick="@OpenAddPopup">Neue Veröffentlichungsart hinzufügen</button>
         </div>
     </div>
 </section>
+
+<button class="secondaryButton addPub" type="submit" @onclick="@NavigateToNextScreen">Optionale Angaben</button>
+
+<button class="secondaryButton back" type="button" @onclick="NavigateToPreviousScreen">
+    <span class="fas fa-arrow-circle-left fa-3x"></span>
+</button>
 @if (workflowState.State == Data.DataLogic.State.Add)
 {
-    <button class="primaryButton addPub" type="submit" @onclick="@ValidateAndSave">Veröffentlichung hinzufügen</button>
+    <button class="primaryButton continue" type="submit" @onclick="@ValidateAndSave">Veröffentlichung hinzufügen</button>
 }
 else
 {
-    <button class="primaryButton addPub" type="submit" @onclick="@ValidateAndSave">Änderungen Speichern</button>
+    <button class="primaryButton continue" type="submit" @onclick="@ValidateAndSave">Änderungen Speichern</button>
 }
-<button class="primaryButton back" type="button" @onclick="NavigateToPreviousScreen">
-    <span class="fas fa-arrow-circle-left fa-3x"></span>
-</button>
-<button class="primaryButton continue" type="submit" @onclick="@NavigateToNextScreen">Optionale Angaben</button>
 
 @code
 {
@@ -341,7 +341,7 @@ else
                     </button>
                 </div>
                 <div class="modal-body">
-                    <button type="submit" id="addButtonInPopup" class="form-control" @onclick="@Retry">Vorgang Wiederholen</button>
+                    <button type="submit" class="form-control primaryButton" @onclick="@Retry">Vorgang Wiederholen</button>
                 </div>
             </div>
         </div>

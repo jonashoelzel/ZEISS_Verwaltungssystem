@@ -8,8 +8,7 @@ body {
 /* ZEISS Logo */
 .logo {             
     display: block;
-    margin-left: auto;
-    margin-right: auto;
+    margin: 15px auto 15px auto;
     width: 11%;
     height: auto;
 }
@@ -17,18 +16,15 @@ body {
 /* aktueller Workflow Modus*/
 .mode {
     position: absolute;
+    color: white;
+    text-shadow: 2px 2px 4px #244ca4;
+    font-weight:bold;
     top: 25%;
     left: 25%;
-    font-weight:bold;
-    color: white;
-    text-shadow: 2px 2px 4px #000000;
 }
 
-.primaryButton {
-    border: 3px groove #565656;
+.primaryButton, .secondaryButton {
     border-radius: 15px;
-    background-color: #244ca4;
-    color: #ffffff;
     font-family: Arial;
     font-size: 120%;
     font-weight: bold;
@@ -36,66 +32,74 @@ body {
     line-height: 20px;
 }
 
+.primaryButton {
+    border: 3px groove #565656;
+    background-color: #244ca4;
+    color: #ffffff;
+}
+
     .primaryButton:hover {
         background-color: blue;
     }
 
-.openExcel, .newExcel {
-    width: 9em;
-    height: 4em;
-    margin: 0 25px 0 25px;
+.secondaryButton {
+    border: 3px groove #244ca4;
+    background-color: white;
+    color: #244ca4;
 }
-
-    .secondaryButton {
-        border: 3px groove #244ca4;
-        border-radius: 15px;
-        background-color: white;
-        color: #244ca4;
-        font-family: Arial;
-        font-size: 120%;
-        font-weight: bold;
-        text-align: center;
-        line-height: 20px;
-    }
 
     .secondaryButton:hover {
         color: darkblue;
     }
 
-/* Weiter-Button */
-.continue {
+.continue, .back {
     position: absolute;
-    bottom: 7%;
-    right: 7%;
-    width: 20%;
-    height: 10%;
+    bottom: 15%;
+    width: 9em;
+    height: 5em;
     min-width: 190px;
     min-height: 50px;
 }
 
+/* Weiter-Button */
+.continue {
+    right: 7%;
+}
+
 /* Zurück-Button */
-.back {
-    position: absolute;
-    bottom: 7%;
+.back { 
     left: 7%;
-    width: 20%;
-    height: 10%;
-    min-width: 190px;
-    min-height: 50px;
+}
+
+/* Datei Öffnen & Neue Excel erstellen-Button*/
+.excel-button {
+    width: 9em;
+    height: 4em;
+    margin: 0 25px 0 25px;
 }
 
 /* Veröffentlichung hinzufügen/speichern-Button */
 .addPub {
     position: absolute;
     top: 24%;
-    right: 3%;
-    width: 30%;
-    height: 8%;
-    min-width: 225px;
-    min-height: 50px;
+    right: 7%;
+    width: 9em;
+    height: 5em;
 }
 
-/* Zentrierter Button */
+/* Neue Veröffentlichung hinzufügen-Div */
+.landingPageAddPublication {
+    position: absolute;
+    right: 5%;
+    margin-top: 2%;
+}
+
+/* Neue Veröffentlichung hinzufügen-Button*/
+.addNewPub {
+    padding: 1em;
+}
+
+/* Zentrierter Button fuer Panel*/
 .centeredButton {
     text-align: center;
 }
@@ -122,33 +126,9 @@ body {
     right: 1px;
 }
 
-/* Hinzufügen-Button*/
-#addButtonInPopup {
-    border: 3px groove #565656;
-    border-radius: 15px;
-    background-color: #2f2e2e;
-    color: #ffffff;
-    font-family: Arial;
-    font-size: 120%;
-    font-weight: bold;
-    text-align: center;
-    line-height: 20px;
-    min-height: 50px;
-}
-
-/* "+"-Button */
-.landingPageAddPublication {
-    position: absolute;
-    right: 5%;
-    margin-top: 2%;
-}
-    .landingPageAddPublication button {
-        color: #244ca4;
+    .cancelButton:hover {
+        color: black;
     }
-
-        .landingPageAddPublication button:hover {
-            color: blue;
-        }
 
 /* Panel */
 .panel-title {
@@ -197,8 +177,8 @@ body {
     margin: 0 5%;
 }
 
-/* Landing-Page */
-.chooseExcel {
+/* Landing-Page div */
+.choose-Excel {
     display: flex;
     justify-content: center;
 }
@@ -248,14 +228,12 @@ a {
 }
 
 /* Übersichts-Tabelle */
-
-
 .table {
     width: 90%;
     margin: 0 auto;
 }
 
-/* scrollable table */
+/* scrollbare Tabelle + Ausrichtung Spalten */
 tbody {
     display: block;
     height: 450px;

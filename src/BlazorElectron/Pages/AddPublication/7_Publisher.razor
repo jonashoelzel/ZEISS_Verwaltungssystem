@@ -5,8 +5,6 @@
 @using Zeiss.PublicationManager.Business.Logic.IO
 @using BlazorElectron.Data.DataLogic
 
-
-
 @inject NavigationManager NavigationManager
 @inject PublicationDataSetModel Publication
 @inject DataHandler dataHandler
@@ -66,7 +64,7 @@ else if (ShowSavePopup && workflowState.State == Data.DataLogic.State.Edit)
                         <ValidationMessage For="@(() => NewPublisher.Name)" />
                     </div>
                     <div class="modal-body">
-                        <button type="submit" id="addButtonInPopup" class="form-control">Hinzufügen</button>
+                        <button type="submit" class="form-control primaryButton">Hinzufügen</button>
                     </div>
                 </div>
             </div>
@@ -104,7 +102,7 @@ else if (workflowState.State == Data.DataLogic.State.Add)
             </select>
         </div>
         <div class="centeredButton">
-            <button class="primaryButton addNewField" @onclick="@OpenAddPopup">Neuen Verlag hinzufügen</button>
+            <button class="secondaryButton addNewField" @onclick="@OpenAddPopup">Neuen Verlag hinzufügen</button>
         </div>
     </div>
 </section>
@@ -117,8 +115,8 @@ else if (workflowState.State == Data.DataLogic.State.Add)
 {
     <button class="primaryButton addPub" type="submit" @onclick="SavePublication">Veröffentlichung hinzufügen</button>
 }
-<button class="primaryButton back" type="button" @onclick="NavigateToPreviousScreen">
-    <span class="fas fa-arrow-circle-left fa-3x"></span>
+<button class="secondaryButton back" type="button" @onclick="NavigateToPreviousScreen">
+    <span class="fas fa-arrow-circle-left fa-2x"></span>
 </button>
 <!--
 <button class="primaryButton continue" type="button" @onclick="NavigateToNextScreen">

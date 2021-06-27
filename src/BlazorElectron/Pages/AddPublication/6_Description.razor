@@ -3,7 +3,6 @@
 @using Zeiss.PublicationManager.Data.DataSet.Model
 @using Zeiss.PublicationManager.Business.Logic.IO
 @using BlazorElectron.Data.DataLogic
-
 @using Zeiss.PublicationManager.Data.DataSet.IO.Read
 
 @inject NavigationManager NavigationManager
@@ -88,9 +87,9 @@ else if (ShowSavePopup && workflowState.State == Data.DataLogic.State.Edit)
     {
         <button class="primaryButton addPub" type="submit" @onclick="SavePublication">Veröffentlichung hinzufügen</button>
     }
-    <button class="primaryButton back" type="button" @onclick="NavigateToPreviousScreen">Pflichtangaben</button>
+    <button class="secondaryButton back" type="button" @onclick="NavigateToPreviousScreen">Pflichtangaben</button>
     <button class="primaryButton continue" type="submit" @onclick="NavigateToNextScreen">
-        <span class="fas fa-arrow-circle-right fa-3x"></span>
+        <span class="fas fa-arrow-circle-right fa-2x"></span>
     </button>
 </EditForm>
 
