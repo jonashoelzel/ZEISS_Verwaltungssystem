@@ -12,7 +12,203 @@
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg" class="logo" />
 
+<main>
+    <div id="background">
 
+        <button id="return_to_app"></button>
+        <h2>Anwender Dokumentation</h2>
+        <h3>Einleitung</h3>
+        <p>
+            Das Verwaltungsprogramm wurde für  Mitarbeiter und Gruppenleiter von Zeiss Digital Innovation entwickelt um Fachbeiträge effektiver zu verwalten.<br>
+
+            In der App-Anwendung können neue Veröffentlichungen hinzugefügt, bereits existierende editiert- und gelöscht werden.<br>
+            Das Programm speichert alle Informationen in einem auswählbaren Excel-Dokuments.<br>
+
+        </p>
+        <h3>Inhalt</h3>
+        <a href="#header_start_app" class="link_top"> Start der Desktopanwendung </a> <br>
+        <a href="#header_hinzufügen_veröffentlichung" class="link_top"> Hinzufügen einer neuen Veröffentlichung </a>
+        <div class="paragraph_text_wrapper" id="inhalt">
+            <li><a href="#header_titel">Titel</a> </li>
+            <li><a href="#header_autor">Autor</a> </li>
+            <li><a href="#header_geschäftsbereich">Geschäftsbereich</a> </li>
+            <li><a href="#header_datum">Datum</a> </li>
+            <li><a href="#header_art_veröfent">Art der Veröffentlichung</a> </li>
+            <li><a href="#header_beschreibung">Zusätzliche Information</a> </li>
+            <li><a href="#header_verlag">Verlag des Mediums</a> </li>
+        </div>
+        <a href="#header_liste_veröffentlichungen" class="link_top"> Liste an Veröffentlichungen </a>
+        <div class="paragraph_text_wrapper" id="inhalt_2">
+            <li><a href="#header_edit">Veröffentlichungen Editieren / Löschen</a> </li>
+            <li><a href="#header_suchen">Suchen/Filtern</a> </li>
+            <li><a href="#header_autor_veröffentlichung">Autoren/Veröffentlichungsarten</a> </li>
+        </div>
+
+
+        <h3 id="header_start_app">Start der Desktopanwendung</h3>
+        <div class=container_border>
+            <div class="paragraph_text_wrapper">
+                <li>Zum Start muss muss zwischen "Datei öffnen" und "Neue Excel erstellen" entschieden werden.</li>
+                <li>Wenn eine bereits existierende Excel Datei eingelesen werden soll: klicken sie auf "Datei öffnen" und wählen sie im sich öffnenden Dateibrowser die gewünschte Datei aus.</li>
+                <li>Wenn noch keine Excel Datei existiert ist auf "Neue Excel erstellen" zu klicken und im sich öffnenden Kontextmenu den Speicherort der neuen Datei auswählen.</li>
+            </div>
+        </div>
+
+        <h3 id="header_hinzufügen_veröffentlichung">Hinzufügen einer neuen Veröffentlichung</h3>
+        <div class=container_border>
+
+            <div class="center_wrapper">
+                <div class="paragraph_text_wrapper">
+                    <li>Zum Hinzufügen einer neuen Veröffentlichung ist als erstes auf den Button (1) zu klicken.</li>
+                </div>
+                <div class="center_image" id="img_veröffentlichung_hinzufügen"></div>
+            </div>
+
+            <div class="paragraph_wrapper">
+                <div class="paragraph_left_wrapper">
+                    <h4 class="paragraph_header" id="header_titel">Titel</h4>
+                    <div class="paragraph_text_wrapper">
+                        <li>In dem Textfeld [1] ist der gewünschte Titel einzugeben. Der Titel wird auch in der Liste der Veröffentlichungen angezeigt.</li>
+                        <li>Wenn keine Eingabe erfolgt oder zu viele Zeichen eingegeben werden, wird eine Fehlermeldung angezeigt.</li>
+                        <li>Die Eingabe ist ein Pflichtfeld mit maximal 200 Zeichen.</li>
+                        <br>
+                        <li>Der Knopf [2] führt zur nächsten Eingabeseite.</li>
+                        <li>Der Knopf [3] führt zurück zur letzten Seite.</li>
+
+                    </div>
+                </div>
+                <div class="paragraph_image" id="img_titel"></div>
+            </div>
+
+            <h4 class="paragraph_header" id="header_autor">Autor</h4>
+            <div class="paragraph_text_wrapper">
+                <li>In dem Dropdown-Menu [1] ist der gewünschte Autor auszuwählen. Wenn der gewünschte Autor nicht vorhanden ist, ist der Knopf [2] "Neuen Autor hinzufügen" zu drücken</li>
+                <li>In dem sich öffnenden Interface ist Vorname und Nachname des gewünschten Autors einzugeben und per "Hinzufügen" [3] zu bestätigen. Die Eingabe ist ein Pflichtfeld mit maximal 200 Zeichen.</li>
+                <li>Der Vor und Nachname des Autors wird in der Liste der Veröffentlichungen getrennt angezeigt. </li>
+            </div>
+            <div class="paragraph_wrapper">
+                <div class="paragraph_image" id="img_autor_1"></div>
+                <div class="paragraph_image" id="img_autor_2"></div>
+            </div>
+
+
+            <h4 class="paragraph_header" id="header_geschäftsbereich">Geschäftsbereich</h4>
+            <div class="paragraph_text_wrapper">
+                <li>In dem Dropdown-Menu [1] ist der gewünschte Geschäftsbereich auszuwählen. Wenn der gewünschte Geschäftsbereich nicht vorhanden ist, ist der Knopf [2] "Neuen Geschäftsbereich hinzufügen" zu drücken.</li>
+                <li>In dem sich öffnenden Interface ist der Name des Geschäftsbereichs einzugeben und per "Hinzufügen" [3] zu bestätigen. Die Eingabe akzeptiert maximal 200 Zeichen.</li>
+                <li>Der Geschäftsbereich wird NICHT in der Liste der Veröffentlichungen angezeigt. Es kann jedoch per Erweiterter Suche nach einzelnen Geschäftsbereichen sortiert werden.</li>
+            </div>
+            <div class="paragraph_wrapper">
+                <div class="paragraph_image" id="img_geschäftsbereich_1"></div>
+                <div class="paragraph_image" id="img_geschäftsbereich_2"></div>
+            </div>
+
+            <div class="paragraph_wrapper">
+                <div class="paragraph_left_wrapper">
+                    <h4 class="paragraph_header" id="header_datum">Datum</h4>
+                    <div class="paragraph_text_wrapper">
+                        <li>Zur Auswahl des Veröffentlichungsdatum kann auf das Eingabefeld [1] geklickt werden und im sich öffnenden Kalender das gewünschte Datum ausgewählt werden.</li>
+                        <li>Alternativ kann das Datum per Eingabe über die Tastatur erfolgen. </li>
+                        <li>Es wird automatisch das Datum auf plausabilität geprüft. Die Eingabe darf nicht vor dem 2.1.1900 liegen. Eine obere Grenze existiert nicht.</li>
+                    </div>
+                </div>
+                <div class="paragraph_image" id="img_datum"></div>
+            </div>
+
+
+            <h4 class="paragraph_header" id="header_art_veröfent">Art der Veröffentlichung</h4>
+            <div class="paragraph_text_wrapper">
+                <li>In dem Dropdown-Menu [1] ist die gewünschte Veröffentlichungsart auszuwählen. Wenn die gewünschte Veröffentlichungsart nicht vorhanden ist, ist der Knopf [2] "Neuen Veröffentlichungsart hinzufügen" zu drücken.</li>
+                <li>In dem sich öffnenden Interface ist der Name der Veröffentlichungsart einzugeben und per "Hinzufügen" [4] zu bestätigen. Die Eingabe akzeptiert maximal 200 Zeichen.</li>
+                <li>Der Geschäftsbereich wird NICHT in der Liste der Veröffentlichungen angezeigt. Es kann jedoch per Erweiterter Suche nach einzelnen Geschäftsbereichen sortiert werden.</li>
+
+                <li>
+                    Hiermit sind alle notwendigen Pflichtdaten eingegeben und per "Veröffentlichung hinzufügen" [3] kann die Veröffentlichung gespeichert werden.
+                    Alternativ kann per "Optionale Angaben" zusätzliche Informationen noch an die Veröffentlichung angehangen werden.
+                </li>
+            </div>
+            <div class="paragraph_wrapper">
+                <div class="paragraph_image" id="img_art_veröffentlichung_1"></div>
+                <div class="paragraph_image" id="img_art_veröffentlichung_2"></div>
+            </div>
+
+            <div class="paragraph_wrapper">
+                <div class="paragraph_left_wrapper">
+                    <h4 class="paragraph_header" id="header_beschreibung">Zusätzliche Information</h4>
+                    <div class="paragraph_text_wrapper">
+                        <li>in das Textfeld "Beschreibung" [1] kann eine generelle Beschreibung mit maximal 200 Zeichen eingegeben werden.</li>
+                        <li>in das Textfeld "Beschreibungstext" [2] können weitere Informationen mit maximal 2000 Zeichen eingegeben werden.</li>
+                        <li>Die Angaben werden in der Liste der Veröffentlichungen nicht angezeigt und bei der Sortierung und Filterung nicht in betracht gezogen.</li>
+                    </div>
+                </div>
+                <div class="paragraph_image" id="img_zusatz_info"></div>
+            </div>
+
+
+            <h4 class="paragraph_header" id="header_verlag">Verlag des Mediums</h4>
+            <div class="paragraph_text_wrapper">
+                <li>In dem Dropdown-Menu [1] ist der gewünschte Verlag auszuwählen. Wenn der gewünschte Verlag nicht vorhanden ist, ist der Knopf [2] "Neuen Verlag hinzufügen" zu drücken.</li>
+                <li>In dem sich öffnenden Interface ist der Name des Verlag einzugeben und per "Hinzufügen" [3] zu bestätigen. Die Eingabe akzeptiert maximal 200 Zeichen.</li>
+            </div>
+            <div class="paragraph_wrapper">
+                <div class="paragraph_image" id="img_verlag_1"></div>
+                <div class="paragraph_image" id="img_verlag_2"></div>
+            </div>
+        </div>
+
+
+        <h3 id="header_liste_veröffentlichungen">Liste der Veröffentlichungen</h3>
+        <div class=container_border>
+            <div class="center_wrapper">
+                <h4 class="paragraph_header" id="header_edit">Veröffentlichungen Editieren / Löschen</h4>
+                <div class="paragraph_text_wrapper">
+                    <li>In der Liste der Veröffentlichunen ist der Titel, Vorname und Nachname des Autors und das Datum der Veröffentlichung sichtbar.</li>
+                    <li>Die Veröffentlichungen können per anklicken der Überschriften [1] alphabetisch aufsteigend und absteigend sortiert werden. Die Sortierung ist auch bei Eingabe eines Suchbegriffes möglich.</li>
+                    <li>
+                        Unter Aktionen kann per "Editieren" [2] die gewünschte Veröffentlichung editiert werden.
+                        <a href="#header_hinzufügen_veröffentlichung"> Identisch zum hinzufügen einer Veröffentlichung.</a>
+                        Und per "Löschen" [3] kann nach betätigung einer Kontrollfrage die gewählte Veröffentlichung gelöscht werden. Der zugehörige Autor, Verlag, Medium und Geschäftsbereich wird dabei nicht gelöscht
+                    </li>
+                </div>
+                <div class="center_image" id="img_liste_veröffentlichung"></div>
+            </div>
+
+            <div class="paragraph_wrapper">
+                <div class="paragraph_left_wrapper">
+                    <h4 class="paragraph_header" id="header_suchen">Suchen/Filtern</h4>
+                    <div class="paragraph_text_wrapper">
+                        <li>In dem Textfeld [1] können Suchbegriffe betreffend Titel, Autor, Datum und Art der Veröffentlichung abhängig vom ausgewählten Tab angezeigt werden. </li>
+                        <li>Die angezeigten Einträge entsprechen dem eingegebenem Suchbegriff. Eingaben werden als Suchbegriff behandelt und Suchbegriffe können nicht verkettet werden.</li>
+                        <li>Durch den Knopf "Erweiterte Suche" [2] erscheint ein Dropdown-Menu [3] Durch die Auswahl eines Geschäftsbereichs werden nur Veröffentlichungen,Autoren,Veröffentlichungsarten des gewählten Geschäftsbereichs angezeigt. </li>
+                    </div>
+                </div>
+                <div class="paragraph_image" id="img_liste_suchen"></div>
+            </div>
+
+            <h4 class="paragraph_header" id="header_autor_veröffentlichung">Autoren/Veröffentlichungsarten</h4>
+            <div class="paragraph_text_wrapper">
+                <li>Durch das wechseln der Tabs auf "Autoren" oder "Veröffentlichugnsarten" können entsprechende Einträge editiert [2] oder gelöscht [3] werden.</li>
+                <li>
+                    Das anlegen eines neuen Autors oder einer neuen Veröffentlichugnsart muss innerhalb dem
+                    <a href="#header_hinzufügen_veröffentlichung">hinzufügen</a>
+                    oder editieren einer neuen Veröffentlichung getätigt werden und ist somit in diesem Interface nicht möglich.
+                </li>
+
+            </div>
+            <div class="paragraph_wrapper">
+                <div class="paragraph_image" id="img_liste_autor"></div>
+                <div class="paragraph_image" id="img_liste_arten"></div>
+            </div>
+            <h4>Editieren / Löschen noch einen abschnitt? Oder reicht textuelle beschreibung oben?</h4>
+
+        </div>
+
+        <h3>Glossar?</h3>
+        <h3>Anleitung für Systemadministration?</h3>
+
+
+    </div>
+</main>
 @code
 {
 }

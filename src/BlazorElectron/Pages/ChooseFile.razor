@@ -10,7 +10,7 @@
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg" class="logo" />
 
-<button type="button" class="secondaryButton" id="userHelp">Hilfe</button>
+<button type="button" class="secondaryButton" id="userHelp" @onclick="@OpenUserDoc">Hilfe</button>
 
 <section class="panel-default">
     <header class="panel-heading">
@@ -24,6 +24,8 @@
 
 @code
 {
+    private void OpenUserDoc() => NavigationManager.NavigateTo("/UserDocs");
+
     async Task openFileDialog()
     {
         if (!HybridSupport.IsElectronActive)
@@ -61,7 +63,7 @@
                 Extensions = new[] { "xlsx" }
             },
             },
-                Properties = new[]
+            Properties = new[]
                 {
                 OpenDialogProperty.multiSelections, OpenDialogProperty.showHiddenFiles
             }

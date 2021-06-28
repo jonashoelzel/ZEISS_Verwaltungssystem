@@ -308,3 +308,189 @@ thead {
         right: 0.75rem;
         top: 0.5rem;
     }
+
+/*###########################################################################################*/
+body {
+    background-color: #e5e5e5;
+    font-size: 16px;
+    font-family: Arial;
+    width: 100%;
+    overflow-x: hidden;
+}
+
+#background {
+    margin-left: 2%;
+    width: 96%
+}
+
+#zeiss_logo {
+    background-image: url("../src/Zeiss_logo.svg");
+    height: 20px;
+    width: 100%
+}
+
+h2 {
+    font-size: 2.5em;
+    text-align: center
+}
+
+h3 {
+    font-size: 1.75em;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 0px;
+    margin-right: 0px
+}
+
+.link_top {
+    font-size: 1.25em;
+    margin-top: 5px;
+    margin-bottom: 5px
+}
+
+#inhalt {
+    margin-left: 15px;
+    margin-bottom: 5px;
+    margin-top: 5px
+}
+
+#inhalt_2 {
+    margin-left: 15px;
+    margin-bottom: 5px;
+    margin-top: 5px
+}
+
+#return_to_app {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    width: 385px;
+    height: 90px;
+    width: 20%;
+    height: 10%;
+    background-color: none;
+    background-image: url("../src/back_arrow.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    border: none;
+}
+
+.container_border {
+    padding-left: 15px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-style: groove;
+    background-color: #faf7f7;
+}
+
+
+
+.paragraph_wrapper { /* Äußerter Wrapper um Bild rechts neben Rechts anzuzeigen (flex-display) */
+    display: flex;
+    height: auto;
+    width: 100%;
+    margin-left: 0px;
+    margin-bottom: 15px;
+}
+
+.paragraph_left_wrapper { /* Wrapper linker Teil mit Text (Rechts ist Bild) */
+    width: 50%;
+}
+
+.paragraph_header { /* Header margin deaktivieren, titel Unterstreichen */
+    margin: 0px;
+    text-decoration: underline black;
+    font-size: 1.25em;
+}
+
+.paragraph_text_wrapper { /* Margin um "Stichpunkte" nicht versetzt anzuzeigen. Abstand zum Titel*/
+    margin-left: 15px;
+    margin-top: 5px;
+}
+
+.paragraph_image { /* 40% Breite ergänzt paragraph_left_wrapper width */
+    height: 100%;
+    min-height: 275px;
+    width: 50%;
+    min-width: 250px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    /*  border-style: groove;*/
+}
+
+.center_image {
+    height: 100%;
+    min-height: 275px;
+    width: 50%;
+    min-width: 250px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    display: block;
+    margin: 5px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#img_veröffentlichung_hinzufügen {
+    background-image: url("../src/veröffentlichung_hinzufügen.png");
+}
+
+#img_titel {
+    background-image: url("../src/Titel.png");
+}
+
+#img_autor_1 {
+    background-image: url("../src/autor.png");
+}
+
+#img_autor_2 {
+    background-image: url("../src/autor2.png");
+}
+
+#img_geschäftsbereich_1 {
+    background-image: url("../src/geschäftsbereich_1.png");
+}
+
+#img_geschäftsbereich_2 {
+    background-image: url("../src/geschäftsbereich_2.png");
+}
+
+#img_datum {
+    background-image: url("../src/datum.png");
+}
+
+#img_art_veröffentlichung_1 {
+    background-image: url("../src/art_veröffentlichung_1.png");
+}
+
+#img_art_veröffentlichung_2 {
+    background-image: url("../src/art_veröffentlichung_2.png");
+}
+
+#img_zusatz_info {
+    background-image: url("../src/zusätzliche_info.png");
+}
+
+#img_verlag_1 {
+    background-image: url("../src/verlag_1.png");
+}
+
+#img_verlag_2 {
+    background-image: url("../src/verlag_2.png");
+}
+
+#img_liste_veröffentlichung {
+    background-image: url("../src/liste_edit.png");
+}
+
+#img_liste_suchen {
+    background-image: url("../src/liste_suchen.png");
+}
+
+#img_liste_autor {
+    background-image: url("../src/liste_autor.png");
+}
+
+#img_liste_arten {
+    background-image: url("../src/liste_art.png");
+}
