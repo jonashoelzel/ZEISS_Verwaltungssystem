@@ -383,8 +383,6 @@ h3 {
     background-color: #faf7f7;
 }
 
-
-
 .paragraph_wrapper { /* Äußerter Wrapper um Bild rechts neben Rechts anzuzeigen (flex-display) */
     display: flex;
     height: auto;
@@ -431,66 +429,66 @@ h3 {
     margin-right: auto;
 }
 
-#img_veröffentlichung_hinzufügen {
-    background-image: url("../src/veröffentlichung_hinzufügen.png");
+#img_veroeffentlichung_hinzufuegen {
+    background-image: url("../images/veroeffentlichung_hinzufuegen.png");
 }
 
 #img_titel {
-    background-image: url("../src/Titel.png");
+    background-image: url("../images/Titel.png");
 }
 
 #img_autor_1 {
-    background-image: url("../src/autor.png");
+    background-image: url("../images/autor.png");
 }
 
 #img_autor_2 {
-    background-image: url("../src/autor2.png");
+    background-image: url("../images/autor2.png");
 }
 
-#img_geschäftsbereich_1 {
-    background-image: url("../src/geschäftsbereich_1.png");
+#img_geschaeftsbereich_1 {
+    background-image: url("../images/geschaeftsbereich_1.png");
 }
 
-#img_geschäftsbereich_2 {
-    background-image: url("../src/geschäftsbereich_2.png");
+#img_geschaeftsbereich_2 {
+    background-image: url("../images/geschaeftsbereich_2.png");
 }
 
 #img_datum {
-    background-image: url("../src/datum.png");
+    background-image: url("../images/datum.png");
 }
 
-#img_art_veröffentlichung_1 {
-    background-image: url("../src/art_veröffentlichung_1.png");
+#img_art_veroeffentlichung_1 {
+    background-image: url("../images/art_veroeffentlichung_1.png");
 }
 
-#img_art_veröffentlichung_2 {
-    background-image: url("../src/art_veröffentlichung_2.png");
+#img_art_veroeffentlichung_2 {
+    background-image: url("../images/art_veroeffentlichung_2.png");
 }
 
 #img_zusatz_info {
-    background-image: url("../src/zusätzliche_info.png");
+    background-image: url("../images/zusaetzliche_info.png");
 }
 
 #img_verlag_1 {
-    background-image: url("../src/verlag_1.png");
+    background-image: url("../images/verlag_1.png");
 }
 
 #img_verlag_2 {
-    background-image: url("../src/verlag_2.png");
+    background-image: url("../images/verlag_2.png");
 }
 
-#img_liste_veröffentlichung {
-    background-image: url("../src/liste_edit.png");
+#img_liste_veroeffentlichung {
+    background-image: url("../images/liste_edit.png");
 }
 
 #img_liste_suchen {
-    background-image: url("../src/liste_suchen.png");
+    background-image: url("../images/liste_suchen.png");
 }
 
 #img_liste_autor {
-    background-image: url("../src/liste_autor.png");
+    background-image: url("../images/liste_autor.png");
 }
 
 #img_liste_arten {
-    background-image: url("../src/liste_art.png");
+    background-image: url("../images/liste_art.png");
 }
