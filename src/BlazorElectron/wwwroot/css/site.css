@@ -130,6 +130,16 @@ body {
         color: black;
     }
 
+/* Benutzerhilfe */
+#userHelp {
+    position: absolute;
+    top: 1em;
+    right: 4em;
+    width: 4em;
+    height: 2em;
+    border-radius: 0px;
+    border: 2px groove black;
+}
 /* Panel */
 .panel-title {
     font-size: 150%;
@@ -190,6 +200,10 @@ body {
 
 .filterSection {
     margin: 0 5% 0.5%;
+}
+
+.fa-filter:hover {
+    text-shadow: 2px 2px 4px #000000;
 }
 
 .dropdownFilter {
