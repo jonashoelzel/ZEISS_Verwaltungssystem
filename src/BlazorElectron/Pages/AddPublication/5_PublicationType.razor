@@ -118,7 +118,6 @@ else if (workflowState.State == Data.DataLogic.State.Add)
                     {
                         <option value="@publicationType.ID">@publicationType.Name</option>
                     }
-
                 }
             </select>
         </div>
@@ -128,20 +127,22 @@ else if (workflowState.State == Data.DataLogic.State.Add)
     </div>
 </section>
 
-<button class="secondaryButton addPub" type="submit" @onclick="@NavigateToNextScreen">Optionale Angaben</button>
-
-<button class="secondaryButton back" type="button" @onclick="NavigateToPreviousScreen">
-    <span class="fas fa-arrow-circle-left fa-3x"></span>
-</button>
-@if (workflowState.State == Data.DataLogic.State.Add)
+@if (workflowState.State == Data.DataLogic.State.Edit)
 {
-    <button class="primaryButton continue" type="submit" @onclick="@ValidateAndSave">Veröffentlichung hinzufügen</button>
+    <button class="primaryButton continue" type="submit" @onclick="ValidateAndSave">Änderungen speichern</button>
+    <button class="secondaryButton back" type="button" @onclick="NavigateToPreviousScreen">
+        <span class="fas fa-arrow-circle-left fa-2x"></span>
+    </button>
+    <button class="secondaryButton addPub" type="submit" @onclick="@NavigateToNextScreen">Optionale Angaben</button>
 }
-else
+else if (workflowState.State == Data.DataLogic.State.Add)
 {
-    <button class="primaryButton continue" type="submit" @onclick="@ValidateAndSave">Änderungen Speichern</button>
+<button class="primaryButton continue" type="submit" @onclick="SavePublication">Veröffentlichung hinzufügen</button>
+    <button class="secondaryButton back" type="button" @onclick="NavigateToPreviousScreen">
+        <span class="fas fa-arrow-circle-left fa-2x"></span>
+    </button>
+    <button class="secondaryButton addPub" type="submit" @onclick="@NavigateToNextScreen">Optionale Angaben</button>
 }
-
 @code
 {
     PublicationTypeModel NewPublicationType = new();

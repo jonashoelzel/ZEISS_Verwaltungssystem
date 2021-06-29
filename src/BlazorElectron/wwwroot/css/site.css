@@ -54,11 +54,9 @@ body {
 
 .continue, .back {
     position: absolute;
-    bottom: 15%;
+    bottom: 14%;
     width: 9em;
     height: 5em;
-    min-width: 190px;
-    min-height: 50px;
 }
 
 /* Weiter-Button */
@@ -83,6 +81,15 @@ body {
     position: absolute;
     top: 24%;
     right: 7%;
+    width: 9em;
+    height: 5em;
+}
+
+/* Änderungen speichern-Button*/
+.changePub {
+    position: absolute;
+    bottom: 14%;
+    left: 43%;
     width: 9em;
     height: 5em;
 }

@@ -79,7 +79,7 @@ else if (ShowSavePopup && workflowState.State == Data.DataLogic.State.Edit)
 
     @if (workflowState.State == Data.DataLogic.State.Edit)
     {
-        <button class="primaryButton addPub" type="submit" @onclick="SavePublication">Änderungen Speichern</button>
+        <button class="primaryButton addPub" type="submit" @onclick="SavePublication">Änderungen speichern</button>
     }
     else if (workflowState.State == Data.DataLogic.State.Add)
     {
@@ -163,7 +163,7 @@ else if (ShowSavePopup && workflowState.State == Data.DataLogic.State.Edit)
                     </button>
                 </div>
                 <div class="modal-body">
-                    <button type="submit" id="addButtonInPopup" class="form-control" @onclick="@Retry">Vorgang Wiederholen</button>
+                    <button type="submit" class="form-control primaryButton" @onclick="@Retry">Vorgang Wiederholen</button>
                 </div>
             </div>
         </div>

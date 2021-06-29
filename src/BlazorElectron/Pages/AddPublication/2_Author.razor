@@ -119,14 +119,23 @@ else if (workflowState.State == Data.DataLogic.State.Add)
 
 @if (workflowState.State == Data.DataLogic.State.Edit)
 {
-    <button class="primaryButton addPub" type="submit" @onclick="ValidateAndSave">Änderungen Speichern</button>
+    <button class="primaryButton changePub" type="submit" @onclick="ValidateAndSave">Änderungen speichern</button>
+    <button class="secondaryButton back" type="button" @onclick="NavigateToPreviousScreen">
+        <span class="fas fa-arrow-circle-left fa-2x"></span>
+    </button>
+    <button class="secondaryButton continue" type="submit" @onclick="NavigateToNextScreen">
+        <span class="fas fa-arrow-circle-right fa-2x"></span>
+    </button>
 }
-<button class="secondaryButton back" type="button" @onclick="NavigateToPreviousScreen">
-    <span class="fas fa-arrow-circle-left fa-2x"></span>
-</button>
-<button class="primaryButton continue" type="button" @onclick="NavigateToNextScreen">
-    <span class="fas fa-arrow-circle-right fa-2x"></span>
-</button>
+else if (workflowState.State == Data.DataLogic.State.Add)
+{
+    <button class="secondaryButton back" type="button" @onclick="NavigateToPreviousScreen">
+        <span class="fas fa-arrow-circle-left fa-2x"></span>
+    </button>
+    <button class="primaryButton continue" type="submit" @onclick="NavigateToNextScreen">
+        <span class="fas fa-arrow-circle-right fa-2x"></span>
+    </button>
+}
 
 @code
 {
@@ -326,7 +335,7 @@ else if (workflowState.State == Data.DataLogic.State.Add)
                     </button>
                 </div>
                 <div class="modal-body">
-                    <button type="submit" id="addButtonInPopup" class="form-control" @onclick="@Retry">Vorgang Wiederholen</button>
+                    <button type="submit" class="form-control primaryButton" @onclick="@Retry">Vorgang Wiederholen</button>
                 </div>
             </div>
         </div>

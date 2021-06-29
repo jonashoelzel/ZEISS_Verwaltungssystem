@@ -62,7 +62,7 @@
             <a class="nav-link" id="Autoren-tab" data-toggle="tab" href="#Autoren" role="tab" aria-controls="Autoren" aria-selected="false">Autoren</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" id="Veröffentlichungsarten-tab" data-toggle="tab" href="#Veröffentlichungsarten" role="tab" aria-controls="Veröffentlichungsarten" aria-selected="false">Veröffentlichungsarten</a>
+            <a class="nav-link" id="Veröffentlichungsarten-tab" data-toggle="tab" href="#Veröffentlichungsarten" role="tab" aria-controls="Veröffentlichungsarten" aria-selected="false">Art der Veröffentlichung</a>
         </li>
     </ul>
     <div class="tab-content" id="myTabContent">
@@ -76,7 +76,7 @@
                             <span class="fa @(GetSortStyle("Publication.WorkingTitle"))"></span>
                         </th>
                         <th>
-                            <span class="sort-link" @onclick="@(() => SetSortColumn("Publication.MainAuthor.Name"))">Vorname</span>
+                            <span class="sort-link" @onclick="@(() => SetSortColumn("Publication.MainAuthor.Name"))">Vorname des Autors</span>
                             <span class="fa @(GetSortStyle("Publication.MainAuthor.Name"))"></span>
                         </th>
                         <th>
@@ -121,7 +121,7 @@
                 <thead class="thead-dark">
                     <tr>
                         <th>
-                            <span class="sort-link" @onclick="@(() => SetSortColumn("Author.Name"))">Vorname</span>
+                            <span class="sort-link" @onclick="@(() => SetSortColumn("Author.Name"))">Vorname des Autors</span>
                             <span class="fa @(GetSortStyle("Author.Name"))"></span>
                         </th>
                         <th>
@@ -157,7 +157,7 @@
                 <thead class="thead-dark">
                     <tr>
                         <th>
-                            <span class="sort-link" @onclick="@(() => SetSortColumn("PublicationType.Name"))">Veröffentlichungsart</span>
+                            <span class="sort-link" @onclick="@(() => SetSortColumn("PublicationType.Name"))">Art der Veröffentlichung</span>
                             <span class="fa @(GetSortStyle("PublicationType.Name"))"></span>
                         </th>
                         <th>Aktion</th>
