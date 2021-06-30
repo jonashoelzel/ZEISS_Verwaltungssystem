@@ -12,7 +12,7 @@
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg" class="logo" />
 
-<button type="button" class="secondaryButton" id="userHelp">Hilfe</button>
+<!--<button type="button" class="secondaryButton" id="userHelp">Hilfe</button>-->
 
 @if (ShowSavePopup && workflowState.State == Data.DataLogic.State.Add)
 {
@@ -55,7 +55,7 @@ else if (ShowSavePopup && workflowState.State == Data.DataLogic.State.Edit)
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h3 class="modal-title w-100 text-center">Veröffentlichungsart hinzufügen</h3>
+                        <h3 class="modal-title w-100 text-center">Art der Veröffentlichung hinzufügen</h3>
                         <button type="reset" class="cancelButton" @onclick="@CancelAddPopup">
                             <span class="fas fa-times fa-2x"></span>
                         </button>
@@ -80,13 +80,13 @@ else if (ShowSavePopup && workflowState.State == Data.DataLogic.State.Edit)
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3 class="modal-title w-100 text-center">Veröffentlichungsart ist ein Pflichtfeld.<br /> Bitte fügen sie eine neue Veröffentlichungsart hinzu!</h3>
+                    <h3 class="modal-title w-100 text-center">Art der Veröffentlichung ist ein Pflichtfeld.<br /> Bitte fügen sie eine neue Art der Veröffentlichung hinzu!</h3>
                     <button type="reset" class="cancelButton" @onclick="@CancelPflichtfeldPopup">
                         <span class="fas fa-times fa-2x"></span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <button type="submit" class="form-control primaryButton" @onclick="@OpenAddPopup">Neue Veröffentlichungsart hinzufügen</button>
+                    <button type="submit" class="form-control primaryButton" @onclick="@OpenAddPopup">Neue Art der Veröffentlichung hinzufügen</button>
                 </div>
             </div>
         </div>
@@ -122,7 +122,7 @@ else if (workflowState.State == Data.DataLogic.State.Add)
             </select>
         </div>
         <div class="centeredButton">
-            <button class="secondaryButton addNewField" @onclick="@OpenAddPopup">Neue Veröffentlichungsart hinzufügen</button>
+            <button class="secondaryButton addNewField" @onclick="@OpenAddPopup">Neue Art der Veröffentlichung hinzufügen</button>
         </div>
     </div>
 </section>
@@ -137,7 +137,7 @@ else if (workflowState.State == Data.DataLogic.State.Add)
 }
 else if (workflowState.State == Data.DataLogic.State.Add)
 {
-<button class="primaryButton continue" type="submit" @onclick="SavePublication">Veröffentlichung hinzufügen</button>
+    <button class="primaryButton continue" type="submit" @onclick="SavePublication">Veröffentlichung hinzufügen</button>
     <button class="secondaryButton back" type="button" @onclick="NavigateToPreviousScreen">
         <span class="fas fa-arrow-circle-left fa-2x"></span>
     </button>

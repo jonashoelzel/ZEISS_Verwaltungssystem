@@ -35,13 +35,13 @@ namespace Zeiss.PublicationManager.UI
                 Width = 1300,
                 MinHeight = 1000,
                 Height = 1000,
-                //AutoHideMenuBar = true,
+                AutoHideMenuBar = true,
                 Show = false,
             });
             await browserWindow.WebContents.Session.ClearCacheAsync();
             browserWindow.OnReadyToShow += () => browserWindow.Show();
             //browserWindow.Reload();
-            browserWindow.SetTitle("Zeiss"); // TODO: Edit title
+            browserWindow.SetTitle("Zeiss Verwaltungssoftware"); // TODO: Edit title
             browserWindow.OnClosed += () =>
             {
                 Electron.App.Exit(0);

@@ -13,8 +13,7 @@
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg" class="logo" />
 
-<button type="button" class="secondaryButton" id="userHelp">Hilfe</button>
-
+<!--<button type="button" class="secondaryButton" id="userHelp">Hilfe</button>-->
 <!--Start Page Design-->
 <EditForm Model="@Publication">
 
@@ -190,199 +189,199 @@
 <!--Start Page Code-->
 @code
 {
-public static List<IPublicationDataSet> cachedPublications = new();
-public static List<IPublicationDataSet> displayedPublications = new();
+    public static List<IPublicationDataSet> cachedPublications = new();
+    public static List<IPublicationDataSet> displayedPublications = new();
 
-public static List<IDivision> cachedDivisions = new();
+    public static List<IDivision> cachedDivisions = new();
 
-public static List<IAuthor> cachedAuthors = new();
-public static List<IAuthor> displayedAuthors = new();
-public static List<IPublicationType> cachedPublicationTypes = new();
-public static List<IPublicationType> displayedPublicationTypes = new();
+    public static List<IAuthor> cachedAuthors = new();
+    public static List<IAuthor> displayedAuthors = new();
+    public static List<IPublicationType> cachedPublicationTypes = new();
+    public static List<IPublicationType> displayedPublicationTypes = new();
 
 
-void fetchData(bool reload = false)
-{
-    try
+    void fetchData(bool reload = false)
     {
-        if (reload 
-            || !ReadDataSet.CachedPublications.Any()
-            && !ReadDataSet.CachedDivisions.Any()
-            && !ReadDataSet.CachedAuthors.Any()
-            && !ReadDataSet.CachedPublicationTypes.Any())
+        try
         {
-            ReadDataSet.LoadAndCacheData();
+            if (reload
+                || !ReadDataSet.CachedPublications.Any()
+                && !ReadDataSet.CachedDivisions.Any()
+                && !ReadDataSet.CachedAuthors.Any()
+                && !ReadDataSet.CachedPublicationTypes.Any())
+            {
+                ReadDataSet.LoadAndCacheData();
+            }
+
+            //REMEMBER: These are references. Chanches of the originals also changes the 'copies'.
+            cachedPublications = ReadDataSet.CachedPublications;
+            displayedPublications = new(cachedPublications);
+
+            cachedDivisions = ReadDataSet.CachedDivisions;
+            cachedDivisions.RemoveAll(x => String.IsNullOrWhiteSpace(x.Name));
+            cachedDivisions.Insert(0, new Division() { Name = String.Empty });
+
+            cachedAuthors = ReadDataSet.CachedAuthors;
+            displayedAuthors = new(cachedAuthors);
+            cachedPublicationTypes = ReadDataSet.CachedPublicationTypes;
+            displayedPublicationTypes = new(cachedPublicationTypes);
+        }
+        catch (Exception ex)
+        {
+            if (ex is UnauthorizedAccessException || ex is IOException)
+            {
+                fetchException = true;
+                OpenException();
+                return;
+            }
+
+            throw ex;
+        }
+    }
+
+    private void NavigateToAddTitleComp()
+    {
+        workflowState.State = Data.DataLogic.State.Add;
+        Publication.Reset();
+        NavigationManager.NavigateTo("addTitle");
+    }
+
+    private bool HideFilter = true;
+
+    private bool IsSortedAscending = false;
+    private string CurrentSortColumn;
+
+    string SelectedDivsion { get; set; } = "";
+
+    string CurrentSearchTerm { get; set; } = "";
+
+    // Test Data
+    public class TableTest
+    {
+        public string TitleTest { get; set; }
+        public string NameTest { get; set; }
+        public string SurnameTest { get; set; }
+        public DateTime DateTest { get; set; }
+        public string Division { get; set; }
+    };
+
+    protected override void OnInitialized()
+    {
+        fetchData();
+        Filter();
+    }
+
+    // filter list when changing value of division-filter
+    public void SetDivisionFilter(ChangeEventArgs e)
+    {
+        SelectedDivsion = e.Value.ToString();
+        Filter();
+    }
+
+
+    void SetSearchTerm(ChangeEventArgs args)
+    {
+        CurrentSearchTerm = args.Value.ToString();
+        Filter();
+    }
+
+    void Filter()
+    {
+        if (!String.IsNullOrWhiteSpace(SelectedDivsion))
+        {
+            displayedPublications = cachedPublications?.Where(f => f.Division.Name.Equals(SelectedDivsion)).ToList();
+        }
+        else
+        {
+            displayedPublications = new(cachedPublications);
         }
 
-        //REMEMBER: These are references. Chanches of the originals also changes the 'copies'.
-        cachedPublications = ReadDataSet.CachedPublications;
-        displayedPublications = new(cachedPublications);
-
-        cachedDivisions = ReadDataSet.CachedDivisions;
-        cachedDivisions.RemoveAll(x => String.IsNullOrWhiteSpace(x.Name));
-        cachedDivisions.Insert(0, new Division() { Name = String.Empty });
-
-        cachedAuthors = ReadDataSet.CachedAuthors;
         displayedAuthors = new(cachedAuthors);
-        cachedPublicationTypes = ReadDataSet.CachedPublicationTypes;
         displayedPublicationTypes = new(cachedPublicationTypes);
-    }
-    catch (Exception ex)
-    {
-        if (ex is UnauthorizedAccessException || ex is IOException)
+
+        if (!String.IsNullOrWhiteSpace(CurrentSearchTerm))
         {
-            fetchException = true;
-            OpenException();
-            return;
+            displayedPublications = displayedPublications?.Where(i => i.WorkingTitle.ToLower().Contains(CurrentSearchTerm.ToLower()) ||
+                                             i.MainAuthor.Name.ToLower().Contains(CurrentSearchTerm.ToLower()) ||
+                                             i.MainAuthor.Surname.ToLower().Contains(CurrentSearchTerm.ToLower())).ToList();
+
+            displayedAuthors = displayedAuthors?.Where(i => i.Name.ToLower().Contains(CurrentSearchTerm.ToLower()) ||
+                                             i.Surname.ToLower().Contains(CurrentSearchTerm.ToLower())).ToList();
+
+            displayedPublicationTypes = displayedPublicationTypes?.Where(i => i.Name.ToLower().Contains(CurrentSearchTerm.ToLower())).ToList();
         }
 
-        throw ex;
+        SortTable();
     }
-}
-
-private void NavigateToAddTitleComp()
-{
-    workflowState.State = Data.DataLogic.State.Add;
-    Publication.Reset();
-    NavigationManager.NavigateTo("addTitle");
-}
-
-private bool HideFilter = true;
-
-private bool IsSortedAscending = false;
-private string CurrentSortColumn;
-
-string SelectedDivsion { get; set; } = "";
-
-string CurrentSearchTerm { get; set; } = "";
-
-// Test Data
-public class TableTest
-{
-    public string TitleTest { get; set; }
-    public string NameTest { get; set; }
-    public string SurnameTest { get; set; }
-    public DateTime DateTest { get; set; }
-    public string Division { get; set; }
-};
-
-protected override void OnInitialized()
-{
-    fetchData();
-    Filter();
-}
-
-// filter list when changing value of division-filter
-public void SetDivisionFilter(ChangeEventArgs e)
-{
-    SelectedDivsion = e.Value.ToString();
-    Filter();
-}
 
 
-void SetSearchTerm(ChangeEventArgs args)
-{
-    CurrentSearchTerm = args.Value.ToString();
-    Filter();
-}
-
-void Filter()
-{
-    if (!String.IsNullOrWhiteSpace(SelectedDivsion))
+    void SetSortColumn(string columnName)
     {
-        displayedPublications = cachedPublications?.Where(f => f.Division.Name.Equals(SelectedDivsion)).ToList();
+        if (columnName == CurrentSortColumn)
+        {
+            IsSortedAscending = !IsSortedAscending;
+        }
+        else
+        {
+            CurrentSortColumn = columnName;
+        }
+
+        Filter();
     }
-    else
+
+
+    // hide or show dropdown-filter
+    private void ChangeFilterVisibility() => HideFilter = !HideFilter;
+
+    // get column to sort and set corresponding icon
+    private string GetSortStyle(string columnName)
     {
-        displayedPublications = new(cachedPublications);
+        if (CurrentSortColumn != columnName)
+        {
+            return string.Empty;
+        }
+        if (IsSortedAscending)
+        {
+            return "fas fa-sort-amount-up";
+        }
+        else
+        {
+            return "fas fa-sort-amount-down";
+        }
     }
 
-    displayedAuthors = new(cachedAuthors);
-    displayedPublicationTypes = new(cachedPublicationTypes);
-
-    if (!String.IsNullOrWhiteSpace(CurrentSearchTerm))
+    // sort the column which was choosen
+    private void SortTable()
     {
-        displayedPublications = displayedPublications?.Where(i => i.WorkingTitle.ToLower().Contains(CurrentSearchTerm.ToLower()) ||
-                                         i.MainAuthor.Name.ToLower().Contains(CurrentSearchTerm.ToLower()) ||
-                                         i.MainAuthor.Surname.ToLower().Contains(CurrentSearchTerm.ToLower())).ToList();
+        //1 = ASC. -1 = DESC
+        int sortInt = IsSortedAscending ? 1 : -1;
+        switch (CurrentSortColumn)
+        {
+            case "Publication.WorkingTitle":
+                displayedPublications.Sort(delegate (IPublicationDataSet x, IPublicationDataSet y) { return String.Compare(x.WorkingTitle, y.WorkingTitle) * sortInt; });
+                break;
+            case "Publication.MainAuthor.Name":
+                displayedPublications.Sort(delegate (IPublicationDataSet x, IPublicationDataSet y) { return String.Compare(x.MainAuthor.Name, y.MainAuthor.Name) * sortInt; });
+                break;
+            case "Publication.MainAuthor.Surname":
+                displayedPublications.Sort(delegate (IPublicationDataSet x, IPublicationDataSet y) { return String.Compare(x.MainAuthor.Surname, y.MainAuthor.Surname) * sortInt; });
+                break;
+            case "Publication.DateOfRelease":
+                displayedPublications.Sort(delegate (IPublicationDataSet x, IPublicationDataSet y) { return DateTime.Compare(x.DateOfRelease, y.DateOfRelease) * sortInt; });
+                break;
 
-        displayedAuthors = displayedAuthors?.Where(i => i.Name.ToLower().Contains(CurrentSearchTerm.ToLower()) ||
-                                         i.Surname.ToLower().Contains(CurrentSearchTerm.ToLower())).ToList();
+            case "Author.Name":
+                displayedAuthors.Sort(delegate (IAuthor x, IAuthor y) { return String.Compare(x.Name, y.Name) * sortInt; });
+                break;
+            case "Author.Surname":
+                displayedAuthors.Sort(delegate (IAuthor x, IAuthor y) { return String.Compare(x.Surname, y.Surname) * sortInt; });
+                break;
 
-        displayedPublicationTypes = displayedPublicationTypes?.Where(i => i.Name.ToLower().Contains(CurrentSearchTerm.ToLower())).ToList();
+            case "PublicationType.Name":
+                displayedPublicationTypes.Sort(delegate (IPublicationType x, IPublicationType y) { return String.Compare(x.Name, y.Name) * sortInt; });
+                break;
+        }
     }
-
-    SortTable();
-}
-
-
-void SetSortColumn(string columnName)
-{
-    if (columnName == CurrentSortColumn)
-    {
-        IsSortedAscending = !IsSortedAscending;
-    }
-    else
-    {
-        CurrentSortColumn = columnName;
-    }
-
-    Filter();
-}
-
-
-// hide or show dropdown-filter
-private void ChangeFilterVisibility() => HideFilter = !HideFilter;
-
-// get column to sort and set corresponding icon
-private string GetSortStyle(string columnName)
-{
-    if (CurrentSortColumn != columnName)
-    {
-        return string.Empty;
-    }
-    if (IsSortedAscending)
-    {
-        return "fas fa-sort-amount-up";
-    }
-    else
-    {
-        return "fas fa-sort-amount-down";
-    }
-}
-
-// sort the column which was choosen
-private void SortTable()
-{
-    //1 = ASC. -1 = DESC
-    int sortInt = IsSortedAscending ? 1 : -1;
-    switch (CurrentSortColumn)
-    {
-        case "Publication.WorkingTitle":
-            displayedPublications.Sort(delegate (IPublicationDataSet x, IPublicationDataSet y) { return String.Compare(x.WorkingTitle, y.WorkingTitle) * sortInt; });
-            break;
-        case "Publication.MainAuthor.Name":
-            displayedPublications.Sort(delegate (IPublicationDataSet x, IPublicationDataSet y) { return String.Compare(x.MainAuthor.Name, y.MainAuthor.Name) * sortInt; });
-            break;
-        case "Publication.MainAuthor.Surname":
-            displayedPublications.Sort(delegate (IPublicationDataSet x, IPublicationDataSet y) { return String.Compare(x.MainAuthor.Surname, y.MainAuthor.Surname) * sortInt; });
-            break;
-        case "Publication.DateOfRelease":
-            displayedPublications.Sort(delegate (IPublicationDataSet x, IPublicationDataSet y) { return DateTime.Compare(x.DateOfRelease, y.DateOfRelease) * sortInt; });
-            break;
-        
-        case "Author.Name":
-            displayedAuthors.Sort(delegate (IAuthor x, IAuthor y) { return String.Compare(x.Name, y.Name) * sortInt; });
-            break;
-        case "Author.Surname":
-            displayedAuthors.Sort(delegate (IAuthor x, IAuthor y) { return String.Compare(x.Surname, y.Surname) * sortInt; });
-            break;
-
-        case "PublicationType.Name":
-            displayedPublicationTypes.Sort(delegate (IPublicationType x, IPublicationType y) { return String.Compare(x.Name, y.Name) * sortInt; });
-            break;
-    }
-}
 }
 
 
@@ -413,7 +412,7 @@ private void SortTable()
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3 class="modal-title w-100 text-center">Wollen Sie die Veröffentlichung wirklich löschen?</h3>
+                    <h3 class="modal-title w-100 text-center">Wollen Sie den Eintrag wirklich löschen?</h3>
                 </div>
                 <div class="modal-object">
                     <button type="submit" class="form-control primaryButton" @onclick="FinalDelete">Löschen</button>
@@ -659,7 +658,7 @@ private void SortTable()
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h3 class="modal-title w-100 text-center">Veröffentlichungsart bearbeiten</h3>
+                        <h3 class="modal-title w-100 text-center">Art der Veröffentlichung bearbeiten</h3>
                         <button type="reset" class="cancelButton" @onclick="@(() => { showEditPublicationType = false; modalDisplay = "display:none";})">
                             <span class="fas fa-times fa-2x"></span>
                         </button>
@@ -745,7 +744,7 @@ private void SortTable()
         {
             modalDisplay = "display:none";
             showEditPublicationType = false;
-           
+
             dataHandler.SavePublicationType(selectedPublicationType);
 
             var index = ReadDataSet.CachedPublicationTypes.FindIndex(publT => publT.ID.Equals(selectedPublicationType.ID));
