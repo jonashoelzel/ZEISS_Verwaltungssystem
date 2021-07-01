@@ -54,7 +54,7 @@ body {
 
 .continue, .back {
     position: absolute;
-    bottom: 14%;
+    bottom: 11%;
     width: 9em;
     height: 5em;
 }
@@ -88,7 +88,7 @@ body {
 /* Änderungen speichern-Button*/
 .changePub {
     position: absolute;
-    bottom: 14%;
+    bottom: 11%;
     left: 43%;
     width: 9em;
     height: 5em;
