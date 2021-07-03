@@ -3,7 +3,6 @@
 @using Zeiss.PublicationManager.Data.DataSet.Model
 @using BlazorElectron.Data.DataLogic
 @using Zeiss.PublicationManager.Business.Logic.IO
-
 @using Zeiss.PublicationManager.Data.DataSet.IO.Read
 
 @inject NavigationManager NavigationManager
@@ -12,6 +11,8 @@
 @inject WorkflowState workflowState
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg" class="logo" />
+
+<!--<button type="button" class="secondaryButton" id="userHelp">Hilfe</button>-->
 
 @if (ShowSavePopup && workflowState.State == Data.DataLogic.State.Edit)
 {
@@ -30,20 +31,19 @@
     </div>
 }
 
-
 @if (ShowPflichtfeldPopup)
 {
     <div class="modal fade show" role="dialog" style="@modalDisplay">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3 class="modal-title w-100 text-center">Der Arbeitstitel is ein Pflichtfeld.<br />Bitte geben Sie einen Arbeitstitel an!</h3>
+                    <h3 class="modal-title w-100 text-center">Der Titel ist ein Pflichtfeld.<br />Bitte geben Sie einen Titel an!</h3>
                     <button type="reset" class="cancelButton" @onclick="@CancelPflichtfeldPopup">
                         <span class="fas fa-times fa-2x"></span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <button type="submit" id="addButtonInPopup" class="form-control" @onclick="@CancelPflichtfeldPopup">OK</button>
+                    <button type="submit" class="form-control primaryButton" @onclick="@CancelPflichtfeldPopup">OK</button>
                 </div>
             </div>
         </div>
@@ -67,24 +67,33 @@
     }
     <section class="panel-default">
         <header class="panel-heading">
-            <h4 class="panel-title">Arbeitstitel</h4>
+            <h4 class="panel-title">Titel der Veröffentlichung</h4>
         </header>
         <div class="panel-body">
-            <InputText class="form-control" @bind-Value="@NewTitel.Name" /><br />
+            <InputText class="form-control" @bind-Value="@NewTitel.Name" />
             <ValidationMessage For="@(() => NewTitel.Name)" />
         </div>
     </section>
 
     @if (workflowState.State == Data.DataLogic.State.Edit)
     {
-        <button class="primaryButton addPub" type="submit" @onclick="ValidateAndSave">Änderungen Speichern</button>
+        <button class="primaryButton changePub" type="submit" @onclick="ValidateAndSave">Änderungen speichern</button>
+        <button class="secondaryButton back" type="button" @onclick="NavigateToPreviousScreen">
+            <span class="fas fa-home fa-2x"></span>
+        </button>
+        <button class="secondaryButton continue" type="submit" @onclick="NavigateToNextScreen">
+            <span class="fas fa-arrow-circle-right fa-2x"></span>
+        </button>
     }
-    <button class="primaryButton back" type="button" @onclick="NavigateToPreviousScreen">
-        <span class="fas fa-home fa-3x"></span>
-    </button>
-    <button class="primaryButton continue" type="submit" @onclick="NavigateToNextScreen">
-        <span class="fas fa-arrow-circle-right fa-3x"></span>
-    </button>
+    else if (workflowState.State == Data.DataLogic.State.Add)
+    {
+        <button class="secondaryButton back" type="button" @onclick="NavigateToPreviousScreen">
+            <span class="fas fa-home fa-2x"></span>
+        </button>
+        <button class="primaryButton continue" type="submit" @onclick="NavigateToNextScreen">
+            <span class="fas fa-arrow-circle-right fa-2x"></span>
+        </button>
+    }
 
 </EditForm>
 
@@ -214,7 +223,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <button type="submit" id="addButtonInPopup" class="form-control" @onclick="@Retry">Vorgang Wiederholen</button>
+                    <button type="submit" class="form-control primaryButton" @onclick="@Retry">Vorgang Wiederholen</button>
                 </div>
             </div>
         </div>

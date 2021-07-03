@@ -6,14 +6,14 @@
 @using System.IO
 @using BlazorElectron.Data.DataLogic
 
-
-
 @inject NavigationManager NavigationManager
 @inject PublicationDataSetModel Publication
 @inject DataHandler dataHandler
 @inject WorkflowState workflowState
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg" class="logo" />
+
+<!--<button type="button" class="secondaryButton" id="userHelp">Hilfe</button>-->
 
 @if (ShowSavePopup && workflowState.State == Data.DataLogic.State.Edit)
 {
@@ -56,7 +56,7 @@
                         <ValidationMessage For="@(() => NewAuthor.Surname)" />
                     </div>
                     <div class="modal-body">
-                        <button type="submit" id="addButtonInPopup" class="form-control">Hinzufügen</button>
+                        <button type="submit" class="form-control primaryButton">Hinzufügen</button>
                     </div>
                 </div>
             </div>
@@ -76,7 +76,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <button type="submit" id="addButtonInPopup" class="form-control" @onclick="@OpenAddPopup">Neuen Autor hinzufügen</button>
+                    <button type="submit" class="form-control primaryButton" @onclick="@OpenAddPopup">Neuen Autor hinzufügen</button>
                 </div>
             </div>
         </div>
@@ -97,7 +97,7 @@ else if (workflowState.State == Data.DataLogic.State.Add)
 }
 <section class="panel-default">
     <header class="panel-heading">
-        <h4 class="panel-title">Autor</h4>
+        <h4 class="panel-title">Autor der Veröffentlichung</h4>
     </header>
     <div class="panel-body">
         <div class="panel-object">
@@ -108,26 +108,34 @@ else if (workflowState.State == Data.DataLogic.State.Add)
                     {
                         <option value="@author.ID">@string.Concat(author.Name, " ", author.Surname)</option>
                     }
-
                 }
             </select>
         </div>
         <div class="centeredButton">
-            <button class="primaryButton addNewField" @onclick="@OpenAddPopup">Neuen Autor hinzufügen</button>
+            <button class="secondaryButton addNewField" @onclick="@OpenAddPopup">Neuen Autor hinzufügen</button>
         </div>
     </div>
 </section>
 
 @if (workflowState.State == Data.DataLogic.State.Edit)
 {
-    <button class="primaryButton addPub" type="submit" @onclick="ValidateAndSave">Änderungen Speichern</button>
+    <button class="primaryButton changePub" type="submit" @onclick="ValidateAndSave">Änderungen speichern</button>
+    <button class="secondaryButton back" type="button" @onclick="NavigateToPreviousScreen">
+        <span class="fas fa-arrow-circle-left fa-2x"></span>
+    </button>
+    <button class="secondaryButton continue" type="submit" @onclick="NavigateToNextScreen">
+        <span class="fas fa-arrow-circle-right fa-2x"></span>
+    </button>
 }
-<button class="primaryButton back" type="button" @onclick="NavigateToPreviousScreen">
-    <span class="fas fa-arrow-circle-left fa-3x"></span>
-</button>
-<button class="primaryButton continue" type="button" @onclick="NavigateToNextScreen">
-    <span class="fas fa-arrow-circle-right fa-3x"></span>
-</button>
+else if (workflowState.State == Data.DataLogic.State.Add)
+{
+    <button class="secondaryButton back" type="button" @onclick="NavigateToPreviousScreen">
+        <span class="fas fa-arrow-circle-left fa-2x"></span>
+    </button>
+    <button class="primaryButton continue" type="submit" @onclick="NavigateToNextScreen">
+        <span class="fas fa-arrow-circle-right fa-2x"></span>
+    </button>
+}
 
 @code
 {
@@ -153,7 +161,6 @@ else if (workflowState.State == Data.DataLogic.State.Add)
             modalDisplay = "display:block";
             ShowPflichtfeldPopup = true;
         }
-
     }
 
     private void HandleInvalidSubmit() { }
@@ -183,8 +190,6 @@ else if (workflowState.State == Data.DataLogic.State.Add)
         ShowAddPopup = false;
         modalDisplay = "display:none";
 
-        Publication.MainAuthor = NewAuthor;
-
         SaveAuthor();
     }
 
@@ -198,10 +203,11 @@ else if (workflowState.State == Data.DataLogic.State.Add)
     {
         try
         {
-            dataHandler.SaveAuthor(NewAuthor);
-
             AuthorModel newAuthor = new();
             newAuthor.Set(NewAuthor);
+
+            dataHandler.SaveAuthor(newAuthor);
+            Publication.MainAuthor = newAuthor;
 
             authors.Insert(0, newAuthor);
             ReadDataSet.CachedAuthors.Insert(0, newAuthor);
@@ -329,7 +335,7 @@ else if (workflowState.State == Data.DataLogic.State.Add)
                     </button>
                 </div>
                 <div class="modal-body">
-                    <button type="submit" id="addButtonInPopup" class="form-control" @onclick="@Retry">Vorgang Wiederholen</button>
+                    <button type="submit" class="form-control primaryButton" @onclick="@Retry">Vorgang Wiederholen</button>
                 </div>
             </div>
         </div>
@@ -354,6 +360,14 @@ else if (workflowState.State == Data.DataLogic.State.Add)
     {
         ShowException = false;
         modalExceptionDisplay = "display:none";
+
+        ResetExceptions();
+    }
+
+    void ResetExceptions()
+    {
+        publicationException = false;
+        authorException = false;
     }
 
     void Retry()
@@ -361,12 +375,10 @@ else if (workflowState.State == Data.DataLogic.State.Add)
         if (publicationException)
         {
             SavePublication();
-            publicationException = false;
         }
         else if (authorException)
         {
             SaveAuthor();
-            authorException = false;
         }
 
         CloseException();

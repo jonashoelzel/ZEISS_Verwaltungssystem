@@ -4,6 +4,12 @@
     "imageFile": ""
   },
   "name": "PublicationManager",
+  "scripts": {
+    "postinstall": "install-app-deps",
+    "start": "npm install && electron .",
+    "pack": "build --dir",
+    "dist": "build"
+  },
   "author": "",
   "singleInstance": true,
   "environment": "Production",

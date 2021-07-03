@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+
 using Zeiss.PublicationManager.Data.DataSet;
 using Zeiss.PublicationManager.Data.DataSet.IO.Read;
 using Zeiss.PublicationManager.Data.DataSet.IO.Write;
@@ -90,9 +93,46 @@ namespace Zeiss.PublicationManager.Business.Logic.IO
             WriteDataSet.InsertPublisher(publisher);
         }
 
-        public void DeletePublication(Guid guid)
+        public bool DeletePublication(Guid guid)
         {
             WriteDataSet.DeletePublication(guid);
+
+            return true;
+        }
+
+        public bool DeleteAuthor(Guid guid)
+        {
+            if (!IsAuthorUsed(guid))
+            {
+                WriteDataSet.DeleteAuthor(guid);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool IsAuthorUsed(Guid guid)
+        {
+            return ReadDataSet.CachedPublications.Where(x => (x?.MainAuthor?.ID == guid
+            || (x?.CoAuthors?.Where(y => y?.ID == guid)?.Any() ?? false)))?.Any() ?? false;
+        }
+
+        public bool DeletePublicationType(Guid guid)
+        {
+            if (!IsPublicationTypeUsed(guid))
+            {
+                WriteDataSet.DeletePublicationType(guid);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool IsPublicationTypeUsed(Guid guid)
+        {
+            return ReadDataSet.CachedPublications.Where(x => x?.TypeOfPublication?.ID == guid)?.Any() ?? false;
         }
     }
 }

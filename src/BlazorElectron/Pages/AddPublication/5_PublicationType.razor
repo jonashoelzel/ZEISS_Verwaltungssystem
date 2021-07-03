@@ -5,14 +5,14 @@
 @using Zeiss.PublicationManager.Business.Logic.IO
 @using BlazorElectron.Data.DataLogic
 
-
-
 @inject NavigationManager NavigationManager
 @inject PublicationDataSetModel Publication
 @inject DataHandler dataHandler
 @inject WorkflowState workflowState
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg" class="logo" />
+
+<!--<button type="button" class="secondaryButton" id="userHelp">Hilfe</button>-->
 
 @if (ShowSavePopup && workflowState.State == Data.DataLogic.State.Add)
 {
@@ -55,7 +55,7 @@ else if (ShowSavePopup && workflowState.State == Data.DataLogic.State.Edit)
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h3 class="modal-title w-100 text-center">Veröffentlichungsart hinzufügen</h3>
+                        <h3 class="modal-title w-100 text-center">Art der Veröffentlichung hinzufügen</h3>
                         <button type="reset" class="cancelButton" @onclick="@CancelAddPopup">
                             <span class="fas fa-times fa-2x"></span>
                         </button>
@@ -66,7 +66,7 @@ else if (ShowSavePopup && workflowState.State == Data.DataLogic.State.Edit)
                         <ValidationMessage For="@(() => NewPublicationType.Name)" />
                     </div>
                     <div class="modal-body">
-                        <button type="submit" id="addButtonInPopup" class="form-control">Hinzufügen</button>
+                        <button type="submit" class="form-control primaryButton">Hinzufügen</button>
                     </div>
                 </div>
             </div>
@@ -80,13 +80,13 @@ else if (ShowSavePopup && workflowState.State == Data.DataLogic.State.Edit)
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3 class="modal-title w-100 text-center">Veröffentlichungsart ist ein Pflichtfeld.<br /> Bitte fügen sie eine neue Veröffentlichungsart hinzu!</h3>
+                    <h3 class="modal-title w-100 text-center">Art der Veröffentlichung ist ein Pflichtfeld.<br /> Bitte fügen sie eine neue Art der Veröffentlichung hinzu!</h3>
                     <button type="reset" class="cancelButton" @onclick="@CancelPflichtfeldPopup">
                         <span class="fas fa-times fa-2x"></span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <button type="submit" id="addButtonInPopup" class="form-control" @onclick="@OpenAddPopup">Neue Veröffentlichungsart hinzufügen</button>
+                    <button type="submit" class="form-control primaryButton" @onclick="@OpenAddPopup">Neue Art der Veröffentlichung hinzufügen</button>
                 </div>
             </div>
         </div>
@@ -118,28 +118,31 @@ else if (workflowState.State == Data.DataLogic.State.Add)
                     {
                         <option value="@publicationType.ID">@publicationType.Name</option>
                     }
-
                 }
             </select>
         </div>
         <div class="centeredButton">
-            <button class="primaryButton addNewField" @onclick="@OpenAddPopup">Neue Veröffentlichungsart hinzufügen</button>
+            <button class="secondaryButton addNewField" @onclick="@OpenAddPopup">Neue Art der Veröffentlichung hinzufügen</button>
         </div>
     </div>
 </section>
-@if (workflowState.State == Data.DataLogic.State.Add)
-{
-    <button class="primaryButton addPub" type="submit" @onclick="@ValidateAndSave">Veröffentlichung hinzufügen</button>
-}
-else
-{
-    <button class="primaryButton addPub" type="submit" @onclick="@ValidateAndSave">Änderungen Speichern</button>
-}
-<button class="primaryButton back" type="button" @onclick="NavigateToPreviousScreen">
-    <span class="fas fa-arrow-circle-left fa-3x"></span>
-</button>
-<button class="primaryButton continue" type="submit" @onclick="@NavigateToNextScreen">Optionale Angaben</button>
 
+@if (workflowState.State == Data.DataLogic.State.Edit)
+{
+    <button class="primaryButton continue" type="submit" @onclick="ValidateAndSave">Änderungen speichern</button>
+    <button class="secondaryButton back" type="button" @onclick="NavigateToPreviousScreen">
+        <span class="fas fa-arrow-circle-left fa-2x"></span>
+    </button>
+    <button class="secondaryButton addPub" type="submit" @onclick="@NavigateToNextScreen">Optionale Angaben</button>
+}
+else if (workflowState.State == Data.DataLogic.State.Add)
+{
+    <button class="primaryButton continue" type="submit" @onclick="SavePublication">Veröffentlichung hinzufügen</button>
+    <button class="secondaryButton back" type="button" @onclick="NavigateToPreviousScreen">
+        <span class="fas fa-arrow-circle-left fa-2x"></span>
+    </button>
+    <button class="secondaryButton addPub" type="submit" @onclick="@NavigateToNextScreen">Optionale Angaben</button>
+}
 @code
 {
     PublicationTypeModel NewPublicationType = new();
@@ -190,10 +193,12 @@ else
     {
         try
         {
-            dataHandler.SavePublicationType(NewPublicationType);
-
             PublicationTypeModel newPublicationType = new();
             newPublicationType.Set(NewPublicationType);
+
+            dataHandler.SavePublicationType(newPublicationType);
+            Publication.TypeOfPublication = newPublicationType;
+
 
             publicationTypes.Insert(0, newPublicationType);
 
@@ -339,7 +344,7 @@ else
                     </button>
                 </div>
                 <div class="modal-body">
-                    <button type="submit" id="addButtonInPopup" class="form-control" @onclick="@Retry">Vorgang Wiederholen</button>
+                    <button type="submit" class="form-control primaryButton" @onclick="@Retry">Vorgang Wiederholen</button>
                 </div>
             </div>
         </div>
@@ -364,6 +369,14 @@ else
     {
         ShowException = false;
         modalExceptionDisplay = "display:none";
+
+        ResetExceptions();
+    }
+
+    void ResetExceptions()
+    {
+        publicationException = false;
+        publicationTypeException = false;
     }
 
     void Retry()
@@ -371,12 +384,10 @@ else
         if (publicationException)
         {
             SavePublication();
-            publicationException = false;
         }
         else if (publicationTypeException)
         {
             SavePublicationType();
-            publicationTypeException = false;
         }
 
         CloseException();
