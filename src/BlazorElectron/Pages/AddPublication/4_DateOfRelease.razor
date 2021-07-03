@@ -1,7 +1,9 @@
 ﻿@page "/addDateOfRelease"
+@using Zeiss.PublicationManager.Data.DataSet
 @using Zeiss.PublicationManager.Data.DataSet.Model
 @using BlazorElectron.Data.DataLogic
 @using Zeiss.PublicationManager.Business.Logic.IO
+@using Zeiss.PublicationManager.Data.DataSet.IO.Read
 
 @inject NavigationManager NavigationManager
 @inject PublicationDataSetModel Publication
@@ -9,6 +11,8 @@
 @inject WorkflowState workflowState
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg" class="logo" />
+
+<!--<button type="button" class="secondaryButton" id="userHelp">Hilfe</button>-->
 
 @if (ShowSavePopup && workflowState.State == Data.DataLogic.State.Edit)
 {
@@ -44,7 +48,7 @@
                         <InputDate class="form-control" @bind-Value="Publication.DateOfRelease" />
                     </div>
                     <div class="modal-body">
-                        <button type="submit" id="addButtonInPopup" class="form-control" @onclick="@CancelPflichtfeldPopup">Hinzufügen</button>
+                        <button type="submit" class="form-control primaryButton" @onclick="@CancelPflichtfeldPopup">Hinzufügen</button>
                     </div>
                 </div>
             </div>
@@ -77,14 +81,23 @@
 
     @if (workflowState.State == Data.DataLogic.State.Edit)
     {
-        <button class="primaryButton addPub" type="submit" @onclick="Save">Änderungen Speichern</button>
+        <button class="primaryButton changePub" type="submit" @onclick="ValidateAndSave">Änderungen speichern</button>
+        <button class="secondaryButton back" type="button" @onclick="NavigateToPreviousScreen">
+            <span class="fas fa-arrow-circle-left fa-2x"></span>
+        </button>
+        <button class="secondaryButton continue" type="submit" @onclick="NavigateToNextScreen">
+            <span class="fas fa-arrow-circle-right fa-2x"></span>
+        </button>
     }
-    <button class="primaryButton back" type="button" @onclick="NavigateToPreviousScreen">
-        <span class="fas fa-arrow-circle-left fa-3x"></span>
-    </button>
-    <button class="primaryButton continue" type="submit">
-        <span class="fas fa-arrow-circle-right fa-3x"></span>
-    </button>
+    else if (workflowState.State == Data.DataLogic.State.Add)
+    {
+        <button class="secondaryButton back" type="button" @onclick="NavigateToPreviousScreen">
+            <span class="fas fa-arrow-circle-left fa-2x"></span>
+        </button>
+        <button class="primaryButton continue" type="submit" @onclick="NavigateToNextScreen">
+            <span class="fas fa-arrow-circle-right fa-2x"></span>
+        </button>
+    }
 </EditForm>
 
 @code
@@ -100,12 +113,13 @@
     private void NavigateToNextScreen()
     {
         //OADate first Date is 1900/01/01 12:00:00 => 1900/01/02 00:00:00
-        if (Publication.DateOfRelease >= new DateTime(1900, 1, 2))
+        if (Publication?.DateOfRelease >= new DateTime(1900, 1, 2))
         {
             NavigationManager.NavigateTo("addPublicationType");
-        } else
+        }
+        else
             modalDisplay = "display:block";
-            ShowPflichtfeldPopup = true;
+        ShowPflichtfeldPopup = true;
     }
 
     void CancelPflichtfeldPopup()
@@ -116,10 +130,113 @@
 
     private void HandleInvalidSubmit() { }
 
-    private void Save()
+
+    private void ValidateAndSave()
     {
-        dataHandler.Save(Publication);
-        modalDisplay = "display:block";
-        ShowSavePopup = true;
+        //OADate first Date is 1900/01/01 12:00:00 => 1900/01/02 00:00:00
+        if (!(Publication?.DateOfRelease >= new DateTime(1900, 1, 2)))
+        {
+            modalDisplay = "display:block";
+            ShowPflichtfeldPopup = true;
+        }
+        else
+        {
+            SavePublication();
+        }
+    }
+
+
+    private void SavePublication()
+    {
+        try
+        {
+            dataHandler.Save(Publication);
+
+            PublicationDataSetModel NewDataSet = new();
+            NewDataSet.Set(Publication);
+
+            if (workflowState.State == Data.DataLogic.State.Add)
+            {
+                ReadDataSet.CachedPublications.Add(NewDataSet);
+            }
+            else
+            {
+                int index = ReadDataSet.CachedPublications.FindIndex(item => item.ID == NewDataSet.ID);
+                ReadDataSet.CachedPublications[index] = NewDataSet;
+            }
+
+            modalDisplay = "display:block";
+            ShowSavePopup = true;
+        }
+        catch (Exception ex)
+        {
+            if (ex is UnauthorizedAccessException || ex is IOException)
+            {
+                OpenException();
+                return;
+            }
+
+            throw ex;
+        }
+
+        StateHasChanged();
     }
 }
+
+
+@if (ShowException)
+{
+    <div class="modal fade show" role="dialog" style="@modalExceptionDisplay">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title w-100 text-center" style="font-size:16px">
+                        Datei-Zugriffs-Berechtigungs-Fehler
+                        <br />
+                        <br />Die Datei:
+                        <br />"@dataHandler.filePath";
+                        <br />wird derzeit von einem anderen Programm verwendet
+                        <br />oder Ihr Adminstrator hat Ihnen den Zugriff verwehrt.
+                        <br />
+                        <br />Sie können warten bis das andere Programm die Datei wieder freigegeben hat und den Vorgang wiederholen.
+                        <br />
+                        <br />Sollten Sie die Benachrichtigung nach mehrerern Versuchen immernoch sehen,
+                        <br />fragen Sie Ihren Adminstator und prüfen Sie, ob die Datei derzeit von einem anderen Programm verwendet wird
+                        <br />und prüfen Sie Ihre Berechtigungen.
+                    </h3>
+                    <button type="reset" class="cancelButton" @onclick="@CloseException">
+                        <span class="fas fa-times fa-2x"></span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <button type="submit" class="form-control primaryButton" @onclick="@Retry">Vorgang Wiederholen</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code
+{
+    string modalExceptionDisplay = "display:block";
+    bool ShowException = false;
+
+    public void OpenException()
+    {
+        modalExceptionDisplay = "display:block";
+        ShowException = true;
+    }
+
+    void CloseException()
+    {
+        ShowException = false;
+        modalExceptionDisplay = "display:none";
+    }
+
+    void Retry()
+    {
+        SavePublication();
+        CloseException();
+    }
+}
+

@@ -13,7 +13,7 @@ using Zeiss.PublicationManager.Data.DataSet;
 
 namespace Zeiss.PublicationManager.Data.Excel.IO.Write
 {  
-    public class WriteExcel : ExcelIOBase
+    public abstract class WriteExcel : ExcelIOBase
     {
 
         #region CreateSpreadSheetEntries       
@@ -144,7 +144,63 @@ namespace Zeiss.PublicationManager.Data.Excel.IO.Write
 
             return null;
         }
-        #endregion      
         #endregion
+        #endregion
+
+        protected enum LetterEnum
+        {
+            A = 1,
+            B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y,
+            Z = 26
+        }
+
+
+        protected static List<string> GetCellReferenceLetters(int count)
+        {
+            List<string> columnLetterIDs = new();
+            for (int i = 1; i <= count; i++)
+                columnLetterIDs.Add(ConvertNumberToCellLetters(i));
+
+            return columnLetterIDs;
+        }
+
+
+        private static string ConvertNumberToCellLetters(int number)
+        {
+            //If the number is invalid
+            if (number < 1 || number > 17575)
+                throw new IndexOutOfRangeException("Value 'number' must be a value greater or equal 1 and less or equal than 17575. Current 'number was " + number);
+
+            string columnname = "";
+            int letterEnumCounter = 0;
+            int letterValue = number;
+
+            //For columnnames with multiple letters
+            while (letterValue > 26)
+            {
+                letterValue -= 26;
+                letterEnumCounter++;
+
+                if (letterEnumCounter > 26)
+                {
+                    letterEnumCounter -= 26;
+                    columnname += "Z";
+                }
+            }
+
+            //Converts the lettervalues into the letter
+            LetterEnum letter;
+            if (letterEnumCounter > 0)
+            {
+                letter = (LetterEnum)letterEnumCounter;
+                columnname += letter.ToString();
+            }
+
+            letter = (LetterEnum)letterValue;
+            columnname += letter.ToString();
+
+
+            return columnname;
+        }
     }
 }

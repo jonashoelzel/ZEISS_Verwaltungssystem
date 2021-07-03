@@ -4,8 +4,11 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+  </PropertyGroup>
+
   <ItemGroup>
-    <ProjectReference Include="..\CSVHandler\CSVHandler.csproj" />
     <ProjectReference Include="..\DataSet\DataSet.csproj" />
     <ProjectReference Include="..\ExcelIO\ExcelIO.csproj" />
   </ItemGroup>

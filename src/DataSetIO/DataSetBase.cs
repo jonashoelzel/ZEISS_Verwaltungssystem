@@ -1,14 +1,17 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Zeiss.PublicationManager.Data.Excel.IO;
 using Zeiss.PublicationManager.Data.Excel.IO.Write;
 
 namespace Zeiss.PublicationManager.Data.DataSet.IO
 {
     public class DataSetBase
     {
-        private string _filePath;
+        private static string _filePath;
 
-        protected string FilePath { get => _filePath; set => _filePath = value; }
+        public static string FilePath { get => _filePath; set => _filePath = value; }
 
         private static readonly List<object> Publication = new()
         {
@@ -104,28 +107,29 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO
 
         protected static string ConvertAuthorsToCSV(List<IAuthor> coAuthors)
         {
-            if (coAuthors is null)
-                return string.Empty;
+            if (coAuthors is null || !coAuthors.Any())
+                return String.Empty;
 
-            List<string> authorCSVs = new();
+            StringBuilder authorCSVs = new();
             foreach (var author in coAuthors)
             {
-                authorCSVs.Add(
-                    CSVHandler.IO.Write.CSVWriter.
-                    WriteCSVLine(new List<string> { author.ID.ToString(), author.Name, author.Surname }, escapeAll: false).Trim('\n'));
+                authorCSVs.Append(author.ID.ToString() + ",");
             }
 
-            return CSVHandler.IO.Write.CSVWriter.
-                    WriteCSVLine(authorCSVs, ';').Trim('\n');
+            return authorCSVs.ToString()[..^2];
         }
 
         protected static List<Guid> ConvertCSVToGuids(string csv)
         {
             List<Guid> ids = new();
-            if (string.IsNullOrEmpty(csv))
-                return ids;
+            if (String.IsNullOrWhiteSpace(csv))
+                return new();
 
-            string[] readIds = CSVHandler.IO.Read.CSVReader.ReadCSVLine(csv, ';');
+            string[] readIds = csv.Split(",");
+
+            if (!readIds.Any())
+                return new();
+
             foreach (string readId in readIds)
             {
                 ids.Add(Guid.Parse(readId));
@@ -136,28 +140,27 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO
 
         protected static string ConvertTagsToCSV(List<ITag> tags)
         {
-            if (tags is null)
-                return string.Empty;
+            if (tags is null || !tags.Any())
+                return String.Empty;
 
-            List<string> tagCSV = new();
+            StringBuilder tagCSV = new();
             foreach (var tag in tags)
             {
-                tagCSV.Add(tag.ID.ToString());
+                tagCSV.Append(tag.ID.ToString() + ",");
             }
 
-            return CSVHandler.IO.Write.CSVWriter.
-                    WriteCSVLine(tagCSV).Trim('\n');
+            return tagCSV.ToString()[..^2];
         }
 
 
 
-        public void CheckWorkBook()
+        public static void CheckWorkBook()
         {
             if (!ValidateWorkBook())
                 InitializeWorkBook();
         }
 
-        private void InitializeWorkBook()
+        private static void InitializeWorkBook()
         {
             var dirPath = _filePath.Remove(_filePath.LastIndexOf('\\'));
             if (!System.IO.File.Exists(dirPath))
@@ -165,7 +168,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO
 
             foreach (var worksheet in WorksheetsHeader())
             {
-                if (!WriteExcel.WorksheetExists(ref _filePath, worksheet.Key))
+                if (!ExcelIOAPIs.WorksheetExists(_filePath, worksheet.Key))
                 {
                     // TODO: Check if columns exist
                     // Create new Worksheet
@@ -174,14 +177,14 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO
             }
         }
 
-        private bool ValidateWorkBook()
+        private static bool ValidateWorkBook()
         {
             foreach (var worksheet in WorksheetsHeader())
             {
-                if (!WriteExcel.WorksheetExists(ref _filePath, worksheet.Key))
+                if (!ExcelIOAPIs.WorksheetExists(_filePath, worksheet.Key))
                     return false;
 
-                if (!Excel.IO.ExcelIOBase.CheckHeaderColumnsExist(FilePath, worksheet.Key, worksheet.Value))
+                if (!Excel.IO.ExcelIOAPIs.CheckHeaderColumnsExist(FilePath, worksheet.Key, worksheet.Value))
                     return false;
 
             }

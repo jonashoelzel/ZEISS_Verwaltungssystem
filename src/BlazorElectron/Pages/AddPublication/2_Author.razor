@@ -13,6 +13,8 @@
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg" class="logo" />
 
+<!--<button type="button" class="secondaryButton" id="userHelp">Hilfe</button>-->
+
 @if (ShowSavePopup && workflowState.State == Data.DataLogic.State.Edit)
 {
     <div class="modal fade show" role="dialog" style="@modalDisplay">
@@ -54,7 +56,7 @@
                         <ValidationMessage For="@(() => NewAuthor.Surname)" />
                     </div>
                     <div class="modal-body">
-                        <button type="submit" id="addButtonInPopup" class="form-control">Hinzufügen</button>
+                        <button type="submit" class="form-control primaryButton">Hinzufügen</button>
                     </div>
                 </div>
             </div>
@@ -74,7 +76,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <button type="submit" id="addButtonInPopup" class="form-control" @onclick="@OpenAddPopup">Neuen Autor hinzufügen</button>
+                    <button type="submit" class="form-control primaryButton" @onclick="@OpenAddPopup">Neuen Autor hinzufügen</button>
                 </div>
             </div>
         </div>
@@ -95,38 +97,50 @@ else if (workflowState.State == Data.DataLogic.State.Add)
 }
 <section class="panel-default">
     <header class="panel-heading">
-        <h4 class="panel-title">Autor</h4>
+        <h4 class="panel-title">Autor der Veröffentlichung</h4>
     </header>
     <div class="panel-body">
         <div class="panel-object">
             <select class="form-control" @onchange="SetAuthor">
                 @foreach (var author in authors)
                 {
-                    <option value="@author.ID">@string.Concat(author.Name, " ", author.Surname)</option>
+                    if (!String.IsNullOrWhiteSpace(author.Name))
+                    {
+                        <option value="@author.ID">@string.Concat(author.Name, " ", author.Surname)</option>
+                    }
                 }
             </select>
         </div>
         <div class="centeredButton">
-            <button class="primaryButton addNewField" @onclick="@OpenAddPopup">Neuen Autor hinzufügen</button>
+            <button class="secondaryButton addNewField" @onclick="@OpenAddPopup">Neuen Autor hinzufügen</button>
         </div>
     </div>
 </section>
 
 @if (workflowState.State == Data.DataLogic.State.Edit)
 {
-    <button class="primaryButton addPub" type="submit" @onclick="Save">Änderungen Speichern</button>
+    <button class="primaryButton changePub" type="submit" @onclick="ValidateAndSave">Änderungen speichern</button>
+    <button class="secondaryButton back" type="button" @onclick="NavigateToPreviousScreen">
+        <span class="fas fa-arrow-circle-left fa-2x"></span>
+    </button>
+    <button class="secondaryButton continue" type="submit" @onclick="NavigateToNextScreen">
+        <span class="fas fa-arrow-circle-right fa-2x"></span>
+    </button>
 }
-<button class="primaryButton back" type="button" @onclick="NavigateToPreviousScreen">
-    <span class="fas fa-arrow-circle-left fa-3x"></span>
-</button>
-<button class="primaryButton continue" type="button" @onclick="NavigateToNextScreen">
-    <span class="fas fa-arrow-circle-right fa-3x"></span>
-</button>
+else if (workflowState.State == Data.DataLogic.State.Add)
+{
+    <button class="secondaryButton back" type="button" @onclick="NavigateToPreviousScreen">
+        <span class="fas fa-arrow-circle-left fa-2x"></span>
+    </button>
+    <button class="primaryButton continue" type="submit" @onclick="NavigateToNextScreen">
+        <span class="fas fa-arrow-circle-right fa-2x"></span>
+    </button>
+}
 
 @code
 {
     AuthorModel NewAuthor = new();
-    List<IAuthor> authors;
+    List<IAuthor> authors = new();
     bool ShowSavePopup = false;
     bool ShowAddPopup = false;
     bool ShowPflichtfeldPopup = false;
@@ -141,9 +155,12 @@ else if (workflowState.State == Data.DataLogic.State.Add)
         if (Publication.MainAuthor is not null)
         {
             NavigationManager.NavigateTo("addDivision");
-        } else
+        }
+        else
+        {
             modalDisplay = "display:block";
             ShowPflichtfeldPopup = true;
+        }
     }
 
     private void HandleInvalidSubmit() { }
@@ -172,12 +189,8 @@ else if (workflowState.State == Data.DataLogic.State.Add)
     {
         ShowAddPopup = false;
         modalDisplay = "display:none";
-        authors.Insert(0, NewAuthor);
 
-        dataHandler.SaveAuthor(NewAuthor);
-
-        Publication.MainAuthor = NewAuthor;
-        NewAuthor = new();
+        SaveAuthor();
     }
 
     void SetAuthor(ChangeEventArgs author)
@@ -186,24 +199,99 @@ else if (workflowState.State == Data.DataLogic.State.Add)
         Publication.MainAuthor = authors.First(a => a.ID.Equals(selectedAuthorID));
     }
 
-    private void Save()
+    private void SaveAuthor()
     {
-        dataHandler.Save(Publication);
-        modalDisplay = "display:block";
-        ShowSavePopup = true;
+        try
+        {
+            AuthorModel newAuthor = new();
+            newAuthor.Set(NewAuthor);
+
+            dataHandler.SaveAuthor(newAuthor);
+            Publication.MainAuthor = newAuthor;
+
+            authors.Insert(0, newAuthor);
+            ReadDataSet.CachedAuthors.Insert(0, newAuthor);
+
+            NewAuthor = new();
+        }
+        catch (Exception ex)
+        {
+            if (ex is UnauthorizedAccessException || ex is IOException)
+            {
+                authorException = true;
+                OpenException();
+                return;
+            }
+
+            throw ex;
+        }
     }
+
+
+    private void ValidateAndSave()
+    {
+        if (String.IsNullOrWhiteSpace(Publication?.MainAuthor?.Name))
+        {
+            modalDisplay = "display:block";
+            ShowPflichtfeldPopup = true;
+        }
+        else
+        {
+            SavePublication();
+        }
+    }
+
+
+    private void SavePublication()
+    {
+        try
+        {
+            dataHandler.Save(Publication);
+
+            PublicationDataSetModel NewDataSet = new();
+            NewDataSet.Set(Publication);
+
+            if (workflowState.State == Data.DataLogic.State.Add)
+            {
+                ReadDataSet.CachedPublications.Add(NewDataSet);
+            }
+            else
+            {
+                int index = ReadDataSet.CachedPublications.FindIndex(item => item.ID == NewDataSet.ID);
+                ReadDataSet.CachedPublications[index] = NewDataSet;
+            }
+
+            modalDisplay = "display:block";
+            ShowSavePopup = true;
+        }
+        catch (Exception ex)
+        {
+            if (ex is UnauthorizedAccessException || ex is IOException)
+            {
+                publicationException = true;
+                OpenException();
+                return;
+            }
+
+            throw ex;
+        }
+
+        StateHasChanged();
+    }
+
 
     void fetchData()
     {
-        if (authors is not null)
+        if (authors.Any())
             return;
 
-        authors = new List<IAuthor>();
-        var readAuthors = dataHandler.ExcelReader.ReadAuthors();
-        foreach (var author in readAuthors)
+        List<IAuthor> readAuthors = ReadDataSet.CachedAuthors;
+        foreach (IAuthor author in readAuthors)
         {
             authors.Add(author);
         }
+
+        authors.RemoveAll(x => String.IsNullOrWhiteSpace(x.Name));
     }
 
     protected override void OnInitialized()
@@ -220,3 +308,80 @@ else if (workflowState.State == Data.DataLogic.State.Add)
             Publication.MainAuthor = authors.FirstOrDefault();
     }
 }
+
+
+@if (ShowException)
+{
+    <div class="modal fade show" role="dialog" style="@modalExceptionDisplay">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title w-100 text-center" style="font-size:16px">
+                        Datei-Zugriffs-Berechtigungs-Fehler
+                        <br />
+                        <br />Die Datei:
+                        <br />"@dataHandler.filePath";
+                        <br />wird derzeit von einem anderen Programm verwendet
+                        <br />oder Ihr Adminstrator hat Ihnen den Zugriff verwehrt.
+                        <br />
+                        <br />Sie können warten bis das andere Programm die Datei wieder freigegeben hat und den Vorgang wiederholen.
+                        <br />
+                        <br />Sollten Sie die Benachrichtigung nach mehrerern Versuchen immernoch sehen,
+                        <br />fragen Sie Ihren Adminstator und prüfen Sie, ob die Datei derzeit von einem anderen Programm verwendet wird
+                        <br />und prüfen Sie Ihre Berechtigungen.
+                    </h3>
+                    <button type="reset" class="cancelButton" @onclick="@CloseException">
+                        <span class="fas fa-times fa-2x"></span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <button type="submit" class="form-control primaryButton" @onclick="@Retry">Vorgang Wiederholen</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code
+{
+    string modalExceptionDisplay = "display:block";
+    bool ShowException = false;
+
+    bool publicationException = false;
+    bool authorException = false;
+
+    public void OpenException()
+    {
+        modalExceptionDisplay = "display:block";
+        ShowException = true;
+    }
+
+    void CloseException()
+    {
+        ShowException = false;
+        modalExceptionDisplay = "display:none";
+
+        ResetExceptions();
+    }
+
+    void ResetExceptions()
+    {
+        publicationException = false;
+        authorException = false;
+    }
+
+    void Retry()
+    {
+        if (publicationException)
+        {
+            SavePublication();
+        }
+        else if (authorException)
+        {
+            SaveAuthor();
+        }
+
+        CloseException();
+    }
+}
+

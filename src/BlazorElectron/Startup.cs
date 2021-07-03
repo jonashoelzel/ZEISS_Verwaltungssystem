@@ -18,6 +18,7 @@ using Zeiss.PublicationManager.Data.DataSet;
 using Zeiss.PublicationManager.Data.DataSet.Model;
 using Zeiss.PublicationManager.Business.Logic.IO;
 using BlazorElectron.Data.DataLogic;
+using System.IO;
 
 namespace Zeiss.PublicationManager.UI
 {
@@ -26,14 +27,28 @@ namespace Zeiss.PublicationManager.UI
         // This method opens the Electron window
         public async void ElectronBootstrap()
         {
+            WebPreferences wp = new();
+
             var browserWindow = await Electron.WindowManager.CreateWindowAsync(new BrowserWindowOptions
             {
-                Width = 1152,
-                Height = 940,
+                MinWidth = 1300,
+                Width = 1300,
+                MinHeight = 1000,
+                Height = 1000,
+                AutoHideMenuBar = true,
+                Show = false,
             });
             await browserWindow.WebContents.Session.ClearCacheAsync();
             browserWindow.OnReadyToShow += () => browserWindow.Show();
-            browserWindow.SetTitle("Zeiss"); // TODO: Edit title
+            //browserWindow.Reload();
+            browserWindow.SetTitle("Zeiss Verwaltungssoftware"); // TODO: Edit title
+            browserWindow.OnClosed += () =>
+            {
+                Electron.App.Exit(0);
+                Environment.Exit(0);
+                Electron.App.Quit();
+                browserWindow = null;
+            };
         }
 
         public Startup(IConfiguration configuration)
