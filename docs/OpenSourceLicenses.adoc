@@ -1,0 +1,21 @@
+=== Used Open Sorce Licenses
+
+{nbsp} +
+
+==== Overview of Frameworks/Libraries and their Licenses
+
+{nbsp} +
+
+|===
+|   Open Source Software/Component  |      Developer            |   License
+
+|   .NET                            |      Microsoft            |   EULA, partly Apache 2.0, partly MIT
+
+|   Blazor                          |      Microsoft            |   Apace 2.0
+|   Electron                        |      GitHub               |   MIT
+|   Electron.NET                    |      Electron.NET         |   MIT
+|   OpenXML                         |      Microsoft            |   MIT
+|   Node.js                         |      Node.js Foundation   |   MIT
+|===
+
+{nbsp} +
