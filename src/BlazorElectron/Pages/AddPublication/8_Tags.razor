@@ -1,0 +1,107 @@
+﻿@page "/addTags"
+@using Zeiss.PublicationManager.Data.DataSet.Model
+@using Zeiss.PublicationManager.Business.Logic.IO
+@using BlazorElectron.Data.DataLogic
+
+@inject NavigationManager NavigationManager
+@inject PublicationDataSetModel Publication
+@inject DataHandler dataHandler
+@inject WorkflowState workflowState
+
+<img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg" class="logo" />
+
+@if (ShowSavePopup && workflowState.State == Data.DataLogic.State.Add)
+{
+    <div class="modal fade show" role="dialog" style="@modalDisplay">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title w-100 text-center">Erfolgreich gespeichert</h3>
+                </div>
+                <div class="modal-body">
+                    <p>Die Veröffentlichung wurde der Liste hinzugefügt.</p>
+                    <button type="submit" class="form-control primaryButton" @onclick="@NavigateToLandingPage">Zurück zur Startseite</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else if (ShowSavePopup && workflowState.State == Data.DataLogic.State.Edit)
+{
+    <div class="modal fade show" role="dialog" style="@modalDisplay">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title w-100 text-center">Erfolgreich gespeichert</h3>
+                </div>
+                <div class="modal-body">
+                    <p>Die Änderungen wurden gespeichert.</p>
+                    <button type="submit" class="form-control primaryButton" @onclick="@NavigateToLandingPage">Zurück zur Startseite</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<EditForm Model="@Publication">
+    @if (workflowState.State == Data.DataLogic.State.Edit)
+    {
+        <div class="mode">
+            <h2>Veröffentlichung bearbeiten</h2>
+        </div>
+    }
+    else if (workflowState.State == Data.DataLogic.State.Add)
+    {
+        <div class="mode">
+            <h2>Neue Veröffentlichung hinzufügen</h2>
+        </div>
+    }
+    <section class="panel-default">
+        <header class="panel-heading">
+            <h4 class="panel-title">Tags</h4>
+        </header>
+        <div class="panel-body">
+            @if (Tags != null)
+            {
+                foreach (var tag in Tags)
+                {
+                    <div class="form-check tags">
+                        <input class="form-check-input" type="checkbox" id="@tag" />
+                        <label class="form-check-label" for="@tag">@tag</label>
+                    </div>
+                }
+            }
+        </div>
+    </section>
+
+    @if (workflowState.State == Data.DataLogic.State.Edit)
+    {
+        <button class="primaryButton addPub" type="submit" @onclick="Save">Änderungen Speichern</button>
+    }
+    else if (workflowState.State == Data.DataLogic.State.Add)
+    {
+        <button class="primaryButton addPub" type="submit" @onclick="Save">Veröffentlichung hinzufügen</button>
+    }
+    <button class="primaryButton back" type="button" @onclick="NavigateToPreviousScreen">
+        <span class="fas fa-arrow-circle-left fa-3x"></span>
+    </button>
+
+</EditForm>
+
+@code
+{
+    bool ShowSavePopup = false;
+    string modalDisplay = "display:block";
+    private string[] Tags = new string[] { "Frontend", "Backend", "Development", ".NET 5.0", ".NET Core", ".NET Framework" };
+
+    private void NavigateToPreviousScreen() => NavigationManager.NavigateTo("addPublisher");
+
+    private void NavigateToLandingPage() => NavigationManager.NavigateTo("/SearchPublication");
+
+    private void Save()
+    {
+        dataHandler.Save(Publication);
+        modalDisplay = "display:block";
+        ShowSavePopup = true;
+    }
+}

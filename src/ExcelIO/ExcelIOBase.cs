@@ -4,119 +4,160 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Globalization;
+
+using System.Text.RegularExpressions;
 
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
 
-
 namespace Zeiss.PublicationManager.Data.Excel.IO
 {
-    public class ExcelIOBase
+    public abstract class ExcelIOBase
     {
-        #region GetCellInformation
-        protected enum LetterEnum
+        #region GetCellInformation      
+        protected static object ReadCell(Cell cell, SharedStringTable sharedStringTable)
         {
-            A = 1,
-            B, C, D, E, F, G, H, I, J, K, L, M, N, O, P, Q, R, S, T, U, V, W, X, Y,
-            Z = 26
-        }
-
-        //Excel column names are from A-Z over AA-AZ and ZA-ZZ up to AAA-ZZZ, [...]
-        protected static string ConvertNumberToCellLetters(int number)
-        {
-            //If the number is invalid
-            if (number <= 0)
-                throw new IndexOutOfRangeException("Value 'number' must be a value greater or equal 1. Current 'number was " + number);
-
-            string columnname = "";
-            int letterEnumCounter = 0;
-            int letterValue = number;
-
-            //For columnnames with multiple letters
-            while (letterValue > 26)
+            //Make sure that the Excel has a SharedStringTable, the Cell has a DataType and is a String
+            if (cell.DataType is not null && sharedStringTable is not null && cell.DataType == CellValues.SharedString)
             {
-                letterValue -= 26;
-                letterEnumCounter++;
-
-                //Appends a Z for columnnames with 3 or more letters
-                if (letterEnumCounter > 26)
+                var cellValue = cell.InnerText;
+                //Return String
+                return (sharedStringTable.ElementAt(Int32.Parse(cellValue)).InnerText);
+            }
+            //DataType is null, but cell contains text
+            else if (!String.IsNullOrEmpty(cell?.CellValue?.Text))
+            {
+                //Check if StyleIndex is a Date Format
+                if (Int32.TryParse(cell.StyleIndex?.InnerText, out int styleIndex))
                 {
-                    letterEnumCounter -= 26;
-                    columnname += "Z";
+                    //Standard date format
+                    if (styleIndex >= 12 && styleIndex <= 22
+                        //Formatted date format
+                        || styleIndex >= 165 && styleIndex <= 180
+                        //Number formats that can be interpreted as a number
+                        || styleIndex >= 1 && styleIndex <= 5)
+                    {
+                        //Make sure that the double is converted into the correct format (with '.' instead of ',')
+                        if (double.TryParse(cell.CellValue.Text, NumberStyles.Float, CultureInfo.InvariantCulture, out double dateTimeDouble))
+                        {
+                            return DateTime.FromOADate(dateTimeDouble);
+                        }
+                    }
                 }
+
+                //Default is number (if StyleIndex is null or any other StyleIndex)
+                return Convert.ToDecimal(cell.CellValue.Text);
             }
 
-            //Converts the lettervalues into the letter
-            LetterEnum letter;
-            if (letterEnumCounter > 0)
-            {
-                letter = (LetterEnum)letterEnumCounter;
-                columnname += letter.ToString();
-            }
-
-            letter = (LetterEnum)letterValue;
-            columnname += letter.ToString();
-
-
-            return columnname;
+            //If the Cell has no cell text
+            return new string(" ");
         }
 
-        protected static Cell GetReferenceCell(Row row, string cellName)
+        protected static string GetLetterIDOfCellReference(string cellReference)
         {
-            if (String.IsNullOrEmpty(cellName))
-                return null;
+            string letterID = Regex.Match(cellReference, @"[^\d]+").Value;
 
-            foreach (Cell cell in row.Elements<Cell>())
+            return letterID;
+        }
+
+        protected static string GetColumnLetterIDsOfColumnNames(ref SpreadsheetDocument spreadsheetDocument, SheetData sheetData, string columnNames, out int rowIndex)
+        {
+            Row row = SearchRow(ref spreadsheetDocument, sheetData, columnNames);
+            if (row is not null)
+                return GetColumnLetterIDsOfColumnNames(ref spreadsheetDocument, row, columnNames, out rowIndex);
+
+            rowIndex = -1;
+            return null;
+        }
+
+        protected static string GetColumnLetterIDsOfColumnNames(ref SpreadsheetDocument spreadsheetDocument, Row row, string columnNames, out int rowIndex)
+        {
+            //Try to read SharedStringTable if it exists. If not, make sure to do NOT try to read from it
+            SharedStringTable sharedStringTable = spreadsheetDocument?.WorkbookPart?.SharedStringTablePart?.SharedStringTable;
+            rowIndex = -1;
+
+            if (row is not null)
             {
-                if (string.Compare(cell.CellReference.Value, cellName, true) > 0)
+                rowIndex = Convert.ToInt32(row.RowIndex.Value);
+                foreach (Cell cell in row.Elements<Cell>())
                 {
-                    return cell;
+                    object entry = ReadCell(cell, sharedStringTable);
+                    if (CompareObjects(columnNames, entry))
+                        return GetLetterIDOfCellReference(cell.CellReference.Value);
                 }
             }
 
             return null;
         }
+
+        //return: <letterID, value>
+        //columnNamesAndValues: <columName, value>
+        protected static Dictionary<string, object> ConvertColumnNamesAndValuesToLetterIDsAndValues
+            (ref SpreadsheetDocument spreadsheetDocument, SheetData sheetData, Dictionary<string, object> columnNamesAndValues)
+        {
+            //<letterID, value>
+            Dictionary<string, object> idsAndValues = new();
+
+            foreach (var columnAndValue in columnNamesAndValues)
+            {
+                string letterID = GetColumnLetterIDsOfColumnNames(ref spreadsheetDocument, sheetData, columnAndValue.Key, out _);
+                if (letterID is not null)
+                    idsAndValues.Add(letterID, columnAndValue.Value);
+            }
+                
+            return idsAndValues;
+        }
         #endregion
 
         #region CheckExists
-        public static bool WorksheetExists(ref SpreadsheetDocument spreadsheetDocument, string worksheetName, out IEnumerable<Sheet> sheetsIEnum)
+        /// <summary>
+        /// Check if a worksheet does exist in a spreadsheet and optional it returns the sheet(s) in (parameter) 'sheetsIEnum'.
+        /// </summary>
+        /// <param name="spreadsheetDocument">
+        /// Spreadsheet where to search for the worksheet.
+        /// </param>
+        /// <param name="worksheetName">
+        /// Name of the worksheet that should be searched.
+        /// </param>
+        /// <param name="sheetsIEnum">
+        /// This returns the sheet(s) that do have the name of (parameter) 'worksheetName'.
+        /// </param>
+        /// <returns>
+        /// True, if worksheet with (parameter) 'worksheetName' does exist, otherwise False.
+        /// </returns>
+        protected static bool WorksheetExists(ref SpreadsheetDocument spreadsheetDocument, string worksheetName, out IEnumerable<Sheet> sheetsIEnum)
         {
             //Search for specific sheet
             sheetsIEnum = spreadsheetDocument?.WorkbookPart?.Workbook?.Descendants<Sheet>()?.Where(s => s.Name == worksheetName);
 
             return sheetsIEnum.Any();
         }
-
-        public static bool WorksheetExists(ref string filepath, string worksheetName)
-        {
-            if (!CheckPathExist(ref filepath))
-                return false;
-
-            SpreadsheetDocument spreadsheetDocument = SpreadsheetDocument.Open(filepath, false);
-
-            //Search for specific sheet
-            IEnumerable<Sheet> sheetsIEnum = spreadsheetDocument?.WorkbookPart?.Workbook?.Descendants<Sheet>()?.Where(s => s.Name == worksheetName);
-            //If specified sheet does not exists => return false
-            bool isExists = sheetsIEnum.Any();
-
-            spreadsheetDocument.Close();
-
-            return isExists;
-        }
         #endregion
 
         #region CheckPaths
-        //Does check, if the filepath does exist
-        public static bool CheckPathExist(ref string filepath)
+        /// <summary>
+        /// Check if a path at the specified (parameter) 'filepath' does exist. 
+        /// If the filepath is too long it'll try to access directly to the OS-File-System.
+        /// </summary>
+        /// <param name="filepath">
+        /// The path to the file that should be searched.
+        /// If the filepath is too long it'll try to access directly to the OS-File-System to search for the file.
+        /// </param>
+        /// <returns>
+        /// True, if the file exists, otherwise false.
+        /// </returns>
+        /// <exception cref="PathTooLongException">Thrown when File-path is too long and path cannot be conveted</exception>
+        protected static bool CheckPathExist(ref string filepath)
         {
             CheckAndConvertLongFilePath(ref filepath);
 
             //If the path exists, it returns true and other functions can work further
-            return (File.Exists(filepath));
+            return File.Exists(filepath);
         }
 
-        public static void CheckAndConvertLongFilePath(ref string filepath)
+        private static void CheckAndConvertLongFilePath(ref string filepath)
         {
             //Checks for longer filepaths (MAX_PATH is regularly 260)
             if (filepath.Length >= 256)
@@ -130,13 +171,14 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
                     //Either file does not exist or prefix is unsupported if true
                     if (!File.Exists(filepath))
                         throw new PathTooLongException("The entered filepath:\n" + filepath +
-                            "\nis too long (and current IO API does not support \"" + @"\\?\" + "\") or does not exist");
+                            "\nis too long (and current OS-IO-API does not support \"" + @"\\?\" + "\") or does not exist");
                 }
             }
         }
         #endregion
 
         #region ExcelIO
+        #region Write
         protected static SpreadsheetDocument OpenSpreadsheetDocument(string filepath, string worksheetName, out SheetData sheetData, bool isCreateable = true, bool isEditable = true)
         {
             SpreadsheetDocument spreadsheetDocument;
@@ -181,7 +223,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
             spreadsheetDocument.Close();
         }
         #region CreateWorkbook
-        protected static SheetData CreateNewWorkbookPartAndGetSheetData(ref SpreadsheetDocument spreadsheetDocument, string worksheetName, bool isAppendable = true)
+        private static SheetData CreateNewWorkbookPartAndGetSheetData(ref SpreadsheetDocument spreadsheetDocument, string worksheetName, bool isAppendable = true)
         {
             if (isAppendable)
             {
@@ -232,7 +274,7 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
             }
         }
 
-        protected static void AddAndAppendStyleSheet(ref SpreadsheetDocument spreadsheetDocument)
+        private static void AddAndAppendStyleSheet(ref SpreadsheetDocument spreadsheetDocument)
         {
             // Add minimal Stylesheet
             var stylesPart = spreadsheetDocument.WorkbookPart.AddNewPart<WorkbookStylesPart>();
@@ -254,22 +296,12 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
                         })
             };
         }
-
-        protected static uint GetUniqueSheetID(ref Sheets sheets)
-        {
-            // Get a unique ID for the new worksheet.
-            uint sheetId = 1;
-            if (sheets?.Elements<Sheet>()?.Count() > 0)
-            {
-                sheetId = sheets.Elements<Sheet>().Select(s => s.SheetId.Value).Max() + 1;
-            }
-
-            return sheetId;
-        }
+        #endregion
         #endregion
 
-        protected static bool OpenWorksheet(ref SpreadsheetDocument spreadsheetDocument, string worksheetName, out SheetData sheetData)
-        {        
+        #region Read
+        private static bool OpenWorksheet(ref SpreadsheetDocument spreadsheetDocument, string worksheetName, out SheetData sheetData)
+        {
             if (WorksheetExists(ref spreadsheetDocument, worksheetName, out IEnumerable<Sheet> sheetsIEnum))
             {
                 //Open worksheet
@@ -280,6 +312,161 @@ namespace Zeiss.PublicationManager.Data.Excel.IO
             }
 
             sheetData = null;
+            return false;
+        }
+
+        private static uint GetUniqueSheetID(ref Sheets sheets)
+        {
+            // Get a unique ID for the new worksheet.
+            uint sheetId = 1;
+            if ((sheets?.Elements<Sheet>()?.Any()) ?? false)
+            {
+                sheetId = sheets.Elements<Sheet>().Max(s => s.SheetId.Value) + 1;
+            }
+
+            return sheetId;
+        }
+        #endregion
+        #endregion
+
+        #region GetRowInformation
+        //columnConditions can be type of 'List<object>', 'string', 'Dictionary<string, object>' or 'KeyValuePair<string, object>'
+        //objects (values) in columnConditions are the conditions and strings (keys) are columnLetterIDs
+        protected static Row SearchRow(ref SpreadsheetDocument spreadsheetDocument, SheetData sheetData, object columnConditions)
+        {
+            //Try to read SharedStringTable if it exists. If not, make sure to do NOT try to read from it
+            SharedStringTable sharedStringTable = spreadsheetDocument?.WorkbookPart?.SharedStringTablePart?.SharedStringTable;
+
+            foreach (Row row in sheetData.Elements<Row>())
+            {
+                if (CompareRows(row, sharedStringTable, columnConditions))
+                    return row;
+            }
+
+            //Row not found
+            return null;
+        }
+
+        //columnConditions can be type of 'List<object>', 'string', 'Dictionary<string, object>' or 'KeyValuePair<string, object>'
+        //objects (values) in columnConditions are the conditions and strings (keys) are columnLetterIDs
+        protected static List<Row> SearchRows(ref SpreadsheetDocument spreadsheetDocument, SheetData sheetData, object columnConditions)
+        {
+            //Try to read SharedStringTable if it exists. If not, make sure to do NOT try to read from it
+            SharedStringTable sharedStringTable = spreadsheetDocument?.WorkbookPart?.SharedStringTablePart?.SharedStringTable;
+
+            return SearchRows(sharedStringTable, sheetData, columnConditions);
+        }
+
+        //columnConditions can be type of 'List<object>', 'string', 'Dictionary<string, object>' or 'KeyValuePair<string, object>'
+        //objects (values) in columnConditions are the conditions and strings (keys) are columnLetterIDs
+        protected static List<Row> SearchRows(SharedStringTable sharedStringTable, SheetData sheetData, object columnConditions)
+        {
+            List<Row> rows = new();
+
+            foreach (Row row in sheetData.Elements<Row>())
+            {
+                if (CompareRows(row, sharedStringTable, columnConditions))
+                    rows.Add(row);
+            }
+
+            return rows;
+        }
+
+
+        //columnConditions can be type of 'List<object>', 'string', 'Dictionary<string, object>' or 'KeyValuePair<string, object>'
+        //objects (values) in columnConditions are the conditions and strings (keys) are columnLetterIDs
+        private static bool CompareRows(Row row, SharedStringTable sharedStringTable, object columnConditions)
+        {
+            return columnConditions switch
+            {            
+                //<letterID, value>
+                Dictionary<string, object> dicCon => CompareRows(row, sharedStringTable, dicCon),
+                KeyValuePair<string, object> kvpCon => CompareRows(row, sharedStringTable, new Dictionary<string, object> { { kvpCon.Key, kvpCon.Value } }),
+
+                List<object> lstCon => CompareRows(row, sharedStringTable, lstCon),
+                object strCon => CompareRows(row, sharedStringTable, new List<object> { strCon }),
+
+                _ => throw new InvalidCastException("Cannot convert 'columnConditions', because type of 'columnCondition' was invalid.\n" +
+                    "Only 'List<string>', 'Dictionary<string, object>' and 'KeyValuePair<string, object>' are accepted"),
+            };
+        }
+
+
+        private static bool CompareRows(Row row, SharedStringTable sharedStringTable, List<object> columnConditions)
+        {
+            //Create 'copy'
+            List<object> leftConditions = new(columnConditions);
+            foreach (Cell cell in row.Elements<Cell>())
+            {
+                object entry = ReadCell(cell, sharedStringTable);
+
+                foreach (var condition in leftConditions)
+                {
+                    if (CompareObjects(entry, condition))
+                    {
+                        leftConditions.Remove(condition);
+                        break;
+                    }
+                }
+            }
+
+            //If an condition is left that means that not all conditions were matched
+            return !(leftConditions.Any());
+        }
+
+        //columnConditions: <letterID, value>
+        private static bool CompareRows(Row row, SharedStringTable sharedStringTable, Dictionary<string, object> columnConditions)
+        {
+            //Create 'copy'
+            //<letterID, condition>
+            Dictionary<string, object> leftConditions = new(columnConditions);
+            foreach (Cell cell in row.Elements<Cell>())
+            {
+                object entry = ReadCell(cell, sharedStringTable);
+
+                foreach (var condition in leftConditions)
+                {
+                    if (condition.Key == GetLetterIDOfCellReference(cell.CellReference.Value) && CompareObjects(entry, condition.Value))
+                    {
+                        leftConditions.Remove(condition.Key);
+                        break;
+                    }
+                }
+            }
+
+            //If an condition is left that means that not all conditions were matched
+            return !(leftConditions.Any());
+        }
+        #endregion
+
+        #region Helper_Methods
+        private static bool CompareObjects(object a, object b)
+        {
+            //Compare datatypes
+            if (a.GetType() == b.GetType())
+            {
+                switch (a)
+                {
+                    case string objstr:
+                        return objstr.Equals(b);
+
+                    case DateTime objdate:
+                        return objdate.Equals(b);
+
+                    case bool objbool:
+                        return objbool.Equals(b);
+
+                    default:
+                        if (a is not null)
+                        {
+                            return (Convert.ToDecimal(a) == Convert.ToDecimal(b));
+                        }
+                        //Both objects are null
+                        else
+                            return true;
+                }
+            }
+
             return false;
         }
         #endregion

@@ -2,6 +2,7 @@
 
 using Zeiss.PublicationManager.Data.Excel.IO;
 using Zeiss.PublicationManager.Data.DataSet;
+using System;
 
 namespace Zeiss.PublicationManager.Data.DataSet.Model
 {
@@ -9,9 +10,9 @@ namespace Zeiss.PublicationManager.Data.DataSet.Model
     {
         public PublicationTypeModel()
         {
-            ID = Randomizer.GetRandomID();
+            ID = Guid.NewGuid();
         }
-        [Required]
+        [Required(ErrorMessage = "Art der Veröffentlichung ist ein Pflichtfeld")]
         [MaxLength(100, ErrorMessage = "Name ist zu lang")]
         [MinLength(1, ErrorMessage = "Bitte Name eingeben")]
         public string Name { get; set; }
@@ -21,7 +22,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.Model
     {
         public StateModel()
         {
-            ID = Randomizer.GetRandomID();
+            ID = Guid.NewGuid();
         }
         [Required(ErrorMessage = "Name ist ein Pflichtfeld")]
         [MaxLength(100, ErrorMessage = "Name ist zu lang")]
@@ -33,7 +34,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.Model
     {
         public TagModel()
         {
-            ID = Randomizer.GetRandomID();
+            ID = Guid.NewGuid();
         }
         [Required(ErrorMessage = "Name ist ein Pflichtfeld")]
         [MaxLength(100, ErrorMessage = "Name ist zu lang")]
@@ -45,8 +46,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.Model
     {
         public AuthorModel()
         {
-            // ID = Logic.GetNewAuthorID();
-            ID = Randomizer.GetRandomID();
+            ID = Guid.NewGuid();
         }
         [Required(ErrorMessage = "Vorname ist ein Pflichtfeld")]
         [MaxLength(100, ErrorMessage = "Name ist zu lang")]
@@ -63,11 +63,24 @@ namespace Zeiss.PublicationManager.Data.DataSet.Model
     {
         public PublisherModel()
         {
-            ID = Randomizer.GetRandomID();
+            ID = Guid.NewGuid();
         }
         [Required(ErrorMessage = "Name ist ein Pflichtfeld")]
         [MaxLength(100, ErrorMessage = "Name ist zu lang")]
         [MinLength(1, ErrorMessage = "Bitte Name eingeben")]
+        public string Name { get; set; }
+    }
+
+    public class DivisionModel : DataObject, IDivision
+    {
+        public DivisionModel()
+        {
+            ID = Guid.NewGuid();
+        }
+
+        [Required(ErrorMessage = "Geschäftsbereich ist ein Pflichtfeld")]
+        [MaxLength(100, ErrorMessage = "Geschäftsbereich ist zu lang")]
+        [MinLength(1, ErrorMessage = "Bitte Geschäftsbereich eingeben")]
         public string Name { get; set; }
     }
 }

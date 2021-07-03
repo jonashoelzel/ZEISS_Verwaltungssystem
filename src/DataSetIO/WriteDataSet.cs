@@ -1,138 +1,289 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using Zeiss.PublicationManager.Data.Excel.IO.Write;
 
 namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
 {
-    public class WriteDataSet
+    public class WriteDataSet : DataSetBase
     {
-        private string _filePath;
-        private string _workSheetName;
 
-        public WriteDataSet(string filePaht, string workSheetName)
+        public WriteDataSet(string filePaht)
         {
-            _filePath = filePaht;
-            _workSheetName = workSheetName;
+            FilePath = filePaht;
         }
 
-        public void Insert(IPublicationDataSet dataSet)
+        public void DeletePublication(Guid guid)
         {
-            throw new NotImplementedException();
+            RowDelete.Delete(FilePath, worksheets[0], new Dictionary<string, object>() { { "Publication_ID", guid.ToString() }, });
         }
 
-        public static void Insert(string filepath, string worksheetName, List<IPublicationDataSet> dataSets)
+        public void InsertPublication(IPublicationDataSet dataSet)
         {
-            foreach (var dataSet in dataSets)
+            CheckWorkBook();
+
+            var attributes = PublicationToAttributes(dataSet);
+
+            var id = new KeyValuePair<string, object>("Publication_ID", attributes["Publication_ID"]);
+
+            if (Excel.IO.ExcelIOAPIs.IsIDOfWorksheet(FilePath, worksheets[0], id))
             {
-                Insert(filepath, worksheetName, dataSet);
-            }
-        }
-
-        public static void Insert(string filepath, string worksheetName, IPublicationDataSet dataSet)
-        {
-            InitializeDataSetWorksheet(filepath, worksheetName);
-
-            List<object> entry = new List<object>()
-            {
-                dataSet.ID,
-                dataSet.WorkingTitle,
-                dataSet.PublicationTitle,
-
-                dataSet.TypeOfPublication.Name,
-
-                dataSet.MainAuthor.ID,
-                dataSet.MainAuthor.Name,
-                dataSet.MainAuthor.Surname,
-                ConvertCoAuthorsToCSV(dataSet.CoAuthors),
-                dataSet.Division,
-
-                dataSet.DateOfStartWorking.Year,
-                dataSet.CurrentState,
-                dataSet.DateOfRelease,
-
-                dataSet.PublishedBy.ID,
-                dataSet.PublishedBy.Name,
-
-                ConvertTagsToCSV(dataSet.Tags),
-                dataSet.Description,
-                dataSet.AdditionalInformation
-            };
-
-            ExcelInsert.Insert(filepath, worksheetName, entry);
-        }
-
-        private static string ConvertCoAuthorsToCSV(List<IAuthor> coAuthors)
-        {
-            if (coAuthors is null)
-                return string.Empty;
-
-            StringBuilder csv = new StringBuilder();
-
-            foreach (var author in coAuthors)
-            {
-                csv.Append(
-                    author.ID + "," +
-                    author.Name + "," +
-                    author.Surname + ";"
-                    );
+                var idColumn = new Dictionary<string, object>() { { id.Key, id.Value } };
+                RowUpdate.Update(FilePath, worksheets[0], idColumn, attributes);
+                return;
             }
 
-            string csvstr = csv.ToString();
-            return ((!String.IsNullOrEmpty(csvstr)) ? csvstr[..^1] : "");
+            RowInsert.Insert(FilePath, worksheets[0], attributes);
         }
 
-        private static string ConvertTagsToCSV(List<ITag> tags)
+        public void InsertAuthor(IAuthor author)
         {
+            CheckWorkBook();
+
+            var attributes = AuthorToAttributes(author);
+
+            var id = new KeyValuePair<string, object>("Author_ID", attributes["Author_ID"]);
+
+            if (Excel.IO.ExcelIOAPIs.IsIDOfWorksheet(FilePath, worksheets[1], id))
+            {
+                var idColumn = new Dictionary<string, object>() { { id.Key, id.Value } };
+                RowUpdate.Update(FilePath, worksheets[1], idColumn, attributes);
+                return;
+            }
+
+            RowInsert.Insert(FilePath, worksheets[1], attributes);
+        }
+
+        public void InsertDivision(IDivision division)
+        {
+            CheckWorkBook();
+            var attributes = DivisionToAttributes(division);
+
+            var id = new KeyValuePair<string, object>("Division_ID", attributes["Division_ID"]);
+
+            if (Excel.IO.ExcelIOAPIs.IsIDOfWorksheet(FilePath, worksheets[2], id))
+            {
+                var idColumn = new Dictionary<string, object>() { { id.Key, id.Value } };
+                RowUpdate.Update(FilePath, worksheets[2], idColumn, attributes);
+                return;
+            }
+
+            RowInsert.Insert(FilePath, worksheets[2], attributes);
+        }
+
+        public void InsertPublicationType(IPublicationType publicationType)
+        {
+            CheckWorkBook();
+
+            var attributes = PublicationTypeToAttributes(publicationType);
+
+            var id = new KeyValuePair<string, object>("PublicationType_ID", attributes["PublicationType_ID"]);
+
+            if (Excel.IO.ExcelIOAPIs.IsIDOfWorksheet(FilePath, worksheets[3], id))
+            {
+                var idColumn = new Dictionary<string, object>() { { id.Key, id.Value } };
+                RowUpdate.Update(FilePath, worksheets[3], idColumn, attributes);
+                return;
+            }
+
+            RowInsert.Insert(FilePath, worksheets[3], attributes);
+        }
+
+        public void InsertState(IState state)
+        {
+            CheckWorkBook();
+
+            var attributes = StateToAttributes(state);
+
+            var id = new KeyValuePair<string, object>("State_ID", attributes["State_ID"]);
+
+            if (Excel.IO.ExcelIOAPIs.IsIDOfWorksheet(FilePath, worksheets[4], id))
+            {
+                var idColumn = new Dictionary<string, object>() { { id.Key, id.Value } };
+                RowUpdate.Update(FilePath, worksheets[4], idColumn, attributes);
+                return;
+            }
+
+            RowInsert.Insert(FilePath, worksheets[4], attributes);
+        }
+
+        public void InsertTag(ITag tag)
+        {
+            CheckWorkBook();
+
+            var attributes = TagToAttributes(tag);
+
+            var id = new KeyValuePair<string, object>("Tag_ID", attributes["Tag_ID"]);
+
+            if (Excel.IO.ExcelIOAPIs.IsIDOfWorksheet(FilePath, worksheets[5], id))
+            {
+                var idColumn = new Dictionary<string, object>() { { id.Key, id.Value } };
+                RowUpdate.Update(FilePath, worksheets[5], idColumn, attributes);
+                return;
+            }
+
+            RowInsert.Insert(FilePath, worksheets[5], attributes);
+        }
+
+        public void InsertPublisher(IPublisher publisher)
+        {
+            CheckWorkBook();
+
+            var attributes = PublisherToAttributes(publisher);
+
+            var id = new KeyValuePair<string, object>("Publisher_ID", attributes["Publisher_ID"]);
+
+            if (Excel.IO.ExcelIOAPIs.IsIDOfWorksheet(FilePath, worksheets[6], id))
+            {
+                var idColumn = new Dictionary<string, object>() { { id.Key, id.Value } };
+                RowUpdate.Update(FilePath, worksheets[6], idColumn, attributes);
+                return;
+            }
+
+            RowInsert.Insert(FilePath, worksheets[6], attributes);
+        }
+
+
+
+
+        /*
+        private static string AuthorsToCsvIDs(List<IAuthor> authors)
+        {
+            string csv = string.Empty;
+            if (authors is null)
+                return csv;
+
+            if (authors.Count < 1)
+                return csv;
+
+            foreach (var author in authors)
+            {
+                csv += author.ID.ToString();
+                csv += ",";
+            }
+            return csv[..^1];
+        }
+
+        private static string TagsToCsvIDs(List<ITag> tags)
+        {
+            string csv = string.Empty;
             if (tags is null)
-                return string.Empty;
+                return csv;
 
-            StringBuilder csv = new StringBuilder();
+            if (tags.Count < 1)
+                return csv;
 
             foreach (var tag in tags)
             {
-                csv.Append(tag.Name + ",");
+                csv += tag.ID.ToString();
+                csv += ",";
             }
-
-            string csvstr = csv.ToString();
-            return ((!String.IsNullOrEmpty(csvstr)) ? csvstr[..^1] : "");
+            return csv[..^1];
         }
+        */
 
-        private static void InitializeDataSetWorksheet(string filepath, string worksheetName)
+
+        public static Dictionary<string, object> PublicationToAttributes(IPublicationDataSet dataSet)
         {
-            if (!WriteExcel.WorksheetExists(ref filepath, worksheetName))
+            var publication = new Dictionary<string, object>
             {
-                List<object> entry = new List<object>()
-                {
-                    "Publikations-ID",
-                    "Arbeitstitel",
-                    "Veröffentlichungstitel",
-                    "Veröffentlichungsmedium",
+                { "Publication_ID", dataSet.ID.ToString() },
+                { "WorkingTitle", dataSet.WorkingTitle },
+                { "PublicationTitle", dataSet.PublicationTitle },
+                { "DateOfStartWorking", dataSet.DateOfStartWorking },
+                { "DateOfRelease", dataSet.DateOfRelease },
+                { "Description", dataSet.Description },
+                { "AdditionalInformation", dataSet.AdditionalInformation }
+            };
 
-                    "Autor-ID",
-                    "Vorname",
-                    "Nachname",
-                    "Co-Autoren",
-                    "Division",
+            string divisionID = string.Empty;
+            if (!string.IsNullOrEmpty(dataSet.Division.Name))
+                divisionID = dataSet.Division.ID.ToString();
+            publication.Add("Division_ID", divisionID);
 
-                    "Arbeitsbeginn (Startjahr)",
-                    "Derzeitiger Arbeitsstatus",
-                    "Veröffentlichungsdatum",
+            string authorID = string.Empty;
+            if (!string.IsNullOrEmpty(dataSet.MainAuthor.Name))
+                authorID = dataSet.MainAuthor.ID.ToString();
+            publication.Add("Author_ID", authorID);
 
-                    "Publisher-ID",
-                    "Publisher",
 
-                    "Tags",
-                    "Beschreibung (zusätzlich)",
-                    "Zusätzliche Informationen"
-                };
+            publication.Add("CoAuthor_IDs", ConvertAuthorsToCSV(dataSet.CoAuthors));
 
-                ExcelInsert.Insert(filepath, worksheetName, entry);
-            }
+            string pubTypeID = string.Empty;
+            if (!string.IsNullOrEmpty(dataSet.TypeOfPublication.Name))
+                pubTypeID = dataSet.TypeOfPublication.ID.ToString();
+            publication.Add("PublicationType_ID", pubTypeID);
+
+            string stateID = string.Empty;
+            if (!string.IsNullOrEmpty(dataSet.CurrentState.Name))
+                stateID = dataSet.CurrentState.ID.ToString();
+            publication.Add("State_ID", stateID);
+
+            publication.Add("Tag_ID", ConvertTagsToCSV(dataSet.Tags));
+
+            string publisherID = string.Empty;
+            if (!string.IsNullOrEmpty(dataSet.PublishedBy?.Name))
+                publisherID = dataSet.PublishedBy.ID.ToString();
+            publication.Add("Publisher_ID", publisherID);
+
+            return publication;
         }
-    }
 
+
+        private static Dictionary<string, object> AuthorToAttributes(IAuthor author)
+        {
+            return new Dictionary<string, object>()
+            {
+                { "Author_ID", author.ID.ToString() },
+                { "Name", author.Name },
+                { "Surname", author.Surname },
+            };
+        }
+
+        private static Dictionary<string, object> DivisionToAttributes(IDivision division)
+        {
+            return new Dictionary<string, object>()
+            {
+                { "Division_ID", division.ID.ToString() },
+                { "Name", division.Name },
+            };
+        }
+
+        private static Dictionary<string, object> PublicationTypeToAttributes(IPublicationType publicationType)
+        {
+            return new Dictionary<string, object>()
+            {
+                { "PublicationType_ID", publicationType.ID.ToString() },
+                { "Name", publicationType.Name },
+            };
+        }
+
+        private static Dictionary<string, object> StateToAttributes(IState state)
+        {
+            return new Dictionary<string, object>()
+            {
+                { "State_ID", state.ID.ToString() },
+                { "Name", state.Name },
+            };
+        }
+
+        private static Dictionary<string, object> TagToAttributes(ITag tag)
+        {
+            return new Dictionary<string, object>()
+            {
+                { "Tag_ID", tag.ID.ToString() },
+                { "Name", tag.Name },
+            };
+        }
+
+        private static Dictionary<string, object> PublisherToAttributes(IPublisher publisher)
+        {
+            return new Dictionary<string, object>()
+            {
+                { "Publisher_ID", publisher.ID.ToString() },
+                { "Name", publisher.Name },
+            };
+        }
+
+    }
 }

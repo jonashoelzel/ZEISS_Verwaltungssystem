@@ -1,77 +1,278 @@
-﻿@page "/searchPub"
+@page "/SearchPublication"
 @using Zeiss.PublicationManager.Data.DataSet.Model
+@using Zeiss.PublicationManager.Data.DataSet
+@using Zeiss.PublicationManager.Data.DataSet.IO.Read
+@using Zeiss.PublicationManager.UI
+@using Zeiss.PublicationManager.Business.Logic.IO
+@using BlazorElectron.Data.DataLogic
 
 @inject NavigationManager NavigationManager
 @inject PublicationDataSetModel Publication
+@inject DataHandler dataHandler
+@inject WorkflowState workflowState
 
-<img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg"
-     class="logo" />
+<img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg" class="logo" />
 
-<section class="search-default">
-    <form>
-        <div>
-            <input type="text" id="searchfield" asp-for="SearchString" placeholder="Titelname, Autor, Verlag, ..." />
-            <input type="submit" value="Suchen" />
+<EditForm Model="@Publication">
+
+    <section class="search-default">
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Titel, Autor, Stichwort, ..."
+                   @oninput="SetSearchTerm" />
+            <button type="button" class="btn" @onclick="@ChangeFilterVisibility" id="openFilter">
+                <span class="fas fa-filter fa-2x"></span>
+            </button>
         </div>
-    </form>
-    <div class="search-body">
-        <table class="searchTable">
-            <thead>
+    </section>
+
+    <section class="filterSection" hidden=@HideFilter>
+        <div class="input-group">
+            <label>Filtern nach:</label>
+            <div class="dropdownFilter">
+                <select class="form-control" @onchange="@SetDivisionFilter">
+                    @foreach (var div in divisions)
+                    {
+                        <option value="@div.Name">@div.Name</option>
+                    }
+                </select>
+            </div>
+            <!--
+            <div class="dropdownFilter">
+                <InputSelect class="form-control" @bind-Value="@Publication.Tags">
+                    <option></option>
+                    @foreach (var tag in Tags)
+                    {
+                        <option>@tag</option>
+                    }
+                </InputSelect>
+            </div>  -->
+        </div>
+    </section>
+
+    <table class="table table-striped table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th>
+                    <span class="sort-link" @onclick="@(() => SetSortColumn("WorkingTitle"))">Titel</span>
+                    <span class="fa @(GetSortStyle("WorkingTitle"))"></span>
+                </th>
+                <th>
+                    <span class="sort-link" @onclick="@(() => SetSortColumn("MainAuthor.Name"))">Vorname</span>
+                    <span class="fa @(GetSortStyle("MainAuthor.Name"))"></span>
+                </th>
+                <th>
+                    <span class="sort-link" @onclick="@(() => SetSortColumn("MainAuthor.Surname"))">Nachname des Autors</span>
+                    <span class="fa @(GetSortStyle("MainAuthor.Surname"))"></span>
+                </th>
+                <th>
+                    <span class="sort-link" @onclick="@(() => SetSortColumn("DateOfRelease"))">Datum der Veröffentlichung</span>
+                    <span class="fa @(GetSortStyle("DateOfRelease"))"></span>
+                </th>
+                <th>Aktion</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var publication in items)
+            {
                 <tr>
-                    <th style="width: 20%;">Titelname</th>
-                    <th style="width: 10%;">Datum der Veröffentlichung</th>
-                    <th style="width: 20%;">Art der Veröffentlichung</th>
-                    <th style="width: 20%;">Optionen</th>
+                    <td class="align-middle">@publication.WorkingTitle</td>
+                    <td class="align-middle">@publication.MainAuthor.Name</td>
+                    <td class="align-middle">@publication.MainAuthor.Surname</td>
+                    <td class="align-middle">@publication.DateOfRelease.ToString("dd.MM.yyyy")</td>
+                    <td>
+                        <button type="button" class="btn" @onclick="(() => EditThisPublication(publication))">
+                            <span class="fas fa-pencil-alt"></span>
+                        </button>
+                        <button type="button" class="btn" @onclick="@(() => Delete(publication.ID))">
+                            <span class="fas fa-trash-alt"></span>
+                        </button>
+                    </td>
                 </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>ABC</td>
-                    <td>14.06.2020</td>
-                    <td>Artikel</td>
-                    <td>""</td>
-                </tr>
-                <tr>
-                    <td>XYZ</td>
-                    <td>24.12.2020</td>
-                    <td>Blog</td>
-                    <td>""</td>
-                </tr>
-                <tr>
-                    <td>ABC</td>
-                    <td>14.06.2020</td>
-                    <td>Artikel</td>
-                    <td>""</td>
-                </tr>
-                <tr>
-                    <td>ABC</td>
-                    <td>14.06.2020</td>
-                    <td>Artikel</td>
-                    <td>""</td>
-                </tr>
-                <tr>
-                    <td>ABC</td>
-                    <td>14.06.2020</td>
-                    <td>Artikel</td>
-                    <td>""</td>
-                </tr>
-                <tr>
-                    <td>ABC</td>
-                    <td>14.06.2020</td>
-                    <td>Artikel</td>
-                    <td>""</td>
-                </tr>
-                <tr>
-                    <td>DEF</td>
-                    <td>25.01.2021</td>
-                    <td>Video</td>
-                    <td>""</td>
-                </tr>
-            </tbody>
-        </table>
+            }
+        </tbody>
+    </table>
+    <div class="form-inline">
+        <div class="landingPageAddPublication">
+            <button type="button" class="btn" @onclick="NavigateToAddTitleComp">
+                <span class="fas fa-plus-circle fa-5x"></span>
+            </button>
+        </div>
     </div>
-</section>
+</EditForm>
 
-@code {
+@code
+{
+    private List<PublicationDataSet> data;
+    private List<Division> divisions;
 
+    void fetchData()
+    {
+        if (data is not null && divisions is not null)
+            return;
+
+        data = dataHandler.ExcelReader.ReadPublicationDataSet();
+        divisions = dataHandler.ExcelReader.ReadDivisions();
+        divisions.Insert(0, new Division() { Name = string.Empty });
+
+        items = data;
+    }
+
+    private void NavigateToAddTitleComp()
+    {
+        workflowState.State = Data.DataLogic.State.Add;
+        Publication.Reset();
+        NavigationManager.NavigateTo("addTitle");
+    }
+
+    private void EditThisPublication(IPublicationDataSet publication)
+    {
+        workflowState.State = Data.DataLogic.State.Edit;
+        Publication.Set(publication);
+        NavigationManager.NavigateTo("addTitle");
+
+        Filter();
+    }
+
+    private bool HideFilter = true;
+
+    private bool IsSortedAscending = false;
+    private string CurrentSortColumn;
+
+    string SelectedDivsion { get; set; } = "";
+
+    string CurrentSearchTerm { get; set; } = "";
+
+    // Test Data
+    public class TableTest
+    {
+        public string TitleTest { get; set; }
+        public string NameTest { get; set; }
+        public string SurnameTest { get; set; }
+        public DateTime DateTest { get; set; }
+        public string Division { get; set; }
+    };
+
+    List<PublicationDataSet> items = new();
+
+    private List<PublicationDataSet> helpData;
+
+    protected override void OnInitialized()
+    {
+        fetchData();
+        helpData = data;
+    }
+
+    // filter list when changing value of division-filter
+    public void SetDivisionFilter(ChangeEventArgs e)
+    {
+        SelectedDivsion = e.Value.ToString();
+        Filter();
+    }
+
+
+    void SetSearchTerm(ChangeEventArgs args)
+    {
+        CurrentSearchTerm = args.Value.ToString();
+        Filter();
+    }
+
+    void SetSortColumn(string columnName)
+    {
+        if (columnName == CurrentSortColumn)
+        {
+            IsSortedAscending = !IsSortedAscending;
+        }
+        else
+        {
+            CurrentSortColumn = columnName;
+        }
+
+        Filter();
+    }
+
+
+    // hide or show dropdown-filter
+    private void ChangeFilterVisibility() => HideFilter = !HideFilter;
+
+    // get column to sort and set corresponding icon
+    private string GetSortStyle(string columnName)
+    {
+        if (CurrentSortColumn != columnName)
+        {
+            return string.Empty;
+        }
+        if (IsSortedAscending)
+        {
+            return "fas fa-sort-amount-up";
+        }
+        else
+        {
+            return "fas fa-sort-amount-down";
+        }
+    }
+
+    // sort the column which was choosen
+    private void SortTable()
+    {
+        //1 = ASC. -1 = DESC
+        int sortInt = IsSortedAscending ? 1 : -1;
+        switch (CurrentSortColumn)
+        {
+            case "WorkingTitle":
+                items.Sort(delegate (PublicationDataSet x, PublicationDataSet y) { return String.Compare(x.WorkingTitle, y.WorkingTitle) * sortInt; });
+                break;
+            case "MainAuthor.Name":
+                items.Sort(delegate (PublicationDataSet x, PublicationDataSet y) { return String.Compare(x.MainAuthor.Name, y.MainAuthor.Name) * sortInt; });
+                break;
+            case "MainAuthor.Surname":
+                items.Sort(delegate (PublicationDataSet x, PublicationDataSet y) { return String.Compare(x.MainAuthor.Surname, y.MainAuthor.Surname) * sortInt; });
+                break;
+            case "DateOfRelease":
+                items.Sort(delegate (PublicationDataSet x, PublicationDataSet y) { return DateTime.Compare(x.DateOfRelease, y.DateOfRelease) * sortInt; });
+                break;
+        }
+    }
+
+
+
+    void SearchAndFilter()
+    {
+        Filter();
+    }
+
+
+    void Filter()
+    {
+
+        if (!String.IsNullOrWhiteSpace(SelectedDivsion))
+        {
+            items = data?.Where(f => f.Division.Name.Equals(SelectedDivsion)).ToList();
+        }
+        else
+        {
+            items = data;
+        }
+
+
+        if (!String.IsNullOrWhiteSpace(CurrentSearchTerm))
+        {
+            items = items?.Where(i => i.WorkingTitle.ToLower().Contains(CurrentSearchTerm.ToLower()) ||
+                                             i.MainAuthor.Name.ToLower().Contains(CurrentSearchTerm.ToLower()) ||
+                                             i.MainAuthor.Surname.ToLower().Contains(CurrentSearchTerm.ToLower())).ToList();
+        }
+
+        SortTable();
+    }
+
+
+
+    private void Delete(Guid pubID)
+    {
+        data.Remove(data.Where(Publication => Publication.ID == pubID).First());
+
+        dataHandler.DeletePublication(pubID);
+
+        Filter();
+    }
 }

@@ -1,7 +1,7 @@
 == Use-Case 02: Veröffentlichung suchen
 
 === Kurzbeschreibung
-In diesem Use-Case wird das Suchen nach einer Veröffentlichung durch einen Autor (oder das Sales Department) beschrieben.
+Das Uses-Case wird als Suchvorgang einer Veröffentlichung von dem Benutzer beschrieben. 
 
 ===	Kurzbeschreibung der Akteure
 
@@ -10,30 +10,26 @@ In diesem Use-Case wird das Suchen nach einer Veröffentlichung durch einen Auto
 Der Autor will nach einer Veröffentlichung suchen.
 
 
-*Sales Department*
-
-Das Sales Department will nach einer Veröffentlichung suchen.
-
 === Vorbedingungen
-* Die Software ist installiert und geöffnet
-* Liste der Veröffentlichungen ist nicht leer
-* Sales Department ist als solches eingeloggt
+* (Der Benutzer befindet sich im Netzwerk - konkret auf Zeiss beziehen?)
+* Liste der Veröffentlichungen ist nicht leer - eine Exceldatei wurde auf der StartPage ausgewählt (bzw. importiert)
+* portables Systems muss geöffnet werden können
+
 
 === Standardablauf (Basic Flow)
 
-. Der Use-Case beginnt, wenn der Autor (oder das Sales Department) "Fachbeitrag suchen" auswählt.
-. Das System gibt eine Gesamtübersicht von Veröffentlichungen aus.
-. Der Autor (oder das Sales Department) gibt in Suchfeld ein Schlagwort ein.
-. Das System vergleicht Pflichtdaten/Optionaldaten mit Schlagwort.
-. Das System gibt gefilterte Übersicht mit entsprechenden Übereinstimmungen aus.
+. Der Use-Case beginnt, wenn der Benutzer einen Begriff in das Suchfeld eingibt(auf Main Page).  
+. System nimmt die Eingabe entgegen
+. System vergleicht Eingabe im Suchfeld mit gespeicherten Daten der ausgewählten Datei 
+. Das System das Ergbnis aus (konkretieren?) 
 . Der Use-Case ist abgeschlossen.
 
 === Alternative Abläufe
 
-*(2.)Sortierung der Übersicht*
+*(2.)Sortierung der Übersicht* ( Frage zugehörig zu Suchen?) 
 
-. Der Autor (oder das Sales Department) stellt über Symbole in Übersicht Sortierung ein.
-. Das System gibt Übersicht nach eingestellter Sortierung aus.
+. Der Benutzer wählt Sotierung
+. System gibt Übersicht aus
 
 ////
 ==== Liste als CSV exportieren

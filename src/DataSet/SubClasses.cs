@@ -1,4 +1,6 @@
-﻿namespace Zeiss.PublicationManager.Data.DataSet
+﻿using System;
+
+namespace Zeiss.PublicationManager.Data.DataSet
 {
     public class PublicationType : DataObject, IPublicationType
     {
@@ -22,6 +24,11 @@
     }
 
     public class Publisher : DataObject, IPublisher
+    {
+        public string Name { get; set; }
+    }
+
+    public class Division : DataObject, IDivision
     {
         public string Name { get; set; }
     }

@@ -1,7 +1,9 @@
-﻿namespace Zeiss.PublicationManager.Data.DataSet
+﻿using System;
+
+namespace Zeiss.PublicationManager.Data.DataSet
 {
     public interface IDataObject
     {
-        int? ID { get; set; }
+        Guid ID { get; set; }
     }
 }

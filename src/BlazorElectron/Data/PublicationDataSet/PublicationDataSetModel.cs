@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -13,7 +13,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.Model
     {
         public PublicationDataSetModel()
         {
-            ID = Randomizer.GetRandomID();
+            ID = Guid.NewGuid();
         }
 
         // Publication Information
@@ -38,17 +38,55 @@ namespace Zeiss.PublicationManager.Data.DataSet.Model
 
         // Additional Information
         public IState CurrentState { get; set; } = new StateModel();
+
         public DateTime DateOfStartWorking { get; set; } = DateTime.Now;
         public DateTime DateOfRelease { get; set; } = DateTime.Now;
+
         public List<ITag> Tags { get; set; }
         public string Description { get; set; }
         public string AdditionalInformation { get; set; }
 
-        public string Division { get; set; }
+        public IDivision Division { get; set; } = new DivisionModel();
 
 
 
         // Publisher Information
         public IPublisher PublishedBy { get; set; } = new PublisherModel();
+
+        public void Reset()
+        {
+            ID = Guid.NewGuid();
+            WorkingTitle = "";
+            PublicationTitle = "";
+            TypeOfPublication = new PublicationTypeModel();
+            MainAuthor = new AuthorModel();
+            CoAuthors = new List<IAuthor>();
+            CurrentState = new StateModel();
+            DateOfStartWorking = DateTime.Now;
+            DateOfRelease = DateTime.Now;
+            Tags = new List<ITag>();
+            Description = "";
+            AdditionalInformation = "";
+            Division = new DivisionModel();
+            PublishedBy = new PublisherModel();
+        }
+
+        public void Set(IPublicationDataSet publication)
+        {
+            ID = publication.ID;
+            WorkingTitle = publication.WorkingTitle;
+            PublicationTitle = publication.PublicationTitle;
+            TypeOfPublication = publication.TypeOfPublication;
+            MainAuthor = publication.MainAuthor;
+            CoAuthors = publication.CoAuthors;
+            CurrentState = publication.CurrentState;
+            DateOfStartWorking = publication.DateOfStartWorking;
+            DateOfRelease = publication.DateOfRelease;
+            Tags = publication.Tags;
+            Description = publication.Description;
+            AdditionalInformation = publication.AdditionalInformation;
+            Division = publication.Division;
+            PublishedBy = publication.PublishedBy;
+        }
     }
 }

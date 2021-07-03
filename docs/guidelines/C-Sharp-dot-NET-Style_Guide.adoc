@@ -3,7 +3,7 @@
 
 == Layout Conventions
 
-Good layout uses formatting to emphasize the structure of your code and to make the code easier to read.
+Good layout uses formatting to emphasize the structure of your code and to make the code easier to read. +
 
 
 * Write only one statement per line.
@@ -34,7 +34,7 @@ if((val1 > val2)&&(val1 > val3)){
 
 == Language Guidelines
 
-The following sections describe practices that the C# team follows to prepare code examples and samples.
+The following sections describe practices that the C# team follows to prepare code examples and samples. +
 
 * If you append/concat multiple strings together, use a 'StringBuilder' to improve performance.
 
@@ -98,36 +98,43 @@ When to use PascalCase and camelCase?:
 
 === Namespaces
 
-We are using the following naming convention to name namespaces:
-Companyname.Product.Layer.Modul.Submodul
-(Note: Submoduls also can contain submodules).
-Also it should be clear in the namespace name what the namespace id doing.
+We are using the following naming convention to name namespaces: +
+Companyname.Product.Layer.Modul.Submodul +
+(Note: Submoduls also can contain submodules). +
+Also it should be clear in the namespace name what the namespace id doing. +
 
-In our case is the Companyname "Zeiss" and the Productname "PublicationManager".
-We have 3 Layer: UI (for UI), Businesss (for Bussines Logic) and Data (for IO Opeartions).
+In our case is the Companyname "Zeiss" and the Productname "PublicationManager". +
+We have 3 Layer: UI (for UI), Businesss (for Bussines Logic) and Data (for IO Opeartions). +
 
-Because multiple persons can work on one module/submodule, we're using the single responsible convention.
-One namespace should only do one thing (such as searching, filtering, reading, writing, displaying, [...]).
+Because multiple persons can work on one module/submodule, we're using the single responsible convention. +
+One namespace should only do one thing (such as searching, filtering, reading, writing, displaying, [...]). +
 
-Here are some examples:
-Zeiss.PublicationManager.UI.Pages.AddPublication   (Contains all Razor Pages for the UI that are used to add a publication)
-Zeiss.PublicationManager.UI.Pages.SearchPublication   (Contains all Razor Pages for the UI that are used to search a publication)
-Zeiss.PublicationManager.UI.Pages.UpdatePublication   (Contains all Razor Pages for the UI that are used to update a publication)
+Here are some examples: +
+Zeiss.PublicationManager.UI.Pages.AddPublication   (Contains all Razor Pages for the UI that are used to add a publication) +
+Zeiss.PublicationManager.UI.Pages.SearchPublication   (Contains all Razor Pages for the UI that are used to search a publication) +
+Zeiss.PublicationManager.UI.Pages.UpdatePublication   (Contains all Razor Pages for the UI that are used to update a publication) +
 
-with that way multiple persons can work on various pages withot beeing distracted from classes and code for other pages.
+with that way multiple persons can work on various pages withot beeing distracted from classes and code for other pages. +
 
-More examples:
-Zeiss.PublicationManager.Business.Logic.IO.Write (Contains all code that is used to write/change publications)
-Zeiss.PublicationManager.Business.Logic.IO.Read (Contains all code that is used to read publications)
-Zeiss.PublicationManager.Business.Logic.FilterPublication (Contains all code that is used to filter publications)
-Zeiss.PublicationManager.Business.Logic.SearchPublication (Contains all code that is used to search publications)
+More examples: +
+Zeiss.PublicationManager.Business.Logic.IO.Write (Contains all code that is used to write/change publications) +
+Zeiss.PublicationManager.Business.Logic.IO.Read (Contains all code that is used to read publications) +
+Zeiss.PublicationManager.Business.Logic.FilterPublication (Contains all code that is used to filter publications) +
+Zeiss.PublicationManager.Business.Logic.SearchPublication (Contains all code that is used to search publications) +
 
-in that example it is possible to create the code for searching/filtering, even if IO does not work properly.
+in that example it is possible to create the code for searching/filtering, even if IO does not work properly. +
 
-Some other examples:
-Zeiss.PublicationManager.Data.DataSet.IO.Write (Contains all code that is used to write/change publications)
-Zeiss.PublicationManager.Data.DataSet.IO.Read (Contains all code that is used to read publications)
-Zeiss.PublicationManager.Data.Excel.IO.Write (Contains all code that is used to write/change Excel entries)
-Zeiss.PublicationManager.Data.Excel.IO.Read (Contains all code that is used to read Excel entries)
+Some other examples: +
+Zeiss.PublicationManager.Data.DataSet.IO.Write (Contains all code that is used to write/change publications) +
+Zeiss.PublicationManager.Data.DataSet.IO.Read (Contains all code that is used to read publications) +
+Zeiss.PublicationManager.Data.Excel.IO.Write (Contains all code that is used to write/change Excel entries) +
+Zeiss.PublicationManager.Data.Excel.IO.Read (Contains all code that is used to read Excel entries) +
 
-as you saw in all examples above many namespaces look very similar and namespaces with similar names do almost the same thing. That makes the namespaces easier to use and it is easier to find the wished namespaces and classes.
+as you saw in all examples above many namespaces look very similar and namespaces with similar names do almost the same thing. That makes the namespaces easier to use and it is easier to find the wished namespaces and classes. +
+
+Sources: +
+Github: https://github.com/dotnet/runtime/blob/main/docs/coding-guidelines/coding-style.md +
+MSDN: https://docs.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions +
+Book (German): "Professionell entwickeln mit C# 6 und Visual Studio 2015" (S. 59 - S. 81, S. 423 - S. 443) +
+by 'Matthias Geirhos' from 'Rheinwerk Computing' (ISBN: 978-3-8362-3929-5) +
+Also: Private (Internal/Company) Style Guides +

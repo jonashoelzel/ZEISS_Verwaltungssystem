@@ -17,7 +17,7 @@ namespace Zeiss.PublicationManager.Data.DataSet
         public IAuthor MainAuthor { get; set; } = new Author();
         public List<IAuthor> CoAuthors { get; set; }
 
-        public string Division { get; set; }
+        public IDivision Division { get; set; } = new Division();
 
 
         // Publication State Information
