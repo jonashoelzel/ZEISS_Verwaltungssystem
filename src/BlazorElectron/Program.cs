@@ -23,7 +23,8 @@ namespace Zeiss.PublicationManager.UI
                 {
                     webBuilder
                         .UseElectron(args)
-                        .UseStartup<Startup>();
+                        .UseStartup<Startup>()
+                        .UseSetting(WebHostDefaults.DetailedErrorsKey, "true");
                 });
     }
 }

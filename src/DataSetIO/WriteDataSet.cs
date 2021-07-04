@@ -7,18 +7,31 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
 {
     public class WriteDataSet : DataSetBase
     {
-
         public WriteDataSet(string filePaht)
         {
             FilePath = filePaht;
         }
 
-        public void DeletePublication(Guid guid)
+        public static void DeletePublication(Guid guid)
         {
             RowDelete.Delete(FilePath, worksheets[0], new Dictionary<string, object>() { { "Publication_ID", guid.ToString() }, });
         }
 
-        public void InsertPublication(IPublicationDataSet dataSet)
+        public static void DeleteAuthor(Guid guid)
+        {
+            RowDelete.Delete(FilePath, worksheets[1], new Dictionary<string, object>() { { "Author_ID", guid.ToString() }, });
+        }
+
+        public static void DeleteDivision(Guid guid)
+        {
+            RowDelete.Delete(FilePath, worksheets[2], new Dictionary<string, object>() { { "Division_ID", guid.ToString() }, });
+        }
+        public static void DeletePublicationType(Guid guid)
+        {
+            RowDelete.Delete(FilePath, worksheets[3], new Dictionary<string, object>() { { "PublicationType_ID", guid.ToString() }, });
+        }
+
+        public static void InsertPublication(IPublicationDataSet dataSet)
         {
             CheckWorkBook();
 
@@ -36,7 +49,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
             RowInsert.Insert(FilePath, worksheets[0], attributes);
         }
 
-        public void InsertAuthor(IAuthor author)
+        public static void InsertAuthor(IAuthor author)
         {
             CheckWorkBook();
 
@@ -54,7 +67,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
             RowInsert.Insert(FilePath, worksheets[1], attributes);
         }
 
-        public void InsertDivision(IDivision division)
+        public static void InsertDivision(IDivision division)
         {
             CheckWorkBook();
             var attributes = DivisionToAttributes(division);
@@ -71,7 +84,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
             RowInsert.Insert(FilePath, worksheets[2], attributes);
         }
 
-        public void InsertPublicationType(IPublicationType publicationType)
+        public static void InsertPublicationType(IPublicationType publicationType)
         {
             CheckWorkBook();
 
@@ -89,7 +102,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
             RowInsert.Insert(FilePath, worksheets[3], attributes);
         }
 
-        public void InsertState(IState state)
+        public static void InsertState(IState state)
         {
             CheckWorkBook();
 
@@ -107,7 +120,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
             RowInsert.Insert(FilePath, worksheets[4], attributes);
         }
 
-        public void InsertTag(ITag tag)
+        public static void InsertTag(ITag tag)
         {
             CheckWorkBook();
 
@@ -125,7 +138,7 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
             RowInsert.Insert(FilePath, worksheets[5], attributes);
         }
 
-        public void InsertPublisher(IPublisher publisher)
+        public static void InsertPublisher(IPublisher publisher)
         {
             CheckWorkBook();
 
@@ -143,44 +156,6 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
             RowInsert.Insert(FilePath, worksheets[6], attributes);
         }
 
-
-
-
-        /*
-        private static string AuthorsToCsvIDs(List<IAuthor> authors)
-        {
-            string csv = string.Empty;
-            if (authors is null)
-                return csv;
-
-            if (authors.Count < 1)
-                return csv;
-
-            foreach (var author in authors)
-            {
-                csv += author.ID.ToString();
-                csv += ",";
-            }
-            return csv[..^1];
-        }
-
-        private static string TagsToCsvIDs(List<ITag> tags)
-        {
-            string csv = string.Empty;
-            if (tags is null)
-                return csv;
-
-            if (tags.Count < 1)
-                return csv;
-
-            foreach (var tag in tags)
-            {
-                csv += tag.ID.ToString();
-                csv += ",";
-            }
-            return csv[..^1];
-        }
-        */
 
 
         public static Dictionary<string, object> PublicationToAttributes(IPublicationDataSet dataSet)
@@ -284,6 +259,5 @@ namespace Zeiss.PublicationManager.Data.DataSet.IO.Write
                 { "Name", publisher.Name },
             };
         }
-
     }
 }

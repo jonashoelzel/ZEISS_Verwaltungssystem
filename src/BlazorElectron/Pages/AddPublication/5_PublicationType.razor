@@ -12,6 +12,8 @@
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg" class="logo" />
 
+<!--<button type="button" class="secondaryButton" id="userHelp">Hilfe</button>-->
+
 @if (ShowSavePopup && workflowState.State == Data.DataLogic.State.Add)
 {
     <div class="modal fade show" role="dialog" style="@modalDisplay">
@@ -53,7 +55,7 @@ else if (ShowSavePopup && workflowState.State == Data.DataLogic.State.Edit)
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h3 class="modal-title w-100 text-center">Veröffentlichungsart hinzufügen</h3>
+                        <h3 class="modal-title w-100 text-center">Art der Veröffentlichung hinzufügen</h3>
                         <button type="reset" class="cancelButton" @onclick="@CancelAddPopup">
                             <span class="fas fa-times fa-2x"></span>
                         </button>
@@ -64,7 +66,7 @@ else if (ShowSavePopup && workflowState.State == Data.DataLogic.State.Edit)
                         <ValidationMessage For="@(() => NewPublicationType.Name)" />
                     </div>
                     <div class="modal-body">
-                        <button type="submit" id="addButtonInPopup" class="form-control">Hinzufügen</button>
+                        <button type="submit" class="form-control primaryButton">Hinzufügen</button>
                     </div>
                 </div>
             </div>
@@ -78,13 +80,13 @@ else if (ShowSavePopup && workflowState.State == Data.DataLogic.State.Edit)
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3 class="modal-title w-100 text-center">Veröffentlichungsart ist ein Pflichtfeld.<br /> Bitte fügen sie eine neue Veröffentlichungsart hinzu!</h3>
+                    <h3 class="modal-title w-100 text-center">Art der Veröffentlichung ist ein Pflichtfeld.<br /> Bitte fügen sie eine neue Art der Veröffentlichung hinzu!</h3>
                     <button type="reset" class="cancelButton" @onclick="@CancelPflichtfeldPopup">
                         <span class="fas fa-times fa-2x"></span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <button type="submit" id="addButtonInPopup" class="form-control" @onclick="@OpenAddPopup">Neue Veröffentlichungsart hinzufügen</button>
+                    <button type="submit" class="form-control primaryButton" @onclick="@OpenAddPopup">Neue Art der Veröffentlichung hinzufügen</button>
                 </div>
             </div>
         </div>
@@ -112,32 +114,39 @@ else if (workflowState.State == Data.DataLogic.State.Add)
             <select class="form-control" @onchange="SetPublicationType">
                 @foreach (var publicationType in publicationTypes)
                 {
-                    <option value="@publicationType.ID">@publicationType.Name</option>
+                    if (!String.IsNullOrWhiteSpace(publicationType.Name))
+                    {
+                        <option value="@publicationType.ID">@publicationType.Name</option>
+                    }
                 }
             </select>
         </div>
         <div class="centeredButton">
-            <button class="primaryButton addNewField" @onclick="@OpenAddPopup">Neue Veröffentlichungsart hinzufügen</button>
+            <button class="secondaryButton addNewField" @onclick="@OpenAddPopup">Neue Art der Veröffentlichung hinzufügen</button>
         </div>
     </div>
 </section>
-@if (workflowState.State == Data.DataLogic.State.Add)
-{
-    <button class="primaryButton addPub" type="submit" @onclick="@Save">Veröffentlichung hinzufügen</button>
-}
-else
-{
-    <button class="primaryButton addPub" type="submit" @onclick="@Save">Änderungen Speichern</button>
-}
-<button class="primaryButton back" type="button" @onclick="NavigateToPreviousScreen">
-    <span class="fas fa-arrow-circle-left fa-3x"></span>
-</button>
-<button class="primaryButton continue" type="submit" @onclick="@NavigateToNextScreen">Optionale Angaben</button>
 
+@if (workflowState.State == Data.DataLogic.State.Edit)
+{
+    <button class="primaryButton continue" type="submit" @onclick="ValidateAndSave">Änderungen speichern</button>
+    <button class="secondaryButton back" type="button" @onclick="NavigateToPreviousScreen">
+        <span class="fas fa-arrow-circle-left fa-2x"></span>
+    </button>
+    <button class="secondaryButton addPub" type="submit" @onclick="@NavigateToNextScreen">Optionale Angaben</button>
+}
+else if (workflowState.State == Data.DataLogic.State.Add)
+{
+    <button class="primaryButton continue" type="submit" @onclick="SavePublication">Veröffentlichung hinzufügen</button>
+    <button class="secondaryButton back" type="button" @onclick="NavigateToPreviousScreen">
+        <span class="fas fa-arrow-circle-left fa-2x"></span>
+    </button>
+    <button class="secondaryButton addPub" type="submit" @onclick="@NavigateToNextScreen">Optionale Angaben</button>
+}
 @code
 {
     PublicationTypeModel NewPublicationType = new();
-    List<IPublicationType> publicationTypes;
+    List<IPublicationType> publicationTypes = new();
     bool ShowAddPopup = false;
     bool ShowPflichtfeldPopup = false;
     bool ShowSavePopup = false;
@@ -152,9 +161,12 @@ else
         if (Publication.TypeOfPublication is not null)
         {
             NavigationManager.NavigateTo("addDescription");
-        } else
+        }
+        else
+        {
             modalDisplay = "display:block";
             ShowPflichtfeldPopup = true;
+        }
     }
 
     void CancelAddPopup()
@@ -177,18 +189,85 @@ else
         ShowAddPopup = true;
     }
 
-    private void Save()
+    private void SavePublicationType()
     {
-        if (Publication.TypeOfPublication is not null)
+        try
         {
-            dataHandler.Save(Publication);
-            modalDisplay = "display:block";
-            ShowSavePopup = true;
+            PublicationTypeModel newPublicationType = new();
+            newPublicationType.Set(NewPublicationType);
+
+            dataHandler.SavePublicationType(newPublicationType);
+            Publication.TypeOfPublication = newPublicationType;
+
+
+            publicationTypes.Insert(0, newPublicationType);
+
+            ReadDataSet.CachedPublicationTypes.Add(newPublicationType);
+
+            NewPublicationType = new();
         }
-        else
+        catch (Exception ex)
+        {
+            if (ex is UnauthorizedAccessException || ex is IOException)
+            {
+                publicationTypeException = true;
+                OpenException();
+                return;
+            }
+
+            throw ex;
+        }
+
+        StateHasChanged();
+    }
+
+
+    private void ValidateAndSave()
+    {
+        if (String.IsNullOrWhiteSpace(Publication?.TypeOfPublication?.Name))
         {
             modalDisplay = "display:block";
             ShowPflichtfeldPopup = true;
+        }
+        else
+        {
+            SavePublication();
+        }
+    }
+
+
+    private void SavePublication()
+    {
+        try
+        {
+            dataHandler.Save(Publication);
+
+            PublicationDataSetModel NewDataSet = new();
+            NewDataSet.Set(Publication);
+
+            if (workflowState.State == Data.DataLogic.State.Add)
+            {
+                ReadDataSet.CachedPublications.Add(NewDataSet);
+            }
+            else
+            {
+                int index = ReadDataSet.CachedPublications.FindIndex(item => item.ID == NewDataSet.ID);
+                ReadDataSet.CachedPublications[index] = NewDataSet;
+            }
+
+            modalDisplay = "display:block";
+            ShowSavePopup = true;
+        }
+        catch (Exception ex)
+        {
+            if (ex is UnauthorizedAccessException || ex is IOException)
+            {
+                publicationException = true;
+                OpenException();
+                return;
+            }
+
+            throw ex;
         }
     }
 
@@ -198,12 +277,10 @@ else
     {
         ShowAddPopup = false;
         modalDisplay = "display:none";
-        publicationTypes.Insert(0, NewPublicationType);
-
-        dataHandler.SavePublicationType(NewPublicationType);
 
         Publication.TypeOfPublication = NewPublicationType;
-        NewPublicationType = new();
+
+        SavePublicationType();
     }
 
     void SetPublicationType(ChangeEventArgs publicationType)
@@ -214,15 +291,16 @@ else
 
     void fetchData()
     {
-        if (publicationTypes is not null)
+        if (publicationTypes.Any())
             return;
 
-        publicationTypes = new List<IPublicationType>();
-        var readPublicationTypes = dataHandler.ExcelReader.ReadPublicationTypes();
-        foreach (var division in readPublicationTypes)
+        List<IPublicationType> readPublicationTypes = ReadDataSet.CachedPublicationTypes;
+        foreach (IPublicationType type in readPublicationTypes)
         {
-            publicationTypes.Add(division);
+            publicationTypes.Add(type);
         }
+
+        publicationTypes.RemoveAll(x => String.IsNullOrWhiteSpace(x.Name));
     }
 
     protected override void OnInitialized()
@@ -239,3 +317,80 @@ else
             Publication.TypeOfPublication = publicationTypes.FirstOrDefault();
     }
 }
+
+
+@if (ShowException)
+{
+    <div class="modal fade show" role="dialog" style="@modalExceptionDisplay">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title w-100 text-center" style="font-size:16px">
+                        Datei-Zugriffs-Berechtigungs-Fehler
+                        <br />
+                        <br />Die Datei:
+                        <br />"@dataHandler.filePath";
+                        <br />wird derzeit von einem anderen Programm verwendet
+                        <br />oder Ihr Adminstrator hat Ihnen den Zugriff verwehrt.
+                        <br />
+                        <br />Sie können warten bis das andere Programm die Datei wieder freigegeben hat und den Vorgang wiederholen.
+                        <br />
+                        <br />Sollten Sie die Benachrichtigung nach mehrerern Versuchen immernoch sehen,
+                        <br />fragen Sie Ihren Adminstator und prüfen Sie, ob die Datei derzeit von einem anderen Programm verwendet wird
+                        <br />und prüfen Sie Ihre Berechtigungen.
+                    </h3>
+                    <button type="reset" class="cancelButton" @onclick="@CloseException">
+                        <span class="fas fa-times fa-2x"></span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <button type="submit" class="form-control primaryButton" @onclick="@Retry">Vorgang Wiederholen</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code
+{
+    string modalExceptionDisplay = "display:block";
+    bool ShowException = false;
+
+    bool publicationException = false;
+    bool publicationTypeException = false;
+
+    public void OpenException()
+    {
+        modalExceptionDisplay = "display:block";
+        ShowException = true;
+    }
+
+    void CloseException()
+    {
+        ShowException = false;
+        modalExceptionDisplay = "display:none";
+
+        ResetExceptions();
+    }
+
+    void ResetExceptions()
+    {
+        publicationException = false;
+        publicationTypeException = false;
+    }
+
+    void Retry()
+    {
+        if (publicationException)
+        {
+            SavePublication();
+        }
+        else if (publicationTypeException)
+        {
+            SavePublicationType();
+        }
+
+        CloseException();
+    }
+}
+

@@ -86,7 +86,7 @@ That's why we needed to find some workarounds, so that the OpenXML Spreadsheet a
 {nbsp} +
 
 OpenXML:
-[source]
+[source,csharp]
 --
 //Normal way. Does NOT work for xlsx (!)
 string strdate = objdate.ToOADate().ToString();
@@ -98,7 +98,7 @@ Normally we would use the cell.DataType to mark the cell as date, but MS Excel d
 Also note, because OpenXML is Open Source it uses the UNIX DateTime-Format, that's why we use OADate. +
 
 MS Excel:
-[source]
+[source,csharp]
 --
 //"StyleIndex" is "1", because we added a new stylesheet (index 0 would be default) with "NumberFormatId=14"
 //is in the 2nd item of 'CellFormats' array.
@@ -112,7 +112,7 @@ In MS Excel we need to create a Stylesheet that contains a cell formatting that 
 Excel uses the NumberFormatID=14 for regular DateTime-Formats. +
 Because we created one Stylesheet, this Stylesheet is at StyleIndex=1. +
 
-[source]
+[source,csharp]
 --
 // Add minimal Stylesheet
 var stylesPart = spreadsheetDocument.WorkbookPart.AddNewPart<WorkbookStylesPart>();
@@ -145,7 +145,7 @@ Excel uses the NumberFormatID=14 for regular DateTime-Formats. +
 {nbsp} +
 
 OpenXML:
-[source]
+[source,csharp]
 --
 //Normal way in OpenXML. Does NOT work for xlsx (!)
 if (cell.DataType is not null && cell.DataType == CellValues.Date)
@@ -165,7 +165,7 @@ In OpenXML, you would only check the cell.DataType and then convert the value fr
 But Excel cannot read the CellValues.Date and the entry wouldn't be shown in the Excel as Date (it'll only show a huge number (because Excel does not format to date)). +
 
 MS Excel:
-[source]
+[source,csharp]
 --
 //Check if StyleIndex is a Date Format
 if (Int32.TryParse(cell.StyleIndex?.InnerText, out int styleIndex))
@@ -323,7 +323,7 @@ Link: Go to <<0.0.0.0 Table of Contents>> +
 
 {nbsp} +
 
-[source]
+[source,csharp]
 --
 /// <summary>
 /// Inserts all values of (parameter) 'columnValues' into a new row.
@@ -338,7 +338,8 @@ Link: Go to <<0.0.0.0 Table of Contents>> +
 /// Every value of (parameter) 'columnValues' is the value of a new cell in the new row.
 /// </param>
 
-public static void Insert(string filepath, string worksheetName, List<object> columnValues)
+public static void Insert(string filepath, string worksheetName, List<object> columnValues) 
+{/*Code*/}
 --
 
 The parameter 'columnValues' is a List of Objects. +
@@ -367,7 +368,7 @@ The data-types in the table are same as the data-type of the entered values. +
 
 {nbsp} +
 
-[source]
+[source,csharp]
 --
 /// <summary>
 /// Inserts all values of (parameter) 'columnNamesAndValues' into a new row.
@@ -383,7 +384,8 @@ The data-types in the table are same as the data-type of the entered values. +
 /// and the value is the value of the cell.
 /// </param>
 
-public static void Insert(string filepath, string worksheetName, Dictionary<string, object> columnNamesAndValues)
+public static void Insert(string filepath, string worksheetName, Dictionary<string, object> columnNamesAndValues) 
+{/*Code*/}
 --
 
 The parameter 'columnNamesAndValues' is a dictionary where every KeyValuePair represents one entry. +
@@ -433,7 +435,7 @@ Again, the cell value and data-type do match the entered value in the value of t
 
 {nbsp} +
 
-[source]
+[source,csharp]
 --
 /// <summary>
 /// Reads and returns all values below of entered (so-called) 'header-columns' in (parameter) 'columnNames'.
@@ -453,7 +455,8 @@ Again, the cell value and data-type do match the entered value in the value of t
 /// Every KeyValuePair of the Dictionarys has a key that is the (so called) 'header-column' and the value is a value in the row, that is below this (so called) 'header-column'.
 /// </returns>
 
-public static List<Dictionary<string, object>> SelectAsRows(string filepath, string worksheetName, List<string> columnNames)
+public static List<Dictionary<string, object>> SelectAsRows(string filepath, string worksheetName, List<string> columnNames) 
+{/*Code*/}
 --
 
 The parameter 'columnNames' are the 'header-columns' where the values below should be selected. +
@@ -488,7 +491,7 @@ new() { { "Header1", "Spreadsheet" }, { "Header5", 24.02.2021 }, { "Header3", 3.
 
 We can create entries with the rows like this: +
 
-[source]
+[source,csharp]
 --
 public static List<T> GetAllFromTable<T>(string filepath, string worksheetName, List<string> headerColumns, Func<Dictionary<string, object>, T> convertAttributesFunction)
 {
@@ -533,7 +536,7 @@ R +
 
 {nbsp} +
 
-[source]
+[source,csharp]
 --
 /// <summary>
 /// Reads and returns all values below of entered (so-called) 'header-columns' in (parameter) 'columnNames'.
@@ -552,6 +555,7 @@ R +
 /// </returns>
 
 public static Dictionary<string, List<object>> SelectAsColumns(string filepath, string worksheetName, List<string> columnNames)
+{/*Code*/}
 --
 
 The parameter 'columnNames' are the 'header-columns' where the values below should be selected. +
@@ -611,7 +615,7 @@ Note that all lists have the same lenght. +
 
 That makes it possible to recreate the rows this way: +
 
-[source]
+[source,csharp]
 --
 public static List<T> GetAllFromTable<T>(string filepath, string worksheetName, List<string> headerColumns, Func<Dictionary<string, object>, T> convertAttributesFunction)
 {
@@ -672,7 +676,7 @@ R +
 
 {nbsp} +
 
-[source]
+[source,csharp]
 --
 /// <summary>
 /// Updates all rows with the entered values in (parameter) 'updateColumnsAndNewValues' that do match all the conditions in (parameter) 'whereColumnNamesAndConditions).
@@ -695,7 +699,8 @@ R +
 /// Number of updated rows.
 /// </returns>
 
-public static int Update(string filepath, string worksheetName, Dictionary<string, object> whereColumnNamesAndConditions, Dictionary<string, object> updateColumnsAndNewValues)
+public static int Update(string filepath, string worksheetName, Dictionary<string, object> whereColumnNamesAndConditions, Dictionary<string, object> updateColumnsAndNewValues) 
+{/*Code*/}
 --
 
 The parameter 'whereColumnNamesAndCoditions' contains multiple KeyValuePairs, where the Keys are the 'header-columns' and the Value is the condition a cell below this 'header-colummns' (a cell with the same 'letterID' as the 'header-column') must match (data-type and value). +
@@ -750,7 +755,7 @@ All other rows stay unaffected. +
 
 {nbsp} +
 
-[source]
+[source,csharp]
 --
 /// <summary>
 /// Deletes all rows that do match all the conditions in (parameter) 'whereColumnNamesAndValues'.
@@ -769,7 +774,8 @@ All other rows stay unaffected. +
 /// Number of deleted rows.
 /// </returns>
 
-public static int Delete(string filepath, string worksheetName, Dictionary<string, object> whereColumnNamesAndConditions)
+public static int Delete(string filepath, string worksheetName, Dictionary<string, object> whereColumnNamesAndConditions) 
+{/*Code*/}
 --
 
 The parameter 'whereColumnNamesAndCoditions' contains multiple KeyValuePairs, where the Keys are the 'header-columns' and the Value is the condition a cell below this 'header-colummns' (a cell with the same 'letterID' as the 'header-column') must match (data-type and value). +
@@ -819,7 +825,7 @@ This won't effect how data will be read or written, but when you open the spread
 
 {nbsp} +
 
-[source]
+[source,csharp]
 --
 /// <summary>
 /// Deletes all rows that do match all the conditions in (parameter) 'whereColumnNamesAndValues'.
@@ -838,7 +844,8 @@ This won't effect how data will be read or written, but when you open the spread
 /// Number of deleted rows.
 /// </returns>
 
-public static int DeleteAdvanced(string filepath, string worksheetName, Dictionary<string, object> whereColumnNamesAndConditions)
+public static int DeleteAdvanced(string filepath, string worksheetName, Dictionary<string, object> whereColumnNamesAndConditions) 
+{/*Code*/}
 --
 
 The parameter 'whereColumnNamesAndCoditions' contains multiple KeyValuePairs, where the Keys are the 'header-columns' and the Value is the condition a cell below this 'header-colummns' (a cell with the same 'letterID' as the 'header-column') must match (data-type and value). +
@@ -894,7 +901,7 @@ Because all references will be updated, this advanced version takes more resourc
 
 {nbsp} +
 
-[source]
+[source,csharp]
 --
 /// <summary>
 /// Check if a worksheet does exist in a spreadsheet.
@@ -909,22 +916,8 @@ Because all references will be updated, this advanced version takes more resourc
 /// True, if worksheet with (parameter) 'worksheetName' does exist, otherwise False.
 /// </returns>
 
-public static bool WorksheetExists(ref string filepath, string worksheetName)
-{
-    if (!CheckPathExist(ref filepath))
-        return false;
-
-    SpreadsheetDocument spreadsheetDocument = SpreadsheetDocument.Open(filepath, false);
-
-    //Search for specific sheet
-    IEnumerable<Sheet> sheetsIEnum = spreadsheetDocument?.WorkbookPart?.Workbook?.Descendants<Sheet>()?.Where(s => s.Name == worksheetName);
-    //If specified sheet does not exists => return false
-    bool isExists = sheetsIEnum.Any();
-
-    spreadsheetDocument.Close();
-
-    return isExists;
-}
+public static bool WorksheetExists(ref string filepath, string worksheetName) 
+{/*Code*/}
 --
 
 This function checks if a specified worksheet does exist in a specified spreadsheet. +
@@ -935,7 +928,7 @@ This function checks if a specified worksheet does exist in a specified spreadsh
 
 {nbsp} +
 
-[source]
+[source,csharp]
 --
 /// <summary>
 /// Check if a path at the specified (parameter) 'filepath' does exist. 
@@ -949,13 +942,8 @@ This function checks if a specified worksheet does exist in a specified spreadsh
 /// True, if the file exists, otherwise false.
 /// </returns>
 
-public static bool CheckPathExist(ref string filepath)
-{
-    CheckAndConvertLongFilePath(ref filepath);
-
-    //If the path exists, it returns true and other functions can work further
-    return File.Exists(filepath);
-}
+public static bool CheckPathExist(ref string filepath) 
+{/*Code*/}
 --
 
 This function checks if a specified file does exist on the filepath. +
@@ -972,7 +960,7 @@ The prefix '\\?\' is not supported by all APIs (some APIs cannot use this prefix
 
 {nbsp} +
 
-[source]
+[source,csharp]
 --
 /// <summary>
 /// Checks if a specified ID does exist in a worksheet of the spreadsheet and that is below a specific (so called) 'header-column'.
@@ -991,18 +979,36 @@ The prefix '\\?\' is not supported by all APIs (some APIs cannot use this prefix
 /// True, if the value in (parameter) 'headerColumnAndID' was found below the (so called) 'header-column' below the key of (parameter) 'headerColumnAndID'.
 /// </returns>
 
-public static bool IsIDOfWorksheet(string filepath, string worksheetName, KeyValuePair<string, object> headerColumnAndID)
+public static bool IsIDOfWorksheet(string filepath, string worksheetName, KeyValuePair<string, object> headerColumnAndID) 
+{/*Code*/}
 --
 
 This function checks if a specified ID does exist in a specified worksheet. +
 
 The key of 'headerColumnAndID' is the (so called) 'header-column' and the value is a condition a cell must match (it must match data-type and value) and must be below this (so called) 'header-column'. +
 
+Example: +
+We have the table: +
+
+|===
+|       |   A       |   B       |   C       |   D       |   E       |   F
+|   1   | Header1   | Header2   | Header3   | Header4   | Header5   |Header6
+|   2   |Hello World| 0         | 1.0       | true      |22.02.2021 | 1
+|   3   |Foo Bar    | 10        | 2.2       | false     |23.02.2021 | 2
+|   4   |Spreadsheet| 42        | 3.14      | true      |24.02.2021 | 3
+|   5   |Worksheet  | 20        | 0.11      | false     |24.05.2021 | 4
+|   6   |OOP        | 2         | 9.81      | true      |24.05.2021 | 5
+|===
+
+When we use: +
+'headerColumnAndID' = new() { { "Header6", 3 } } +
+The function will return true, because in the column F that does contain the 'header-column' 'Header6' also conains a cell that matches the value (and data-type). +
+
 ===== 2.1.5.4 CheckHeaderColumnsExist
 
 {nbsp} +
 
-[source]
+[source,csharp]
 --
 /// <summary>
 /// Check if a row with all of the entered (so called) 'header-columns' do exist in the worksheet.
@@ -1020,13 +1026,31 @@ The key of 'headerColumnAndID' is the (so called) 'header-column' and the value 
 /// True, if all (so called) 'header-columns' where found in the same row, otherwise false.
 /// </returns>
 
-public static bool CheckHeaderColumnsExist(string filepath, string worksheetName, List<object> headerColumns)
+public static bool CheckHeaderColumnsExist(string filepath, string worksheetName, List<object> headerColumns) 
+{/*Code*/}
 --
 
 This function checks if all specified 'header-columns' of (parameter) 'headerColumns' where found in the same row. +
 
 All 'header-columns' must be in the same row. +
 If one 'header-column' is missing in the row, it'll search until the end of the document and then return false if no row was found that contains all specified 'header-columns' in (parameter) 'headerColumns'. +
+
+Example: +
+We have the table: +
+
+|===
+|       |   A       |   B       |   C       |   D       |   E       |   F
+|   1   | Header1   | Header2   | Header3   | Header4   | Header5   |Header6
+|   2   |Hello World| 0         | 1.0       | true      |22.02.2021 | 1
+|   3   |Foo Bar    | 10        | 2.2       | false     |23.02.2021 | 2
+|   4   |Spreadsheet| 42        | 3.14      | true      |24.02.2021 | 3
+|   5   |Worksheet  | 20        | 0.11      | false     |24.05.2021 | 4
+|   6   |OOP        | 2         | 9.81      | true      |24.05.2021 | 5
+|===
+
+When we use: +
+'headerColumns' = new() { "Header1", "Header2", "Header3" } +
+The function will return true, because there is a row that does contain ALL of those 'header-columns'. +
 
 {nbsp} +
 
@@ -1048,8 +1072,11 @@ A string can be referenced by multible cells, if they share the same string cont
 
 
 ===== 2.2.1.1 (API) GetSharedStringTablePart
-[source]
----
+
+{nbsp} +
+
+[source,csharp]
+--
 private static SharedStringTablePart GetSharedStringTablePart(ref SpreadsheetDocument spreadsheetDocument)
 {
     SharedStringTablePart sharedStringTablePart;
@@ -1064,7 +1091,7 @@ private static SharedStringTablePart GetSharedStringTablePart(ref SpreadsheetDoc
 
     return sharedStringTablePart;
 }
----
+--
 
 First, we need to check if the spreadsheet has an SharedStringTable. +
 A SharedStringTable must be created explicitly. +
@@ -1075,8 +1102,11 @@ Because the cells only store the references, we need to parse throu the SharedSt
 We can do this this way: +
 
 ===== 2.2.1.2 (API) InsertSharedStringItem
-[source]
----
+
+{nbsp} +
+
+[source,csharp]
+--
 // Given text and a SharedStringTablePart, creates a SharedStringItem with the specified text 
 // and inserts it into the SharedStringTablePart. If the item already exists, returns its index.
 protected static int InsertSharedStringItem(string text, ref SharedStringTablePart sharedStringTablePart)
@@ -1105,13 +1135,16 @@ protected static int InsertSharedStringItem(string text, ref SharedStringTablePa
 
     return i;
 }
----
+--
 
 Then we can add the (cell) entry like this: +
 
 ===== 2.2.1.3 (API) AddSharedString
-[source]
----
+
+{nbsp} +
+
+[source,csharp]
+--
 protected static void AddSharedString(ref SpreadsheetDocument spreadsheetDocument, ref Cell newCell, string text)
 {
     //If no SharedStringTable is created, we create new one if no exist.
@@ -1123,7 +1156,7 @@ protected static void AddSharedString(ref SpreadsheetDocument spreadsheetDocumen
     newCell.DataType = new EnumValue<CellValues>(CellValues.SharedString);
     newCell.CellValue = new CellValue(index.ToString());
 }
----
+--
 
 {nbsp} +
 
@@ -1132,8 +1165,11 @@ protected static void AddSharedString(ref SpreadsheetDocument spreadsheetDocumen
 We can create cells this way: +
 
 ===== 2.2.2.1 (API) CreateCell
-[source]
----
+
+{nbsp} +
+
+[source,csharp]
+--
 //cellReferenceIDAndValue: <cellReference, value>
 protected static void CreateCell(ref SpreadsheetDocument spreadsheetDocument, ref Row row, KeyValuePair<string, object> cellReferenceIDAndValue)
 {
@@ -1145,7 +1181,7 @@ protected static void CreateCell(ref SpreadsheetDocument spreadsheetDocument, re
 
     UpdateCell(ref spreadsheetDocument, ref newCell, cellReferenceIDAndValue.Value);
 }
----
+--
 
 First, we get the referenceCell. +
 The referenceCell is a cell in the same column (with the same 'letterID') in the previous (upper) row. +
@@ -1156,8 +1192,11 @@ The CellReference is the 'column-letter' ('letterID') and the RowIndex. +
 The cell can be saved this way: +
 
 ===== 2.2.2.1 (API) UpdateCell
-[source]
----
+
+{nbsp} +
+
+[source,csharp]
+--
 protected static void UpdateCell(ref SpreadsheetDocument spreadsheetDocument, ref Cell cell, object newValue)
 {
     switch (newValue)
@@ -1197,7 +1236,7 @@ protected static void UpdateCell(ref SpreadsheetDocument spreadsheetDocument, re
             break;
     }
 }
----
+--
 
 Normaly, OpenXML has a native support for boolean. +
 This format is not suppported by MS Excel (MS Excel cannot work with the boolean format of OpenXML and must be implemented in other ways). +
@@ -1207,6 +1246,76 @@ String; DateTime; (Boolean); Numbers (Decimal); +
 If you want to use other data-types than the specified, they should be converted into one of these data-types before inserting them into Public APIs (!) +
 
 {nbsp} +
+
+==== 2.2.3.0 Workbook and Worksheets
+
+A Workbook is a summary of multiple Worksheets.
+Every Worksheet contains a table where the data is stored.
+
+Before we can work with Worksheets, we must create a Workbook.
+
+===== 2.2.3.1 (API) CreateNewWorkbookPartAndGetSheetData
+
+If no Workbook exists, we need to create one before adding new Worksheets.
+But if there is already a Workbook, we can add a new Worksheet to it.
+Then we get the SheetData of the new Worksheet.
+The SheetData contains the table of the Worksheet and all its Meta-Data.
+
+We can create a new Workbook and/or append Worksheets like this:
+
+[source,csharp]
+--
+private static SheetData CreateNewWorkbookPartAndGetSheetData(ref SpreadsheetDocument spreadsheetDocument, string worksheetName, bool isAppendable = true)
+{
+    if (isAppendable)
+    {
+        // Add a blank WorksheetPart.
+        WorksheetPart worksheetPart = spreadsheetDocument.WorkbookPart.AddNewPart<WorksheetPart>();
+        worksheetPart.Worksheet = new Worksheet(new SheetData());
+
+        Sheets sheets = spreadsheetDocument.WorkbookPart.Workbook.GetFirstChild<Sheets>();
+        string relationshipId = spreadsheetDocument.WorkbookPart.GetIdOfPart(worksheetPart);
+        uint sheetId = GetUniqueSheetID(ref sheets);
+
+        // Append the new worksheet and associate it with the workbook.
+        Sheet sheet = new() { Id = relationshipId, SheetId = sheetId, Name = worksheetName };
+
+        sheets.Append(sheet);
+
+        // Get the sheetData cell table.
+        SheetData sheetData = worksheetPart.Worksheet.GetFirstChild<SheetData>();
+
+        return sheetData;
+    }
+    else
+    {
+        // Add a WorkbookPart to the document.
+        //(Only possible, if no WorkbookPart exists)
+        WorkbookPart workbookPart = spreadsheetDocument.AddWorkbookPart();
+        workbookPart.Workbook = new Workbook();
+
+        AddAndAppendStyleSheet(ref spreadsheetDocument);
+
+        // Add a WorksheetPart to the WorkbookPart.
+        WorksheetPart worksheetPart = workbookPart.AddNewPart<WorksheetPart>();
+        worksheetPart.Worksheet = new Worksheet(new SheetData());
+
+        // Add Sheets to the Workbook.
+        Sheets sheets = spreadsheetDocument.WorkbookPart.Workbook.AppendChild<Sheets>(new Sheets());
+        uint sheetID = GetUniqueSheetID(ref sheets);
+
+        // Append a new worksheet and associate it with the workbook.
+        Sheet sheet = new() { Id = spreadsheetDocument.WorkbookPart.GetIdOfPart(worksheetPart), SheetId = UInt32Value.FromUInt32(sheetID), Name = worksheetName };
+
+        sheets.Append(sheet);
+
+        // Get the sheetData cell table.
+        SheetData sheetData = worksheetPart.Worksheet.GetFirstChild<SheetData>();
+
+        return sheetData;
+    }
+}
+--
 
 Link: Go to <<2.0.0.0 Code Documentation>> +
 Link: Go to <<0.0.0.0 Table of Contents>> +

@@ -1,7 +1,9 @@
 ﻿@page "/addTitle"
+@using Zeiss.PublicationManager.Data.DataSet
 @using Zeiss.PublicationManager.Data.DataSet.Model
 @using BlazorElectron.Data.DataLogic
 @using Zeiss.PublicationManager.Business.Logic.IO
+@using Zeiss.PublicationManager.Data.DataSet.IO.Read
 
 @inject NavigationManager NavigationManager
 @inject PublicationDataSetModel Publication
@@ -9,6 +11,8 @@
 @inject WorkflowState workflowState
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Zeiss_logo.svg" class="logo" />
+
+<!--<button type="button" class="secondaryButton" id="userHelp">Hilfe</button>-->
 
 @if (ShowSavePopup && workflowState.State == Data.DataLogic.State.Edit)
 {
@@ -27,15 +31,35 @@
     </div>
 }
 
-<EditForm Model="@NewTitel" OnInvalidSubmit="@HandleInvalidSubmit" OnValidSubmit="onValidSubmit">
+@if (ShowPflichtfeldPopup)
+{
+    <div class="modal fade show" role="dialog" style="@modalDisplay">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title w-100 text-center">Der Titel ist ein Pflichtfeld.<br />Bitte geben Sie einen Titel an!</h3>
+                    <button type="reset" class="cancelButton" @onclick="@CancelPflichtfeldPopup">
+                        <span class="fas fa-times fa-2x"></span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <button type="submit" class="form-control primaryButton" @onclick="@CancelPflichtfeldPopup">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+<EditForm Model="@NewTitel" OnInvalidSubmit="@HandleInvalidSubmit" OnValidSubmit="@AddTitle">
     <DataAnnotationsValidator />
-    @if (workflowState.State == State.Edit)
+    @if (workflowState.State == Data.DataLogic.State.Edit)
     {
         <div class="mode">
             <h2>Veröffentlichung bearbeiten</h2>
         </div>
     }
-    else if (workflowState.State == State.Add)
+    else if (workflowState.State == Data.DataLogic.State.Add)
     {
         <div class="mode">
             <h2>Neue Veröffentlichung hinzufügen</h2>
@@ -43,24 +67,33 @@
     }
     <section class="panel-default">
         <header class="panel-heading">
-            <h4 class="panel-title">Arbeitstitel</h4>
+            <h4 class="panel-title">Titel der Veröffentlichung</h4>
         </header>
         <div class="panel-body">
-            <InputText class="form-control" @bind-Value="@NewTitel.Name" /><br />
+            <InputText class="form-control" @bind-Value="@NewTitel.Name" />
             <ValidationMessage For="@(() => NewTitel.Name)" />
         </div>
     </section>
 
-    @if (workflowState.State == State.Edit)
+    @if (workflowState.State == Data.DataLogic.State.Edit)
     {
-        <button class="primaryButton addPub" type="submit" @onclick="(() => NavigateButton  = ButtonType.Save)">Änderungen Speichern</button>
+        <button class="primaryButton changePub" type="submit" @onclick="ValidateAndSave">Änderungen speichern</button>
+        <button class="secondaryButton back" type="button" @onclick="NavigateToPreviousScreen">
+            <span class="fas fa-home fa-2x"></span>
+        </button>
+        <button class="secondaryButton continue" type="submit" @onclick="NavigateToNextScreen">
+            <span class="fas fa-arrow-circle-right fa-2x"></span>
+        </button>
     }
-    <button class="primaryButton back" type="button" @onclick="NavigateToPreviousScreen">
-        <span class="fas fa-home fa-3x"></span>
-    </button>
-    <button class="primaryButton continue" type="submit" @onclick="(() => NavigateButton = ButtonType.Next)">
-        <span class="fas fa-arrow-circle-right fa-3x"></span>
-    </button>
+    else if (workflowState.State == Data.DataLogic.State.Add)
+    {
+        <button class="secondaryButton back" type="button" @onclick="NavigateToPreviousScreen">
+            <span class="fas fa-home fa-2x"></span>
+        </button>
+        <button class="primaryButton continue" type="submit" @onclick="NavigateToNextScreen">
+            <span class="fas fa-arrow-circle-right fa-2x"></span>
+        </button>
+    }
 
 </EditForm>
 
@@ -68,11 +101,33 @@
 {
     TitleModel NewTitel = new();
     bool ShowSavePopup = false;
-    ButtonType NavigateButton;
+    //ButtonType NavigateButton;
     enum ButtonType { Next, Save }
     string modalDisplay = "display:none";
 
+    bool ShowPflichtfeldPopup = false;
+
+    void CancelPflichtfeldPopup()
+    {
+        ShowPflichtfeldPopup = false;
+        modalDisplay = "display:none";
+    }
+
     private void NavigateToPreviousScreen() => NavigationManager.NavigateTo("/SearchPublication");
+
+    private void NavigateToNextScreen()
+    {
+        Publication.WorkingTitle = NewTitel.Name;
+        if (!String.IsNullOrWhiteSpace(Publication.WorkingTitle))
+        {
+            NavigationManager.NavigateTo("addAuthor");
+        }
+        else
+        {
+            modalDisplay = "display:block";
+            ShowPflichtfeldPopup = true;
+        }
+    }
 
     private void NavigateToLandingPage() => NavigationManager.NavigateTo("/SearchPublication");
 
@@ -84,24 +139,119 @@
         base.OnInitialized();
     }
 
-    private void Save()
+    private void ValidateAndSave()
     {
-        Publication.WorkingTitle = NewTitel.Name;
-        dataHandler.Save(Publication);
-        modalDisplay = "display:block";
-        ShowSavePopup = true;
-    }
+        AddTitle();
 
-    private void onValidSubmit()
-    {
-        Publication.WorkingTitle = NewTitel.Name;
-        if (NavigateButton == ButtonType.Next)
-            NavigationManager.NavigateTo("addAuthor");
+        if (String.IsNullOrWhiteSpace(Publication?.WorkingTitle))
+        {
+            modalDisplay = "display:block";
+            ShowPflichtfeldPopup = true;
+        }
         else
         {
+            SavePublication();
+        }
+    }
+
+    private void SavePublication()
+    {
+        try
+        {
             dataHandler.Save(Publication);
+
+            PublicationDataSetModel NewDataSet = new();
+            NewDataSet.Set(Publication);
+
+            if (workflowState.State == Data.DataLogic.State.Add)
+            {
+                ReadDataSet.CachedPublications.Add(NewDataSet);
+            }
+            else
+            {
+                int index = ReadDataSet.CachedPublications.FindIndex(item => item.ID == NewDataSet.ID);
+                ReadDataSet.CachedPublications[index] = NewDataSet;
+            }
+
             modalDisplay = "display:block";
             ShowSavePopup = true;
         }
+        catch (Exception ex)
+        {
+            if (ex is UnauthorizedAccessException || ex is IOException)
+            {
+                OpenException();
+                return;
+            }
+
+            throw ex;
+        }
+
+        StateHasChanged();
+    }
+
+    private void AddTitle()
+    {
+        Publication.PublicationTitle = NewTitel.Name;
+        Publication.WorkingTitle = NewTitel.Name;
     }
 }
+
+
+@if (ShowException)
+{
+    <div class="modal fade show" role="dialog" style="@modalExceptionDisplay">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title w-100 text-center" style="font-size:16px">
+                        Datei-Zugriffs-Berechtigungs-Fehler
+                        <br />
+                        <br />Die Datei:
+                        <br />"@dataHandler.filePath";
+                        <br />wird derzeit von einem anderen Programm verwendet
+                        <br />oder Ihr Adminstrator hat Ihnen den Zugriff verwehrt.
+                        <br />
+                        <br />Sie können warten bis das andere Programm die Datei wieder freigegeben hat und den Vorgang wiederholen.
+                        <br />
+                        <br />Sollten Sie die Benachrichtigung nach mehrerern Versuchen immernoch sehen,
+                        <br />fragen Sie Ihren Adminstator und prüfen Sie, ob die Datei derzeit von einem anderen Programm verwendet wird
+                        <br />und prüfen Sie Ihre Berechtigungen.
+                    </h3>
+                    <button type="reset" class="cancelButton" @onclick="@CloseException">
+                        <span class="fas fa-times fa-2x"></span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <button type="submit" class="form-control primaryButton" @onclick="@Retry">Vorgang Wiederholen</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code
+{
+    string modalExceptionDisplay = "display:block";
+    bool ShowException = false;
+
+
+    public void OpenException()
+    {
+        modalExceptionDisplay = "display:block";
+        ShowException = true;
+    }
+
+    void CloseException()
+    {
+        ShowException = false;
+        modalExceptionDisplay = "display:none";
+    }
+
+    void Retry()
+    {
+        SavePublication();
+        CloseException();
+    }
+}
+
